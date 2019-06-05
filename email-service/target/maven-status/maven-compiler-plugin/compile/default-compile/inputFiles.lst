@@ -1,0 +1,8 @@
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/business/EmailSender.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/model/OrderPrimaryKey.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/model/Address.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/configuration/KafkaConfig.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/business/OrderConsumer.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/model/Order.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/EmailServiceApplication.java
+/Users/soufianeifraden/Desktop/IdeaProject/email-service/src/main/java/com/project/controller/EmailController.java

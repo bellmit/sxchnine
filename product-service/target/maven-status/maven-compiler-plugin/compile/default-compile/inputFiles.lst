@@ -1,0 +1,13 @@
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/repository/ProductRepository.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/ProductServiceApplication.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/controller/ExceptionController.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/configuration/HazelcastConfig.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/controller/ProductController.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/exception/ExceptionMessage.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/model/Dimension.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/exception/ProductNotFoundException.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/configuration/SwaggerConfig.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/configuration/KafkaProducerConfig.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/business/ProductService.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/business/KafkaProducer.java
+/Users/soufianeifraden/Desktop/IdeaProject/product-service/src/main/java/com/project/model/Product.java

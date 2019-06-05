@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: turbine-stream
+  cloud:
+    config:
+      discovery:
+        service-id: config-service

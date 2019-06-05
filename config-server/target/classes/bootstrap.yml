@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: config-server
+
+encrypt:
+  key: secret
+  key-store.location: classpath:/server.jks
+  key-store.password: toto1234
+  key-store.alias: mySecretkey
+
+#keytool -genkeypair -alias mySecretkey -keyalg RSA   -dname "CN=Web Server,OU=Unit,O=Organization,L=City,S=State,C=CA"   -keypass secretKey -keystore server.jks -storepass toto1234

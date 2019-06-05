@@ -1,0 +1,8 @@
+com/project/business/OrderConsumer.class
+com/project/EmailServiceApplication.class
+com/project/model/Address.class
+com/project/configuration/KafkaConfig.class
+com/project/business/EmailSender.class
+com/project/model/OrderPrimaryKey.class
+com/project/model/Order.class
+com/project/controller/EmailController.class

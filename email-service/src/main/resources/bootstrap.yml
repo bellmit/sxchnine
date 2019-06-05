@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: email-service
+  cloud:
+    config:
+      discovery:
+        service-id: config-service
+

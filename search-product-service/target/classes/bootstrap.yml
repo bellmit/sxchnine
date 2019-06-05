@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: search-product-service
+  cloud:
+    config:
+      discovery:
+        service-id: config-server
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1
+  main:
+    allow-bean-definition-overriding: true

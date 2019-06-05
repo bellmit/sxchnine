@@ -1,0 +1,8 @@
+utils/TestObjectCreator.class
+controller/PromotionControllerIT.class
+business/Promotion20Test.class
+business/Promotion30Test.class
+service/PromotionContextTest.class
+business/Promotion10Test.class
+service/PromotionServiceTest.class
+controller/PromotionControllerTest.class

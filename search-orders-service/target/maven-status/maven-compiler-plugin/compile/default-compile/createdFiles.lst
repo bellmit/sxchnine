@@ -1,0 +1,16 @@
+com/project/business/OrderConsumer.class
+com/project/mapper/OrderMapper.class
+com/project/model/IndexedOrder.class
+com/project/configuration/ElasticsearchConfig.class
+com/project/mapper/UuidMapper.class
+com/project/model/Address.class
+com/project/configuration/KafkaConfig.class
+com/project/model/Order.class
+com/project/model/Product.class
+com/project/model/PaymentInfo.class
+com/project/SearchOrdersApplication.class
+com/project/mapper/UuidMapperImpl.class
+com/project/mapper/OrderMapperImpl.class
+com/project/model/OrderPrimaryKey.class
+com/project/repository/OrderRepository.class
+com/project/business/OrderService.class

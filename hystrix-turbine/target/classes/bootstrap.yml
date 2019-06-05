@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: hystrix-turbine
+  cloud:
+    config:
+      discovery:
+        service-id: config-service
