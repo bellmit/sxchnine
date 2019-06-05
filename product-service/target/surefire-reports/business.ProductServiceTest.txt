@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: business.ProductServiceTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.68 s - in business.ProductServiceTest

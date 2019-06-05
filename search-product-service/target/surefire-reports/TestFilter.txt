@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: TestFilter
--------------------------------------------------------------------------------
-Tests run: 6, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.305 s <<< FAILURE! - in TestFilter
-testRemoveDuplicateWithClassicAlgo_UsingOrTruthTable_AndTheSameList(TestFilter)  Time elapsed: 0.039 s  <<< FAILURE!
-java.lang.AssertionError: expected:<3> but was:<2>
-	at TestFilter.testRemoveDuplicateWithClassicAlgo_UsingOrTruthTable_AndTheSameList(TestFilter.java:116)
-
