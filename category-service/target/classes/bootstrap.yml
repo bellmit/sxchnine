@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: category-service
-  cloud:
-    config:
-      discovery:
-        service-id: config-server
