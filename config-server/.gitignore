@@ -1,6 +1,7 @@
 .idea
+.setting
+*target
 *iml
-.target
 *ipr
 *iws
-.setting
+*DS_Store

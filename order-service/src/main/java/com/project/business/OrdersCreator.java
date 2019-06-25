@@ -7,6 +7,7 @@ import com.project.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Service
 public class OrdersCreator {
@@ -31,6 +32,6 @@ public class OrdersCreator {
 
 
     private BigDecimal sumTotal(Order order) {
-        return order.getProducts().stream().map(Product::getUnitPrice).reduce(BigDecimal.valueOf(0), BigDecimal::add);
+        return order.getProducts().stream().filter(Objects::nonNull).map(Product::getUnitPrice).reduce(BigDecimal.valueOf(0), BigDecimal::add);
     }
 }

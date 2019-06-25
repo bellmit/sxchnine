@@ -39,6 +39,7 @@ public class OrderService {
 
     public int checkoutOrderAndSave(Order order){
         int paymentStatus = paymentServiceClient.payOrder(order);
+        log.info("payment : {}", paymentStatus);
         order.setPaymentStatus(PaymentStatusCode.getStatusByCode(paymentStatus));
         ordersCreator.saveOrders(order);
         orderProducer.sendOder(order);

@@ -1,3 +1,4 @@
+/*
 
 package com.project.configuration;
 
@@ -22,3 +23,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 }
 
+*/

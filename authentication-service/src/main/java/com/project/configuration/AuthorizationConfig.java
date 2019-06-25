@@ -45,7 +45,6 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
         return new RedisTokenStore(redisConnectionFactory);
     }*/
 
-
     /*
         To support JWT Token
      */

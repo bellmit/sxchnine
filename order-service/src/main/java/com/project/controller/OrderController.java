@@ -56,7 +56,7 @@ public class OrderController {
         Order order = new Order();
         OrderPrimaryKey primaryKey = new OrderPrimaryKey();
         primaryKey.setOrderId(UUID.randomUUID());
-        primaryKey.setUserEmail("blindrider00@gmail.com");
+        primaryKey.setUserEmail("blindrider400@gmail.com");
         primaryKey.setOrderTime(LocalDateTime.now().withNano(0));
         primaryKey.setShippingTime(LocalDateTime.now().withNano(0));
         order.setOrderPrimaryKey(primaryKey);

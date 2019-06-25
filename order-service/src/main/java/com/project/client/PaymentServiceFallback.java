@@ -10,7 +10,7 @@ public class PaymentServiceFallback implements PaymentServiceClient{
 
     @Override
     public int payOrder(Order order) {
-        log.info("fallback - payment service. order: {}", order.getOrderPrimaryKey().getOrderId());
+        log.info("fallback - payment service. order: {}", order.toString());
         return 2;
     }
 }

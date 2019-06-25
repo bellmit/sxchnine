@@ -43,9 +43,9 @@ public abstract class EmailSender {
 
         Personalization personalization = new Personalization();
         personalization.addDynamicTemplateData("commandId", order.getOrderPrimaryKey().getOrderId());
-        personalization.addDynamicTemplateData("total", order.getUnitPrice());
+        personalization.addDynamicTemplateData("total", order.getTotal());
         personalization.addDynamicTemplateData("currency", "$");
-        personalization.addDynamicTemplateData("prix", order.getUnitPrice());
+        personalization.addDynamicTemplateData("prix", order.getTotal());
         personalization.addDynamicTemplateData("taxe", "11");
         personalization.addTo(emailTo);
 
