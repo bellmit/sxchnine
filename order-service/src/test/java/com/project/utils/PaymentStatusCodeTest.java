@@ -1,6 +1,5 @@
-package com.project;
+package com.project.utils;
 
-import com.project.utils.PaymentStatusCode;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

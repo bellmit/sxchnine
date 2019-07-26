@@ -1,0 +1,26 @@
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${spring.embedded.kafka.brokers}
+      client-id: orders
+      acks: all
+      retries: 3
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      transaction-id-prefix: tx.
+      properties:
+        max-in-flight-requests-per-connection: 1
+        transaction-timeout-ms: 1000
+        request-timeout-ms: 1000
+        retry-backoff-ms: 1000
+  jackson:
+    serialization:
+      WRITE_DATE_KEYS_AS_TIMESTAMPS: false
+
+kafka:
+  bootstrapAddress: ${spring.embedded.kafka.brokers}
+  consumer:
+    topic: catchup-orders
+    groupId: catchupOrdersGroup
+  producer:
+    topic: orders

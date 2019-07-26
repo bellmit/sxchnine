@@ -5,9 +5,9 @@ import com.project.model.Order;
 import com.project.model.Product;
 import com.project.repository.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Service
 public class OrdersCreator {
@@ -24,14 +24,23 @@ public class OrdersCreator {
         this.orderMapper = orderMapper;
     }
 
-    public void saveOrders(Order order){
-        order.setTotal(sumTotal(order));
-        orderIdService.saveOrderId(orderMapper.asOrderId(order));
-        orderRepository.save(order);
+    public void saveOrders(Order order) {
+        if (order != null) {
+            order.setTotal(sumTotal(order));
+            orderIdService.saveOrderId(orderMapper.asOrderId(order));
+            orderRepository.save(order);
+        }
     }
 
 
     private BigDecimal sumTotal(Order order) {
-        return order.getProducts().stream().filter(Objects::nonNull).map(Product::getUnitPrice).reduce(BigDecimal.valueOf(0), BigDecimal::add);
+        if (order != null && !CollectionUtils.isEmpty(order.getProducts())) {
+            return order.getProducts()
+                    .stream()
+                    .filter(p -> p != null && p.getUnitPrice() != null)
+                    .map(Product::getUnitPrice)
+                    .reduce(BigDecimal.valueOf(0), BigDecimal::add);
+        }
+        return BigDecimal.ZERO;
     }
 }

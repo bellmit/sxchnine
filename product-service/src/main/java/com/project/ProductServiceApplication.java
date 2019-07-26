@@ -1,23 +1,15 @@
 package com.project;
 
 import com.project.business.ProductService;
-import com.project.configuration.KafkaProducerConfig;
-import com.project.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Import;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import javax.annotation.PostConstruct;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableSwagger2
-@Import(value = KafkaProducerConfig.class)
 public class ProductServiceApplication {
     static String[] args;
     @Autowired

@@ -4,11 +4,12 @@ import com.project.client.PaymentServiceClient;
 import com.project.model.Order;
 import com.project.producer.OrderProducer;
 import com.project.repository.OrderRepository;
-import com.project.utils.PaymentStatusCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.project.utils.PaymentStatusCode.getStatusByCode;
 
 @Service
 @Slf4j
@@ -40,7 +41,7 @@ public class OrderService {
     public int checkoutOrderAndSave(Order order){
         int paymentStatus = paymentServiceClient.payOrder(order);
         log.info("payment : {}", paymentStatus);
-        order.setPaymentStatus(PaymentStatusCode.getStatusByCode(paymentStatus));
+        order.setPaymentStatus(getStatusByCode(paymentStatus));
         ordersCreator.saveOrders(order);
         orderProducer.sendOder(order);
         return paymentStatus;

@@ -5,8 +5,6 @@ import com.project.exception.ProductNotFoundException;
 import com.project.model.Product;
 import com.project.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -59,12 +57,5 @@ public class ProductService {
     public void deleteProductById(String id){
         productRepository.deleteById(id);
         log.debug("Product {} is deleted.", id);
-    }
-
-    @CacheEvict(value = "productsCache", key = "#id")
-    public void deleteProduct(Product product){
-        productRepository.delete(product);
-        log.debug("Product is deleted.");
-
     }
 }

@@ -1,51 +1,50 @@
-package controller;
+package com.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.business.ProductService;
-import com.project.controller.ProductController;
 import com.project.model.Product;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import utils.ResourceServerConfigMock;
 import utils.TestObjectCreator;
+import utils.Unit;
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@Category(Unit.class)
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(ProductController.class)
+@Import(ResourceServerConfigMock.class)
+@DirtiesContext
 public class ProductControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private ProductService productService;
 
-    @InjectMocks
-    private ProductController productController;
-
-    private JacksonTester<Product> jsonMapper;
-
-    @Before
-    public void setUp(){
-        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
-        JacksonTester.initFields(this, new ObjectMapper());
-    }
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void testGetProductById() throws Exception {
@@ -69,11 +68,9 @@ public class ProductControllerTest {
 
     @Test
     public void testCreateOrUpdateProduct() throws Exception {
-        Product product = TestObjectCreator.createProduct();
-
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.write(TestObjectCreator.createProduct()).getJson()))
+                .content(objectMapper.writeValueAsString(TestObjectCreator.createProduct())))
                 .andReturn().getResponse();
 
         ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
@@ -83,14 +80,6 @@ public class ProductControllerTest {
         assertEquals("p1", argumentCaptor.getValue().getName());
 
         assertEquals(200, response.getStatus());
-    }
-
-    @Test
-    public void testDeleteProduct() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/delete")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonMapper.write(TestObjectCreator.createProduct()).getJson()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

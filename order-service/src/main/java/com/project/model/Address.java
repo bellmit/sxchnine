@@ -11,6 +11,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Address implements Serializable {
 
     private String address;

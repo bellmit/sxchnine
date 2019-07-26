@@ -2,19 +2,14 @@ package com.project.controller;
 
 
 import com.project.business.ProductService;
-import com.project.model.Dimension;
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RefreshScope
 @Slf4j
 public class ProductController {
 
@@ -40,7 +35,7 @@ public class ProductController {
 
     @PostMapping("/save")
     public Product createOrUpdateProduct(@RequestBody Product product){
-        Product p = new Product();
+/*        Product p = new Product();
         p.setId("A2");
         p.setName("Carhartt mid 90's");
         p.setBrand("Carhartt");
@@ -55,8 +50,8 @@ public class ProductController {
         p.getDimension().setWidth(8);
         p.getDimension().setLength(43);
         p.getDimension().setHeight(1);
-        p.setDateTime(LocalDateTime.now().toString());
-        return productService.save(p);
+        p.setDateTime(LocalDateTime.now().toString());*/
+        return productService.save(product);
     }
 
     @DeleteMapping("/delete/id/{id}")
@@ -64,8 +59,4 @@ public class ProductController {
         productService.deleteProductById(id);
     }
 
-    @DeleteMapping("/delete")
-    public void deleteProduct(@RequestBody Product product){
-        productService.deleteProduct(product);
-    }
 }

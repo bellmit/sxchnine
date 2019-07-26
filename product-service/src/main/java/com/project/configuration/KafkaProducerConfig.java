@@ -1,3 +1,4 @@
+/*
 package com.project.configuration;
 
 import com.project.model.Product;
@@ -45,3 +46,4 @@ public class KafkaProducerConfig {
 
 }
 
+*/

@@ -1,27 +1,28 @@
-package business;
+package com.project.business;
 
-import com.project.business.KafkaProducer;
-import com.project.business.ProductService;
 import com.project.model.Product;
 import com.project.repository.ProductRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import utils.TestObjectCreator;
+import utils.Unit;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@Category(Unit.class)
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 
     @Mock
@@ -77,6 +78,9 @@ public class ProductServiceTest {
         assertEquals("1", productSaved.getId());
         assertEquals("p1", productSaved.getName());
         assertEquals(BigDecimal.valueOf(1.0), productSaved.getPrice());
+
+        verify(kafkaProducer).sendProduct(product);
+
     }
 
     @Test
@@ -84,8 +88,4 @@ public class ProductServiceTest {
         productService.deleteProductById("1");
     }
 
-    @Test
-    public void testDeleteProduct(){
-        productService.deleteProduct(TestObjectCreator.createProduct());
-    }
 }
