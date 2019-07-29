@@ -24,6 +24,8 @@ public class OrderCatchupConsumer {
         log.info("***************************************");
 
         orderService.saveOrders(order);
+        if (ack != null){
         ack.acknowledge();
+        }
     }
 }

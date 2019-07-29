@@ -68,7 +68,7 @@ public class OrderIdServiceTestIT {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
-        Thread.sleep(30000);
+        Thread.sleep(1000L);
 
         orderIdService.saveOrderId(orderId);
 

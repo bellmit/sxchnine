@@ -53,7 +53,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
                 "listeners=PLAINTEXT://127.0.0.1:51699"})
 @TestInstance(PER_CLASS)
 @DirtiesContext
-public class ProductControllerComponentTest {
+public class ProductControllerTestComponent {
 
     @Autowired
     private TestRestTemplate testRestTemplate;

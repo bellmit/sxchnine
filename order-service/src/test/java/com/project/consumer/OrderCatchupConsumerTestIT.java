@@ -1,8 +1,13 @@
-package com.project.business;
+package com.project.consumer;
 
 import com.project.config.CassandraTestConfig;
 import com.project.model.Order;
 import com.project.repository.OrderRepository;
+import org.apache.kafka.clients.producer.Producer;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.assertj.core.api.Assertions;
 import org.cassandraunit.spring.CassandraDataSet;
 import org.cassandraunit.spring.CassandraUnitDependencyInjectionTestExecutionListener;
 import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
@@ -16,8 +21,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
+import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
@@ -28,13 +37,15 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 import org.springframework.test.context.web.ServletTestExecutionListener;
 
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@TestPropertySource(properties = {"server.ssl.enabled=false", "spring.autoconfigure.exclude=" +
+@EmbeddedKafka(partitions = 3, topics = "orders",
+        brokerProperties = {
+                "listeners=PLAINTEXT://127.0.0.1:51699"})
+@TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
 @TestExecutionListeners(listeners = {
         CassandraUnitDependencyInjectionTestExecutionListener.class,
@@ -45,26 +56,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
-@EmbeddedKafka(partitions = 3, topics = "products",
-        brokerProperties = {
-                "listeners=PLAINTEXT://127.0.0.1:51699"})
 @Import(CassandraTestConfig.class)
 @DirtiesContext
-public class OrdersCreatorTestIT {
+public class OrderCatchupConsumerTestIT {
 
-    @Autowired
-    private OrdersCreator ordersCreator;
+    private static final String ORDERS_QUEUE = "catchup-orders";
 
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private OrderCatchupConsumer orderCatchupConsumer;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+
+    @ClassRule
+    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
+
+    EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+            .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "products");
 
     @Before
     public void setup(){
@@ -72,19 +84,30 @@ public class OrdersCreatorTestIT {
     }
 
     @Test
-    public void testSaveOrders() throws InterruptedException {
+    public void testConsumeCatchupOrder() throws Exception{
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
+        Producer producer = createProducer();
+        ProducerRecord producerRecord = new ProducerRecord(ORDERS_QUEUE, order);
+        producer.send(producerRecord);
+
         Thread.sleep(1000L);
 
-        ordersCreator.saveOrders(order);
+        orderCatchupConsumer.consumeCatchupOrder(order, null);
 
-        List<Order> savedOrder = orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail());
+        List<Order> ordersSaved = orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail());
 
-        assertThat(savedOrder.get(0)).isEqualToComparingFieldByFieldRecursively(order);
+        Assertions.assertThat(ordersSaved.get(0)).isEqualToComparingFieldByFieldRecursively(order);
+    }
 
+    public Producer createProducer(){
+        Map<String, Object> producerProps = KafkaTestUtils.producerProps(embeddedKafka.getEmbeddedKafka());
+        producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
+        ProducerFactory<String, Order> producerFactory = new DefaultKafkaProducerFactory<>(producerProps);
+        return producerFactory.createProducer();
     }
 
 }

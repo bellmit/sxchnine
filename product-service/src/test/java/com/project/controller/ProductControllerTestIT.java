@@ -2,7 +2,6 @@ package com.project.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.ProductServiceApplication;
-import com.project.business.KafkaProducer;
 import com.project.model.Product;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -64,9 +63,6 @@ public class ProductControllerTestIT {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private KafkaProducer kafkaProducer;
 
     @ClassRule
     EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "products");
