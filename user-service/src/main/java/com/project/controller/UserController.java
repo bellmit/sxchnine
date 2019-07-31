@@ -31,7 +31,7 @@ public class UserController {
         userService.save(user);
     }
 
-    @DeleteMapping("deleteByUser}")
+    @DeleteMapping("deleteByUser")
     public void deleteByUser(@RequestBody User user){
         userService.deleteUser(user);
     }

@@ -13,6 +13,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @RedisHash("user")
 public class User implements Serializable {
 
