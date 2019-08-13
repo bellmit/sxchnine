@@ -28,6 +28,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -125,5 +126,27 @@ public class UserControllerTest {
 
         assertThat(response.getResponse().getContentAsString()).contains("true");
         assertThat(response.getResponse().getStatus()).isEqualTo(HttpStatus.SC_OK);
+    }
+
+    @Test
+    public void testNotFound() throws Exception {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+
+        mockMvc.perform(post("/saved").
+                contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user)))
+                .andExpect(status().isNotFound());
+
+    }
+
+
+    @Test
+    public void testBadRequest() throws Exception {
+        mockMvc.perform(post("/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(""))
+                .andExpect(status().isBadRequest());
+
     }
 }

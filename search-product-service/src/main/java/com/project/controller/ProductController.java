@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class ProductController {
 
     @GetMapping("/search/{value}")
     public List<Product> searchProduct(@PathVariable String value) {
-        return StreamSupport.stream(productService.getProductsByQuery(value).spliterator(), false).collect(Collectors.toList());
+        return StreamSupport.stream(productService.getProductsByQuery(value).spliterator(), true).collect(Collectors.toList());
     }
 
     @GetMapping("/advancedSearch/{brand}/{category}/{size}/")
@@ -60,10 +59,10 @@ public class ProductController {
         dimension.setLength(100);
         dimension.setWidth(50);
         product1.setDimension(dimension);
-        productService.save(product1);
+        productService.save(product);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable String id) {
         productService.deleteById(id);
     }

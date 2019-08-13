@@ -9,7 +9,6 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +40,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 })
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
-@EmbeddedKafka(partitions = 3, topics = "products",
-        brokerProperties = {
-                "listeners=PLAINTEXT://127.0.0.1:51699"})
+@EmbeddedKafka
 @Import(CassandraTestConfig.class)
 @DirtiesContext
 public class OrderIdServiceTestIT {
@@ -57,11 +54,6 @@ public class OrderIdServiceTestIT {
 
     @ClassRule
     public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "products");
-
-    @Before
-    public void setup(){
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafka.getEmbeddedKafka().getBrokersAsString());
-    }
 
     @Test
     public void testSaveOrderId() throws InterruptedException {

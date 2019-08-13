@@ -147,11 +147,8 @@ public class OrderControllerTest {
 
     @Test
     public void testBadRequest() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order order = easyRandom.nextObject(Order.class);
-
-        mockMvc.perform(post("/save").
-                contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/save")
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(""))
                 .andExpect(status().isBadRequest());
 

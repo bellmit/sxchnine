@@ -14,7 +14,6 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,9 +41,7 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@EmbeddedKafka(partitions = 3, topics = "orders",
-        brokerProperties = {
-                "listeners=PLAINTEXT://127.0.0.1:51699"})
+@EmbeddedKafka
 @TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
 @TestExecutionListeners(listeners = {
@@ -68,7 +65,6 @@ public class OrderCatchupConsumerTestIT {
     @Autowired
     private OrderCatchupConsumer orderCatchupConsumer;
 
-
     @ClassRule
     public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
 
@@ -76,12 +72,6 @@ public class OrderCatchupConsumerTestIT {
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
-
-
-    @Before
-    public void setup(){
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafka.getEmbeddedKafka().getBrokersAsString());
-    }
 
     @Test
     public void testConsumeCatchupOrder() throws Exception{
@@ -91,10 +81,11 @@ public class OrderCatchupConsumerTestIT {
         Producer producer = createProducer();
         ProducerRecord producerRecord = new ProducerRecord(ORDERS_QUEUE, order);
         producer.send(producerRecord);
+        producer.close();
 
         Thread.sleep(1000L);
 
-        orderCatchupConsumer.consumeCatchupOrder(order, null);
+        orderCatchupConsumer.consumeCatchupOrder(order, () -> {});
 
         List<Order> ordersSaved = orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail());
 
@@ -102,7 +93,7 @@ public class OrderCatchupConsumerTestIT {
     }
 
     public Producer createProducer(){
-        Map<String, Object> producerProps = KafkaTestUtils.producerProps(embeddedKafka.getEmbeddedKafka());
+        Map<String, Object> producerProps = KafkaTestUtils.senderProps(System.getProperty("spring.embedded.kafka.brokers"));
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 

@@ -2,7 +2,6 @@ package com.project.business;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.project.config.CassandraTestConfig;
-import com.project.config.LocalRibbonClientConfigurationTest;
 import com.project.config.ResourceServerConfigTest;
 import com.project.model.Order;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -15,7 +14,7 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,12 +34,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
+import org.springframework.util.SocketUtils;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.project.utils.PaymentStatusCode.CONFIRMED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -56,10 +59,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 })
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
-@EmbeddedKafka(partitions = 3, topics = "products",
-        brokerProperties = {
-                "listeners=PLAINTEXT://127.0.0.1:51699"})
-@Import({CassandraTestConfig.class, LocalRibbonClientConfigurationTest.class, ResourceServerConfigTest.class})
+@EmbeddedKafka
+@Import({CassandraTestConfig.class, ResourceServerConfigTest.class})
 @ActiveProfiles("test")
 @DirtiesContext
 public class OrderServiceTestIT {
@@ -73,15 +74,17 @@ public class OrderServiceTestIT {
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
+    private static int port = SocketUtils.findAvailableTcpPort();
+
     @ClassRule
     public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
 
     @ClassRule
-    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(9091);
+    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(port);
 
-    @Before
-    public void setup(){
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafka.getEmbeddedKafka().getBrokersAsString());
+    @BeforeClass
+    public static void setup(){
+        System.setProperty("wiremock.server.port", String.valueOf(port));
     }
 
     @Test
@@ -102,17 +105,19 @@ public class OrderServiceTestIT {
 
         List<Order> orderByUserEmail = orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail());
         assertThat(orderByUserEmail.get(0)).isEqualToComparingFieldByFieldRecursively(order);
+        assertThat(orderByUserEmail.get(0).getPaymentStatus()).isEqualTo(CONFIRMED.getValue());
 
         Consumer kafkaConsumer = createKafkaConsumer();
         ConsumerRecord singleRecord = KafkaTestUtils.getSingleRecord(kafkaConsumer, ORDERS_QUEUE);
+        kafkaConsumer.close();
 
         assertThat((Order)singleRecord.value()).isEqualToComparingFieldByFieldRecursively(order);
 
     }
 
     private Consumer createKafkaConsumer() throws Exception {
-        Map<String, Object> consumerProperties = KafkaTestUtils.consumerProps("sender",
-                "false", embeddedKafka.getEmbeddedKafka().kafkaPorts(51699));
+        Map<String, Object> consumerProperties = KafkaTestUtils.consumerProps(System.getProperty("spring.embedded.kafka.brokers"),
+                "false", "true");
 
         consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -127,8 +132,17 @@ public class OrderServiceTestIT {
         consumerFactory.setKeyDeserializer(new StringDeserializer());
         consumerFactory.setValueDeserializer(jsonDeserializer);
         Consumer<String, Order> consumer = consumerFactory.createConsumer();
-        embeddedKafka.getEmbeddedKafka().consumeFromAllEmbeddedTopics(consumer);
         consumer.subscribe(Collections.singleton(ORDERS_QUEUE));
         return consumer;
+    }
+
+    public static int findRandomPort(){
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            return serverSocket.getLocalPort();
+
+        } catch(IOException e){
+            throw new RuntimeException(e);
+        }
     }
 }

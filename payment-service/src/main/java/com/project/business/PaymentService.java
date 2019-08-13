@@ -29,6 +29,11 @@ public class PaymentService {
         } else if (checkoutStatus == 0){
             order.setPaymentStatus(REFUSED.getValue());
         } else if (checkoutStatus == 2){
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             recheckout(order);
         }
         orderClient.saveOrder(order);

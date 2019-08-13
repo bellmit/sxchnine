@@ -1,9 +1,7 @@
 package com.project.controller;
 
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.project.config.CassandraTestConfig;
-import com.project.config.LocalRibbonClientConfigurationTest;
 import com.project.config.ResourceServerConfigTest;
 import com.project.model.Order;
 import com.project.model.OrderId;
@@ -15,7 +13,7 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +34,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
+import org.springframework.util.SocketUtils;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,9 +48,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
-@EmbeddedKafka(topics = "orders",
-        brokerProperties = {
-                "listeners=PLAINTEXT://127.0.0.1:51699"})
+@EmbeddedKafka
 @TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
 @TestExecutionListeners(listeners = {
@@ -62,7 +60,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 })
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
-@Import({ResourceServerConfigTest.class, CassandraTestConfig.class, LocalRibbonClientConfigurationTest.class})
+@Import({ResourceServerConfigTest.class, CassandraTestConfig.class})
 @DirtiesContext
 public class OrderControllerTestIT {
 
@@ -77,6 +75,8 @@ public class OrderControllerTestIT {
     @Autowired
     private OrderByOrderIdRepository orderByOrderIdRepository;
 
+    private static int port = SocketUtils.findAvailableTcpPort();
+
     private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .scanClasspathForConcreteTypes(true)
@@ -86,11 +86,11 @@ public class OrderControllerTestIT {
     public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
 
     @ClassRule
-    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(WireMockConfiguration.options().port(9091));
+    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(port);
 
-    @Before
-    public void setup(){
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafkaRule.getEmbeddedKafka().getBrokersAsString());
+    @BeforeClass
+    public static void setup(){
+        System.setProperty("wiremock.server.port", String.valueOf(port));
     }
 
     @Test
@@ -127,8 +127,7 @@ public class OrderControllerTestIT {
                 .exchange("/all",
                         HttpMethod.GET,
                         null,
-                        new ParameterizedTypeReference<List<Order>>() {
-                        });
+                        new ParameterizedTypeReference<List<Order>>() {});
 
         assertThat(response.getBody().get(0)).isNotNull();
     }
@@ -166,5 +165,15 @@ public class OrderControllerTestIT {
 
         assertThat(response.getBody().get(0)).isEqualToComparingFieldByFieldRecursively(orderToSave);
 
+    }
+
+    public static int findRandomPort(){
+        try {
+            ServerSocket serverSocket = new ServerSocket(0);
+            return serverSocket.getLocalPort();
+
+        } catch(IOException e){
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,0 +1,15 @@
+kafka:
+  bootstrapAddress: ${spring.embedded.kafka.brokers}
+  groupId: products
+  topic: products
+
+elasticsearch:
+  name: elasticsearch
+  server: 127.0.0.1
+  port: 9300
+
+
+spring:
+  cloud:
+    config:
+      enabled: false
