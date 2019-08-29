@@ -18,6 +18,7 @@ public class PaymentService {
     }
 
     public int checkout(Order order){
+        log.info("checkout order {}", order.getOrderPrimaryKey().getOrderId().toString());
         //TODO: call external payment API
         return 0;
     }

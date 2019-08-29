@@ -2,21 +2,24 @@ package com.project.business;
 
 import com.project.model.Product;
 import com.project.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class ProductService {
 
-    @Autowired
     private ProductRepository productRepository;
 
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public Iterable<Product> getProductsByQuery(String query) {
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
@@ -41,6 +44,7 @@ public class ProductService {
     }
 
     public Iterable<Product> getProductsByAdvancedFiltering(String brand, String category, String size) {
+        log.info("search product by advanced filter, zanz");
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
         if (StringUtils.isNotBlank(brand)) {

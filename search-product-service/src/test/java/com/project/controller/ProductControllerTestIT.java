@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.config.ResourceServerConfigTest;
 import com.project.model.Product;
 import com.project.repository.ProductRepository;
 import org.jeasy.random.EasyRandom;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @EmbeddedKafka(topics = "products")
+@Import(ResourceServerConfigTest.class)
 @ActiveProfiles("test")
 @DirtiesContext
 public class ProductControllerTestIT {
@@ -101,7 +104,7 @@ public class ProductControllerTestIT {
 
         productRepository.save(product);
 
-        ResponseEntity<List<Product>> response = testRestTemplate.exchange("/advancedSearch/toto/titi/l/",
+        ResponseEntity<List<Product>> response = testRestTemplate.exchange("/advancedSearch?brand=toto&category=titi&size=l",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<Product>>() {});

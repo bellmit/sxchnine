@@ -101,6 +101,7 @@ public class OrderServiceTestIT {
 
         int paymentStatus = orderService.checkoutOrderAndSave(order);
 
+
         assertThat(paymentStatus).isEqualTo(1);
 
         List<Order> orderByUserEmail = orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail());

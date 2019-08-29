@@ -1,6 +1,5 @@
 package com.project.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -26,16 +25,19 @@ import java.util.Arrays;
 @EnableAuthorizationServer
 public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    RedisConnectionFactory redisConnectionFactory;
+    private RedisConnectionFactory redisConnectionFactory;
 
-/*    @Bean
+    public AuthorizationConfig(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, RedisConnectionFactory redisConnectionFactory) {
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
+        this.redisConnectionFactory = redisConnectionFactory;
+    }
+
+    /*    @Bean
     public TokenStore tokenStore(){
         return new InMemoryTokenStore();
     }*/

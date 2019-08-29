@@ -1,0 +1,81 @@
+{
+    "provider": {
+        "name": "payment-service"
+    },
+    "consumer": {
+        "name": "order-service"
+    },
+    "interactions": [
+        {
+            "description": "A POST request to /pay",
+            "request": {
+                "method": "POST",
+                "path": "/pay",
+                "headers": {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                "body": {
+                    "orderPrimaryKey": {
+                        "orderId": "b921f1dd-3cbc-0495-fdab-8cd14d33f0aa",
+                        "orderTime": "2024-06-18 17:21:21.000",
+                        "shippingTime": "2029-10-26 23:46:52.000",
+                        "userEmail": "eOMtThyhVNLWUZNRcBaQKxI"
+                    },
+                    "orderStatus": "AAAryjCRhLTuhnTodUewZQqaZErU",
+                    "paymentInfo": {
+                        "expDate": "UfzQhdgLLfDTDGspDb",
+                        "firstName": "qszYL",
+                        "lastName": "QvBQYuxiXXVytGCxzVllpgTJKhRQq",
+                        "noCreditCard": 1018954901,
+                        "securityCode": -39088943
+                    },
+                    "paymentStatus": "aofGvthLoyPLDADYzx",
+                    "paymentTime": "2015-01-25 06:04:44.000",
+                    "productBrand": "LlN",
+                    "productName": "gNfZBdyFGRajVfJNonEnOinZj",
+                    "products": [
+                        {
+                            "productBrand": "JxkyvRnL",
+                            "productColor": "UMaAIKKIkknjWEXJUfPxxQHeWKEJ",
+                            "productId": "RYtGKbgicZaHCBRQDSx",
+                            "productName": "yedUsFwdkelQbxeTeQOvaScfqIOOmaa",
+                            "productQte": -1188957731,
+                            "productSize": "VLhpfQGTMDYpsBZxvfBoeygjb",
+                            "store": "dpHYZGhtgdntugzvvKAXLhM",
+                            "unitPrice": 0.723174202997146853277854461339302361011505126953125
+                        }
+                    ],
+                    "shippingStatus": "WoaMAzEEplqjJ",
+                    "total": 0.99089889677723930194730428411276079714298248291015625,
+                    "userAddress": {
+                        "address": "YdvDhtAsLghPXAgtbprXPZkhnfLTBSX",
+                        "city": "Oxm",
+                        "country": "yIvpRgmgQsYEKk",
+                        "postalCode": "sPB",
+                        "province": "QIn"
+                    }
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json; charset=UTF-8"
+                },
+                "body": 1
+            },
+            "providerStates": [
+                {
+                    "name": "Pay Order"
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "pactSpecification": {
+            "version": "3.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.5.24"
+        }
+    }
+}

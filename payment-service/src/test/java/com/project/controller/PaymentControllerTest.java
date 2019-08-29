@@ -44,7 +44,7 @@ public class PaymentControllerTest {
 
     @Test
     public void testPayOk() throws Exception {
-        EasyRandom easyRandom = new EasyRandom();
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
         when(paymentService.checkout(any(Order.class))).thenReturn(1);
@@ -60,7 +60,7 @@ public class PaymentControllerTest {
 
     @Test
     public void testPayRefused() throws Exception {
-        EasyRandom easyRandom = new EasyRandom();
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
         when(paymentService.checkout(any(Order.class))).thenReturn(0);
@@ -71,7 +71,32 @@ public class PaymentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        assertThat(response.getResponse().getContentAsString()).isEqualTo("2");
+        assertThat(response.getResponse().getContentAsString()).isEqualTo("0");
+    }
+
+    @Test
+    public void testPayNotFound() throws Exception {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        Order order = easyRandom.nextObject(Order.class);
+
+        MvcResult response = mockMvc.perform(post("/payed")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(order)))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        assertThat(response.getResponse().getStatus()).isEqualTo(404);
+    }
+
+    @Test
+    public void testPayBadRequest() throws Exception {
+        MvcResult response = mockMvc.perform(post("/pay")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString("")))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        assertThat(response.getResponse().getStatus()).isEqualTo(400);
     }
 
 

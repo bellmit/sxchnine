@@ -13,3 +13,9 @@ spring:
   cloud:
     config:
       enabled: false
+  sleuth:
+    sampler:
+      percentage: 1.0
+  zipkin:
+    sender:
+      type: web

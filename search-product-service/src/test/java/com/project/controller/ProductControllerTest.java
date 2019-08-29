@@ -3,6 +3,7 @@ package com.project.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.business.ProductService;
+import com.project.config.ResourceServerConfigTest;
 import com.project.model.Product;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
+@Import(ResourceServerConfigTest.class)
 public class ProductControllerTest {
 
     @Autowired
@@ -84,9 +87,9 @@ public class ProductControllerTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Product product = easyRandom.nextObject(Product.class);
 
-        when(productService.getProductsByAdvancedFiltering(anyString(), anyString(), anyString())).thenReturn(Collections.singletonList(product));
+        when(productService.getProductsByAdvancedFiltering(any(), any(), any())).thenReturn(Collections.singletonList(product));
 
-        MvcResult result = mockMvc.perform(get("/advancedSearch/nike/tshirt/M/"))
+        MvcResult result = mockMvc.perform(get("/advancedSearch?brand=nike&category=tshirt&size=M"))
                 .andExpect(status().isOk())
                 .andReturn();
 

@@ -53,5 +53,6 @@ public class PaymentServiceTestIT {
         stubFor(post("/save").willReturn(aResponse().withStatus(200)));
 
         paymentService.recheckout(order);
+
     }
 }

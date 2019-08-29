@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -31,9 +30,10 @@ public class ProductController {
         return StreamSupport.stream(productService.getProductsByQuery(value).spliterator(), true).collect(Collectors.toList());
     }
 
-    @GetMapping("/advancedSearch/{brand}/{category}/{size}/")
-    public List<Product> advancedSearchProduct(@PathVariable Optional<String> brand, @PathVariable Optional<String> category, @PathVariable Optional<String> size) {
-        Iterable<Product> products = productService.getProductsByAdvancedFiltering(brand.orElse(null), category.orElse(null), size.orElse(null));
+    @GetMapping("/advancedSearch")
+    public List<Product> advancedSearchProduct(@RequestParam(required = false) String brand, @RequestParam(required = false) String category, @RequestParam(required = false) String size) {
+        log.trace("ProductController::advancedSearchProduct");
+        Iterable<Product> products = productService.getProductsByAdvancedFiltering(brand, category, size);
 
         return StreamSupport.stream(products.spliterator(), false).collect(Collectors.toList());
     }
