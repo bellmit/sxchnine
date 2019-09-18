@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import utils.ResourceServerConfigMock;
 import utils.TestObjectCreator;
-import utils.Unit;
 
 import java.util.Collections;
 
@@ -30,7 +29,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@Category(Unit.class)
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ProductController.class)
 @Import(ResourceServerConfigMock.class)

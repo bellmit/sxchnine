@@ -29,7 +29,6 @@ import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import utils.Integration;
 import utils.ResourceServerConfigMock;
 import utils.TestObjectCreator;
 
@@ -41,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@Category(Integration.class)
 @SpringBootTest(classes = ProductServiceApplication.class, webEnvironment = RANDOM_PORT)
 @Import({ResourceServerConfigMock.class})
 @AutoConfigureMockMvc

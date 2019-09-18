@@ -16,7 +16,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import utils.Integration;
 import utils.TestObjectCreator;
 
 import java.util.List;
@@ -25,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 
-@Category(Integration.class)
 @SpringBootTest(classes = ProductServiceApplication.class)
 @TestPropertySource(properties = {"application-intg.yml"})
 @ActiveProfiles("intg")

@@ -5,7 +5,6 @@ import com.project.exception.ProductNotFoundException;
 import com.project.model.Product;
 import com.project.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,11 +17,14 @@ import java.util.List;
 @Slf4j
 public class ProductService {
 
-    @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
     private KafkaProducer kafkaProducer;
+
+    public ProductService(ProductRepository productRepository, KafkaProducer kafkaProducer) {
+        this.productRepository = productRepository;
+        this.kafkaProducer = kafkaProducer;
+    }
 
     @Cacheable(value = "productsCache", key = "#id", unless = "#result==null")
     public Product getProductById(String id){
