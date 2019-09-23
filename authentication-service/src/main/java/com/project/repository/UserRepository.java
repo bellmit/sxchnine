@@ -4,5 +4,5 @@ import com.project.model.User;
 
 public interface UserRepository {
 
-    public User findUserByEmail(String email);
+    User findUserByEmail(String email);
 }

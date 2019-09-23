@@ -3,6 +3,5 @@ spring:
     name: gateway-service
   cloud:
     config:
-      discovery:
-        service-id: config-server
+      uri: ${CONFIG_SERVER:http://localhost:8888}
 

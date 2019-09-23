@@ -14,11 +14,11 @@ spring:
         enabled: true
     bus:
       enabled: true
-    rabbitmq:
-      host: ${RABBITMQ_SERVER:rabbitmq}
-      port: 5672
-      username: guest
-      password: guest
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
 
 
 

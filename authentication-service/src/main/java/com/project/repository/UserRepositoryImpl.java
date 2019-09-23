@@ -4,10 +4,8 @@ import com.project.model.User;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {

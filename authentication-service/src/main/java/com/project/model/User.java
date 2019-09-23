@@ -6,12 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -20,7 +16,7 @@ import java.util.Collection;
 @RedisHash("user")
 public class User implements Serializable {
 
-    private static final long serialVersionUID = -8619303374361995034L;
+    private static final long serialVersionUID = -3555025176585220989L;
 
     @Id
     private String id;

@@ -76,7 +76,7 @@ public class UserServiceTest {
 
         verify(userRepository).save(userCaptor.capture());
 
-        assertThat(userCaptor.getValue().getPassword()).isEqualTo("{bcrypt}$$$");
+        assertThat(userCaptor.getValue().getPassword()).isEqualTo("$$$");
     }
 
     @Test

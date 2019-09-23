@@ -3,14 +3,15 @@ spring:
     name: order-service
   cloud:
     config:
-      discovery:
-        service-id: config-server
+      uri: ${CONFIG_SERVER:http://localhost:8888}
   zipkin:
-    base-url: http://localhost:9411
+    base-url: ${ZIPKIN_SERVER:http://localhost:9411}
   sleuth:
     sampler:
       probability: 1.0
 
+
+#CREATE KEYSPACE orderkeyspace WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
 #create type address (address text, postalcode text, city text, province text, country text);
 #create type product (product_id text, product_name text, product_brand text, product_size text, product_color text, product_qte int, unit_price decimal, store text);
 #create type payment_info (no_credit_card int, exp_date text, security_code int, last_name text, first_name text);

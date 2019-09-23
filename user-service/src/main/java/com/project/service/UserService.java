@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public void save(User user) {
-        user.setPassword("{bcrypt}"+bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -47,7 +47,7 @@ public class UserService {
     public boolean login(String email, String password){
         User user = getUserByEmail(email);
         if (user != null){
-            return bCryptPasswordEncoder.matches(password, user.getPassword().replace("{bcrypt}", ""));
+            return bCryptPasswordEncoder.matches(password, user.getPassword());
         }
         return false;
     }
