@@ -151,21 +151,6 @@ public class TestPrepare {
         }
     }
 
-    @Test
-    public void test7() {
-        int[] a = {4, 4, 4, 4, 7, 6, 1, 4, 2};
-        int[] b = new int[4];
-
-        int k = a.length - 1;
-        int l = 0;
-        for (int i = a.length - 1; i >= 0; i--) {
-            a[i - 1] = a[i];
-        }
-
-        for (int j = 0; j < a.length; j++) {
-            System.out.println(" list: " + a[j]);
-        }
-    }
 
     @Test
     public void test8() {
