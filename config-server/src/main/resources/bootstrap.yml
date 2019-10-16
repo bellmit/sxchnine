@@ -9,3 +9,6 @@ encrypt:
   key-store.alias: mySecretkey
 
 #keytool -genkeypair -alias mySecretkey -keyalg RSA   -dname "CN=Web Server,OU=Unit,O=Organization,L=City,S=State,C=CA"   -keypass secretKey -keystore server.jks -storepass toto1234
+
+
+#docker run --name config-server -p 8888:8888 --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e RABBITMQ_SERVER=rabbitmq -d sifraden/config-server:1.0.0-SNAPSHOT

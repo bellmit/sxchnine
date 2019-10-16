@@ -5,3 +5,6 @@ spring:
     config:
       uri: ${CONFIG_SERVER:http://localhost:8888}
 
+
+#docker run --name gateway-service -p 9090:9090 --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e CONFIG_SERVER=http://config-server:8888 -e RABBITMQ_SERVER=rabbitmq -d sifraden/gateway-service:1.0.0-SNAPSHOT
+

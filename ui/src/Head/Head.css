@@ -1,0 +1,73 @@
+.Header-Body {
+    color: white;
+    background-color: rgb(255, 240, 36);
+/*    height: 1000px;
+    width: 1440px;*/
+    min-height: 100vh;
+}
+
+.Head-logo {
+    height: auto;
+    width: 1360px;
+    max-width: 100%;
+    max-height: 95%;
+    position: absolute;
+    left: 80px;
+    top: 20px;
+    bottom: 30px;
+    margin: auto;
+    outline: none;
+}
+
+.Container {
+    height: auto;
+    width: 1360px;
+    max-width: 100%;
+    max-height: 95%;
+    position: fixed;
+    left: 80px;
+    top: 20px;
+    bottom: 90px;
+    outline: none;
+}
+
+.Container-img {
+    width: 1370px;
+    height: 730px;
+    left: 80px;
+    top: 20px;
+    bottom: 30px;
+    object-fit: cover;
+}
+
+.Paragraph {
+    line-height: 0;
+    font-family: Anton;
+    font-size: 56px;
+    text-transform: uppercase;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    bottom: 150px;
+    left: 120px;
+}
+
+.Empty-Div {
+    background: rgb(255, 240, 36);
+    height: 10px;
+    width: 700px;
+    left: 120px;
+    bottom: 155px;
+    position: absolute;
+    display: block;
+}
+
+.Got-it-logo {
+    top: -50px; /* your required value */
+    right: -50px;
+    width: auto;
+    height: 40%;
+    position: fixed;
+    float: right;
+
+
+}

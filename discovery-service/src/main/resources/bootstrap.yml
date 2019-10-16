@@ -10,3 +10,5 @@ spring:
 
 server:
   port: 8761
+
+#docker run --name discovery-service -p 8761:8761 --network got-it-net -e CONFIG_SERVER=http://config-server:8888 -d sifraden/discovery-service:1.0.0-SNAPSHOT

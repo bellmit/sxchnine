@@ -12,3 +12,5 @@ spring:
       probability: 1.0
 
 hystrix.command.default.execution.isolation.strategy: SEMAPHORE
+
+#docker run --name payment-service --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e FEIGN_CONSUMER=http://gateway-service:9090/api/authentication/oauth/token -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -d sifraden/payment-service:1.0.0-SNAPSHOT

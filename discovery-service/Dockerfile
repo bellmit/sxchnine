@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM adoptopenjdk/openjdk8-openj9:alpine-slim
 VOLUME /tmp
 ADD target/*.jar app.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT java $JAVA_OPTS -Xshareclasses -Xquickstart -jar /app.jar
