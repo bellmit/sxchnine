@@ -2,13 +2,7 @@
     height: 520px;
     width: 300px;
     object-fit: cover;
-
-}
-
-
-.Bar {
-    background: rgb(255, 240, 36);
-    height: 520px;
-    width: 30px;
-
+    border-style: solid;
+    border-width: 20px;
+    border-color: rgb(255, 240, 36);
 }

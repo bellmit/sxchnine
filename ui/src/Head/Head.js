@@ -6,14 +6,15 @@ import logo from './logo_got_it.png';
 const head = () => {
     return (
       <div className="Header-Body">
-          <div className="Container">
+          <div>
               <img className="Container-img" src={jordan}/>
           </div>
           <div>
               <p className="Paragraph">YOU KNOW MY _STEELO !</p>
           </div>
           <div className="Empty-Div" />
-          <div>
+
+         <div>
               <img className="Got-it-logo" src={logo}/>
           </div>
       </div>

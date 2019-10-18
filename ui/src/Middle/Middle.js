@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Gallery from '../Gallery/Gallery';
+import './Middle.css';
 
 class Middle extends Component {
     state = {
@@ -12,7 +13,7 @@ class Middle extends Component {
     render() {
 
         let gallery = (
-            <div>
+            <div className="Container-Middle">
                 {this.state.images.map((image, index) => {
                     return <Gallery url={image.url} key={index}/>
                 })}

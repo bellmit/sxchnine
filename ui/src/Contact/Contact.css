@@ -1,0 +1,53 @@
+.Contact-Link {
+    font-family: Anton;
+    font-size: 15px;
+    text-transform: uppercase;
+    display: block;
+    text-decoration: none;
+    color: black;
+    text-underline: white;
+}
+
+.Contact-Link:hover{
+    color: rgb(255, 240, 36);
+}
+
+.Contact-Link:visited{
+    text-decoration: none;
+}
+
+.Contact-Link:link{
+    text-decoration: none;
+}
+
+.Icon {
+    height: 30px;
+    width: 30px;
+    padding: 20px;
+}
+
+.Icon-div {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    vertical-align: center;
+}
+
+.Container-div {
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 320px 0 30px 0;
+}
+
+.Reserved-right {
+    font-family: Anton;
+    font-size: 8px;
+    text-transform: lowercase;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+}
