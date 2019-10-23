@@ -1,16 +1,16 @@
-.Container-footer-img {
-    height: 300px;
+.Banner-Header-img {
+    height: 270px;
     width: 100%;
-/*    left: 65px;
-    right: 65px;*/
     object-fit: cover;
     position: absolute;
     display: flex;
     align-items: center;
+    object-position: 0 40%;
+    transform: scaleX(0.8);
 }
 
 
-.Paragraph-footer {
+.Banner-Container-Men {
     line-height: 0;
     font-family: Anton;
     font-size: 5vw;
@@ -18,22 +18,31 @@
     color: rgb(255, 255, 255);
     position: absolute;
     width: 50%;
-    left: 5%;
-    bottom: -105%;
+    left: 15%;
+    top: 10%;
 }
 
-.Empty-Div-footer {
+.Banner-Empty-Div {
     background: rgb(255, 240, 36);
     height: 1%;
-    width: 50%;
-    left: 5%;
-    bottom: -105%;
+    width: 60%;
+    left: 15%;
+    top: 22%;
     position: absolute;
+}
+
+.Banner-panier-img{
+    height: 6%;
+    width: 6%;
+    left: 68%;
+    top: 45%;
+    position: absolute;
+
 }
 
 
 @media only screen and (max-width: 414px) {
-    .Paragraph-footer {
+    .Banner-Container-Men {
         line-height: 0;
         font-family: Anton;
         font-size: 5vw;
@@ -41,22 +50,13 @@
         color: rgb(255, 255, 255);
         position: absolute;
         width: 50%;
-        left: 5%;
-        top: 350%;
-    }
-
-    .Empty-Div-footer {
-        background: rgb(255, 240, 36);
-        height: 1%;
-        width: 50%;
-        left: 5%;
-        top: 355%;
-        position: absolute;
+        left: 15%;
+        top: 18%;
     }
 }
 
 @media only screen and (max-width: 375px) {
-    .Paragraph-footer {
+    .Banner-Container-Men {
         line-height: 0;
         font-family: Anton;
         font-size: 5vw;
@@ -64,17 +64,7 @@
         color: rgb(255, 255, 255);
         position: absolute;
         width: 50%;
-        left: 5%;
-        top: 390%;
-    }
-
-    .Empty-Div-footer {
-        background: rgb(255, 240, 36);
-        height: 1%;
-        width: 50%;
-        left: 5%;
-        top: 395%;
-        position: absolute;
+        left: 15%;
+        top: 18%;
     }
 }
-

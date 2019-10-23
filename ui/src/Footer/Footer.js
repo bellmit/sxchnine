@@ -7,7 +7,9 @@ const footer = () => {
     return (
         <div>
             <StoryFooter/>
+            <footer>
             <Contact />
+            </footer>
         </div>
     );
 }

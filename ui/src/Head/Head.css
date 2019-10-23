@@ -61,7 +61,7 @@
     height: 1%;
     position: absolute;
     left: 5%;
-    bottom: 18%;
+    bottom: 13%;
     width: 50%;
 }
 
@@ -88,6 +88,19 @@
         position: absolute;
         float: right;
     }
+
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        bottom: 17%;
+        left: 5%;
+        width: 50%;
+    }
+
 }
 
 @media only screen and (max-width: 375px) {
@@ -99,4 +112,17 @@
         position: absolute;
         float: right;
     }
+
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        bottom: 17%;
+        left: 5%;
+        width: 50%;
+    }
+
 }
