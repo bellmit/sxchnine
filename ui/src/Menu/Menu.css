@@ -72,5 +72,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
     color: rgb(255, 240, 36);
     border: 0;
     outline: 0;
-    margin: 0 0 40px 0;
+    margin: 0 0 30px 0;
+    text-decoration: none;
 }

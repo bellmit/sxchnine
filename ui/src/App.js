@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box, Image} from "@chakra-ui/core";
 import './App.css';
 import Menu from './Menu/Menu';
 import Head from './Head/Head';
@@ -7,6 +6,7 @@ import Middle from './Middle/Middle';
 import Footer from './Footer/Footer';
 import Contact from './Contact/Contact';
 import Products from './Product/Products';
+import ProductSlick from './Shopping/ProductSlick';
 
 function App() {
   return (
@@ -15,11 +15,12 @@ function App() {
 {/*        <Head />
         <Middle />
         <Footer />*/}
-
-
+{/*
         <Products />
+*/}
 
 
+    <ProductSlick />
 
 
     </div>

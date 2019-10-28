@@ -1,0 +1,97 @@
+import React, {Component} from 'react';
+import {Form, Button, Icon, Grid} from 'semantic-ui-react';
+import './ProductDetails.css';
+
+class ProductDetails extends Component {
+    state = {};
+
+    handleChange = (e, {value}) => this.setState({value})
+
+    render() {
+        const {value} = this.state;
+
+        const options = [
+            {key: 'm', text: 'Male', value: 'male'},
+            {key: 'f', text: 'Female', value: 'female'},
+            {key: 'o', text: 'Other', value: 'other'},
+        ]
+
+        return (
+            <div>
+                <div>
+                    <p className="Product-Name-Div">Classic Hoodie - 90's</p>
+                </div>
+                <div className="Product-Form-Div">
+                    <Form unstackable widths='equal' size='large'>
+
+                        <Form.Group inline widths='equal'>
+                            <a className="Product-Props-Div">COLOR:&nbsp;&nbsp;&nbsp;</a>
+                            <Form.Select
+
+                                fluid
+                                options={options}
+                                placeholder='Color'/>
+                        </Form.Group>
+                        <Form.Group inline widths='equal'>
+                            <a className="Product-Props-Div">SIZE:&nbsp;&nbsp;&nbsp;</a>
+                            <Form.Radio
+                                label='Small'
+                                value='sm'
+                                checked={value === 'sm'}
+                                onChange={this.handleChange}
+                            />
+                            <Form.Radio
+                                label='Medium'
+                                value='md'
+                                checked={value === 'md'}
+                                onChange={this.handleChange}
+                            />
+                            <Form.Radio
+                                label='Large'
+                                value='lg'
+                                checked={value === 'lg'}
+                                onChange={this.handleChange}
+                            />
+                        </Form.Group>
+                        <Form.Group inline widths='equal'>
+                            <a className="Product-Props-Div">PRICE:&nbsp;&nbsp;&nbsp;</a>
+                            <a>90$</a>
+                        </Form.Group>
+                        <Form.Group>
+                            <a href="" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return info</a>
+                        </Form.Group>
+                        <Button animated='vertical' inverted color='yellow' floated='right'>
+                            <Button.Content hidden>Got it!</Button.Content>
+                            <Button.Content visible>
+                                <Icon name='shop' inverted color='yellow'/>
+                            </Button.Content>
+                        </Button>
+                    </Form>
+                </div>
+
+                <div className="Grid-Container-Div">
+                    <Grid columns={1} verticalAlign='bottom'>
+                        <Grid.Row stretched>
+                            <Grid.Column>
+                                <p className="Product-Grid-Div">PRODUCT DETAILS:</p>
+                                <p className="Product-Grid-Div">100% COTTON</p>
+                            </Grid.Column>
+                        </Grid.Row>
+
+                        <Grid.Row stretched>
+                            <Grid.Column>
+                                <p className="Product-Grid-Div">MODEL DETAILS:</p>
+                                <p className="Product-Grid-Div">HEIGHT 170cm/79</p>
+                                <p className="Product-Grid-Div">SIZE: S</p>
+
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </div>
+
+            </div>
+        );
+    }
+}
+
+export default ProductDetails;
