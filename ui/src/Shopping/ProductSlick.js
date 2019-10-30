@@ -6,6 +6,7 @@ import front_500 from './images/front-500.jpg'
 import back_500 from './images/back-500.jpg'
 import Contact from "../Contact/Contact";
 import logo from '../Head/logo_got_it.png';
+import Recommendation from "../Recommendation/Recommendation";
 
 
 const productSlick = () => {
@@ -31,7 +32,9 @@ const productSlick = () => {
             </div>
             <div className="Product-Details-Empty-Div"/>
 
-
+            <div className="Reco-Container-div">
+                <Recommendation />
+            </div>
             <div className="Product-Details-footer">
                 <Contact/>
             </div>

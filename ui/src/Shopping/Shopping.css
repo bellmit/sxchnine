@@ -12,8 +12,8 @@
 
 .Slick-Container-div {
     text-align: center;
-    width: 50%;
-    margin: 0 0 0 10%;
+    width: 35%;
+    margin: 0 0 0 15%;
 }
 
 .Yellow-bar-div {
@@ -28,4 +28,44 @@
     position: absolute;
     top: 10%;
     right: 20%;
+}
+
+@media only screen and (max-width: 414px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
 }

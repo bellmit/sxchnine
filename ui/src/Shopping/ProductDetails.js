@@ -1,20 +1,48 @@
 import React, {Component} from 'react';
 import {Form, Button, Icon, Grid} from 'semantic-ui-react';
+import {Badge, CSSReset, ThemeProvider} from "@chakra-ui/core";
 import './ProductDetails.css';
 
 class ProductDetails extends Component {
-    state = {};
+    state = {
+        availability: true
+    };
 
     handleChange = (e, {value}) => this.setState({value})
 
     render() {
         const {value} = this.state;
+        let badge = null;
 
         const options = [
             {key: 'm', text: 'Male', value: 'male'},
             {key: 'f', text: 'Female', value: 'female'},
             {key: 'o', text: 'Other', value: 'other'},
         ]
+
+        if (this.state.availability) {
+            badge = (
+                <div>
+                    <ThemeProvider>
+                        <CSSReset/>
+                        <Badge rounded="full" px="2" variantColor="teal">
+                            Available
+                        </Badge>
+                    </ThemeProvider>
+                </div>
+            )
+        } else {
+            badge = (
+                <div>
+                    <ThemeProvider>
+                        <CSSReset/>
+                        <Badge rounded="full" px="2" variantColor="red">
+                            Soldout
+                        </Badge>
+                    </ThemeProvider>
+                </div>
+            )
+        }
 
         return (
             <div>
@@ -59,6 +87,9 @@ class ProductDetails extends Component {
                         </Form.Group>
                         <Form.Group>
                             <a href="" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return info</a>
+                        </Form.Group>
+                        <Form.Group>
+                            {badge}
                         </Form.Group>
                         <Button animated='vertical' inverted color='yellow' floated='right'>
                             <Button.Content hidden>Got it!</Button.Content>

@@ -9,7 +9,7 @@
 .Product-Props-Div{
     font-family: Anton;
     font-size: 1.5vw;
-    text-transform: lowercase;
+    text-transform: uppercase;
     color: black;
 }
 
@@ -40,6 +40,13 @@
     color: black;
 }
 
+.Reco-Container-div {
+    margin: 5% 0 0 17%;
+    position: absolute;
+    width: 60%;
+    align-content: center;
+}
+
 .Grid-Container-Div {
     margin: 140% 0 0 0;
     position: absolute;
@@ -49,7 +56,7 @@
     background: rgb(255, 240, 36);
     height: 1%;
     width: 50%;
-    top: 110%;
+    top: 150%;
     left: 23%;
     position: absolute;
     align-items: center;
@@ -58,7 +65,7 @@
 .Product-Details-footer{
     width: 100%;
     position: absolute;
-    top: 120%;
+    top: 160%;
     left: -5%;
 }
 
@@ -68,4 +75,90 @@
     width: 20%;
     height: 30%;
     position: absolute;
+}
+
+@media only screen and (max-width: 414px) {
+    .Reco-Container-div {
+        margin: 90% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Name-Div{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 160%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Reco-Container-div {
+        margin: 90% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Name-Div{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 160%;
+        left: 0;
+    }
 }

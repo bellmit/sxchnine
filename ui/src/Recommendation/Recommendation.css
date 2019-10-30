@@ -1,0 +1,12 @@
+.Reco-Slick-Div {
+    width: 50%;
+    position: absolute;
+}
+
+i.yellow.icon {
+    color: rgb(255, 240, 36) !important;
+}
+
+i.yellow.icon:hover {
+    color: black !important;
+}
