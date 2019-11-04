@@ -1,15 +1,10 @@
 import React, {Component} from "react";
 /*import {SimpleGrid, Box, ThemeProvider, CSSReset, Image, Badge} from "@chakra-ui/core";
 import { Grid, Paper, Typography } from "@material-ui/core";*/
-import {makeStyles} from '@material-ui/core/styles';
-import {Grid, Image} from 'semantic-ui-react'
+import {Grid, Icon, Input, Segment} from 'semantic-ui-react'
 import Product from './Product';
-import Gallery from "../Gallery/Gallery";
-import p1 from "./p1.png";
-import nikelogo from "./Logo_NIKE.svg";
 import './Product.css';
 import BannerMen from '../Banner/Banner';
-import {Input, Icon, Segment} from 'semantic-ui-react';
 import panier from '../Banner/image-panier.svg';
 import Contact from '../Contact/Contact';
 
@@ -109,7 +104,7 @@ class Products extends Component {
                             ))}
                         </Grid.Row>
                     </Grid>
-                    <div className="Product-Empty-Div" />
+                    <div className="Product-Empty-Div"/>
 
 
                     <div className="Product-footer">

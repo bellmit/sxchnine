@@ -1,5 +1,6 @@
 import React from "react";
 import { Carousel } from 'react-bootstrap';
+import {Button, Icon, Label, Modal, Header, Image} from "semantic-ui-react";
 import ProductDetails from './ProductDetails';
 import './Shopping.css';
 import front_500 from './images/front-500.jpg'
@@ -7,15 +8,20 @@ import back_500 from './images/back-500.jpg'
 import Contact from "../Contact/Contact";
 import logo from '../Head/logo_got_it.png';
 import Recommendation from "../Recommendation/Recommendation";
+import ShopResume from '../ShopResume/ShopResume';
+
 
 
 const productSlick = () => {
-
+    let size = 5;
     return (
         <div>
             <div className="Yellow-bar-div" />
             <div>
                 <img className="Got-it-logo" src={logo}/>
+            </div>
+            <div>
+                <ShopResume size = {size} />
             </div>
             <div className="Slick-Container-div">
             <Carousel fade={true} keyboard style={{textAlign: "center"}}>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Form, Button, Icon, Grid} from 'semantic-ui-react';
+import {Form, Button, Icon, Grid, Label} from 'semantic-ui-react';
 import {Badge, CSSReset, ThemeProvider} from "@chakra-ui/core";
 import './ProductDetails.css';
 
@@ -83,7 +83,9 @@ class ProductDetails extends Component {
                         </Form.Group>
                         <Form.Group inline widths='equal'>
                             <a className="Product-Props-Div">PRICE:&nbsp;&nbsp;&nbsp;</a>
-                            <a>90$</a>
+                            <Label tag color='red'>
+                                $90
+                            </Label>
                         </Form.Group>
                         <Form.Group>
                             <a href="" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return info</a>
