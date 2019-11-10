@@ -1,6 +1,5 @@
 import React from "react";
 import { Carousel } from 'react-bootstrap';
-import {Button, Icon, Label, Modal, Header, Image} from "semantic-ui-react";
 import ProductDetails from './ProductDetails';
 import './Shopping.css';
 import front_500 from './images/front-500.jpg'

@@ -49,7 +49,9 @@
 .Contact-footer{
     width: 100%;
     position: absolute;
+    /* put back when try to adapt all components
     top: 220%;
+    */
     left: 12%;
 }
 

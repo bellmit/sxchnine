@@ -7,6 +7,8 @@ import Footer from './Footer/Footer';
 import Contact from './Contact/Contact';
 import Products from './Product/Products';
 import ProductSlick from './Shopping/ProductSlick';
+import Orders from "./Payment/Orders";
+import Confirmation from './Confirmation/Confirmation';
 
 function App() {
   return (
@@ -20,7 +22,15 @@ function App() {
 */}
 
 
+{/*
     <ProductSlick />
+*/}
+
+{/*
+<Orders />
+*/}
+
+    <Confirmation/>
 
 
     </div>

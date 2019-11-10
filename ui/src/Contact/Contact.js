@@ -40,6 +40,7 @@ const contact = () => {
             </div>
         </div>*/}
         <div className="Contact-footer">
+
             <Grid centered>
                 <Grid.Row columns={3} centered>
                     <Grid.Column>

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import './ShopResume.css';
 import {Button, Grid, Header, Icon, Image, Label, Modal} from "semantic-ui-react";
-import Product from "../Product/Product";
+import panierPic from './image80s.jpeg';
 
 class ShopResume extends Component {
 
@@ -72,8 +72,10 @@ class ShopResume extends Component {
 
                 <div className="Modal-Content-div">
                 <Modal size={size} open={open} onClose={this.close} style={{ position: 'static', height:'auto' }} >
-                    <Modal.Header><span className="Panier-Resume-Text"> You GOT : </span></Modal.Header>
-
+                    <Modal.Header><Image src={panierPic} fluid style={{ height: '250px' }}/></Modal.Header>
+{/*
+                    <span className="Panier-Resume-Text"> You GOT : </span>
+*/}
 
                     {this.state.products.map((product, index) => (
                     <Modal.Content image>
@@ -90,7 +92,7 @@ class ShopResume extends Component {
 
                     <Modal.Actions>
                         <Button color='black'>
-                            <span className="Pay-Text">Pay $$$ </span><Icon name='right chevron' color='yellow'/>
+                            <span className="Pay-Text">CHECKOUT</span><Icon name='right chevron' color='yellow'/>
                         </Button>
                     </Modal.Actions>
                 </Modal>
