@@ -3,9 +3,8 @@ import {Grid, Icon, Input, Segment} from 'semantic-ui-react'
 import Product from './Product';
 import BannerMen from '../../components/Banner/Banner';
 import Contact from '../../components/Contact/Contact';
-import './Product.css';
-import panier from './image-panier.svg';
-
+import ShopResume from "../ShopResume/ShopResume";
+import './Products.css';
 
 class Products extends Component {
     state = {
@@ -54,13 +53,18 @@ class Products extends Component {
             },
 
         ],
-        change: ''
+        change: '',
+        size: 0
     }
 
     changeHandler = (event) => {
         this.setState({
             change: event.target.value
         })
+    }
+
+    selectProductHandler = (id) => {
+        this.props.history.push('/products/' + id);
     }
 
     render() {
@@ -71,6 +75,9 @@ class Products extends Component {
                     <header>
                         <BannerMen/>
                     </header>
+                </div>
+                <div>
+                    <ShopResume size = {this.state.size} {...this.props}/>
                 </div>
 
                 <div className="Product-Message">
@@ -84,9 +91,6 @@ class Products extends Component {
                                onChange={this.changeHandler}/>
                     </Segment>
                 </div>
-                <div>
-                    <img alt="" src={panier} className="Banner-panier-img"/>
-                </div>
                 <div>{this.state.change}</div>
 
                 <div className="Product-Container">
@@ -94,8 +98,10 @@ class Products extends Component {
                         <Grid.Row centered>
 
                             {this.state.products.map((product, index) => (
-                                <Grid.Column mobile={16} tablet={8} computer={5} centered>
-                                    <Product key={index} name={product.name} id={product.id}/>
+                                <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true" >
+                                    <Product name={product.name}
+                                             id={product.id}
+                                             clicked={() => this.selectProductHandler(product.id)}/>
                                     <br/>
                                 </Grid.Column>
 
@@ -103,7 +109,6 @@ class Products extends Component {
                         </Grid.Row>
                     </Grid>
                     <div className="Product-Empty-Div"/>
-
 
                     <div className="Product-footer">
                         <Contact/>

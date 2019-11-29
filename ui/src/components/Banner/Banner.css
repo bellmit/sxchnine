@@ -31,16 +31,6 @@
     position: absolute;
 }
 
-.Banner-panier-img{
-    height: 6%;
-    width: 6%;
-    left: 68%;
-    top: 45%;
-    position: absolute;
-
-}
-
-
 @media only screen and (max-width: 414px) {
     .Banner-Container-Men {
         line-height: 0;

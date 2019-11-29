@@ -1,0 +1,15 @@
+.ShoppingCart-div{
+    position: fixed;
+    width: 32px;
+    height: 30px;
+    left: 20px;
+    top: 70px;
+}
+
+.ShoppingCart-div-icon{
+    position: fixed;
+    width: 36px;
+    height: 30px;
+    left: 35px;
+    top: 78px;
+}

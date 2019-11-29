@@ -40,33 +40,9 @@
     color: black;
 }
 
-.Reco-Container-div {
-    margin: 5% 0 0 17%;
-    position: absolute;
-    width: 60%;
-    align-content: center;
-}
-
 .Grid-Container-Div {
     margin: 140% 0 0 0;
     position: absolute;
-}
-
-.Product-Details-Empty-Div{
-    background: rgb(255, 240, 36);
-    height: 1%;
-    width: 50%;
-    top: 150%;
-    left: 23%;
-    position: absolute;
-    align-items: center;
-}
-
-.Product-Details-footer{
-    width: 100%;
-    position: absolute;
-    top: 160%;
-    left: -5%;
 }
 
 .Got-it-logo-product-details {
@@ -78,13 +54,6 @@
 }
 
 @media only screen and (max-width: 414px) {
-    .Reco-Container-div {
-        margin: 90% 0 0 0;
-        position: absolute;
-        width: 100%;
-        align-content: center;
-    }
-
     .Product-Name-Div{
         font-family: Anton;
         font-size: 5vw;
@@ -111,23 +80,10 @@
     }
     .Product-Grid-Div{
         display: none;
-    }
-    .Product-Details-footer{
-        width: 100%;
-        position: absolute;
-        top: 160%;
-        left: 0;
     }
 }
 
 @media only screen and (max-width: 375px) {
-    .Reco-Container-div {
-        margin: 90% 0 0 0;
-        position: absolute;
-        width: 100%;
-        align-content: center;
-    }
-
     .Product-Name-Div{
         font-family: Anton;
         font-size: 5vw;
@@ -155,10 +111,5 @@
     .Product-Grid-Div{
         display: none;
     }
-    .Product-Details-footer{
-        width: 100%;
-        position: absolute;
-        top: 160%;
-        left: 0;
-    }
+
 }
