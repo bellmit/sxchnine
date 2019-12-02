@@ -1,6 +1,6 @@
 import React from 'react';
 import {ThemeProvider, CSSReset, Box, Badge} from "@chakra-ui/core";
-import { Image, Label } from 'semantic-ui-react';
+import { Image } from 'semantic-ui-react';
 import './Product.css';
 import p1 from './p1.png';
 import nikelogo from './Logo_NIKE.svg';

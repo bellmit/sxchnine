@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Button, Header, Icon, Image, Label, Modal} from "semantic-ui-react";
+import {Button, Header, Icon, Image, Modal} from "semantic-ui-react";
 import ShoppingCart from '../../components/ShoppingCart/ShoppingCart';
 import './ShopResume.css';
 import panierPic from './image80s.jpeg';
+import trash from './trash-10-48.png';
 
 class ShopResume extends Component {
 
@@ -52,21 +53,31 @@ class ShopResume extends Component {
             },
 
         ],
-        open: false }
-
-    show = (size) => () => this.setState({ size, open: true })
-    close = () => this.setState({ open: false })
-
-    componentDidMount() {
-        console.log('Shop Resume' + this.props);
+        open: false,
+        disabled: false
     }
+
+    show = (size) => () => this.setState({size, open: true})
+    close = () => this.setState({open: false})
 
     redirectToOrders = () => {
         this.props.history.push('/orders');
     }
 
+    removeProduct = (id) => {
+        let products = [...this.state.products];
+        products.splice(id, 1);
+        this.setState({products: products});
+
+        if (products.length === 0){
+            this.setState({disabled: true});
+        }
+        console.log("disabled " + this.state.disabled);
+    }
+
+
     render() {
-        const { open, size } = this.state
+        const {open, size} = this.state
 
         return (
             <div>
@@ -75,31 +86,37 @@ class ShopResume extends Component {
                 </div>
 
                 <div className="Modal-Content-div">
-                <Modal size={size} open={open} onClose={this.close} style={{ position: 'static', height:'auto' }} >
-                    <Modal.Header><Image src={panierPic} fluid style={{ height: '220px' }}/></Modal.Header>
-{/*
+                    <Modal size={size} open={open} onClose={this.close}
+                           style={{position: 'static', height: 'auto'}}>
+                        <Modal.Header><Image src={panierPic} fluid style={{height: '220px'}}/></Modal.Header>
+                        {/*
                     <span className="Panier-Resume-Text"> You GOT : </span>
 */}
 
-                    {this.state.products.map(product => (
-                    <Modal.Content image key={product.id}>
-                        <Image wrapped size='small'
-                               src={product.images[0].url}/>
-                        <Modal.Description>
-                            <Header><span className="Panier-Items-Text-Header">{product.name}</span></Header>
-                            <p className="Panier-Items-Text">Black </p>
-                            <p className="Panier-Items-Text">Small</p>
-                            <p className="Panier-Items-Text">$90</p>
-                        </Modal.Description>
-                    </Modal.Content>
-                    ))}
+                        {this.state.products.map((product, index) => (
+                            <Modal.Content image key={product.id}>
+                                <Image wrapped size='small'
+                                       src={product.images[0].url}/>
+                                <Modal.Description>
+                                    <Header>
+                                        <span className="Panier-Items-Text-Header">{product.name}</span>
+                                        <img alt="" src={trash}
+                                             className="Trash-Icon"
+                                             onClick={() => this.removeProduct(index)}/>
+                                    </Header>
+                                    <p className="Panier-Items-Text">Black </p>
+                                    <p className="Panier-Items-Text">Small</p>
+                                    <p className="Panier-Items-Text">$90</p>
+                                </Modal.Description>
+                            </Modal.Content>
+                        ))}
 
-                    <Modal.Actions>
-                        <Button color='black' onClick={this.redirectToOrders}>
-                            <span className="Pay-Text">CHECKOUT</span><Icon name='right chevron' color='yellow'/>
-                        </Button>
-                    </Modal.Actions>
-                </Modal>
+                        <Modal.Actions>
+                            <Button color='black' onClick={this.redirectToOrders} disabled={this.state.disabled}>
+                                <span className="Pay-Text">CHECKOUT</span><Icon name='right chevron' color='yellow'/>
+                            </Button>
+                        </Modal.Actions>
+                    </Modal>
                 </div>
             </div>
         );

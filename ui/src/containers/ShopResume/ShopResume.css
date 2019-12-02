@@ -39,5 +39,24 @@
     text-transform: uppercase;
 }
 
+.Trash-Icon {
+    display: block;
+    float: right;
+    right: 10%;
+    width: 5% !important;
+    height: 5%;
+    position: absolute;
+}
+
+.Trash-Icon:hover {
+    display: block;
+    float: right;
+    right: 10%;
+    width: 6% !important;
+    height: 6%;
+    position: absolute;
+    cursor: pointer;
+}
+
 
 

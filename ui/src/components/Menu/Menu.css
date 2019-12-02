@@ -14,7 +14,7 @@
 
 /* Color/shape of burger icon bars on hover*/
 .bm-burger-bars-hover {
-    background: #a90000;
+    background: rgb(255, 240, 36);
 }
 
 /* Position and sizing of clickable cross button */
@@ -66,7 +66,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 .bm-test {
-    font-family: "American Typewriter", "Times New Roman", Times;
+    font-family: Anton, "American Typewriter", "Times New Roman", Times;
     font-size: 40px;
     text-transform: uppercase;
     color: rgb(255, 240, 36);
@@ -76,14 +76,12 @@ Note: Beware of modifying this element as it can break the animations - you shou
     text-decoration: none;
 }
 
-.bm-test:hover,
- bm-test:active,
- bm-test.active {
-    font-family: "American Typewriter", "Times New Roman", Times;
+.bm-test:hover {
+    font-family: Anton, "American Typewriter", "Times New Roman", Times;
     font-size: 40px;
     text-transform: uppercase;
-    background-color: rgb(255, 240, 36);
     color: black;
+    background-color: rgb(255, 240, 36);
     border: 0;
     outline: 0;
     margin: 0 0 30px 0;
