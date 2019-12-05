@@ -11,6 +11,15 @@
     color: rgb(255, 240, 36);
 }
 
+.Product-Message-Advanced{
+    font-family: Anton;
+    font-size: 15px;
+    text-transform: uppercase;
+    top: 40%;
+    left: 22%;
+    position: absolute;
+}
+
 .Product-Search-Input {
     top: 45%;
     left: 22%;
@@ -19,10 +28,33 @@
     background-color: rgb(255, 240, 36);
 }
 
+.Product-Search-Advanced {
+    top: 30%;
+    left: 32%;
+    position: absolute;
+    width: 52%;
+    background-color: rgb(255, 240, 36);
+}
+
+.Add-Icon {
+    float: right;
+    right: 2%;
+    width: 4% !important;
+    height: auto;
+    top: 15%;
+}
+.Add-Icon:hover {
+    cursor: pointer;
+}
+
+.Search-Icon:hover{
+    cursor: pointer;
+}
+
 .Product-Container {
     width: 60%;
     position: absolute;
-    top: 110%;
+    top: 120%;
     left: 50%;
     transform: translate(-50%, -50%);
 }

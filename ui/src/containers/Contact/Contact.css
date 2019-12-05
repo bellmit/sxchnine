@@ -1,0 +1,174 @@
+.Contact-Link {
+    font-family: Anton;
+    font-size: 15px;
+    text-transform: uppercase;
+    display: block;
+    text-decoration: none;
+    color: black;
+    text-underline: white;
+}
+
+.Contact-Link:hover{
+    color: rgb(255, 240, 36);
+}
+
+.Contact-Link:visited{
+    text-decoration: none;
+}
+
+.Contact-Link:link{
+    text-decoration: none;
+}
+
+.Icon {
+    height: 30px;
+    width: 30px;
+    padding: 20px;
+}
+
+.Icon-div {
+/*    flex-wrap: wrap;
+    justify-content: space-between;
+    display: contents;
+    flex-direction: row;
+    vertical-align: center;*/
+}
+
+.Container-div {
+/*    flex-wrap: wrap;
+    justify-content: space-evenly;*/
+    display: flex;
+    flex-direction: row;
+    /*
+    align-items: center;
+    */
+    margin: 320px 0 30px 32%;
+
+}
+
+.Contact-footer{
+    width: 100%;
+    position: absolute;
+    /* put back when try to adapt all components
+    top: 220%;
+    */
+    left: 12%;
+}
+
+.Reserved-right {
+    font-family: Anton;
+    font-size: 8px;
+    text-transform: lowercase;
+    display: block;
+    text-decoration: none;
+    position: absolute;
+    left: -15%;
+}
+
+@media only screen and (max-width: 414px) {
+    .Container-div {
+        display: flex;
+        flex-direction: row;
+        margin: 320px 0 30px 0;
+    }
+
+    .Icon {
+        width: 100%;
+        padding: 0;
+        margin: 0 0 0 -10%;
+    }
+
+    .Icon-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Contact-footer{
+        width: 100%;
+        position: absolute;
+        top: 370%;
+        left: 2%;
+    }
+    .Reserved-right {
+        font-family: Anton;
+        font-size: 8px;
+        text-transform: lowercase;
+        display: block;
+        text-decoration: none;
+        position: absolute;
+        left: -15%;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Container-div {
+        display: flex;
+        flex-direction: row;
+        margin: 320px 0 30px 0;
+    }
+    .Icon {
+        width: 100%;
+        padding: 0;
+        margin: 0 0 0 -10%;
+    }
+
+    .Icon-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Contact-footer{
+        width: 100%;
+        position: absolute;
+        top: 410%;
+        left: 2%;
+    }
+
+    .Reserved-right {
+        font-family: Anton;
+        font-size: 8px;
+        text-transform: lowercase;
+        display: block;
+        text-decoration: none;
+        position: absolute;
+        left: -15%;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .Container-div {
+        display: flex;
+        flex-direction: row;
+        margin: 320px 0 30px 0;
+    }
+    .Icon {
+        width: 100%;
+        padding: 0;
+        margin: 0 0 0 -10%;
+    }
+
+    .Icon-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Contact-footer{
+        width: 100%;
+        position: absolute;
+        top: 425%;
+        left: 2%;
+    }
+
+    .Reserved-right {
+        font-family: Anton;
+        font-size: 8px;
+        text-transform: lowercase;
+        display: block;
+        text-decoration: none;
+        position: absolute;
+        left: -15%;
+    }
+}

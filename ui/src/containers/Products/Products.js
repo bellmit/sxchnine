@@ -1,10 +1,13 @@
 import React, {Component} from "react";
-import {Grid, Icon, Input, Segment} from 'semantic-ui-react'
+import {Form, Grid, Icon, Input, Segment} from 'semantic-ui-react';
+import { Collapse } from "@chakra-ui/core";
 import Product from './Product';
 import BannerMen from '../../components/Banner/Banner';
-import Contact from '../../components/Contact/Contact';
+import Contact from '../Contact/Contact';
 import ShopResume from "../ShopResume/ShopResume";
 import './Products.css';
+import addIcon from './add-icon.jpg';
+import searchIcon from './searc-icon-tiny.png';
 
 class Products extends Component {
     state = {
@@ -54,7 +57,12 @@ class Products extends Component {
 
         ],
         change: '',
+        show: false,
         size: 0
+    }
+
+    componentDidMount() {
+        console.log("Products.js " + this.props);
     }
 
     changeHandler = (event) => {
@@ -67,13 +75,39 @@ class Products extends Component {
         this.props.history.push('/products/' + id);
     }
 
+    toggleAdvancedSearch = () => {
+        this.setState((state) => ({
+            show: !state.show
+        }))
+    }
+
     render() {
+
+        const genre = [
+            {key: '1', text: 'Hoodie', value: 'hoodie'},
+            {key: '2', text: 'T-Shirt', value: 'tshirt'},
+            {key: '3', text: 'Sweatshirt', value: 'sweatshirt'},
+            {key: '4', text: 'Jacket', value: 'jacket'},
+        ]
+
+        const options = [
+            {key: 'm', text: 'Male', value: 'male'},
+            {key: 'f', text: 'Female', value: 'female'},
+            {key: 'o', text: 'Other', value: 'other'},
+        ]
+
+        const size = [
+            {key: '1', text: 'Small', value: 'small'},
+            {key: '2', text: 'Medium', value: 'medium'},
+            {key: '3', text: 'Large', value: 'large'},
+            {key: '4', text: 'XL', value: 'xl'},
+        ]
 
         return (
             <div>
                 <div>
                     <header>
-                        <BannerMen/>
+                        <BannerMen {...this.props}/>
                     </header>
                 </div>
                 <div>
@@ -88,7 +122,28 @@ class Products extends Component {
 
                         <Input inverted icon={<Icon name='search' inverted circular link/>}
                                placeholder='Search...'
-                               onChange={this.changeHandler}/>
+                               onChange={this.changeHandler} style={{marginBottom: '10px'}}/>
+
+                        <img alt="" src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
+                        <Collapse isOpen={this.state.show}>
+                            <Form size='tiny'>
+                                <Form.Group inline widths='1' unstackable>
+                                    <Form.Select
+                                        width={6}
+                                        options={options}
+                                        placeholder='SEXE'/>
+                                    <Form.Select
+                                        width={6}
+                                        options={genre}
+                                        placeholder='Genre'/>
+                                    <Form.Select
+                                        width={6}
+                                        options={size}
+                                        placeholder='Size'/>
+                                    <img alt="" src={searchIcon} className="Search-Icon"/>
+                                </Form.Group>
+                            </Form>
+                        </Collapse>
                     </Segment>
                 </div>
                 <div>{this.state.change}</div>

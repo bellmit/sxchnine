@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/OrderPlaceBanner";
 import Card from './Card';
-import Contact from '../../components/Contact/Contact';
+import Contact from '../Contact/Contact';
 import {Grid, Image, Label, Input} from "semantic-ui-react";
 
 class Orders extends Component {
@@ -54,6 +54,10 @@ class Orders extends Component {
 
         ],
         open: false
+    }
+
+    handleOrder = () => {
+        console.log("handle Order ");
     }
 
     render() {
@@ -120,7 +124,7 @@ class Orders extends Component {
                             <span className="Orders-Yellow-second-bar-div" />
                         </Grid.Row>
                     </Grid>
-                    <Card />
+                    <Card click={this.handleOrder} op = {this.state.open}/>
                     <Contact />
 
                 </div>

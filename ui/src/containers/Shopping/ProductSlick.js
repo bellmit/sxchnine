@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { Carousel } from 'react-bootstrap';
 import ProductDetails from './ProductDetails';
-import Contact from "../../components/Contact/Contact";
+import Contact from "../Contact/Contact";
 import Recommendation from "../../containers/Recommendation/Recommendation";
 import ShopResume from '../ShopResume/ShopResume';
 import './ProductSlick.css';

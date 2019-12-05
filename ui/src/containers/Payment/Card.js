@@ -19,6 +19,7 @@ class Card extends Component {
         formData: null,
     };
 
+
     handleCallback = ({issuer}, isValid) => {
         if (isValid) {
             this.setState({issuer});
@@ -57,6 +58,7 @@ class Card extends Component {
         this.form.reset();
     };
 
+
     render() {
         const {name, number, expiry, cvc, focused, issuer, formData} = this.state;
 
@@ -72,6 +74,8 @@ class Card extends Component {
                         focused={this.state.focused}
                         callback={this.handleCallback}
                     />
+
+
                     <form className="Cards-form" ref={c => (this.form = c)} onSubmit={this.handleSubmit}>
                         <div className="form-group">
                             <input
@@ -124,7 +128,9 @@ class Card extends Component {
                         </div>
                         <input type="hidden" name="issuer"/>
                         <div className="form-actions">
-                            <button className="Card-App-btn"><span className="Card-App-Pay"> ORDER </span></button>
+                            <button className="Card-App-btn" onClick={this.props.click}>
+                                <span className="Card-App-Pay"> ORDER </span>
+                            </button>
                         </div>
                         <div className="form-actions">
                             <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Got_IT, which may be used to make future shopping experiences better for you.</span>

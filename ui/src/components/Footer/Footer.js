@@ -1,5 +1,5 @@
 import React from 'react';
-import Contact from '../Contact/Contact';
+import Contact from '../../containers/Contact/Contact';
 import StoryFooter from '../StoryFooter/StoryFooter';
 import './Footer.css';
 

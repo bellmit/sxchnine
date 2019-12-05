@@ -57,6 +57,7 @@ class ShopResume extends Component {
         disabled: false
     }
 
+
     show = (size) => () => this.setState({size, open: true})
     close = () => this.setState({open: false})
 
