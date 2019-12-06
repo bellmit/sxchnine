@@ -1,3 +1,11 @@
+.Products-Yellow-bar-div {
+    background-color: rgb(255, 240, 36);
+    width: 10%;
+    height: 100%;
+    position: absolute;
+}
+
+
 .Product-Message{
     font-family: Anton;
     font-size: 15px;
@@ -29,11 +37,9 @@
 }
 
 .Product-Search-Advanced {
-    top: 30%;
-    left: 32%;
-    position: absolute;
-    width: 52%;
-    background-color: rgb(255, 240, 36);
+    font-family: Anton;
+    font-size: 10px;
+    text-transform: uppercase;
 }
 
 .Add-Icon {

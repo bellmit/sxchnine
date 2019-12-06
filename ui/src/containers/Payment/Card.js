@@ -7,6 +7,7 @@ import {
     formatCVC,
     formatExpirationDate,
 } from './utils';
+import {Dimmer, Loader} from "semantic-ui-react";
 
 class Card extends Component {
     state = {
@@ -17,6 +18,8 @@ class Card extends Component {
         issuer: '',
         focused: '',
         formData: null,
+        orderStatus: 2,
+        loading: false
     };
 
 
@@ -46,7 +49,6 @@ class Card extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const {issuer} = this.state;
         const formData = [...e.target.elements]
             .filter(d => d.name)
             .reduce((acc, d) => {
@@ -58,12 +60,31 @@ class Card extends Component {
         this.form.reset();
     };
 
+    handleOrder = () => {
+        //this.setState({loading: true});
+        if (this.state.number !== ''
+            && this.state.name !== ''
+            && this.state.expiry !== ''
+            && this.state.cvc !== '') {
+
+            this.props.history.replace('/confirmation/' + this.state.orderStatus);
+        }
+
+    }
+
+    componentWillUnmount(): void {
+        console.log('component will unmount');
+    }
+
 
     render() {
-        const {name, number, expiry, cvc, focused, issuer, formData} = this.state;
+        const {name, number, expiry, cvc} = this.state;
 
         return (
             <div key="Payment">
+                <Dimmer active={this.state.loading} page>
+                    <Loader content='Loading' />
+                </Dimmer>
                 <div className="App-payment">
                     <h4 className="Cards-h4">PAYMENT:</h4>
                     <Cards
@@ -128,7 +149,7 @@ class Card extends Component {
                         </div>
                         <input type="hidden" name="issuer"/>
                         <div className="form-actions">
-                            <button className="Card-App-btn" onClick={this.props.click}>
+                            <button className="Card-App-btn" onClick={this.handleOrder}>
                                 <span className="Card-App-Pay"> ORDER </span>
                             </button>
                         </div>

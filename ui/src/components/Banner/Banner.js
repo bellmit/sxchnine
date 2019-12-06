@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Aux from '../../hoc/Aux/Aux';
 import bannerMen from './rsz_1screen_3.png';
 import bannerWomen from './women_banner.jpg';
+import orderPlace from './order_place.jpg';
 import './Banner.css';
 
 class Banner extends Component {
@@ -32,6 +33,16 @@ class Banner extends Component {
                 <img alt="" src={bannerWomen} className="Banner-Header-img"/>
                 <div className="Banner-Container-Men">
                     <p> WOMEN </p>
+                </div>
+                <div className="Banner-Empty-Div"/>
+            </Aux>
+        }
+
+        if (this.props.location.pathname === '/orders'){
+            banner = <Aux>
+                <img alt="" src={orderPlace} className="BannerOrder-Header-img"/>
+                <div className="Banner-Container-Men">
+                    <p> ORDER PLACE </p>
                 </div>
                 <div className="Banner-Empty-Div"/>
             </Aux>

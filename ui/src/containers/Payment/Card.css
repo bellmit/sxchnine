@@ -111,6 +111,10 @@ h4 {
     text-align: center;
 }
 
+.Segment-Pay{
+    text-decoration: none;
+}
+
 @media screen and (min-width: 600px) {
     .App-badges {
         flex-direction: row;

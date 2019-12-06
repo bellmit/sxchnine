@@ -9,6 +9,17 @@
     transform: scaleX(0.8);
 }
 
+.BannerOrder-Header-img {
+    height: 270px;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    object-position: 0 33%;
+    transform: scaleX(0.8);
+}
+
 
 .Banner-Container-Men {
     line-height: 0;
@@ -57,4 +68,5 @@
         left: 15%;
         top: 18%;
     }
+
 }

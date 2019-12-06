@@ -105,6 +105,7 @@ class Products extends Component {
 
         return (
             <div>
+                <div className="Products-Yellow-bar-div"/>
                 <div>
                     <header>
                         <BannerMen {...this.props}/>
@@ -131,15 +132,18 @@ class Products extends Component {
                                     <Form.Select
                                         width={6}
                                         options={options}
-                                        placeholder='SEXE'/>
+                                        placeholder='SEXE'
+                                        className="Product-Search-Advanced"/>
                                     <Form.Select
                                         width={6}
                                         options={genre}
-                                        placeholder='Genre'/>
+                                        placeholder='Genre'
+                                        className="Product-Search-Advanced"/>
                                     <Form.Select
                                         width={6}
                                         options={size}
-                                        placeholder='Size'/>
+                                        placeholder='Size'
+                                        className="Product-Search-Advanced"/>
                                     <img alt="" src={searchIcon} className="Search-Icon"/>
                                 </Form.Group>
                             </Form>

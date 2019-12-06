@@ -17,7 +17,7 @@ function App() {
         <Route  path="/women" exact component={Products}/>
         <Route  path="/products/:productId" exact component={ProductSlick}/>
         <Route  path="/orders" exact component={Orders}/>
-        <Route  path="/confirmation" exact component={Confirmation} />
+        <Route  path="/confirmation/:status" exact component={Confirmation} />
 
     </div>
   );

@@ -1,6 +1,7 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import {Icon, Grid} from 'semantic-ui-react';
 import './Contact.css';
+
 
 class Contact extends PureComponent {
 

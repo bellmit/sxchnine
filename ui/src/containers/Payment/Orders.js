@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './Orders.css';
-import OrderPlaceBanner from "../../components/Banner/OrderPlaceBanner";
+import OrderPlaceBanner from "../../components/Banner/Banner";
 import Card from './Card';
 import Contact from '../Contact/Contact';
-import {Grid, Image, Label, Input} from "semantic-ui-react";
+import {Grid, Image, Label, Input, Form} from "semantic-ui-react";
 
 class Orders extends Component {
 
@@ -67,7 +67,7 @@ class Orders extends Component {
             <div>
                 <div className="Orders-Yellow-bar-div" />
                 <header>
-                    <OrderPlaceBanner />
+                    <OrderPlaceBanner {...this.props}/>
                 </header>
                 <div className="Orders-Bag-Resume">
                 <span className="Orders-Resume-Text">Your Bag : </span>
@@ -117,14 +117,18 @@ class Orders extends Component {
                             </Grid.Column>
 
                             <Grid.Column width={3}>
-                                <Input  inverted placeholder='delivery address...'/>
+                                <Input  inverted placeholder='N°'/>
+                                <Input  inverted placeholder='street/avenue'/>
+                                <Input  inverted placeholder='city'/>
+                                <Input  inverted placeholder='postal code'/>
+                                <Input  inverted placeholder='country'/>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
                             <span className="Orders-Yellow-second-bar-div" />
                         </Grid.Row>
                     </Grid>
-                    <Card click={this.handleOrder} op = {this.state.open}/>
+                    <Card {...this.props}/>
                     <Contact />
 
                 </div>
