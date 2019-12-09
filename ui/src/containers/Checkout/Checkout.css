@@ -1,0 +1,200 @@
+.Checkout-Yellow-bar-div {
+    background-color: rgb(255, 240, 36);
+    width: 6%;
+    height: 100%;
+    position: absolute;
+}
+
+.Checkout-Empty-Div{
+    background: rgb(255, 240, 36);
+    height: 15%;
+    width: 50%;
+    margin-top: 10%;
+    position: absolute;
+}
+
+.Checkout-Grid {
+    top: 40%;
+    left: 16%;
+    position: absolute;
+
+}
+.Checkout-Message-Text{
+    font-family: Anton;
+    font-size: 1.5vw;
+    text-transform: uppercase;
+}
+
+.Checkout-Email-Text{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.Checkout-Text-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.Checkout-Continue-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+}
+
+
+.Checkout-Yellow-second-bar-div {
+    background-color: rgb(255, 240, 36);
+    width: 50%;
+    height: 20%;
+    position: absolute;
+}
+
+.Checkout-footer{
+    width: 100%;
+    position: absolute;
+    margin-top: 10%;
+    left: -5%;
+}
+
+@media only screen and (max-width: 414px) {
+    .Checkout-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Checkout-Grid {
+        top: 40%;
+        left: 20%;
+        position: absolute;
+        width: 80%;
+        height: 50%;
+    }
+    .Checkout-Inner-Grid {
+        top: 2%;
+        left: -1%;
+        position: absolute;
+        width: 60%;
+        height: 50%;
+    }
+
+    .Checkout-Message-Text{
+        font-family: Anton;
+        font-size: 3.5vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-Email-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+    }
+
+    .Checkout-Divider{
+        font-size: 2vw;
+        height: 10%;
+    }
+
+    .Checkout-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 15%;
+        width: 50%;
+        margin-top: 35%;
+        position: absolute;
+    }
+
+    .Checkout-footer{
+        width: 100%;
+        position: absolute;
+        margin-top: 40%;
+        left: -5%;
+    }
+
+}
+
+@media only screen and (max-width: 375px) {
+    .Checkout-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Checkout-Grid {
+        top: 45%;
+        left: 20%;
+        position: absolute;
+        width: 80%;
+        height: 50%;
+    }
+    .Checkout-Inner-Grid {
+        top: 2%;
+        left: -1%;
+        position: absolute;
+        width: 60%;
+        height: 50%;
+    }
+
+    .Checkout-Message-Text{
+        font-family: Anton;
+        font-size: 3.5vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-Email-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+    }
+
+    .Checkout-Divider{
+        font-size: 2vw;
+        height: 10%;
+    }
+
+    .Checkout-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 15%;
+        width: 50%;
+        margin-top: 35%;
+        position: absolute;
+    }
+
+    .Checkout-footer{
+        width: 100%;
+        position: absolute;
+        margin-top: 40%;
+        left: -5%;
+    }
+
+}

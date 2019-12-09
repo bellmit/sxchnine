@@ -22,12 +22,6 @@
     font-size: 1.5vw;
 }
 
-/*h1,
-h2,
-h4 {
-    text-align: center;
-}*/
-
 .App-payment {
     padding: 30px;
 }
@@ -99,7 +93,11 @@ h4 {
 
 .Card-App-btn {
     background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 5px 10px;
     width: 70%;
+    text-decoration: none;
 }
 .Card-App-AcceptCondition {
     font-size: 0.6vw;
@@ -108,12 +106,38 @@ h4 {
 .Card-App-Pay {
     font-family: Anton;
     font-size: 1vw;
+    text-transform: uppercase;
     text-align: center;
 }
 
 .Segment-Pay{
     text-decoration: none;
 }
+
+@media only screen and (max-width: 414px) {
+    .Card-App-Pay {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .Card-App-AcceptCondition {
+        font-size: 2vw;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Card-App-Pay {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .Card-App-AcceptCondition {
+        font-size: 2vw;
+    }
+}
+
 
 @media screen and (min-width: 600px) {
     .App-badges {

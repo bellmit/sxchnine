@@ -157,13 +157,13 @@ class Card extends Component {
                             <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Got_IT, which may be used to make future shopping experiences better for you.</span>
 
                         </div>
-                        <div>
+{/*                        <div>
                             <p>number: {number}</p>
                             <p>name: {name}</p>
                             <p>expiry: {expiry}</p>
                             <p>cvc: {cvc}</p>
 
-                        </div>
+                        </div>*/}
                     </form>
                 </div>
             </div>

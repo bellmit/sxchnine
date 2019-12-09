@@ -62,7 +62,7 @@ class ShopResume extends Component {
     close = () => this.setState({open: false})
 
     redirectToOrders = () => {
-        this.props.history.push('/orders');
+        this.props.history.push('/checkout');
     }
 
     removeProduct = (id) => {

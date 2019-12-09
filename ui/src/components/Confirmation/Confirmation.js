@@ -43,7 +43,7 @@ const confirmation = (props) => {
                     {message}
                     <div>
                         <div className="Confirmation-Yellow-second-bar-div">
-                            <p className="Confirmation-Message-Text-p2-div">
+                            <p className="Confirmation-Message-Text-p3-div">
                                 Spread Love, Culture & Style.
                             </p>
                         </div>

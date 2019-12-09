@@ -92,8 +92,7 @@ class Products extends Component {
 
         const options = [
             {key: 'm', text: 'Male', value: 'male'},
-            {key: 'f', text: 'Female', value: 'female'},
-            {key: 'o', text: 'Other', value: 'other'},
+            {key: 'f', text: 'Female', value: 'female'}
         ]
 
         const size = [
@@ -127,8 +126,8 @@ class Products extends Component {
 
                         <img alt="" src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
                         <Collapse isOpen={this.state.show}>
-                            <Form size='tiny'>
-                                <Form.Group inline widths='1' unstackable>
+                            <Form size='tiny' mobile={2}>
+                                <Form.Group inline widths='1' unstackable mobile={2}>
                                     <Form.Select
                                         width={6}
                                         options={options}

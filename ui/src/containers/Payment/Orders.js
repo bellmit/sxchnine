@@ -3,7 +3,7 @@ import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
 import Card from './Card';
 import Contact from '../Contact/Contact';
-import {Grid, Image, Label, Input, Form} from "semantic-ui-react";
+import {Grid, Image, Label, Input} from "semantic-ui-react";
 
 class Orders extends Component {
 
@@ -129,7 +129,9 @@ class Orders extends Component {
                         </Grid.Row>
                     </Grid>
                     <Card {...this.props}/>
+                    <div className="Orders-footer">
                     <Contact />
+                    </div>
 
                 </div>
             </div>

@@ -5,6 +5,7 @@ import Menu from './containers/Menu/Menu';
 import Home from './components/Home/Home';
 import Products from './containers/Products/Products';
 import ProductSlick from './containers/Shopping/ProductSlick';
+import Checkout from './containers/Checkout/Checkout';
 import Orders from "./containers/Payment/Orders";
 import Confirmation from './components/Confirmation/Confirmation';
 
@@ -16,6 +17,7 @@ function App() {
         <Route  path="/men" exact component={Products}/>
         <Route  path="/women" exact component={Products}/>
         <Route  path="/products/:productId" exact component={ProductSlick}/>
+        <Route  path="/checkout" exact component={Checkout}/>
         <Route  path="/orders" exact component={Orders}/>
         <Route  path="/confirmation/:status" exact component={Confirmation} />
 

@@ -3,6 +3,7 @@ import Aux from '../../hoc/Aux/Aux';
 import bannerMen from './rsz_1screen_3.png';
 import bannerWomen from './women_banner.jpg';
 import orderPlace from './order_place.jpg';
+import checkout from './checkout.jpg';
 import './Banner.css';
 
 class Banner extends Component {
@@ -43,6 +44,16 @@ class Banner extends Component {
                 <img alt="" src={orderPlace} className="BannerOrder-Header-img"/>
                 <div className="Banner-Container-Men">
                     <p> ORDER PLACE </p>
+                </div>
+                <div className="Banner-Empty-Div"/>
+            </Aux>
+        }
+
+        if (this.props.location.pathname === '/checkout'){
+            banner = <Aux>
+                <img alt="" src={checkout} className="BannerCheckout-Header-img"/>
+                <div className="Banner-Container-Men">
+                    <p> CHECKOUT </p>
                 </div>
                 <div className="Banner-Empty-Div"/>
             </Aux>

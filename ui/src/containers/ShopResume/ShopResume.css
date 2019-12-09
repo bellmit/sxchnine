@@ -59,4 +59,49 @@
 }
 
 
+@media only screen and (max-width: 414px) {
+    .Panier-Items-Text{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+    }
+
+    .Panier-Items-Text-Header{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+    }
+
+    .Pay-Text{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Panier-Items-Text{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+    }
+
+    .Panier-Items-Text-Header{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+    }
+
+    .Pay-Text{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+
+    }
+}
+
+
 
