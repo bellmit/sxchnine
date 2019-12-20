@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Aux from '../../hoc/Aux/Aux';
-import bannerMen from './rsz_1screen_3.png';
+import bannerMen from './men_banner.png';
 import bannerWomen from './women_banner.jpg';
 import orderPlace from './order_place.jpg';
 import checkout from './checkout.jpg';

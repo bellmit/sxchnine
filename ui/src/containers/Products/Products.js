@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Form, Grid, Icon, Input, Segment} from 'semantic-ui-react';
 import { Collapse } from "@chakra-ui/core";
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import Product from './Product';
 import BannerMen from '../../components/Banner/Banner';
 import Contact from '../Contact/Contact';
@@ -11,51 +13,6 @@ import searchIcon from './searc-icon-tiny.png';
 
 class Products extends Component {
     state = {
-        products: [
-            {
-                id: 1, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 2, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 3, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 4, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 5, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 6, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-
-        ],
         change: '',
         show: false,
         size: 0
@@ -63,6 +20,10 @@ class Products extends Component {
 
     componentDidMount() {
         console.log("Products.js " + this.props);
+        this.props.loadProducts();
+        this.props.loadGender();
+        this.props.loadTypes();
+        this.props.loadSize();
     }
 
     changeHandler = (event) => {
@@ -82,26 +43,6 @@ class Products extends Component {
     }
 
     render() {
-
-        const genre = [
-            {key: '1', text: 'Hoodie', value: 'hoodie'},
-            {key: '2', text: 'T-Shirt', value: 'tshirt'},
-            {key: '3', text: 'Sweatshirt', value: 'sweatshirt'},
-            {key: '4', text: 'Jacket', value: 'jacket'},
-        ]
-
-        const options = [
-            {key: 'm', text: 'Male', value: 'male'},
-            {key: 'f', text: 'Female', value: 'female'}
-        ]
-
-        const size = [
-            {key: '1', text: 'Small', value: 'small'},
-            {key: '2', text: 'Medium', value: 'medium'},
-            {key: '3', text: 'Large', value: 'large'},
-            {key: '4', text: 'XL', value: 'xl'},
-        ]
-
         return (
             <div>
                 <div className="Products-Yellow-bar-div"/>
@@ -111,7 +52,7 @@ class Products extends Component {
                     </header>
                 </div>
                 <div>
-                    <ShopResume size = {this.state.size} {...this.props}/>
+                    <ShopResume size = {0} {...this.props}/>
                 </div>
 
                 <div className="Product-Message">
@@ -130,17 +71,17 @@ class Products extends Component {
                                 <Form.Group inline widths='1' unstackable mobile={2}>
                                     <Form.Select
                                         width={6}
-                                        options={options}
+                                        options={this.props.gender}
                                         placeholder='SEXE'
                                         className="Product-Search-Advanced"/>
                                     <Form.Select
                                         width={6}
-                                        options={genre}
+                                        options={this.props.types}
                                         placeholder='Genre'
                                         className="Product-Search-Advanced"/>
                                     <Form.Select
                                         width={6}
-                                        options={size}
+                                        options={this.props.size}
                                         placeholder='Size'
                                         className="Product-Search-Advanced"/>
                                     <img alt="" src={searchIcon} className="Search-Icon"/>
@@ -155,7 +96,7 @@ class Products extends Component {
                     <Grid centered columns={3}>
                         <Grid.Row centered>
 
-                            {this.state.products.map((product, index) => (
+                            {this.props.products.map((product, index) => (
                                 <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true" >
                                     <Product name={product.name}
                                              id={product.id}
@@ -178,4 +119,24 @@ class Products extends Component {
     }
 }
 
-export default Products;
+const mapStateToProps = state => {
+    return {
+        products: state.products.products,
+        gender: state.products.gender,
+        types: state.products.types,
+        size: state.products.size
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        loadProducts: () => dispatch(actions.loadProducts()),
+        loadGender: () => dispatch(actions.loadGenders()),
+        loadTypes: () => dispatch(actions.loadTypes()),
+        loadSize: () => dispatch(actions.loadSize()),
+    }
+}
+
+
+
+export default connect (mapStateToProps, mapDispatchToProps) (Products);

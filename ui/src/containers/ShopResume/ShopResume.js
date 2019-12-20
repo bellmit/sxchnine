@@ -83,7 +83,7 @@ class ShopResume extends Component {
         return (
             <div>
                 <div>
-                    <ShoppingCart size={this.props.size} show={this.show('small')}/>
+                    <ShoppingCart size={0} show={this.show('small')}/>
                 </div>
 
                 <div className="Modal-Content-div">
