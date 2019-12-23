@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import { Carousel } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import ProductDetails from './ProductDetails';
 import Contact from "../Contact/Contact";
 import Recommendation from "../../containers/Recommendation/Recommendation";
@@ -7,6 +9,8 @@ import ShopResume from '../ShopResume/ShopResume';
 import './ProductSlick.css';
 import front_500 from './images/front-500.jpg'
 import back_500 from './images/back-500.jpg'
+import Unknown1 from '../../containers/Middle/Unknown1.png';
+import Unknown2 from '../../containers/Middle/Unknown2.png';
 import logo from '../../components/Head/logo_got_it.png';
 
 
@@ -14,6 +18,7 @@ class ProductSlick extends Component {
 
     componentDidMount(){
         console.log(this.props);
+        console.log(this.props.product);
     }
 
     render(){
@@ -39,7 +44,7 @@ class ProductSlick extends Component {
             </Carousel>
             </div>
             <div className="Product-Details-Div">
-                <ProductDetails />
+                <ProductDetails {...this.props} />
             </div>
             <div className="Product-Details-Empty-Div"/>
 
@@ -54,4 +59,11 @@ class ProductSlick extends Component {
     }
 }
 
-export default ProductSlick;
+const mapStateToProps = state => {
+    return {
+        product: state.product.product
+    }
+}
+
+
+export default connect(mapStateToProps)(ProductSlick);

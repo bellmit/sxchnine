@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Button, Header, Icon, Image, Modal} from "semantic-ui-react";
 import ShoppingCart from '../../components/ShoppingCart/ShoppingCart';
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import './ShopResume.css';
 import panierPic from './image80s.jpeg';
 import trash from './trash-10-48.png';
@@ -8,53 +10,7 @@ import trash from './trash-10-48.png';
 class ShopResume extends Component {
 
     state = {
-        products: [
-            {
-                id: 1, name: 'Classic retro - 90s', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 2, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 3, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 4, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 5, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 6, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-
-        ],
         open: false,
-        disabled: false
     }
 
 
@@ -66,14 +22,11 @@ class ShopResume extends Component {
     }
 
     removeProduct = (id) => {
-        let products = [...this.state.products];
+/*        let products = [...this.props.productsToOrder];
         products.splice(id, 1);
-        this.setState({products: products});
-
-        if (products.length === 0){
-            this.setState({disabled: true});
-        }
-        console.log("disabled " + this.state.disabled);
+        this.setState({products: products});*/
+        this.props.removeProductToOrder(id);
+        console.log(this.props.productsToOrder);
     }
 
 
@@ -94,26 +47,26 @@ class ShopResume extends Component {
                     <span className="Panier-Resume-Text"> You GOT : </span>
 */}
 
-                        {this.state.products.map((product, index) => (
-                            <Modal.Content image key={product.id}>
+                        {this.props.productsToOrder.map((product, index) => (
+                            <Modal.Content image key={product.id + product.size}>
                                 <Image wrapped size='small'
-                                       src={product.images[0].url}/>
+                                       src={panierPic}/>
                                 <Modal.Description>
                                     <Header>
                                         <span className="Panier-Items-Text-Header">{product.name}</span>
                                         <img alt="" src={trash}
                                              className="Trash-Icon"
-                                             onClick={() => this.removeProduct(index)}/>
+                                             onClick={() => this.removeProduct(product.id)}/>
                                     </Header>
-                                    <p className="Panier-Items-Text">Black </p>
-                                    <p className="Panier-Items-Text">Small</p>
-                                    <p className="Panier-Items-Text">$90</p>
+                                    <p className="Panier-Items-Text">{product.color}</p>
+                                    <p className="Panier-Items-Text">{product.size}</p>
+                                    <p className="Panier-Items-Text">${product.price}</p>
                                 </Modal.Description>
                             </Modal.Content>
                         ))}
 
                         <Modal.Actions>
-                            <Button color='black' onClick={this.redirectToOrders} disabled={this.state.disabled}>
+                            <Button color='black' onClick={this.redirectToOrders} disabled={this.props.productsToOrder.length === 0}>
                                 <span className="Pay-Text">CHECKOUT</span><Icon name='right chevron' color='yellow'/>
                             </Button>
                         </Modal.Actions>
@@ -125,4 +78,16 @@ class ShopResume extends Component {
 
 }
 
-export default ShopResume;
+const mapStateToProps = state => {
+    return {
+        productsToOrder: state.productsToOrder.productsToOrder
+    }
+}
+
+const dispatchToProps = dispatch => {
+    return {
+        removeProductToOrder: (id) => dispatch(actions.removeProductToOrder(id))
+    }
+}
+
+export default connect(mapStateToProps, dispatchToProps)(ShopResume);

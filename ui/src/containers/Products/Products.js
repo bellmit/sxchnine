@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Form, Grid, Icon, Input, Segment} from 'semantic-ui-react';
+import {Dimmer, Form, Grid, Icon, Input, Loader, Segment} from 'semantic-ui-react';
 import { Collapse } from "@chakra-ui/core";
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -33,7 +33,11 @@ class Products extends Component {
     }
 
     selectProductHandler = (id) => {
-        this.props.history.push('/products/' + id);
+        this.props.loadProduct(id, this.props.history);
+
+/*        if (!this.props.error){
+            this.props.history.push('/products/' + id);
+        }*/
     }
 
     toggleAdvancedSearch = () => {
@@ -45,6 +49,9 @@ class Products extends Component {
     render() {
         return (
             <div>
+                <Dimmer active={this.props.loading} page>
+                    <Loader content='Loading' />
+                </Dimmer>
                 <div className="Products-Yellow-bar-div"/>
                 <div>
                     <header>
@@ -124,7 +131,10 @@ const mapStateToProps = state => {
         products: state.products.products,
         gender: state.products.gender,
         types: state.products.types,
-        size: state.products.size
+        size: state.products.size,
+        loading: state.product.loading,
+        product: state.product.product,
+        error: state.product.error
     }
 }
 
@@ -134,6 +144,7 @@ const mapDispatchToProps = dispatch => {
         loadGender: () => dispatch(actions.loadGenders()),
         loadTypes: () => dispatch(actions.loadTypes()),
         loadSize: () => dispatch(actions.loadSize()),
+        loadProduct: (id, history) => dispatch(actions.loadProduct(id, history)),
     }
 }
 

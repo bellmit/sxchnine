@@ -1,64 +1,26 @@
 import React, {Component} from 'react';
+import {Grid, Image, Label, Input} from "semantic-ui-react";
+import { connect } from 'react-redux';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
 import Card from './Card';
 import Contact from '../Contact/Contact';
-import {Grid, Image, Label, Input} from "semantic-ui-react";
 
 class Orders extends Component {
 
     state = {
-        products: [
-            {
-                id: 1, name: 'Classic retro - 90s', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 2, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 3, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 4, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 5, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 6, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
+        open: false,
+        total: 0
+    }
 
-        ],
-        open: false
+    componentDidMount(): void {
+        this.setState({total: this.props.productsToOrder.map(p => p.price).reduce((p1, p2) => p1 + p2, 0)});
     }
 
     handleOrder = () => {
         console.log("handle Order ");
     }
+
 
     render() {
 
@@ -74,16 +36,18 @@ class Orders extends Component {
                 </div>
                 <div className="Orders-Resume">
                     <Grid columns={2} centered>
-                        {this.state.products.map(product => (
-                            <Grid.Row centered key={product.id}>
+                        {this.props.productsToOrder.map(product => (
+                            <Grid.Row centered key={product.id + product.size}>
                                 <Grid.Column width={3}>
+{/*
                                     <Image src={product.images[0].url} size='small' circular />
+*/}
                                 </Grid.Column>
                                 <Grid.Column width={3}>
                                     <span className="Orders-Items-Text-Header">{product.name}</span>
-                                    <p className="Orders-Items-Text">Black </p>
-                                    <p className="Orders-Items-Text">Small</p>
-                                    <p className="Orders-Items-Text">$90</p>
+                                    <p className="Orders-Items-Text">{product.color} </p>
+                                    <p className="Orders-Items-Text">{product.size}</p>
+                                    <p className="Orders-Items-Text">${product.size}</p>
                                 </Grid.Column>
                             </Grid.Row>
                         ))}
@@ -92,7 +56,7 @@ class Orders extends Component {
                                 <p className="Orders-Total-Text">TOTAL:</p>
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                <Label tag color='red'>$200</Label>
+                                <Label tag color='red'>${this.state.total}</Label>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -129,7 +93,7 @@ class Orders extends Component {
                         </Grid.Row>
                     </Grid>
                     <Card {...this.props}/>
-                    <div className="Orders-footer">
+                    <div>
                     <Contact />
                     </div>
 
@@ -139,4 +103,10 @@ class Orders extends Component {
     }
 }
 
-export default Orders;
+const mapStateToProps = state => {
+    return {
+        productsToOrder: state.productsToOrder.productsToOrder
+    }
+}
+
+export default connect(mapStateToProps)(Orders);

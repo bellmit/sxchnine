@@ -40,6 +40,11 @@
     align-items: center;
 }
 
+.Middle-div {
+    top: 50%;
+    position: absolute;
+}
+
 .Reco-Container-div {
     margin: 5% 0 0 17%;
     position: absolute;

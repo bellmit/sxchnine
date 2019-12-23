@@ -1,17 +1,43 @@
 import React, {Component} from 'react';
-import {Form, Button, Icon, Grid, Label} from 'semantic-ui-react';
+import {Form, Button, Icon, Grid, Label, Dropdown} from 'semantic-ui-react';
 import {Badge, CSSReset, ThemeProvider} from "@chakra-ui/core";
+import { connect } from 'react-redux';
+import * as actions from '../../store/actions/index';
 import './ProductDetails.css';
 
 class ProductDetails extends Component {
     state = {
-        availability: true
+        availability: true,
+        size: '',
+        color: '',
+
     };
 
-    handleChange = (e, {value}) => this.setState({value})
+    handleChangeSize = (e, {value}) => this.setState({value, size: value});
+
+    handleChangeColor = (e, { value }) => this.setState({ value, color: value });
+
+    handleAddToOrder = () => {
+        console.log('Product to order');
+        console.log(this.props.product.id);
+        console.log(this.props.product.name);
+        console.log(this.props.product.brand);
+        console.log(this.props.product.price);
+        console.log(this.state.size);
+        console.log(this.state.color);
+        const productToOrder= {
+            id: this.props.product.id,
+            name: this.props.product.name,
+            brand: this.props.product.brand,
+            price: this.props.product.price,
+            size: this.state.size,
+            color: this.state.color
+        }
+
+        this.props.addProductToOrder(productToOrder);
+    }
 
     render() {
-        const {value} = this.state;
         let badge = null;
 
         const options = [
@@ -47,44 +73,46 @@ class ProductDetails extends Component {
         return (
             <div>
                 <div>
-                    <p className="Product-Name-Div">Classic Hoodie - 90's</p>
+                    <p className="Product-Name-Div">{this.props.product.name}</p>
                 </div>
                 <div className="Product-Form-Div">
                     <Form unstackable widths='equal' size='large'>
 
                         <Form.Group inline widths='equal'>
                             <span className="Product-Props-Div">COLOR:&nbsp;&nbsp;&nbsp;</span>
-                            <Form.Select
-
+                            <Dropdown
+                                onChange={this.handleChangeColor}
                                 fluid
                                 options={options}
-                                placeholder='Color'/>
+                                placeholder='Color'
+                                selection
+                                value={this.state.color}/>
                         </Form.Group>
                         <Form.Group inline widths='equal'>
                             <span className="Product-Props-Div">SIZE:&nbsp;&nbsp;&nbsp;</span>
                             <Form.Radio
                                 label='Small'
-                                value='sm'
-                                checked={value === 'sm'}
-                                onChange={this.handleChange}
+                                value='S'
+                                checked={this.state.value === 'S'}
+                                onChange={this.handleChangeSize}
                             />
                             <Form.Radio
                                 label='Medium'
-                                value='md'
-                                checked={value === 'md'}
-                                onChange={this.handleChange}
+                                value='M'
+                                checked={this.state.value === 'M'}
+                                onChange={this.handleChangeSize}
                             />
                             <Form.Radio
                                 label='Large'
-                                value='lg'
-                                checked={value === 'lg'}
-                                onChange={this.handleChange}
+                                value='L'
+                                checked={this.state.value === 'L'}
+                                onChange={this.handleChangeSize}
                             />
                         </Form.Group>
                         <Form.Group inline widths='equal'>
                             <span className="Product-Props-Div">PRICE:&nbsp;&nbsp;&nbsp;</span>
                             <Label tag color='red'>
-                                $90
+                                ${this.props.product.price}
                             </Label>
                         </Form.Group>
                         <Form.Group>
@@ -93,7 +121,7 @@ class ProductDetails extends Component {
                         <Form.Group>
                             {badge}
                         </Form.Group>
-                        <Button animated='vertical' inverted color='yellow' floated='right'>
+                        <Button animated='vertical' inverted color='yellow' floated='right' onClick={this.handleAddToOrder}>
                             <Button.Content hidden>Got it!</Button.Content>
                             <Button.Content visible>
                                 <Icon name='shop' inverted color='yellow'/>
@@ -127,4 +155,10 @@ class ProductDetails extends Component {
     }
 }
 
-export default ProductDetails;
+const dispatchToProps = dispatch => {
+    return {
+        addProductToOrder: (productToOrder) => dispatch(actions.addProductToOrder(productToOrder))
+    }
+}
+
+export default connect(null, dispatchToProps)(ProductDetails);
