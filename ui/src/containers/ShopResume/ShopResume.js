@@ -32,7 +32,7 @@ class ShopResume extends Component {
         return (
             <div>
                 <div>
-                    <ShoppingCart size={0} show={this.show('small')}/>
+                    <ShoppingCart show={this.show('small')}/>
                 </div>
 
                 <div className="Modal-Content-div">

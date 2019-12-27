@@ -8,9 +8,6 @@ class ShoppingCart extends Component {
 
     render() {
         let label = null;
-        /*
-            if (props.size !== 0){
-        */
         if (this.props.productsToOrder.length !== 0) {
             label = <Label color='red' floating size='mini'>
                 {this.props.productsToOrder.length}

@@ -9,30 +9,6 @@ import './Recommendation.css';
 
 
 class Recommendation extends Component {
-    state = {
-        products: [
-            {
-                id: 1, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 1, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 1, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            }]
-    };
 
     render() {
 
@@ -44,7 +20,7 @@ class Recommendation extends Component {
                     arrowRight={<Icon name="arrow right" color='yellow' size='large'/>}
                     addArrowClickHandler
                     infinite>
-                    {this.props.products.map((product, index) => (
+                    {this.props.products.slice(0, 3).map((product, index) => (
                         <Product key={index}
                                  name={product.name}
                                  image={product.images}

@@ -1,7 +1,9 @@
 import React, {Component} from "react";
 import {Dimmer, Form, Grid, Icon, Input, Loader, Segment} from 'semantic-ui-react';
-import { Collapse } from "@chakra-ui/core";
-import { connect } from 'react-redux';
+import {Collapse} from "@chakra-ui/core";
+import {connect} from 'react-redux';
+import {Waypoint} from "react-waypoint";
+import Aux from '../../hoc/Aux/Aux';
 import * as actions from '../../store/actions/index';
 import Product from './Product';
 import BannerMen from '../../components/Banner/Banner';
@@ -15,50 +17,56 @@ class Products extends Component {
     state = {
         change: '',
         show: false,
-        size: 0
+        size: 0,
+        count: 0
     }
 
     componentDidMount() {
         console.log("Products.js ");
         console.log(this.props);
 
-        this.props.loadProducts();
+        this.props.loadProducts(0, 9);
         this.props.loadGender();
         this.props.loadTypes();
         this.props.loadSize();
-        window.addEventListener('scroll', this.handleScroll, false);
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
         console.log('Products.js did update');
     }
 
-    handleScroll = () => {
-        console.log('handle scroll');
-    }
-
-
     changeHandler = (event) => {
         this.setState({
             change: event.target.value
         })
-    }
+    };
 
     selectProductHandler = (id) => {
         this.props.loadProduct(id, this.props.history);
-    }
+    };
 
     toggleAdvancedSearch = () => {
         this.setState((state) => ({
             show: !state.show
         }))
+    };
+
+    fetchMore = (index) => {
+        console.log('fetchMore');
+        if (this.props.products.length < 27) {
+            this.setState((prev) => ({
+                count: prev.count + 1
+            }));
+            this.props.loadProducts(this.state.count, 9);
+        }
+        console.log(this.props.products);
     }
 
     render() {
         return (
-            <div>
+            <Aux>
                 <Dimmer active={this.props.loading} page>
-                    <Loader content='Loading' />
+                    <Loader content='Loading'/>
                 </Dimmer>
                 <div className="Products-Yellow-bar-div"/>
                 <div>
@@ -67,7 +75,7 @@ class Products extends Component {
                     </header>
                 </div>
                 <div>
-                    <ShopResume size = {0} {...this.props}/>
+                    <ShopResume {...this.props}/>
                 </div>
 
                 <div className="Product-Message">
@@ -105,25 +113,28 @@ class Products extends Component {
                         </Collapse>
                     </Segment>
                 </div>
-                <div>{this.state.change}</div>
-
                 <div className="Product-Container">
-                    <Grid centered columns={3}>
+                    <Grid centered columns={3} textAlign="center" padded="vertically">
                         <Grid.Row centered>
 
                             {this.props.products.map((product, index) => (
-                                <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true" >
-                                    <Product name={product.name}
-                                             image={product.images}
-                                             logo={product.logo}
-                                             brand={product.brand}
-                                             price={product.price}
-                                             size={product.size}
-                                             id={product.id}
-                                             height="80%"
-                                             width="80%"
-                                             clicked={() => this.selectProductHandler(product.id)}/>
-                                    <br/>
+                                <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true">
+                                    <Aux>
+                                        <Product name={product.name}
+                                                 image={product.images}
+                                                 logo={product.logo}
+                                                 brand={product.brand}
+                                                 price={product.price}
+                                                 size={product.size}
+                                                 id={product.id}
+                                                 height="80%"
+                                                 width="80%"
+                                                 clicked={() => this.selectProductHandler(product.id)}/>
+
+                                        {index === this.props.products.length - 1
+                                        && (<Waypoint onEnter={() => this.fetchMore(index)}/>)}
+                                        <br/>
+                                    </Aux>
                                 </Grid.Column>
 
                             ))}
@@ -136,7 +147,7 @@ class Products extends Component {
                     </div>
                 </div>
 
-            </div>
+            </Aux>
         );
     }
 }
@@ -155,7 +166,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadProducts: () => dispatch(actions.fetchProduct()),
+        loadProducts: (pageNo, pageSize) => dispatch(actions.fetchProduct(pageNo, pageSize)),
         loadGender: () => dispatch(actions.loadGenders()),
         loadTypes: () => dispatch(actions.loadTypes()),
         loadSize: () => dispatch(actions.loadSize()),
@@ -164,5 +175,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-
-export default connect (mapStateToProps, mapDispatchToProps) (Products);
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

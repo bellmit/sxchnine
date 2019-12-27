@@ -1,11 +1,13 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
 
-export const fetchProduct = () => {
+export const fetchProduct = (pageNo, pageSize) => {
     return dispatch => {
         dispatch(loadProductsStart(true));
-        axios.get('/all')
+        axios.get('/all?pageNo='+pageNo+'&pageSize='+pageSize)
             .then(response => {
+                if (response.data.length === 0)
+                    return;
                 dispatch(loadProducts(response.data));
                 dispatch(loadProductsStart(false));
             }).catch(error => {
@@ -28,51 +30,6 @@ export const loadProducts = ( products ) => {
     return {
         type: actionTypes.LOAD_PRODUCTS_SUCCESS,
         products: products
-/*        products: [
-            {
-                id: 1, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 2, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 3, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 4, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 5, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-            {
-                id: 6, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
-                    {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
-                    {id: 2, name: 'Unknown2', url: 'Unknown2.png'},
-                    {id: 3, name: 'Unknown3', url: 'Unknown3.png'}
-                ]
-            },
-
-        ]*/
     }
 }
 

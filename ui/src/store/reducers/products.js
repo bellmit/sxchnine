@@ -18,9 +18,13 @@ const reducer = (state = initialState, action) => {
                 loading: action.loading
             };
         case actionTypes.LOAD_PRODUCTS_SUCCESS:
+            let products = [...state.products];
+            products = products.concat(action.products);
+            console.log('reducer with products');
+            console.log(products);
             return {
                 ...state,
-                products: action.products
+                products: products
             };
         case actionTypes.LOAD_PRODUCTS_FAIL:
             return {
