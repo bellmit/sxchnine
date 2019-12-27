@@ -34,7 +34,7 @@
     background: rgb(255, 240, 36);
     height: 1%;
     width: 50%;
-    top: 160%;
+    top: 90%;
     left: 22%;
     position: absolute;
     align-items: center;
@@ -49,6 +49,7 @@
     margin: 5% 0 0 17%;
     position: absolute;
     width: 60%;
+    top: 85%;
     align-content: center;
 }
 
@@ -73,13 +74,23 @@
         position: absolute;
     }
 
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 120%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
     .Product-Details-Div {
         position: absolute;
         top: 65%;
     }
 
     .Reco-Container-div {
-        margin: 100% 0 0 0;
+        margin: 70% 0 0 0;
         position: absolute;
         width: 100%;
         align-content: center;
@@ -107,13 +118,23 @@
         position: absolute;
     }
 
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 120%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
     .Product-Details-Div {
         position: absolute;
         top: 65%;
     }
 
     .Reco-Container-div {
-        margin: 100% 0 0 0;
+        margin: 70% 0 0 0;
         position: absolute;
         width: 100%;
         align-content: center;

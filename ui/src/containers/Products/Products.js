@@ -19,12 +19,24 @@ class Products extends Component {
     }
 
     componentDidMount() {
-        console.log("Products.js " + this.props);
+        console.log("Products.js ");
+        console.log(this.props);
+
         this.props.loadProducts();
         this.props.loadGender();
         this.props.loadTypes();
         this.props.loadSize();
+        window.addEventListener('scroll', this.handleScroll, false);
     }
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
+        console.log('Products.js did update');
+    }
+
+    handleScroll = () => {
+        console.log('handle scroll');
+    }
+
 
     changeHandler = (event) => {
         this.setState({
@@ -34,10 +46,6 @@ class Products extends Component {
 
     selectProductHandler = (id) => {
         this.props.loadProduct(id, this.props.history);
-
-/*        if (!this.props.error){
-            this.props.history.push('/products/' + id);
-        }*/
     }
 
     toggleAdvancedSearch = () => {
@@ -106,7 +114,14 @@ class Products extends Component {
                             {this.props.products.map((product, index) => (
                                 <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true" >
                                     <Product name={product.name}
+                                             image={product.images}
+                                             logo={product.logo}
+                                             brand={product.brand}
+                                             price={product.price}
+                                             size={product.size}
                                              id={product.id}
+                                             height="80%"
+                                             width="80%"
                                              clicked={() => this.selectProductHandler(product.id)}/>
                                     <br/>
                                 </Grid.Column>
@@ -140,7 +155,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadProducts: () => dispatch(actions.loadProducts()),
+        loadProducts: () => dispatch(actions.fetchProduct()),
         loadGender: () => dispatch(actions.loadGenders()),
         loadTypes: () => dispatch(actions.loadTypes()),
         loadSize: () => dispatch(actions.loadSize()),

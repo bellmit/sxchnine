@@ -60,7 +60,7 @@
 .Product-Container {
     width: 60%;
     position: absolute;
-    top: 120%;
+    top: 150%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -96,7 +96,7 @@
     .Product-Container {
         width: 60%;
         position: absolute;
-        top: 240%;
+        top: 300%;
         left: 56%;
         transform: translate(-50%, -50%);
     }
@@ -174,7 +174,7 @@
     .Product-Container {
         width: 60%;
         position: absolute;
-        top: 240%;
+        top: 300%;
         left: 56%;
         transform: translate(-50%, -50%);
     }

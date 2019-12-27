@@ -19,19 +19,15 @@ class ShopResume extends Component {
 
     redirectToOrders = () => {
         this.props.history.push('/checkout');
-    }
+    };
 
     removeProduct = (id) => {
-/*        let products = [...this.props.productsToOrder];
-        products.splice(id, 1);
-        this.setState({products: products});*/
         this.props.removeProductToOrder(id);
-        console.log(this.props.productsToOrder);
-    }
+    };
 
 
     render() {
-        const {open, size} = this.state
+        const {open, size} = this.state;
 
         return (
             <div>
@@ -48,15 +44,15 @@ class ShopResume extends Component {
 */}
 
                         {this.props.productsToOrder.map((product, index) => (
-                            <Modal.Content image key={product.id + product.size}>
+                            <Modal.Content image key={index}>
                                 <Image wrapped size='small'
-                                       src={panierPic}/>
+                                       src={product.image}/>
                                 <Modal.Description>
                                     <Header>
                                         <span className="Panier-Items-Text-Header">{product.name}</span>
                                         <img alt="" src={trash}
                                              className="Trash-Icon"
-                                             onClick={() => this.removeProduct(product.id)}/>
+                                             onClick={() => this.removeProduct(index)}/>
                                     </Header>
                                     <p className="Panier-Items-Text">{product.color}</p>
                                     <p className="Panier-Items-Text">{product.size}</p>

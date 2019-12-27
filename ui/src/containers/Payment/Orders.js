@@ -24,7 +24,6 @@ class Orders extends Component {
 
     render() {
 
-
         return (
             <div>
                 <div className="Orders-Yellow-bar-div" />
@@ -39,9 +38,7 @@ class Orders extends Component {
                         {this.props.productsToOrder.map(product => (
                             <Grid.Row centered key={product.id + product.size}>
                                 <Grid.Column width={3}>
-{/*
-                                    <Image src={product.images[0].url} size='small' circular />
-*/}
+                                    <Image src={product.image} size='small' circular />
                                 </Grid.Column>
                                 <Grid.Column width={3}>
                                     <span className="Orders-Items-Text-Header">{product.name}</span>
@@ -93,10 +90,7 @@ class Orders extends Component {
                         </Grid.Row>
                     </Grid>
                     <Card {...this.props}/>
-                    <div>
                     <Contact />
-                    </div>
-
                 </div>
             </div>
         );

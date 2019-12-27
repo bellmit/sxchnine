@@ -12,9 +12,11 @@ const reducer = (state = initialState, action) => {
                 productsToOrder: state.productsToOrder.concat(action.productToOrder)
             };
         case actionTypes.REMOVE_PRODUCT_TO_ORDER:
+            let products = [...state.productsToOrder];
+            products.splice(action.id, 1);
             return {
                 ...state,
-                productsToOrder: state.productsToOrder.filter( p => p.id !== action.id)
+                productsToOrder: products
             }
         default: return state;
     }

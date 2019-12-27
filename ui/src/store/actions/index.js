@@ -2,7 +2,8 @@ export {
     loadProducts,
     loadGenders,
     loadTypes,
-    loadSize
+    loadSize,
+    fetchProduct
 } from './products';
 
 export {

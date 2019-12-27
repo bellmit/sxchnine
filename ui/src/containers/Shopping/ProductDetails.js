@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Form, Button, Icon, Grid, Label, Dropdown} from 'semantic-ui-react';
 import {Badge, CSSReset, ThemeProvider} from "@chakra-ui/core";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import './ProductDetails.css';
 
@@ -10,12 +10,52 @@ class ProductDetails extends Component {
         availability: true,
         size: '',
         color: '',
+        colors: [],
+        availableSize: [],
 
     };
 
-    handleChangeSize = (e, {value}) => this.setState({value, size: value});
+    componentDidMount(): void {
+        console.log('ProductDetails.js did mount');
+        this.createColors();
+    }
 
-    handleChangeColor = (e, { value }) => this.setState({ value, color: value });
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
+        console.log('ProductDetails.js did update');
+
+    }
+
+    handleChangeSize = (e, {value}) => {
+        this.setState({value, size: value});
+    }
+
+    handleChangeColor = (e, {value}) => {
+        this.setState({value, color: value});
+/*        let availableSize = this.props.product.availability[value].map(size => size.size).map(s => {
+            console.log(this.state.value)
+            return <Form.Radio
+                key={s}
+                label={s}
+                value={s}
+                checked={this.state.value === s}
+                onChange={this.handleChangeSize}/>
+        });*/
+
+        //this.setState({availableSize: availableSize});
+        this.setState({availableSize: this.props.product.availability[value].map(size => size.size)});
+    };
+
+    createColors = () => {
+        let options = [];
+        this.props.product.colors.forEach(c => {
+            options.push({
+                key: c, text: c, value: c
+            })
+        });
+
+        this.setState({colors: options});
+    };
+
 
     handleAddToOrder = () => {
         console.log('Product to order');
@@ -25,13 +65,14 @@ class ProductDetails extends Component {
         console.log(this.props.product.price);
         console.log(this.state.size);
         console.log(this.state.color);
-        const productToOrder= {
+        const productToOrder = {
             id: this.props.product.id,
             name: this.props.product.name,
             brand: this.props.product.brand,
             price: this.props.product.price,
             size: this.state.size,
-            color: this.state.color
+            color: this.state.color,
+            image: this.props.product.images[0]
         }
 
         this.props.addProductToOrder(productToOrder);
@@ -39,12 +80,6 @@ class ProductDetails extends Component {
 
     render() {
         let badge = null;
-
-        const options = [
-            {key: 'm', text: 'Male', value: 'male'},
-            {key: 'f', text: 'Female', value: 'female'},
-            {key: 'o', text: 'Other', value: 'other'},
-        ]
 
         if (this.state.availability) {
             badge = (
@@ -83,7 +118,7 @@ class ProductDetails extends Component {
                             <Dropdown
                                 onChange={this.handleChangeColor}
                                 fluid
-                                options={options}
+                                options={this.state.colors}
                                 placeholder='Color'
                                 selection
                                 value={this.state.color}/>
@@ -93,18 +128,21 @@ class ProductDetails extends Component {
                             <Form.Radio
                                 label='Small'
                                 value='S'
+                                disabled = {!this.state.availableSize.includes('S')}
                                 checked={this.state.value === 'S'}
                                 onChange={this.handleChangeSize}
                             />
                             <Form.Radio
                                 label='Medium'
                                 value='M'
+                                disabled = {!this.state.availableSize.includes('M')}
                                 checked={this.state.value === 'M'}
                                 onChange={this.handleChangeSize}
                             />
                             <Form.Radio
                                 label='Large'
                                 value='L'
+                                disabled = {!this.state.availableSize.includes('L')}
                                 checked={this.state.value === 'L'}
                                 onChange={this.handleChangeSize}
                             />
@@ -116,12 +154,14 @@ class ProductDetails extends Component {
                             </Label>
                         </Form.Group>
                         <Form.Group>
-                            <a href="/delivery" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return info</a>
+                            <a href="/delivery" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return
+                                info</a>
                         </Form.Group>
                         <Form.Group>
                             {badge}
                         </Form.Group>
-                        <Button animated='vertical' inverted color='yellow' floated='right' onClick={this.handleAddToOrder}>
+                        <Button animated='vertical' inverted color='yellow' floated='right'
+                                onClick={this.handleAddToOrder}>
                             <Button.Content hidden>Got it!</Button.Content>
                             <Button.Content visible>
                                 <Icon name='shop' inverted color='yellow'/>

@@ -1,9 +1,34 @@
 import * as actionTypes from './actionTypes';
+import axios from '../../axios/axios';
 
-export const loadProducts = () => {
+export const fetchProduct = () => {
+    return dispatch => {
+        dispatch(loadProductsStart(true));
+        axios.get('/all')
+            .then(response => {
+                dispatch(loadProducts(response.data));
+                dispatch(loadProductsStart(false));
+            }).catch(error => {
+            dispatch(loadProductsFail(error)) ;
+            dispatch(loadProductsStart(false));
+
+        })
+    }
+};
+
+
+export const loadProductsStart = (loading) => {
     return {
-        type: actionTypes.LOAD_PRODUCTS,
-        products: [
+        type: actionTypes.LOAD_PRODUCTS_START,
+        loading: loading
+    }
+};
+
+export const loadProducts = ( products ) => {
+    return {
+        type: actionTypes.LOAD_PRODUCTS_SUCCESS,
+        products: products
+/*        products: [
             {
                 id: 1, name: 'Classic retro - ', brand: 'Nike', logo: '', images: [
                     {id: 1, name: 'Unknown1', url: 'Unknown1.png'},
@@ -47,9 +72,18 @@ export const loadProducts = () => {
                 ]
             },
 
-        ]
+        ]*/
     }
 }
+
+
+export const loadProductsFail = ( error ) => {
+    return {
+        type: actionTypes.LOAD_PRODUCTS_FAIL,
+        error: error
+    }
+};
+
 
 export const loadGenders = () => {
     return {
