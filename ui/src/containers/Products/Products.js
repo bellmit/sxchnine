@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Dimmer, Form, Grid, Icon, Input, Loader, Segment} from 'semantic-ui-react';
+import {Dimmer, Dropdown, Form, Grid, Icon, Input, Loader, Segment} from 'semantic-ui-react';
 import {Collapse} from "@chakra-ui/core";
 import {connect} from 'react-redux';
 import {Waypoint} from "react-waypoint";
@@ -17,15 +17,22 @@ class Products extends Component {
     state = {
         change: '',
         show: false,
-        size: 0,
-        count: 0
+        count: 0,
+        gender: '',
+        category: '',
+        size: '',
+
     }
 
     componentDidMount() {
-        console.log("Products.js ");
+        console.log("Products.js did mount");
         console.log(this.props);
 
-        this.props.loadProducts(0, 9);
+        if (this.props.location.pathname === '/men') {
+            this.props.loadProducts(0, 9, 'M');
+        } else if (this.props.location.pathname === '/women') {
+            this.props.loadProducts(0, 9, 'W');
+        }
         this.props.loadGender();
         this.props.loadTypes();
         this.props.loadSize();
@@ -35,10 +42,16 @@ class Products extends Component {
         console.log('Products.js did update');
     }
 
-    changeHandler = (event) => {
-        this.setState({
-            change: event.target.value
-        })
+    searchProducts = (event) => {
+        if (event.target.value === ''){
+            if (this.props.location.pathname === '/men') {
+                this.props.loadProducts(0, 9, 'M');
+            } else if (this.props.location.pathname === '/women') {
+                this.props.loadProducts(0, 9, 'W');
+            }
+        } else {
+            this.props.searchProducts(event.target.value);
+        }
     };
 
     selectProductHandler = (id) => {
@@ -51,15 +64,30 @@ class Products extends Component {
         }))
     };
 
+    handleChangeGender = (e, { value }) => this.setState({ value,
+        gender: value
+    });
+    handleChangeCategory = (e, { value }) => this.setState({ value, category: value });
+    handleChangeSize = (e, { value }) => this.setState({ value, size: value });
+
+
+    searchAdvanced = () => {
+        this.props.searchAdvancedProducts(this.state.gender, this.state.category, this.state.size);
+    };
+
     fetchMore = (index) => {
-        console.log('fetchMore');
-        if (this.props.products.length < 27) {
-            this.setState((prev) => ({
-                count: prev.count + 1
-            }));
-            this.props.loadProducts(this.state.count, 9);
+        if (index >= 9) {
+            if (this.props.products.length < 27) {
+                this.setState((prev) => ({
+                    count: prev.count + 1
+                }));
+                if (this.props.location.pathname === '/men') {
+                    this.props.loadProducts(this.state.count, 9, 'M');
+                } else if (this.props.location.pathname === '/women') {
+                    this.props.loadProducts(this.state.count, 9, 'W');
+                }
+            }
         }
-        console.log(this.props.products);
     }
 
     render() {
@@ -86,28 +114,41 @@ class Products extends Component {
 
                         <Input inverted icon={<Icon name='search' inverted circular link/>}
                                placeholder='Search...'
-                               onChange={this.changeHandler} style={{marginBottom: '10px'}}/>
+                               onChange={this.searchProducts}
+                               style={{marginBottom: '10px', fontFamily: 'Anton', fontSize: '10px'}}/>
 
                         <img alt="" src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
                         <Collapse isOpen={this.state.show}>
                             <Form size='tiny' mobile={2}>
                                 <Form.Group inline widths='1' unstackable mobile={2}>
-                                    <Form.Select
+                                    <Dropdown
+                                        onChange={this.handleChangeGender}
+                                        fluid
+                                        selection
                                         width={6}
                                         options={this.props.gender}
-                                        placeholder='SEXE'
+                                        value={this.state.gender}
+                                        placeholder='Gender'
                                         className="Product-Search-Advanced"/>
-                                    <Form.Select
+                                    <Dropdown
+                                        onChange={this.handleChangeCategory}
+                                        fluid
+                                        selection
                                         width={6}
                                         options={this.props.types}
+                                        value={this.state.category}
                                         placeholder='Genre'
                                         className="Product-Search-Advanced"/>
-                                    <Form.Select
+                                    <Dropdown
+                                        onChange={this.handleChangeSize}
+                                        fluid
+                                        selection
                                         width={6}
                                         options={this.props.size}
+                                        value={this.state.size}
                                         placeholder='Size'
                                         className="Product-Search-Advanced"/>
-                                    <img alt="" src={searchIcon} className="Search-Icon"/>
+                                    <img alt="" src={searchIcon} className="Search-Icon" onClick={this.searchAdvanced}/>
                                 </Form.Group>
                             </Form>
                         </Collapse>
@@ -166,11 +207,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadProducts: (pageNo, pageSize) => dispatch(actions.fetchProduct(pageNo, pageSize)),
+        loadProducts: (pageNo, pageSize, sex) => dispatch(actions.fetchProduct(pageNo, pageSize, sex)),
         loadGender: () => dispatch(actions.loadGenders()),
         loadTypes: () => dispatch(actions.loadTypes()),
         loadSize: () => dispatch(actions.loadSize()),
         loadProduct: (id, history) => dispatch(actions.loadProduct(id, history)),
+        searchProducts: (event) => dispatch(actions.searchProducts(event)),
+        searchAdvancedProducts: (gender, category, size) => dispatch(actions.searchAdvancedProducts(gender, category, size))
     }
 }
 

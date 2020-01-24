@@ -3,7 +3,6 @@ package com.project.business;
 import com.project.ProductServiceApplication;
 import com.project.exception.ProductNotFoundException;
 import com.project.model.Product;
-import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -68,7 +67,7 @@ public class ProductServiceTestIT {
 
     @Test
     public void testGetAllProducts(){
-        List<Product> allProducts = productService.getAllProducts();
+        List<Product> allProducts = productService.getAllProducts(0, 2);
         assertEquals(2, allProducts.size());
     }
 

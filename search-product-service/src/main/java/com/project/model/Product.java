@@ -1,15 +1,10 @@
 package com.project.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.Mapping;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,18 +13,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Document(indexName = "store_products", type = "product", createIndex = false)
+@Document(indexName = "store_products", type = "_doc", createIndex = false)
 public class Product implements Serializable {
 
     private String id;
     private String reference;
     private String name;
     private String brand;
+    private String sex;
     private String category;
     private double price;
-    private String size;
-    private String color;
-    private String image;
+    private List<String> size;
+    private List<String> colors;
+    private String logo;
+    private List<String> images;
     private Dimension dimension;
     private double originalPrice;
     private int promotion;

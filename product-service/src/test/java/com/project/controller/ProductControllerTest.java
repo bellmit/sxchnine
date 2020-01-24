@@ -3,7 +3,6 @@ package com.project.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.business.ProductService;
 import com.project.model.Product;
-import org.junit.experimental.categories.Category;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -25,7 +24,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -54,9 +53,9 @@ public class ProductControllerTest {
 
     @Test
     public void testGetProducts() throws Exception {
-        when(productService.getAllProducts()).thenReturn(Collections.singletonList(TestObjectCreator.createProduct()));
+        when(productService.getAllProducts(anyInt(), anyInt())).thenReturn(Collections.singletonList(TestObjectCreator.createProduct()));
 
-        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/all"))
+        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/all?pageNo=0&pageSize=1"))
                 .andReturn().getResponse();
 
         assertTrue(response.getContentAsString().contains("1"));

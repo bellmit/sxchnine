@@ -20,7 +20,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LOAD_PRODUCTS_SUCCESS:
             let products = [...state.products];
             products = products.concat(action.products);
-            console.log('reducer with products');
             console.log(products);
             return {
                 ...state,
@@ -45,6 +44,26 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 size: action.size
+            };
+        case actionTypes.SEARCH_PRODUCTS_SUCCESS:
+            return {
+                ...state,
+                products: action.products
+            };
+        case actionTypes.SEARCH_PRODUCTS_START:
+            return {
+                ...state,
+                loading: action.loading
+            };
+        case actionTypes.SEARCH_ADVANCED_PRODUCTS_START:
+            return {
+                ...state,
+                loading: action.loading
+            };
+        case actionTypes.SEARCH_ADVANCED_PRODUCTS_SUCCESS:
+            return {
+                ...state,
+                products: action.products
             };
         default:
             return state;

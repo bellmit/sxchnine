@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import './App.css';
 import Menu from './containers/Menu/Menu';
+import Logo from './components/Logo/Logo';
 import Home from './components/Home/Home';
 import Products from './containers/Products/Products';
 import ProductSlick from './containers/Shopping/ProductSlick';
@@ -13,6 +14,7 @@ function App() {
   return (
     <div className="App-Container">
         <Menu />
+        <Logo />
         <Route  path="/" exact component={Home}/>
         <Route  path="/men" exact component={Products}/>
         <Route  path="/women" exact component={Products}/>

@@ -87,7 +87,7 @@ public class ProductControllerTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Product product = easyRandom.nextObject(Product.class);
 
-        when(productService.getProductsByAdvancedFiltering(any(), any(), any())).thenReturn(Collections.singletonList(product));
+        when(productService.getProductsByAdvancedFiltering(any(), any(), any(), any())).thenReturn(Collections.singletonList(product));
 
         MvcResult result = mockMvc.perform(get("/advancedSearch?brand=nike&category=tshirt&size=M"))
                 .andExpect(status().isOk())

@@ -21,15 +21,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Iterable<Product> getProductsByQuery(String query) {
+    public List<Product> getProductsByQuery(String query) {
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .should(QueryBuilders.queryStringQuery("*" + query + "*")
                         .analyzeWildcard(true)
-                        .field("id")
                         .field("name")
                         .field("brand")
-                        .field("category")
-                        .field("color"));
+                        .field("category"));
 
 
         QueryBuilder matchName = QueryBuilders.fuzzyQuery("name", query);
@@ -43,9 +41,13 @@ public class ProductService {
         return productRepository.search(queryBuilder1);
     }
 
-    public Iterable<Product> getProductsByAdvancedFiltering(String brand, String category, String size) {
-        log.info("search product by advanced filter, zanz");
+    public List<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {
+        log.info(" ********************* search product by advanced filter " + Thread.currentThread().getName());
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+
+        if (StringUtils.isNotBlank(gender)) {
+            queryBuilder.must(QueryBuilders.matchQuery("sex", gender));
+        }
 
         if (StringUtils.isNotBlank(brand)) {
             queryBuilder.must(QueryBuilders.matchQuery("brand", brand));
@@ -62,7 +64,7 @@ public class ProductService {
         return productRepository.search(queryBuilder);
     }
 
-    public Iterable<Product> getAllProducts(){
+    public List<Product> getAllProducts(){
         return productRepository.findAll();
     }
 

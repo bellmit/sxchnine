@@ -44,7 +44,7 @@ class Orders extends Component {
                                     <span className="Orders-Items-Text-Header">{product.name}</span>
                                     <p className="Orders-Items-Text">{product.color} </p>
                                     <p className="Orders-Items-Text">{product.size}</p>
-                                    <p className="Orders-Items-Text">${product.size}</p>
+                                    <p className="Orders-Items-Text">${product.price}</p>
                                 </Grid.Column>
                             </Grid.Row>
                         ))}

@@ -3,6 +3,7 @@ package com.project.controller;
 
 import com.project.business.ProductService;
 import com.project.model.Product;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @Slf4j
 public class ProductController {
 
@@ -29,8 +31,16 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public List<Product> getProducts(){
-        return productService.getAllProducts();
+    public List<Product> getProducts(@RequestParam(defaultValue = "0") int pageNo,
+                                     @RequestParam(defaultValue = "2") int pageSize){
+        return productService.getAllProducts(pageNo, pageSize);
+    }
+
+    @GetMapping("/allBySex")
+    public List<Product> getProductsBySex(@RequestParam(defaultValue = "0") int pageNo,
+                                          @RequestParam(defaultValue = "2") int pageSize,
+                                          @RequestParam char sex){
+        return productService.getAllProductsBySex(pageNo, pageSize, sex);
     }
 
     @PostMapping("/save")

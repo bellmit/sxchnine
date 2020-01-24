@@ -25,8 +25,7 @@ import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
@@ -100,7 +99,7 @@ public class ProductControllerTestIT {
         Product product = easyRandom.nextObject(Product.class);
         product.setBrand("toto");
         product.setCategory("titi");
-        product.setSize("l");
+        product.setSize(Collections.singletonList("l"));
 
         productRepository.save(product);
 

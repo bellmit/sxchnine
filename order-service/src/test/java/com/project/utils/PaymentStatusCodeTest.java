@@ -2,6 +2,7 @@ package com.project.utils;
 
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 import static org.junit.Assert.assertEquals;
@@ -33,5 +34,25 @@ public class PaymentStatusCodeTest {
     public CompletableFuture<String> set(String var){
         this.var = var;
         return null;
+    }
+
+    @Test
+    public void testShift(){
+        int[] tab = {0, 4, 6, 7, 8, 0, 0};
+
+        int [] newTab = new int [tab.length + 5];
+
+        for (int i = 0; i < tab.length; i++){
+            newTab[i] = tab[i];
+        }
+
+        int mid = 1;
+        for (int j = newTab.length - 2; j > mid ;j--){
+            newTab[j + 1] = newTab[j];
+        }
+
+        newTab[mid+1] = 5;
+
+        Arrays.stream(newTab).forEach(System.out::println);
     }
 }

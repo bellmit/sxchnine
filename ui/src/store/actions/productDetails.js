@@ -26,13 +26,15 @@ export const startLoadingProduct = (loading) => {
 export const loadProduct = (id, history) => {
     return dispatch => {
         dispatch(startLoadingProduct(true));
-        axios.get('/id/'+id).then(response => {
+        axios.get('/product/id/'+id).then(response => {
             dispatch(handleProductSuccess(response.data));
             console.log('i got the response from the server man');
             dispatch(startLoadingProduct(false));
             history.push('/products/' + id);
         }).catch(error => {
             dispatch(handleProductError(error));
+            dispatch(startLoadingProduct(false));
+
         });
     }
 }

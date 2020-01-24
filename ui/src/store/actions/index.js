@@ -14,3 +14,11 @@ export {
     addProductToOrder,
     removeProductToOrder
 } from './productsToOrder';
+
+export {
+    searchProducts
+} from './searchProducts';
+
+export {
+    searchAdvancedProducts
+} from './searchAdvancedProducts';

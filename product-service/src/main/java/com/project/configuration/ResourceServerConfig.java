@@ -16,11 +16,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+/*        http.authorizeRequests()
                 .antMatchers("/actuator/**", "/autoconfig")
                 .permitAll()
                 .antMatchers("/**")
-                .authenticated();
+                .authenticated();*/
+
+        http.authorizeRequests()
+                .antMatchers("/**")
+                .permitAll();
     }
 
     @Override
@@ -46,4 +50,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         accessTokenConverter.setSigningKey("123");
         return accessTokenConverter;
     }
+
+/*    @Bean
+    public CorsConfigurationSource corsConfigurationSource()
+    {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT", "DELETE"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Origin", "Content-Type", "Accept", "x-device-user-agent"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }*/
 }

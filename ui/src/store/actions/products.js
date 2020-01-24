@@ -1,10 +1,10 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
 
-export const fetchProduct = (pageNo, pageSize) => {
+export const fetchProduct = (pageNo, pageSize, sex) => {
     return dispatch => {
         dispatch(loadProductsStart(true));
-        axios.get('/all?pageNo='+pageNo+'&pageSize='+pageSize)
+        axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex)
             .then(response => {
                 if (response.data.length === 0)
                     return;
@@ -46,8 +46,8 @@ export const loadGenders = () => {
     return {
         type: actionTypes.LOAD_GENDER,
         gender: [
-            {key: 'm', text: 'Male', value: 'male'},
-            {key: 'f', text: 'Female', value: 'female'}
+            {key: 'm', text: 'Male', value: 'm'},
+            {key: 'f', text: 'Female', value: 'w'}
         ]
     }
 }
@@ -68,9 +68,9 @@ export const loadSize = () => {
     return {
         type: actionTypes.LOAD_SIZE,
         size: [
-            {key: '1', text: 'Small', value: 'small'},
-            {key: '2', text: 'Medium', value: 'medium'},
-            {key: '3', text: 'Large', value: 'large'},
+            {key: '1', text: 'Small', value: 's'},
+            {key: '2', text: 'Medium', value: 'm'},
+            {key: '3', text: 'Large', value: 'l'},
             {key: '4', text: 'XL', value: 'xl'},
         ]
     }

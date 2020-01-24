@@ -48,7 +48,7 @@ public class ProductServiceTest {
 
         when(productRepository.search(any(QueryBuilder.class))).thenReturn(Collections.singletonList(product));
 
-        Iterable<Product> products = productService.getProductsByAdvancedFiltering("brand", "category", "size");
+        Iterable<Product> products = productService.getProductsByAdvancedFiltering("", "brand", "category", "size");
 
         assertThat(products).contains(product);
     }

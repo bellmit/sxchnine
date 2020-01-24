@@ -21,6 +21,7 @@ import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,7 +87,7 @@ public class ProductServiceTestIT {
         productService.save(product);
         productService.save(product2);
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("nike", "", "");
+        Iterable<Product> result = productService.getProductsByAdvancedFiltering("M","nike", "", "");
 
         assertThat(result).contains(product);
     }
@@ -107,7 +108,7 @@ public class ProductServiceTestIT {
         productService.save(product);
         productService.save(product2);
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("", "t-shirt", "");
+        Iterable<Product> result = productService.getProductsByAdvancedFiltering("","", "t-shirt", "");
 
         assertThat(result).contains(product);
         assertThat(result).contains(product2);
@@ -119,18 +120,18 @@ public class ProductServiceTestIT {
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
-        product.setSize("M");
+        product.setSize(Collections.singletonList("M"));
 
         Product product2 = new Product();
         product2.setName("retro adidas");
         product2.setCategory("t-shirt");
         product2.setBrand("adidas");
-        product2.setSize("L");
+        product2.setSize(Collections.singletonList("L"));
 
         productService.save(product);
         productService.save(product2);
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("", "", "L");
+        Iterable<Product> result = productService.getProductsByAdvancedFiltering("","", "", "L");
 
         assertThat(result).contains(product2);
     }
@@ -141,18 +142,18 @@ public class ProductServiceTestIT {
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
-        product.setSize("M");
+        product.setSize(Collections.singletonList("M"));
 
         Product product2 = new Product();
         product2.setName("retro adidas");
         product2.setCategory("t-shirt");
         product2.setBrand("adidas");
-        product2.setSize("L");
+        product2.setSize(Collections.singletonList("L"));
 
         productService.save(product);
         productService.save(product2);
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("nike", "t-shirt", "M");
+        Iterable<Product> result = productService.getProductsByAdvancedFiltering("", "nike", "t-shirt", "M");
 
         assertThat(result).contains(product);
     }
@@ -163,11 +164,11 @@ public class ProductServiceTestIT {
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
-        product.setSize("M");
+        product.setSize(Collections.singletonList("M"));
 
         productService.save(product);
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("nike", "cap", "M");
+        Iterable<Product> result = productService.getProductsByAdvancedFiltering("", "nike", "cap", "M");
 
         assertThat(result).doesNotContain(product);
     }
@@ -179,7 +180,7 @@ public class ProductServiceTestIT {
 
         productService.save(product);
 
-        Iterable<Product> savedProduct = productService.getProductsByAdvancedFiltering(product.getBrand(), product.getCategory(), product.getSize());
+        Iterable<Product> savedProduct = productService.getProductsByAdvancedFiltering(product.getSex(), product.getBrand(), product.getCategory(), product.getSize().get(0));
 
         assertThat(savedProduct).contains(product);
     }
@@ -193,7 +194,7 @@ public class ProductServiceTestIT {
 
         productService.deleteById(product.getId());
 
-        Iterable<Product> savedProduct = productService.getProductsByAdvancedFiltering(product.getBrand(), product.getCategory(), product.getSize());
+        Iterable<Product> savedProduct = productService.getProductsByAdvancedFiltering(product.getSex(), product.getBrand(), product.getCategory(), product.getSize().get(0));
 
         assertThat(savedProduct).isEmpty();
     }

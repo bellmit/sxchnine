@@ -3,8 +3,7 @@ spring:
     name: search-product-service
   cloud:
     config:
-      discovery:
-        service-id: config-server
+      uri: ${CONFIG_SERVER:http://localhost:8888}
   zipkin:
     base-url: ${ZIPKIN_SERVER:http://localhost:9411}
   sleuth:
@@ -12,3 +11,5 @@ spring:
       probability: 1
   main:
     allow-bean-definition-overriding: true
+
+#docker run --name search-product-service --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e ELASTICSEARCH_SERVER=es01 -e ELASTICSEARCH_PORT=9200 -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -e KAFKA_SERVER=kafka:9092 -d sifraden/search-product-service:1.0.0-SNAPSHOT

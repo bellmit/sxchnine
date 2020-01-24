@@ -3,10 +3,13 @@ spring:
     name: product-service
   cloud:
     config:
-      discovery:
-        service-id: config-server
+      uri: ${CONFIG_SERVER:http://localhost:8888}
   zipkin:
     base-url: ${ZIPKIN_SERVER:http://localhost:9411}
   sleuth:
     sampler:
       probability: 1
+server:
+  port: 8081
+
+#docker run --name product-service-graal --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e MONGO_SERVER=mongodb -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -e KAFKA_SERVER=kafka -d sifraden/product-service:1.0.0-SNAPSHOT-GRAAL

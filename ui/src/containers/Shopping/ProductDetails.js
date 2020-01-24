@@ -78,6 +78,10 @@ class ProductDetails extends Component {
         this.props.addProductToOrder(productToOrder);
     }
 
+    disableOrder = (color, size) => {
+        return color === '' || size === '';
+    }
+
     render() {
         let badge = null;
 
@@ -161,7 +165,7 @@ class ProductDetails extends Component {
                             {badge}
                         </Form.Group>
                         <Button animated='vertical' inverted color='yellow' floated='right'
-                                onClick={this.handleAddToOrder}>
+                                onClick={this.handleAddToOrder} disabled={this.disableOrder(this.state.color, this.state.size)}>
                             <Button.Content hidden>Got it!</Button.Content>
                             <Button.Content visible>
                                 <Icon name='shop' inverted color='yellow'/>

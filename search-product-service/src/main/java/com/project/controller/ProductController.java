@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @Slf4j
@@ -22,32 +22,36 @@ public class ProductController {
 
     @GetMapping("/search/all")
     public List<Product> searchAllProduct() {
-        return StreamSupport.stream(productService.getAllProducts().spliterator(), true).collect(Collectors.toList());
+        return productService.getAllProducts();
     }
 
     @GetMapping("/search/{value}")
     public List<Product> searchProduct(@PathVariable String value) {
-        return StreamSupport.stream(productService.getProductsByQuery(value).spliterator(), true).collect(Collectors.toList());
+        return productService.getProductsByQuery(value);
     }
 
     @GetMapping("/advancedSearch")
-    public List<Product> advancedSearchProduct(@RequestParam(required = false) String brand, @RequestParam(required = false) String category, @RequestParam(required = false) String size) {
+    public List<Product> advancedSearchProduct(@RequestParam(required = false) String gender,
+                                               @RequestParam(required = false) String brand,
+                                               @RequestParam(required = false) String category,
+                                               @RequestParam(required = false) String size) {
         log.trace("ProductController::advancedSearchProduct");
-        Iterable<Product> products = productService.getProductsByAdvancedFiltering(brand, category, size);
-
-        return StreamSupport.stream(products.spliterator(), false).collect(Collectors.toList());
+        return productService.getProductsByAdvancedFiltering(gender, brand, category, size);
     }
 
     @PostMapping("/save")
     public void saveProducts(@RequestBody Product product) {
         Product product1 = new Product();
-        product1.setReference("REF1");
-        product1.setName("Classic retro 90's Bomber");
-        product1.setBrand("nike");
+        product1.setReference("REF2");
+        product1.setName("Classic Girl Bomber");
+        product1.setSex("W");
+        product1.setBrand("Carhartt");
         product1.setCategory("Jacket");
-        product1.setPrice(100);
-        product1.setSize("M");
-        product1.setColor("Black");
+        product1.setPrice(200);
+        product1.setSize(Arrays.asList("S", "M", "L"));
+        product1.setColors(Arrays.asList("RED", "White"));
+        product1.setImages(Collections.singletonList("https://i1.adis.ws/i/carhartt_wip/I025115_05V_90-ST-01/w-deming-jacket-panther-print-blast-red-black-black-1739.png?$pdp_zoom$"));
+        product1.setLogo("https://imgcdn.carhartt.com/is/image/Carhartt/carhartt-logo-footer?$footer-logo-retina$");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         String dateParsedAsString = now.format(formatter);

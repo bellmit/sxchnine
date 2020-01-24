@@ -1,8 +1,10 @@
 package com.project.configuration;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,11 +20,15 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Arrays;
 
 @Configuration
 @EnableAuthorizationServer
+@Order(SecurityProperties.BASIC_AUTH_ORDER)
+@CrossOrigin(allowCredentials = "true",methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS})
 public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     private AuthenticationManager authenticationManager;
@@ -80,7 +86,7 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 .inMemory()
                 .withClient("client")
                 .secret("{noop}secret")
-                .accessTokenValiditySeconds(3000)
+                .accessTokenValiditySeconds(86400)
                 .scopes("all")
                 .authorizedGrantTypes("client-credentials", "password","refresh_token");
     }
@@ -91,7 +97,7 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
         tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
         endpointsConfigurer.tokenStore(jwtTokenStore())
                 .authenticationManager(authenticationManager)
-                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS)
                 .tokenEnhancer(tokenEnhancerChain);
     }
 

@@ -6,7 +6,6 @@ import Contact from "../Contact/Contact";
 import Recommendation from "../../containers/Recommendation/Recommendation";
 import ShopResume from '../ShopResume/ShopResume';
 import './ProductSlick.css';
-import logo from '../../components/Head/logo_got_it.png';
 
 
 class ProductSlick extends Component {
@@ -21,9 +20,6 @@ class ProductSlick extends Component {
     return (
         <div>
             <div className="Yellow-bar-div" />
-            <div>
-                <img alt="" className="Got-it-logo" src={logo}/>
-            </div>
             <div>
                 <ShopResume {...this.props}/>
             </div>
