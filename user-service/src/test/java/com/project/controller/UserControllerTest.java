@@ -120,7 +120,7 @@ public class UserControllerTest {
 
         when(userService.login(anyString(), anyString())).thenReturn(true);
 
-        MvcResult response = mockMvc.perform(post("/login")
+        MvcResult response = mockMvc.perform(post("/login?email="+user.getEmail()+"&password="+user.getPassword())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user))).andReturn();
 

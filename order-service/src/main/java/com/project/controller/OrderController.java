@@ -100,7 +100,7 @@ public class OrderController {
         order.setUserAddress(address);
 
         PaymentInfo paymentInfo = new PaymentInfo();
-        paymentInfo.setNoCreditCard(123456789);
+        paymentInfo.setNoCreditCard("123456789");
         paymentInfo.setExpDate("O5/22");
         paymentInfo.setSecurityCode(123);
         paymentInfo.setLastName("TOTO");

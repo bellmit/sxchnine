@@ -4,8 +4,7 @@ import com.project.model.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.project.utils.PaymentStatusCode.CONFIRMED;
-import static com.project.utils.PaymentStatusCode.REFUSED;
+import static com.project.utils.PaymentStatusCode.*;
 
 @Service
 @Slf4j
@@ -25,11 +24,11 @@ public class PaymentService {
 
     public void recheckout(Order order){
         int checkoutStatus = checkout(order);
-        if (checkoutStatus == 1){
+        if (checkoutStatus == CONFIRMED.getCode()){
             order.setPaymentStatus(CONFIRMED.getValue());
-        } else if (checkoutStatus == 0){
+        } else if (checkoutStatus == REFUSED.getCode()){
             order.setPaymentStatus(REFUSED.getValue());
-        } else if (checkoutStatus == 2){
+        } else if (checkoutStatus == WAITING.getCode()){
             try {
                 Thread.sleep(1000L);
             } catch (InterruptedException e) {

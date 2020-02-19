@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Image, Label, Input} from "semantic-ui-react";
+import {Grid, Image, Label, Input, Form} from "semantic-ui-react";
 import { connect } from 'react-redux';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
@@ -10,16 +10,26 @@ class Orders extends Component {
 
     state = {
         open: false,
-        total: 0
+        total: 0,
+        num: '',
+        avenue: '',
+        city: '',
+        postalCode: '',
+        country: '',
+        email: ''
+
     }
 
     componentDidMount(): void {
-        this.setState({total: this.props.productsToOrder.map(p => p.price).reduce((p1, p2) => p1 + p2, 0)});
+        this.setState({total: this.props.productsToOrder.map(p => p.unitPrice).reduce((p1, p2) => p1 + p2, 0)});
     }
 
     handleOrder = () => {
         console.log("handle Order ");
     }
+
+    handleChange = (e, { name, value }) => this.setState({ [name]: value })
+
 
 
     render() {
@@ -36,15 +46,15 @@ class Orders extends Component {
                 <div className="Orders-Resume">
                     <Grid columns={2} centered>
                         {this.props.productsToOrder.map(product => (
-                            <Grid.Row centered key={product.id + product.size}>
+                            <Grid.Row centered key={product.id + product.productSize}>
                                 <Grid.Column width={3}>
                                     <Image src={product.image} size='small' circular />
                                 </Grid.Column>
                                 <Grid.Column width={3}>
-                                    <span className="Orders-Items-Text-Header">{product.name}</span>
-                                    <p className="Orders-Items-Text">{product.color} </p>
-                                    <p className="Orders-Items-Text">{product.size}</p>
-                                    <p className="Orders-Items-Text">${product.price}</p>
+                                    <span className="Orders-Items-Text-Header">{product.productName}</span>
+                                    <p className="Orders-Items-Text">{product.productColor} </p>
+                                    <p className="Orders-Items-Text">{product.productSize}</p>
+                                    <p className="Orders-Items-Text">${product.unitPrice}</p>
                                 </Grid.Column>
                             </Grid.Row>
                         ))}
@@ -67,8 +77,10 @@ class Orders extends Component {
                             </Grid.Column>
 
                             <Grid.Column width={3}>
-                                <Input  inverted placeholder='email address...'
-                                />
+                                <Form.Input  inverted placeholder='email address...'
+                                             name='email'
+                                             value={this.state.email}
+                                             onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -78,18 +90,39 @@ class Orders extends Component {
                             </Grid.Column>
 
                             <Grid.Column width={3}>
-                                <Input  inverted placeholder='N°'/>
-                                <Input  inverted placeholder='street/avenue'/>
-                                <Input  inverted placeholder='city'/>
-                                <Input  inverted placeholder='postal code'/>
-                                <Input  inverted placeholder='country'/>
+                                <Form.Input  inverted placeholder='N°'
+                                             name='num'
+                                             value={this.state.num}
+                                             onChange={this.handleChange}/>
+                                <Form.Input  inverted placeholder='street/avenue'
+                                             name='avenue'
+                                             value={this.state.avenue}
+                                             onChange={this.handleChange}/>
+                                <Form.Input  inverted placeholder='city'
+                                             name='city'
+                                             value={this.state.city}
+                                             onChange={this.handleChange}/>
+                                <Form.Input  inverted placeholder='postal code'
+                                             name='postalCode'
+                                             value={this.state.postalCode}
+                                             onChange={this.handleChange}/>
+                                <Form.Input  inverted placeholder='country'
+                                             name='country'
+                                             value={this.state.country}
+                                             onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
                             <span className="Orders-Yellow-second-bar-div" />
                         </Grid.Row>
                     </Grid>
-                    <Card {...this.props}/>
+                    <Card {...this.props}
+                          email={this.state.email}
+                          num={this.state.num}
+                          avenue={this.state.avenue}
+                          city={this.state.city}
+                          postalCode={this.state.postalCode}
+                          country={this.state.country}/>
                     <Contact />
                 </div>
             </div>
@@ -99,8 +132,9 @@ class Orders extends Component {
 
 const mapStateToProps = state => {
     return {
-        productsToOrder: state.productsToOrder.productsToOrder
+        productsToOrder: state.productsToOrder.productsToOrder,
+        paymentStatus: state.order.paymentStatus
     }
-}
+};
 
 export default connect(mapStateToProps)(Orders);

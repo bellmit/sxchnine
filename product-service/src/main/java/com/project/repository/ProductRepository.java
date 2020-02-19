@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,6 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, S
     Optional<Product> findProductByName(String name);
 
     Page<Product> findAllBySex(Pageable page, char sex);
+
+    List<Product> findProductsByIdIn(List<String> ids);
 }

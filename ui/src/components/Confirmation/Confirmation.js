@@ -26,6 +26,16 @@ const confirmation = (props) => {
                 Please keep it for you records.
             </p>
         </Aux>
+    } else if (props.match.params.status === '0') {
+        message = <Aux>
+            <p className="Confirmation-Message-Text-p-div">
+                Oops something went wrong with your payment.
+            </p>
+            <p className="Confirmation-Message-Text-p2-div">
+                Your order cannot be processed ! It seems that the payment was refused by your bank.
+                Please retry again once fixed.
+            </p>
+        </Aux>
     }
 
     return (

@@ -9,13 +9,17 @@ import App from './App';
 import productsReducer from '../src/store/reducers/products';
 import productDetails from '../src/store/reducers/productDetails';
 import productsToOrder from '../src/store/reducers/productToOrder';
+import order from '../src/store/reducers/order';
+import users from '../src/store/reducers/users';
 import * as serviceWorker from './serviceWorker';
 
 const reducers = combineReducers ({
     products: productsReducer,
     product: productDetails,
-    productsToOrder: productsToOrder
-})
+    productsToOrder: productsToOrder,
+    order: order,
+    users: users
+});
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 

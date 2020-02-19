@@ -49,14 +49,14 @@ class ShopResume extends Component {
                                        src={product.image}/>
                                 <Modal.Description>
                                     <Header>
-                                        <span className="Panier-Items-Text-Header">{product.name}</span>
+                                        <span className="Panier-Items-Text-Header">{product.productName}</span>
                                         <img alt="" src={trash}
                                              className="Trash-Icon"
                                              onClick={() => this.removeProduct(index)}/>
                                     </Header>
-                                    <p className="Panier-Items-Text">{product.color}</p>
-                                    <p className="Panier-Items-Text">{product.size}</p>
-                                    <p className="Panier-Items-Text">${product.price}</p>
+                                    <p className="Panier-Items-Text">{product.productColor}</p>
+                                    <p className="Panier-Items-Text">{product.productSize}</p>
+                                    <p className="Panier-Items-Text">${product.unitPrice}</p>
                                 </Modal.Description>
                             </Modal.Content>
                         ))}

@@ -42,7 +42,7 @@ class ProductDetails extends Component {
         });*/
 
         //this.setState({availableSize: availableSize});
-        this.setState({availableSize: this.props.product.availability[value].map(size => size.size)});
+        this.setState({availableSize: this.props.product.availability[value].filter(size => size.qte !== 0).map(size => size.size)});
     };
 
     createColors = () => {
@@ -66,13 +66,14 @@ class ProductDetails extends Component {
         console.log(this.state.size);
         console.log(this.state.color);
         const productToOrder = {
-            id: this.props.product.id,
-            name: this.props.product.name,
-            brand: this.props.product.brand,
-            price: this.props.product.price,
-            size: this.state.size,
-            color: this.state.color,
-            image: this.props.product.images[0]
+            productId: this.props.product.id,
+            productName: this.props.product.name,
+            productBrand: this.props.product.brand,
+            unitPrice: this.props.product.price,
+            productSize: this.state.size,
+            productColor: this.state.color,
+            image: this.props.product.images[0],
+            productQte: 1
         }
 
         this.props.addProductToOrder(productToOrder);
@@ -203,6 +204,6 @@ const dispatchToProps = dispatch => {
     return {
         addProductToOrder: (productToOrder) => dispatch(actions.addProductToOrder(productToOrder))
     }
-}
+};
 
 export default connect(null, dispatchToProps)(ProductDetails);

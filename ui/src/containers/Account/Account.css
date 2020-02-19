@@ -1,0 +1,42 @@
+.Member-Text{
+    font-family: "American Typewriter";
+    font-size: 0.2vw;
+    color: black;
+}
+
+.Info-Text{
+    font-family: Anton;
+    font-size: 1.5vw;
+    text-transform: uppercase;
+}
+
+.Account-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    align-content: center;
+}
+
+.Account-Text-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.Account-Divider{
+    height: 0.5%;
+    width: 5%;
+    color: rgb(255, 240, 36);
+    background-color: rgb(255, 240, 36);
+}
+
+.Account-Empty-Div{
+    background: rgb(255, 240, 36);
+    height: 100%;
+    width: 5%;
+    /*
+    margin-top: 10%;
+    */
+    position: absolute;
+}

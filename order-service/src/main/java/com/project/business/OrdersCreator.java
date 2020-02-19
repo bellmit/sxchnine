@@ -27,8 +27,8 @@ public class OrdersCreator {
     public void saveOrders(Order order) {
         if (order != null) {
             order.setTotal(sumTotal(order));
-            orderIdService.saveOrderId(orderMapper.asOrderId(order));
             orderRepository.save(order);
+            orderIdService.saveOrderId(orderMapper.asOrderId(order));
         }
     }
 

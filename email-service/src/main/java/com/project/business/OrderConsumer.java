@@ -29,13 +29,13 @@ public class OrderConsumer {
         log.info("*************************************");
         log.info("**** Received: {}", order.toString());
         log.info("*************************************");
-        if (order.getPaymentStatus().equalsIgnoreCase(OK.getValue())) {
+        if (order.getPaymentStatus().equalsIgnoreCase(CONFIRMED.getValue())) {
             emailConfirmationSender.sendEmail(order);
         }
         if (order.getPaymentStatus().equalsIgnoreCase(WAITING.getValue())) {
             emailPendingSender.sendEmail(order);
         }
-        if (order.getPaymentStatus().equalsIgnoreCase(NOK.getValue())){
+        if (order.getPaymentStatus().equalsIgnoreCase(REFUSED.getValue())){
             emailRefusedSender.sendEmail(order);
         }
         acknowledgment.acknowledge();

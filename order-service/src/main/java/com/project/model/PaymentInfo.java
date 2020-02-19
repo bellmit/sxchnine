@@ -13,7 +13,7 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 public class PaymentInfo {
 
     @Column("no_credit_card")
-    private int noCreditCard;
+    private String noCreditCard;
 
     @Column("exp_date")
     private String expDate;

@@ -37,6 +37,10 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException("Product not found !"));
     }
 
+    public List<Product> getProductByIds(List<String> ids){
+        return productRepository.findProductsByIdIn(ids);
+    }
+
     @Cacheable(value = "productsCache", key = "#name", unless = "#result==null")
     public Product getProductByName(String name){
         return productRepository.findProductByName(name)
@@ -74,6 +78,11 @@ public class ProductService {
         Product savedProduct = productRepository.save(product);
         kafkaProducer.sendProduct(savedProduct);
         return savedProduct;
+    }
+
+    public void saveProducts(List<Product> products){
+        Iterable<Product> savedProducts = productRepository.saveAll(products);
+        savedProducts.forEach(p -> kafkaProducer.sendProduct(p));
     }
 
     @CacheEvict(value = "productsCache", key = "#id")

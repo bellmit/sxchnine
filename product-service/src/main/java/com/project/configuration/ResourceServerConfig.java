@@ -23,8 +23,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authenticated();*/
 
         http.authorizeRequests()
+                .antMatchers("/actuator/**", "/autoconfig", "/ids/**", "/bulk/**")
+                .permitAll()
                 .antMatchers("/**")
-                .permitAll();
+                .authenticated();
     }
 
     @Override
@@ -50,16 +52,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         accessTokenConverter.setSigningKey("123");
         return accessTokenConverter;
     }
-
-/*    @Bean
-    public CorsConfigurationSource corsConfigurationSource()
-    {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS", "PUT", "DELETE"));
-        configuration.setExposedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Origin", "Content-Type", "Accept", "x-device-user-agent"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }*/
 }

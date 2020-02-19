@@ -24,6 +24,9 @@ public abstract class EmailSender {
     public abstract String getTemplateId();
 
     public void sendEmail(Order order) {
+        log.info("sending email to {} with this templateId {}",
+                order.getOrderPrimaryKey().getUserEmail(),
+                getTemplateId());
         try {
             Request request = new Request();
             request.setMethod(Method.POST);

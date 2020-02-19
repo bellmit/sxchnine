@@ -22,3 +22,12 @@ export {
 export {
     searchAdvancedProducts
 } from './searchAdvancedProducts';
+
+export {
+    order
+} from './order';
+
+export {
+    saveUser,
+    loginUser
+} from './users';

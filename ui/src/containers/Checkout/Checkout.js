@@ -1,10 +1,20 @@
 import React, {Component} from 'react';
-import {Button, Divider, Grid, Input} from "semantic-ui-react";
+import {Button, Dimmer, Divider, Form, Grid, Input, Loader} from "semantic-ui-react";
+import { connect } from 'react-redux';
 import Banner from "../../components/Banner/Banner";
 import './Checkout.css';
 import Contact from "../Contact/Contact";
+import Account from '../Account/Account';
+import * as actions from "../../store/actions";
+import Aux from "../../hoc/Aux/Aux";
+
 
 class Checkout extends Component {
+
+    state = {
+        email: '',
+        password: ''
+    }
 
     componentDidMount(): void {
         console.log("did mount");
@@ -12,11 +22,19 @@ class Checkout extends Component {
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
         console.log('did update');
+        console.log(this.props.userAuth);
     }
+
+    handleChange = (e, {name, value}) => this.setState({[name]: value});
+
 
     continueAsGuest = () => {
         this.props.history.push('/orders');
-    }
+    };
+
+    login = () => {
+        this.props.loginUser(this.state.email, this.state.password, this.props.history);
+    };
 
 
     render() {
@@ -28,6 +46,9 @@ class Checkout extends Component {
                         <Banner {...this.props}/>
                     </header>
                 </div>
+                <Dimmer active={this.props.loading} page>
+                    <Loader content='Loading'/>
+                </Dimmer>
                 <Grid centered className="Checkout-Grid">
                     <Grid.Row floated='left'>
                         <Grid.Column width={6} floated='left'>
@@ -36,6 +57,7 @@ class Checkout extends Component {
 
                         <Grid.Column width={6} floated='right'>
                             <p className="Checkout-Message-Text">Got it Member?!</p>
+                            <Account />
                         </Grid.Column>
                     </Grid.Row>
 
@@ -72,7 +94,14 @@ class Checkout extends Component {
                                     </Grid.Column>
 
                                     <Grid.Column width={5}>
-                                        <Input inverted placeholder='email address...' className="Checkout-Email-Text" />
+                                        <Input inverted
+                                               name='email'
+                                               placeholder='Email'
+                                               className="Checkout-Email-Text"
+                                               defaultValue={this.props.userAuth.email}
+                                               onChange={this.handleChange}
+
+                                        />
                                     </Grid.Column>
                                 </Grid.Row>
 
@@ -82,11 +111,18 @@ class Checkout extends Component {
                                     </Grid.Column>
 
                                     <Grid.Column width={5}>
-                                        <Input inverted placeholder='Password' className="Checkout-Email-Text"/>
+                                        <Input inverted
+                                               name='password'
+                                               placeholder='Password'
+                                               type='password'
+                                               className="Checkout-Email-Text"
+                                               defaultValue={this.props.userAuth.password}
+                                               onChange={this.handleChange}
+                                        />
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row centered>
-                                    <button className="Checkout-Continue-Button">
+                                    <button className="Checkout-Continue-Button" onClick={this.login}>
                                         <span className="Checkout-Text-Button">SIGN IN</span>
                                     </button>
                                 </Grid.Row>
@@ -111,4 +147,18 @@ class Checkout extends Component {
     }
 }
 
-export default Checkout;
+const mapStateToProps = state => {
+    return {
+        userAuth: state.users.userAuth,
+        status: state.users.status,
+        loading: state.users.loading
+    }
+};
+
+const dispatchToProps = dispatch => {
+    return {
+        loginUser: (email, password, history) => dispatch(actions.loginUser(email, password, history))
+    }
+};
+
+export default connect(mapStateToProps, dispatchToProps)(Checkout);

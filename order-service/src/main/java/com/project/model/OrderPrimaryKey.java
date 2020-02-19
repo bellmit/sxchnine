@@ -33,13 +33,13 @@ public class OrderPrimaryKey implements Serializable {
     private UUID orderId;
 
     @PrimaryKeyColumn(name = "order_time", type = CLUSTERED, ordinal = 2, ordering = DESCENDING)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime orderTime;
 
     @PrimaryKeyColumn(name = "shipping_time", type = CLUSTERED, ordinal = 3, ordering = DESCENDING)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime shippingTime;

@@ -17,7 +17,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.cors()
+                .and().authorizeRequests()
                 .antMatchers("/actuator/**")
                 .permitAll()
                 .antMatchers("/**")
@@ -47,5 +48,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         jwtAccessTokenConverter.setSigningKey("123");
         return jwtAccessTokenConverter;
     }
-
 }

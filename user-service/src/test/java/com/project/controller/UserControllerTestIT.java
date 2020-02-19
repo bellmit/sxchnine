@@ -131,7 +131,7 @@ public class UserControllerTestIT {
         userToRequest.setEmail("toto@gmail.com");
         userToRequest.setPassword("toto");
 
-        Boolean response = testRestTemplate.postForObject("/login", userToRequest, Boolean.class);
+        Boolean response = testRestTemplate.postForObject("/login?email="+user.getEmail()+"&password="+user.getPassword(), userToRequest, Boolean.class);
 
         assertThat(response).isTrue();
     }

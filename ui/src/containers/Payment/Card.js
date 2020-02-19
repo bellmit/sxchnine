@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
+import {connect} from 'react-redux';
+import uuid from 'uuid/v1';
+import date from 'date-and-time';
 import './Card.css';
 import {
     formatCreditCardNumber,
@@ -8,6 +11,7 @@ import {
     formatExpirationDate,
 } from './utils';
 import {Dimmer, Loader} from "semantic-ui-react";
+import * as actions from "../../store/actions";
 
 class Card extends Component {
     state = {
@@ -18,8 +22,6 @@ class Card extends Component {
         issuer: '',
         focused: '',
         formData: null,
-        orderStatus: 2,
-        loading: false
     };
 
 
@@ -67,13 +69,57 @@ class Card extends Component {
             && this.state.expiry !== ''
             && this.state.cvc !== '') {
 
-            this.props.history.replace('/confirmation/' + this.state.orderStatus);
+            console.log(this.props);
+            console.log('----> products to order');
+            console.log(this.createOrder());
+            this.props.processOrder(this.createOrder());
+            this.props.history.replace('/confirmation/' + this.props.paymentStatus);
         }
 
+    };
+
+    createOrder() {
+        return {
+            orderPrimaryKey: {
+                userEmail: this.props.email,
+                orderId: uuid(),
+                orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+                shippingTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss')
+            },
+            products: this.props.productsToOrder,
+            paymentInfo: {
+                noCreditCard: this.state.number.trim(),
+                expDate: this.state.expiry,
+                securityCode: this.state.cvc,
+                lastName: this.state.name
+            },
+            userAddress: {
+                address: this.props.num + ' ' + this.props.avenue,
+                postalCode: this.props.postalCode,
+                city: this.props.city,
+                country: this.props.country
+            },
+            orderStatus: this.evaluateStatus(this.props.paymentStatus),
+            paymentStatus: this.evaluateStatus(this.props.paymentStatus),
+            paymentTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+            shippingStatus: this.evaluateStatus(this.props.paymentStatus)
+        }
+    }
+
+    evaluateStatus(paymentStatus) {
+        if (paymentStatus === 0) {
+            return 'REFUSED';
+        } else if (paymentStatus === 1) {
+            return 'CONFIRMED';
+        } else if (paymentStatus === 2) {
+            return 'WAITING';
+        } else {
+            return 'UNKNOWN';
+        }
     }
 
     componentWillUnmount(): void {
-        console.log('component will unmount');
+        console.log(this.props)
     }
 
 
@@ -82,8 +128,8 @@ class Card extends Component {
 
         return (
             <div key="Payment">
-                <Dimmer active={this.state.loading} page>
-                    <Loader content='Loading' />
+                <Dimmer active={this.props.loading} page>
+                    <Loader content='Loading'/>
                 </Dimmer>
                 <div className="App-payment">
                     <h4 className="Cards-h4">PAYMENT:</h4>
@@ -127,7 +173,7 @@ class Card extends Component {
                                     type="tel"
                                     name="expiry"
                                     className="form-control"
-                                    placeholder="Valid Thru"
+                                    placeholder="MM/YY"
                                     pattern="\d\d/\d\d"
                                     required
                                     onChange={this.handleInputChange}
@@ -157,7 +203,7 @@ class Card extends Component {
                             <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Got_IT, which may be used to make future shopping experiences better for you.</span>
 
                         </div>
-{/*                        <div>
+                        {/*                        <div>
                             <p>number: {number}</p>
                             <p>name: {name}</p>
                             <p>expiry: {expiry}</p>
@@ -172,4 +218,18 @@ class Card extends Component {
     }
 }
 
-export default Card;
+const mapStateToProps = state => {
+    return {
+        productsToOrder: state.productsToOrder.productsToOrder,
+        paymentStatus: state.order.paymentStatus,
+        loading: state.order.loading,
+    }
+};
+
+const dispatchToProps = dispatch => {
+    return {
+        processOrder: (productsToOrder) => dispatch(actions.order(productsToOrder))
+    }
+};
+
+export default connect(mapStateToProps, dispatchToProps)(Card);
