@@ -43,6 +43,16 @@
     border-color: rgb(255, 240, 36);
     padding: 10px 20px;
     text-decoration: none;
+    outline: none;
+}
+
+.Checkout-Continue-Button:focus{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
 }
 
 

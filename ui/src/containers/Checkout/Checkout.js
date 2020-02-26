@@ -6,7 +6,6 @@ import './Checkout.css';
 import Contact from "../Contact/Contact";
 import Account from '../Account/Account';
 import * as actions from "../../store/actions";
-import Aux from "../../hoc/Aux/Aux";
 
 
 class Checkout extends Component {
@@ -23,6 +22,14 @@ class Checkout extends Component {
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
         console.log('did update');
         console.log(this.props.userAuth);
+        console.log(prevProps);
+        if (prevProps.userAuth.email !== this.props.userAuth.email
+            && prevProps.userAuth.password !== this.props.userAuth.password) {
+            this.setState({
+                email: this.props.userAuth.email,
+                password: this.props.userAuth.password
+            })
+        }
     }
 
     handleChange = (e, {name, value}) => this.setState({[name]: value});
@@ -98,7 +105,7 @@ class Checkout extends Component {
                                                name='email'
                                                placeholder='Email'
                                                className="Checkout-Email-Text"
-                                               defaultValue={this.props.userAuth.email}
+                                               value={this.state.email}
                                                onChange={this.handleChange}
 
                                         />
@@ -116,7 +123,7 @@ class Checkout extends Component {
                                                placeholder='Password'
                                                type='password'
                                                className="Checkout-Email-Text"
-                                               defaultValue={this.props.userAuth.password}
+                                               value={this.state.password}
                                                onChange={this.handleChange}
                                         />
                                     </Grid.Column>
@@ -157,7 +164,9 @@ const mapStateToProps = state => {
 
 const dispatchToProps = dispatch => {
     return {
-        loginUser: (email, password, history) => dispatch(actions.loginUser(email, password, history))
+        loginUser: (email, password, history) => dispatch(actions.loginUser(email, password, history)),
+        fetchOrdersHistory: (email) => dispatch(actions.fetchOrdersHistory(email))
+
     }
 };
 

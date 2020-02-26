@@ -48,7 +48,7 @@ export const loginUserStart = (loading) => {
 export const loginUserSuccess = (response) => {
     return {
         type: actionTypes.LOGIN_USER_SUCCESS,
-        status: response
+        user: response
     }
 };
 
@@ -65,7 +65,8 @@ export const loginUser = (email, password, history) => {
         axios.post('/user/login?email='+email+"&password="+password)
             .then(response => {
                 dispatch(loginUserStart(false));
-                if (response.data){
+                dispatch(loginUserSuccess(response.data))
+                if (response.data.email != null){
                     history.push('/orders')
                 }
             })

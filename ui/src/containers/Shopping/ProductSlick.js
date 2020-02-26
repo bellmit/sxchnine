@@ -5,6 +5,7 @@ import ProductDetails from './ProductDetails';
 import Contact from "../Contact/Contact";
 import Recommendation from "../../containers/Recommendation/Recommendation";
 import ShopResume from '../ShopResume/ShopResume';
+import User from '../User/User';
 import './ProductSlick.css';
 
 
@@ -22,6 +23,9 @@ class ProductSlick extends Component {
             <div className="Yellow-bar-div" />
             <div>
                 <ShopResume {...this.props}/>
+            </div>
+            <div>
+                <User {...this.props}/>
             </div>
             <div className="Slick-Container-div">
             <Carousel fade={true} keyboard style={{textAlign: "center"}}>

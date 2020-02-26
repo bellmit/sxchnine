@@ -90,7 +90,7 @@ public class UserServiceTestIT {
 
         userService.save(user);
 
-        assertThat(userService.login("toto@gmail.com", "TOTO")).isTrue();
+        assertThat(userService.login("toto@gmail.com", "TOTO")).isEqualToComparingFieldByFieldRecursively(user);
     }
 
 
@@ -99,6 +99,6 @@ public class UserServiceTestIT {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        assertThat(userService.login(user.getEmail(), user.getPassword())).isTrue();
+        assertThat(userService.login(user.getEmail(), user.getPassword())).isNull();
     }
 }

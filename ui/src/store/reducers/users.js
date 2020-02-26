@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     loading: false,
     error: '',
-    users: '',
+    userAuthenticated: '',
     userAuth: '',
     status: ''
 };
@@ -38,7 +38,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LOGIN_USER_SUCCESS:
             return {
                 ...state,
-                status: action.status
+                userAuthenticated: action.user
             };
 
         default:

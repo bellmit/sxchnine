@@ -44,11 +44,11 @@ public class UserService {
         userRepository.deleteUser(user);
     }
 
-    public boolean login(String email, String password){
+    public User login(String email, String password){
         User user = getUserByEmail(email);
-        if (user != null){
-            return bCryptPasswordEncoder.matches(password, user.getPassword());
+        if (user != null && bCryptPasswordEncoder.matches(password, user.getPassword())){
+            return user;
         }
-        return false;
+        return null;
     }
 }

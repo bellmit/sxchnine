@@ -3,7 +3,8 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     loading: false,
     error: '',
-    paymentStatus: -1
+    paymentStatus: -1,
+    ordersHistory: []
 };
 
 
@@ -24,9 +25,19 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 error: action.error
             };
+        case (actionTypes.FETCH_ORDERS_HISTORY_SUCCESS):
+            return {
+                ...state,
+                ordersHistory: action.ordersHistory
+            };
+        case (actionTypes.FETCH_ORDERS_HISTORY_FAIL):
+            return {
+                ...state,
+                error: action.error
+            };
         default:
             return state;
     }
-}
+};
 
 export default reducer;

@@ -99,12 +99,12 @@ public class UserServiceTest {
         when(userRepository.findByEmail(anyString())).thenReturn(user);
         when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        assertThat(userService.login("toto@gmail.com", "toto")).isTrue();
+        assertThat(userService.login("toto@gmail.com", "toto")).isEqualToComparingFieldByFieldRecursively(user);
     }
 
     @Test
     public void testLoginFail(){
-        assertThat(userService.login("toto@gmail.com", "toto")).isFalse();
+        assertThat(userService.login("toto@gmail.com", "toto")).isNull();
     }
 
 }

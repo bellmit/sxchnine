@@ -1,0 +1,35 @@
+.User-button-icon{
+    position: fixed;
+    width: 38px;
+    height: 32px;
+    left: 20px;
+    top: 110px;
+}
+
+.User-div-button-icon{
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    left: 35px;
+    top: 114px;
+}
+
+.Modal-History-div{
+    position: absolute;
+    left: 30%;
+    overflow: auto;
+    max-height: 500px;
+    position: static;
+}
+
+.History-Items-Text-Header{
+    font-family: Anton;
+    font-size: 1.5vw;
+    text-transform: uppercase;
+}
+
+.History-Items-Text{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}

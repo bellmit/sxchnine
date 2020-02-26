@@ -11,7 +11,7 @@ class ShopResume extends Component {
 
     state = {
         open: false,
-    }
+    };
 
 
     show = (size) => () => this.setState({size, open: true})

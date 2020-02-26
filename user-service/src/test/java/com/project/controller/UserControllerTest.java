@@ -118,13 +118,13 @@ public class UserControllerTest {
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
 
-        when(userService.login(anyString(), anyString())).thenReturn(true);
+        when(userService.login(anyString(), anyString())).thenReturn(user);
 
         MvcResult response = mockMvc.perform(post("/login?email="+user.getEmail()+"&password="+user.getPassword())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user))).andReturn();
 
-        assertThat(response.getResponse().getContentAsString()).contains("true");
+        assertThat(response.getResponse().getContentAsString()).contains(user.getEmail());
         assertThat(response.getResponse().getStatus()).isEqualTo(HttpStatus.SC_OK);
     }
 

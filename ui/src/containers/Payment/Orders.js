@@ -5,6 +5,8 @@ import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
 import Card from './Card';
 import Contact from '../Contact/Contact';
+import User from "../User/User";
+import * as actions from '../../store/actions/index';
 
 class Orders extends Component {
 
@@ -18,10 +20,20 @@ class Orders extends Component {
         country: '',
         email: ''
 
-    }
+    };
 
     componentDidMount(): void {
         this.setState({total: this.props.productsToOrder.map(p => p.unitPrice).reduce((p1, p2) => p1 + p2, 0)});
+        if (this.props.user.email != null){
+            this.props.fetchOrdersHistory(this.props.user.email);
+            this.setState({
+                email: this.props.user.email,
+                avenue: this.props.user.address.address,
+                city: this.props.user.address.city,
+                postalCode: this.props.user.address.postalCode,
+                country: this.props.user.address.country
+            })
+        }
     }
 
     handleOrder = () => {
@@ -40,6 +52,9 @@ class Orders extends Component {
                 <header>
                     <OrderPlaceBanner {...this.props}/>
                 </header>
+                <div>
+                    <User {...this.props} top="70px" topIcon ="74px"/>
+                </div>
                 <div className="Orders-Bag-Resume">
                 <span className="Orders-Resume-Text">Your Bag : </span>
                 </div>
@@ -133,8 +148,15 @@ class Orders extends Component {
 const mapStateToProps = state => {
     return {
         productsToOrder: state.productsToOrder.productsToOrder,
-        paymentStatus: state.order.paymentStatus
+        paymentStatus: state.order.paymentStatus,
+        user: state.users.userAuthenticated
     }
 };
 
-export default connect(mapStateToProps)(Orders);
+const dispatchToProps = dispatch => {
+    return {
+        fetchOrdersHistory: (email) => dispatch(actions.fetchOrdersHistory(email))
+    }
+};
+
+export default connect(mapStateToProps, dispatchToProps)(Orders);

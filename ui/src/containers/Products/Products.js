@@ -9,6 +9,7 @@ import Product from './Product';
 import BannerMen from '../../components/Banner/Banner';
 import Contact from '../Contact/Contact';
 import ShopResume from "../ShopResume/ShopResume";
+import User from "../User/User";
 import './Products.css';
 import addIcon from './add-icon.jpg';
 import searchIcon from './searc-icon-tiny.png';
@@ -104,6 +105,9 @@ class Products extends Component {
                 </div>
                 <div>
                     <ShopResume {...this.props}/>
+                </div>
+                <div>
+                    <User {...this.props}/>
                 </div>
 
                 <div className="Product-Message">

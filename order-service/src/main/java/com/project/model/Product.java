@@ -21,6 +21,9 @@ public class Product {
     @Column("product_brand")
     private String productBrand;
 
+    @Column("image")
+    private String image;
+
     @Column("product_id")
     private String productId;
 

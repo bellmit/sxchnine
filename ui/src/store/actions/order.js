@@ -38,3 +38,31 @@ export const orderError = (error) => {
         error: error
     }
 };
+
+
+export const fetchOrdersHistory = (email) => {
+    return dispatch => {
+        axios.get('/order/userEmail/'+email)
+            .then(response => {
+            dispatch(fetchOrdersHistorySuccess(response.data));
+        }).catch(error => {
+            dispatch(fetchOrdersHistoryError(error))
+        })
+    }
+};
+
+export const fetchOrdersHistorySuccess = (orders) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_HISTORY_SUCCESS,
+        ordersHistory: orders
+    }
+};
+
+export const fetchOrdersHistoryError = (error) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_HISTORY_FAIL,
+        error: error
+    }
+};
+
+

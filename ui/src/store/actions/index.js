@@ -24,7 +24,8 @@ export {
 } from './searchAdvancedProducts';
 
 export {
-    order
+    order,
+    fetchOrdersHistory
 } from './order';
 
 export {

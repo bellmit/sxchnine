@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public boolean login(@RequestParam String email, @RequestParam String password){
+    public User login(@RequestParam String email, @RequestParam String password){
         return userService.login(email, password);
     }
 }
