@@ -4,6 +4,8 @@ import Aux from '../../hoc/Aux/Aux';
 import UserIcon from './UserIcon';
 import {Button, Header, Icon, Image, Modal, Grid, Label} from "semantic-ui-react";
 import * as actions from "../../store/actions";
+import shoes from './shoes.jpg';
+import panierPic from "../ShopResume/image80s.jpeg";
 
 
 class User extends Component {
@@ -47,13 +49,15 @@ class User extends Component {
                 <div>
                     <Modal size={size} open={open} onClose={this.close}
                            style={{position: 'static', height: 'auto'}}>
+                        <Modal.Header><Image src={shoes} fluid style={{height: '250px', width:'100%'}}/></Modal.Header>
 
-                    <span className="Panier-Resume-Text"> You GOT : </span>
+
+                        <span className="History-Resume-Text"> You GOT : </span>
 
                         {this.props.ordersHistory.map((order, index) => (
                             <Modal.Content image key={index} scrolling>
                                 <Modal.Description>
-                                    <Grid centered>
+                                    <Grid className="Grid-div">
                                         <Grid.Row floated='right'>
                                             <span className="History-Items-Text">Order ID: {order.orderPrimaryKey.orderId}</span>
                                         </Grid.Row>
@@ -61,7 +65,7 @@ class User extends Component {
                                             <span className="History-Items-Text">Order time: {order.orderPrimaryKey.orderTime}</span>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid>
+                                            <Grid className="Grid-div">
                                                 <Grid.Row floated='right'>
                                                     <Grid.Column floated='right' width={12}>
                                                         <span className="History-Items-Text">Status: {order.orderStatus} {this.statusOrder(order.orderStatus)}</span>
@@ -74,7 +78,7 @@ class User extends Component {
                                             </Grid>
                                         </Grid.Row>
                                     </Grid>
-                                    <Grid centered>
+                                    <Grid className="Grid-div">
                                     {order.products.map((product, index) => (
                                         <Grid.Row>
                                             <Grid.Column width={4}>

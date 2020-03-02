@@ -33,3 +33,20 @@
     font-size: 1vw;
     text-transform: uppercase;
 }
+
+.Grid-div{
+    margin-left: 0 !important;
+}
+
+.History-Resume-Text{
+    font-family: Anton;
+    font-size: 2vw;
+    text-transform: uppercase;
+}
+
+.History-Resume-Text:hover{
+    font-family: Anton;
+    font-size: 2vw;
+    text-transform: uppercase;
+    color: rgb(255, 240, 36);
+}
