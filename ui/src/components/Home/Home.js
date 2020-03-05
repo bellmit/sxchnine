@@ -14,7 +14,7 @@ class Home extends Component {
     render() {
         return (
             <Aux>
-                <Head/>
+                <Head {...this.props}/>
                 <Middle/>
                 <Footer/>
             </Aux>

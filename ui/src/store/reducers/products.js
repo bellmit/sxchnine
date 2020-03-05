@@ -65,6 +65,16 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 products: action.products
             };
+            case actionTypes.HOME_SEARCH_ADVANCED_PRODUCTS_START:
+            return {
+                ...state,
+                loading: action.loading
+            };
+        case actionTypes.HOME_SEARCH_ADVANCED_PRODUCTS_SUCCESS:
+            return {
+                ...state,
+                products: action.products
+            };
         default:
             return state;
 

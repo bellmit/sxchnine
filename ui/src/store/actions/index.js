@@ -20,7 +20,8 @@ export {
 } from './searchProducts';
 
 export {
-    searchAdvancedProducts
+    searchAdvancedProducts,
+    homeSearchProducts
 } from './searchAdvancedProducts';
 
 export {

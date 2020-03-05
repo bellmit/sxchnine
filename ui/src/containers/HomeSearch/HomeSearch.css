@@ -1,0 +1,29 @@
+.Home-Search-Advanced {
+    font-family: Anton;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.Home-Search-Text-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.Home-Search-Continue-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+}
+
+.Home-Search-Continue-Button:focus{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+}
