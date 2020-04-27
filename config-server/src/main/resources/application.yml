@@ -15,7 +15,7 @@ spring:
     bus:
       enabled: true
   rabbitmq:
-    host: ${RABBITMQ_SERVER:localhost}
+    host: ${RABBITMQ_SERVER:rabbitmq-cluster-balancer}
     port: 5672
     username: guest
     password: guest
