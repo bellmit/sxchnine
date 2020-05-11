@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,10 +15,9 @@ public class ExceptionController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ProductNotFoundException.class)
-    public ExceptionMessage productNotFoundException(HttpServletRequest httpServletRequest, ProductNotFoundException exception){
+    public ExceptionMessage productNotFoundException(ProductNotFoundException exception){
         return ExceptionMessage.builder().status(HttpStatus.NOT_FOUND)
                 .date(LocalDateTime.now().format(FORMATTER))
-                .message(exception.getMessage())
-                .path(httpServletRequest.getRequestURI()).build();
+                .message(exception.getMessage()).build();
     }
 }

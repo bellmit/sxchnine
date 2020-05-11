@@ -30,12 +30,12 @@ class HomeSearch extends Component {
             { key: 3, text: 'Men', value: 'M' },
         ];
 
-        const categories = [
+/*        const categories = [
             { key: 1, text: 'T-Shirt', value: 't-shirt' },
             { key: 2, text: 'Sweat', value: 'sweat' },
             { key: 3, text: 'Jacket', value: 'jacket' },
             { key: 4, text: 'Hoodie', value: 'hoodie' },
-        ];
+        ];*/
 
         const size = [
             {key: '1', text: 'Small', value: 's'},
@@ -47,8 +47,8 @@ class HomeSearch extends Component {
 
         return (
           <Aux>
-            <Grid padded>
-                <Grid.Column width={4}>
+            <Grid relaxed columns='equal'>
+                <Grid.Column>
                     <Dropdown className="Home-Search-Advanced"
                               onChange={this.handleChangeGender}
                               options={gender}
@@ -56,15 +56,15 @@ class HomeSearch extends Component {
                               selection
                               value={this.state.gender} />
                 </Grid.Column>
-                <Grid.Column width={4}>
+               {/* <Grid.Column width={4}>
                     <Dropdown className="Home-Search-Advanced"
                               onChange={this.handleChangeCategories}
                               options={categories}
                               placeholder='Categories'
                               selection
                               value={this.state.category} />
-                </Grid.Column>
-                <Grid.Column width={4}>
+                </Grid.Column>*/}
+                <Grid.Column>
                     <Dropdown className="Home-Search-Advanced"
                               onChange={this.handleChangeSize}
                               options={size}
@@ -72,7 +72,7 @@ class HomeSearch extends Component {
                               selection
                               value={this.state.size} />
                 </Grid.Column>
-                <Grid.Column width={4}>
+                <Grid.Column >
                     <button className="Home-Search-Continue-Button" onClick={this.searchAdvanced}>
                         <span className="Home-Search-Text-Button">GOT IT -></span>
                     </button>

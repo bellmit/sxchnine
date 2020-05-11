@@ -1,18 +1,18 @@
 package com.project.business;
 
 
-import com.project.exception.ProductNotFoundException;
+import com.hazelcast.core.HazelcastInstance;
 import com.project.model.Product;
 import com.project.model.SizeQte;
 import com.project.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import reactor.cache.CacheMono;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,69 +26,70 @@ public class ProductService {
 
     private KafkaProducer kafkaProducer;
 
-    public ProductService(ProductRepository productRepository, KafkaProducer kafkaProducer) {
+    private HazelcastInstance hazelcastInstance;
+
+    public ProductService(ProductRepository productRepository, KafkaProducer kafkaProducer, HazelcastInstance hazelcastInstance) {
         this.productRepository = productRepository;
         this.kafkaProducer = kafkaProducer;
+        this.hazelcastInstance = hazelcastInstance;
     }
 
-    @Cacheable(value = "productsCache", key = "#id", unless = "#result==null")
-    public Product getProductById(String id){
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found !"));
+    //@Cacheable(value = "productsCache", key = "#id", unless = "#result==null")
+    public Mono<Product> getProductById(String id){
+        CacheMono
+                .lookup(k -> productRepository.findById(id).map(Signal::next), id)
+                .onCacheMissResume(Mono.just(new Product()))
+                .andWriteWith((k, sig) -> {
+                    hazelcastInstance.getMap("productsCache").computeIfAbsent(id, v -> sig.get());
+                    return Mono.empty();
+                });
+        return productRepository.findById(id).onErrorReturn(new Product());
     }
 
-    public List<Product> getProductByIds(List<String> ids){
+    public Flux<Product> getProductByIds(List<String> ids){
         return productRepository.findProductsByIdIn(ids);
     }
 
-    @Cacheable(value = "productsCache", key = "#name", unless = "#result==null")
-    public Product getProductByName(String name){
-        return productRepository.findProductByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found "));
+    //@Cacheable(value = "productsCache", key = "#name", unless = "#result==null")
+    public Mono<Product> getProductByName(String name){
+        return productRepository.findProductByName(name).onErrorReturn(new Product());
     }
 
-    @Cacheable("productsCache")
-    public List<Product> getAllProducts(int pageNo, int pageSize){
+    //@Cacheable("productsCache")
+    public Flux<Product> getAllProducts(int pageNo, int pageSize){
         log.info("Get all products");
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Product> all = productRepository.findAll(paging);
-        if (all.hasContent()){
-            return all.getContent();
-        }
-        return null;
+        return productRepository.findAll();
+
     }
 
-    @Cacheable("productsCache")
-    public List<Product> getAllProductsBySex(int pageNo, int pageSize, char sex){
+    //@Cacheable("productsCache")
+    public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex){
         log.info("Get all products by sex");
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Product> all = productRepository.findAllBySex(paging, sex);
-        if (all.hasContent()){
-            return all.getContent();
-        }
-        return null;
+        return productRepository.findAllBySex(sex, paging);
     }
 
-    public boolean isProductExistById(String id){
+    public Mono<Boolean> isProductExistById(String id){
         return productRepository.existsById(id);
     }
 
-    @CachePut(value = "productsCache", key = "#product.id")
-    public Product save(Product product){
-        Product savedProduct = productRepository.save(product);
-        kafkaProducer.sendProduct(savedProduct);
+    //@CachePut(value = "productsCache", key = "#product.id")
+    public Mono<Product> save(Product product){
+        Mono<Product> savedProduct = productRepository.save(product);
+        savedProduct.subscribe(p -> kafkaProducer.sendProduct(p));
         return savedProduct;
     }
 
     public void saveProducts(List<Product> products){
-        Iterable<Product> savedProducts = productRepository.saveAll(products);
-        savedProducts.forEach(p -> kafkaProducer.sendProduct(p));
+        Flux<Product> savedProducts = productRepository.saveAll(products);
+        savedProducts.subscribe(p -> kafkaProducer.sendProduct(p));
     }
 
-    @CacheEvict(value = "productsCache", key = "#id")
-    public void deleteProductById(String id){
-        productRepository.deleteById(id);
-        log.debug("Product {} is deleted.", id);
+    //@CacheEvict(value = "productsCache", key = "#id")
+    public Mono<Void> deleteProductById(String id){
+        log.debug("Product {}  delete ", id);
+        return productRepository.deleteById(id);
     }
 
     private Product createMockProduct(){

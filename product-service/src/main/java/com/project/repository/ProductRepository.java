@@ -1,20 +1,21 @@
 package com.project.repository;
 
 import com.project.model.Product;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends PagingAndSortingRepository<Product, String> {
+public interface ProductRepository extends ReactiveCrudRepository<Product, String> {
 
-    Optional<Product> findProductByName(String name);
+    Mono<Product> findProductByName(String name);
 
-    Page<Product> findAllBySex(Pageable page, char sex);
+    Flux<Product> findAllBySex(char sex, Pageable page);
 
-    List<Product> findProductsByIdIn(List<String> ids);
+    Flux<Product> findProductsByIdIn(List<String> ids);
 }

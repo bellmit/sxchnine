@@ -15,9 +15,9 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import utils.TestObjectCreator;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,22 +53,22 @@ public class ProductServiceTestIT {
 
     @Test
     public void testGetProductById(){
-        Product productById = productService.getProductById("1");
-        assertEquals("1", productById.getId());
-        assertEquals("p1", productById.getName());
+        Mono<Product> productById = productService.getProductById("1");
+        assertEquals("1", productById.block().getId());
+        assertEquals("p1", productById.block().getName());
     }
 
     @Test
     public void testGetProductByName(){
-        Product product = productService.getProductByName("p1");
-        assertEquals("1", product.getId());
-        assertEquals("p1", product.getName());
+        Mono<Product> product = productService.getProductByName("p1");
+        assertEquals("1", product.block().getId());
+        assertEquals("p1", product.block().getName());
     }
 
     @Test
     public void testGetAllProducts(){
-        List<Product> allProducts = productService.getAllProducts(0, 2);
-        assertEquals(2, allProducts.size());
+        Flux<Product> allProducts = productService.getAllProducts(0, 2);
+        assertEquals(2, allProducts.toStream().count());
     }
 
     @Test
@@ -78,13 +78,13 @@ public class ProductServiceTestIT {
         productToSave.setName("p2");
         productToSave.setStore("s2");
 
-        Product savedProduct = productService.save(productToSave);
+        Mono<Product> savedProduct = productService.save(productToSave);
 
-        assertEquals("2", savedProduct.getId());
-        assertEquals("p2", savedProduct.getName());
-        assertEquals("s2", savedProduct.getStore());
+        assertEquals("2", savedProduct.block().getId());
+        assertEquals("p2", savedProduct.block().getName());
+        assertEquals("s2", savedProduct.block().getStore());
 
-        verify(kafkaProducer).sendProduct(savedProduct);
+        verify(kafkaProducer).sendProduct(savedProduct.block());
     }
 
     @Test
@@ -94,11 +94,11 @@ public class ProductServiceTestIT {
         productToDelete.setName("p3");
         productToDelete.setStore("s3");
 
-        Product savedProduct = productService.save(productToDelete);
+        Mono<Product> savedProduct = productService.save(productToDelete);
 
-        assertEquals("3", savedProduct.getId());
-        assertEquals("p3", savedProduct.getName());
-        assertEquals("s3", savedProduct.getStore());
+        assertEquals("3", savedProduct.block().getId());
+        assertEquals("p3", savedProduct.block().getName());
+        assertEquals("s3", savedProduct.block().getStore());
 
         productService.deleteProductById("3");
 

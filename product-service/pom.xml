@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.project</groupId>
     <artifactId>product-service</artifactId>
-    <version>1.0.0-SNAPSHOT-GRAAL</version>
+    <version>1.0.0-SNAPSHOT-REACTIVE</version>
 
     <properties>
         <java.version>11</java.version>
@@ -69,7 +69,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -106,6 +106,15 @@
             <artifactId>lombok</artifactId>
             <version>1.18.2</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.netty</groupId>
+            <artifactId>reactor-netty</artifactId>
+            <version>0.8.3.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -196,8 +205,8 @@
                 <version>3.8.1</version>
                 <configuration>
                     <release>${java.version}</release>  <!-- same as <java.version> -->
-                    <target>12</target>
-                    <source>12</source>    <!-- same as <java.version> -->
+                    <target>11</target>
+                    <source>11</source>    <!-- same as <java.version> -->
                 </configuration>
             </plugin>
             <plugin>

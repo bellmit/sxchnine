@@ -5,6 +5,8 @@ import com.project.business.ProductService;
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -19,38 +21,38 @@ public class ProductController {
     }
 
     @GetMapping("/id/{id}")
-    public Product getProductById(@PathVariable String id){
+    public Mono<Product> getProductById(@PathVariable String id){
         log.info("Get Product {}", id);
         return productService.getProductById(id);
     }
 
     @GetMapping("/ids")
-    public List<Product> getProductsByIds(@RequestParam List<String> ids){
+    public Flux<Product> getProductsByIds(@RequestParam List<String> ids){
         log.info("Get Products by ids {}", ids);
         return productService.getProductByIds(ids);
     }
 
     @GetMapping("/name/{name}")
-    public Product getProductByName(@PathVariable String name){
+    public Mono<Product> getProductByName(@PathVariable String name){
         log.info("Get Product {}", name);
         return productService.getProductByName(name);
     }
 
     @GetMapping("/all")
-    public List<Product> getProducts(@RequestParam(defaultValue = "0") int pageNo,
+    public Flux<Product> getProducts(@RequestParam(defaultValue = "0") int pageNo,
                                      @RequestParam(defaultValue = "2") int pageSize){
         return productService.getAllProducts(pageNo, pageSize);
     }
 
     @GetMapping("/allBySex")
-    public List<Product> getProductsBySex(@RequestParam(defaultValue = "0") int pageNo,
+    public Flux<Product> getProductsBySex(@RequestParam(defaultValue = "0") int pageNo,
                                           @RequestParam(defaultValue = "2") int pageSize,
                                           @RequestParam char sex){
         return productService.getAllProductsBySex(pageNo, pageSize, sex);
     }
 
     @PostMapping("/save")
-    public Product createOrUpdateProduct(@RequestBody Product product){
+    public Mono<Product> createOrUpdateProduct(@RequestBody Product product){
 /*        Product p = new Product();
         p.setId("A2");
         p.setName("Carhartt mid 90's");
@@ -76,8 +78,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/delete/id/{id}")
-    public void deleteProductById(@PathVariable String id){
-        productService.deleteProductById(id);
+    public Mono<Void> deleteProductById(@PathVariable String id){
+        return productService.deleteProductById(id);
     }
 
 }
