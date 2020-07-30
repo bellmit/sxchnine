@@ -3,7 +3,7 @@ spring:
     name: email-service
   cloud:
     config:
-      uri: ${CONFIG_SERVER:http://localhost:8888}
+      uri: ${CONFIG_SERVER:http://config-server:8888}
 
 
 #docker run --name email-service --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -e KAFKA_SERVER=kafka -d sifraden/email-service:1.0.0-SNAPSHOT

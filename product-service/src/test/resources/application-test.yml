@@ -1,9 +1,4 @@
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27018
-      database: products
   cloud:
     discovery:
       enabled: false
@@ -13,9 +8,9 @@ spring:
       enabled: false
   kafka:
     consumer:
-      bootstrap-servers: ${spring.embedded.kafka.brokers}
+      bootstrap-servers: localhost:9092
     producer:
-      bootstrap-servers: ${spring.embedded.kafka.brokers}
+      bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       client-id: productId

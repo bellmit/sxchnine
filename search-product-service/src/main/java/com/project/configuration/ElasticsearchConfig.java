@@ -1,42 +1,61 @@
 package com.project.configuration;
 
-import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
-import org.springframework.data.elasticsearch.client.RestClients;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.data.elasticsearch.client.reactive.ReactiveElasticsearchClient;
+import org.springframework.data.elasticsearch.client.reactive.ReactiveRestClients;
+import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.ReactiveElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverter;
+import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;
+import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMappingContext;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
+
+import java.time.Duration;
 
 @Configuration
-@EnableElasticsearchRepositories
-@Slf4j
 public class ElasticsearchConfig {
 
-    @Value("${elasticsearch.name}")
-    private String clusterName;
+    private final ElasticsearchProperties elasticsearchProperties;
 
-    @Value("${elasticsearch.server}")
-    private String server;
-
-    @Value("${elasticsearch.port}")
-    private int port;
+    public ElasticsearchConfig(ElasticsearchProperties elasticsearchProperties) {
+        this.elasticsearchProperties = elasticsearchProperties;
+    }
 
     @Bean
-    public RestHighLevelClient elasticSearchClient(){
-        final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-                .connectedTo(server+":"+port)
+    public ReactiveElasticsearchClient reactiveElasticsearchClient(){
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+                .connectedTo(elasticsearchProperties.getServer())
+                .withWebClientConfigurer(webClient -> {
+                    ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
+                            .codecs(configurer -> configurer.defaultCodecs()
+                                    .maxInMemorySize(-1))
+                            .build();
+                    return webClient.mutate().exchangeStrategies(exchangeStrategies).build();
+                })
+                .withConnectTimeout(Duration.ofSeconds(5))
+                .withSocketTimeout(Duration.ofSeconds(5))
                 .build();
 
-        return RestClients.create(clientConfiguration).rest();
+        return ReactiveRestClients.create(clientConfiguration);
+    }
+
+
+    @Bean
+    public ElasticsearchConverter elasticsearchConverter(){
+        return new MappingElasticsearchConverter(elasticsearchMappingContext());
     }
 
     @Bean
-    public ElasticsearchOperations elasticsearchTemplate() {
-        return new ElasticsearchRestTemplate(elasticSearchClient());
+    public SimpleElasticsearchMappingContext elasticsearchMappingContext() {
+        return new SimpleElasticsearchMappingContext();
     }
+
+    @Bean
+    public ReactiveElasticsearchOperations reactiveElasticsearchOperations() {
+        return new ReactiveElasticsearchTemplate(reactiveElasticsearchClient(), elasticsearchConverter());
+    }
+
 
 }

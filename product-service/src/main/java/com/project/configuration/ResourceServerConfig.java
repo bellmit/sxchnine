@@ -1,3 +1,4 @@
+/*
 package com.project.configuration;
 
 import org.springframework.context.annotation.Bean;
@@ -16,17 +17,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+*/
 /*        http.authorizeRequests()
                 .antMatchers("/actuator/**", "/autoconfig")
                 .permitAll()
                 .antMatchers("/**")
-                .authenticated();*/
+                .authenticated();*//*
+
 
         http.authorizeRequests()
                 .antMatchers("/actuator/**", "/autoconfig", "/ids/**", "/bulk/**")
                 .permitAll()
                 .antMatchers("/**")
-                .authenticated();
+                .permitAll();
     }
 
     @Override
@@ -53,3 +56,4 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return accessTokenConverter;
     }
 }
+*/

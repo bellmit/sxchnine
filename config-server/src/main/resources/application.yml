@@ -8,27 +8,21 @@ spring:
         git:
           uri: ${GITHUB_REPO:https://github.com/sifraden/config.git}
           clone-on-start: true
+          skipSslValidation: true
+          force-pull: true
+        accept-empty: false
       encrypt:
         enabled: true
-      discovery:
-        enabled: true
-    bus:
-      enabled: true
-  rabbitmq:
-    host: ${RABBITMQ_SERVER:rabbitmq-cluster-balancer}
-    port: 5672
-    username: guest
-    password: guest
+#      discovery:
+#        enabled: true
+ #   bus:
+ #     enabled: true
+ # rabbitmq:
+ #   host: ${RABBITMQ_SERVER:rabbitmq}
+ #   port: 5672
+ #   username: guest
+ #   password: guest
 
 
 
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 30
-    metadataMap:
-      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
-    registryFetchIntervalSeconds: 30
 

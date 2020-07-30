@@ -1,16 +1,12 @@
-/*
 package com.project.configuration;
 
-import com.project.model.Product;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.support.serializer.JsonSerializer;
+import reactor.kafka.sender.KafkaSender;
+import reactor.kafka.sender.SenderOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +14,15 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${kafka.bootstrapAddress}")
+    @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Bean
-    public ProducerFactory<String, Product> producerFactory(){
+    public KafkaSender kafkaSender(){
+        return KafkaSender.create(senderOptions());
+    }
+
+    public SenderOptions<String, String> senderOptions(){
         Map<String, Object> configs = new HashMap<>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         configs.put(ProducerConfig.CLIENT_ID_CONFIG, "products");
@@ -34,16 +34,12 @@ public class KafkaProducerConfig {
         configs.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, 1_000);
         configs.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 1_000);
         configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        return new DefaultKafkaProducerFactory<>(configs);
+        return SenderOptions.create(configs);
+
     }
 
-    @Bean
-    public KafkaTemplate createKafkaTemplate(){
-        return new KafkaTemplate(producerFactory());
-    }
 
 }
 
-*/

@@ -16,9 +16,9 @@ import reactor.core.publisher.Mono;
 import utils.TestObjectCreator;
 
 import java.math.BigDecimal;
-import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,15 +37,15 @@ public class ProductServiceTest {
     @Test
     public void testGetProductById(){
 
-        when(productRepository.findById("1")).thenReturn(Mono.just(TestObjectCreator.createProduct()));
+        when(productRepository.findById(1L)).thenReturn(Mono.just(TestObjectCreator.createProduct()));
 
-        Mono<Product> productFound = productService.getProductById("1");
+        Mono<Product> productFound = productService.getProductById(1);
 
-        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
         verify(productRepository).findById(argumentCaptor.capture());
 
-        assertEquals("1", argumentCaptor.getValue());
+        assertEquals(1, argumentCaptor.getValue());
 
         assertEquals("p1", productFound.block().getName());
         assertEquals(BigDecimal.valueOf(1.0), productFound.block().getPrice());
@@ -55,7 +55,7 @@ public class ProductServiceTest {
     public void testGetAllProducts(){
         when(productRepository.findAll()).thenReturn(Flux.empty());
 
-        productService.getAllProducts(0, 2);
+        productService.getAllProducts();
 
         Pageable paging = PageRequest.of(0, 2, Sort.unsorted());
 
@@ -67,44 +67,27 @@ public class ProductServiceTest {
         Product product = Mono.just(TestObjectCreator.createProduct()).block();
 
         when(productRepository.save(product)).thenReturn(Mono.just(product));
+        when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(product));
 
-        Mono<Product> productSaved = productService.save(product);
+        Product productSaved = productService.save(product).block();
 
         ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
 
         verify(productRepository).save(argumentCaptor.capture());
 
-        assertEquals("1", argumentCaptor.getValue().getId());
+        assertEquals(1L, argumentCaptor.getValue().getId());
 
-        assertEquals("1", productSaved.block().getId());
-        assertEquals("p1", productSaved.block().getName());
-        assertEquals(BigDecimal.valueOf(1.0), productSaved.block().getPrice());
+        assertEquals(1L, productSaved.getId());
+        assertEquals("p1", productSaved.getName());
+        assertEquals(BigDecimal.valueOf(1.0), productSaved.getPrice());
 
-        verify(kafkaProducer).sendProduct(product);
+        verify(kafkaProducer).sendProduct(any());
 
     }
 
     @Test
     public void testDeleteProductById(){
-        productService.deleteProductById("1");
+        productService.deleteProductById(1);
     }
 
-    @Test
-    public void test() throws InterruptedException {
-        CountDownLatch count = new CountDownLatch(1);
-        Flux.generate(c -> c.next(m())).log().doOnNext(p -> p.toString());
-
-        System.out.println(Thread.currentThread().getName() + " Welcome ");
-
-        count.await();
-    }
-
-    private String m(){
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return Thread.currentThread().getName() + " - toto";
-    }
 }

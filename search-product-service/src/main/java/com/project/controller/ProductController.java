@@ -4,34 +4,34 @@ import com.project.business.ProductService;
 import com.project.model.Dimension;
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
 
 @RestController
 @Slf4j
 public class ProductController {
 
-    @Autowired
     private ProductService productService;
 
-    @GetMapping("/search/all")
-    public List<Product> searchAllProduct() {
-        return productService.getAllProducts();
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    @GetMapping("/search/{value}")
-    public List<Product> searchProduct(@PathVariable String value) {
+    @GetMapping(value = "/search/{value}", produces = APPLICATION_STREAM_JSON_VALUE)
+    public Flux<Product> searchProduct(@PathVariable String value) {
         return productService.getProductsByQuery(value);
     }
 
-    @GetMapping("/advancedSearch")
-    public List<Product> advancedSearchProduct(@RequestParam(required = false) String gender,
+   @GetMapping(value = "/advancedSearch", produces = APPLICATION_STREAM_JSON_VALUE)
+    public Flux<Product> advancedSearchProduct(@RequestParam(required = false) String gender,
                                                @RequestParam(required = false) String brand,
                                                @RequestParam(required = false) String category,
                                                @RequestParam(required = false) String size) {
@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public void saveProducts(@RequestBody Product product) {
+    public Mono<Void> saveProducts(@RequestBody Product product) {
         Product product1 = new Product();
         product1.setReference("REF2");
         product1.setName("Classic Girl Bomber");
@@ -63,11 +63,11 @@ public class ProductController {
         dimension.setLength(100);
         dimension.setWidth(50);
         product1.setDimension(dimension);
-        productService.save(product);
+        return productService.save(product);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable String id) {
-        productService.deleteById(id);
+    public Mono<Void> deleteProduct(@PathVariable String id) {
+        return productService.deleteById(id);
     }
 }

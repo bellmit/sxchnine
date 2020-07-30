@@ -1,21 +1,17 @@
 package com.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@Document(indexName = "store_products", type = "_doc", createIndex = false)
+@Data
+@Document(indexName = "store_products", createIndex = false)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Product implements Serializable {
-
+    
     private String id;
     private String reference;
     private String name;

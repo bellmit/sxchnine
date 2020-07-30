@@ -1,17 +1,14 @@
 package com.project.business;
 
-import com.project.ProductServiceApplication;
-import com.project.exception.ProductNotFoundException;
 import com.project.model.Product;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
@@ -20,19 +17,20 @@ import reactor.core.publisher.Mono;
 import utils.TestObjectCreator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = ProductServiceApplication.class)
-@TestPropertySource(properties = {"application-intg.yml"})
-@ActiveProfiles("intg")
+@SpringBootTest
+@TestPropertySource(properties = {"application-test.yml"})
+@ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@EmbeddedKafka
 @DirtiesContext
+@Slf4j
 public class ProductServiceTestIT {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private ReactiveMongoTemplate mongoTemplate;
 
     @Autowired
     private ProductService productService;
@@ -40,68 +38,77 @@ public class ProductServiceTestIT {
     @MockBean
     private KafkaProducer kafkaProducer;
 
-    @BeforeAll
-    public void setup(){
-        mongoTemplate.createCollection("products");
-        mongoTemplate.save(TestObjectCreator.createProduct());
-    }
-
-    @AfterAll
-    public void tearDown(){
-        mongoTemplate.dropCollection("products");
-    }
 
     @Test
     public void testGetProductById(){
-        Mono<Product> productById = productService.getProductById("1");
-        assertEquals("1", productById.block().getId());
-        assertEquals("p1", productById.block().getName());
+        mongoTemplate.createCollection("products")
+                .flatMap(c -> mongoTemplate.save(TestObjectCreator.createProduct()))
+                .flatMap(p -> productService.getProductById(1))
+                .doOnNext(p -> {
+                    assertEquals(1, p.getId());
+                    assertEquals("p1", p.getName());
+                })
+                .then(mongoTemplate.dropCollection("products"))
+                .subscribe();
     }
 
     @Test
     public void testGetProductByName(){
-        Mono<Product> product = productService.getProductByName("p1");
-        assertEquals("1", product.block().getId());
-        assertEquals("p1", product.block().getName());
+        mongoTemplate.createCollection("products")
+                .flatMap(c -> mongoTemplate.save(TestObjectCreator.createProduct()))
+                .flatMap(p -> productService.getProductByName("p1"))
+                .doOnNext(p -> {
+                    assertEquals(1, p.getId());
+                    assertEquals("p1", p.getName());
+                })
+                .then(mongoTemplate.dropCollection("products"))
+                .subscribe();
     }
 
     @Test
     public void testGetAllProducts(){
-        Flux<Product> allProducts = productService.getAllProducts(0, 2);
-        assertEquals(2, allProducts.toStream().count());
+        mongoTemplate.save(TestObjectCreator.createProduct())
+                .log()
+                .map(p -> productService.getAllProducts())
+                .flatMap(Flux::count)
+                .doOnNext(p -> {
+                    System.out.println("----- start assertions ----");
+                    assertEquals(1, p);
+                })
+                .then(mongoTemplate.dropCollection("products"))
+                .subscribe();
     }
 
     @Test
-    public void testSaveProduct(){
-        Product productToSave = new Product();
-        productToSave.setId("2");
-        productToSave.setName("p2");
-        productToSave.setStore("s2");
-
-        Mono<Product> savedProduct = productService.save(productToSave);
-
-        assertEquals("2", savedProduct.block().getId());
-        assertEquals("p2", savedProduct.block().getName());
-        assertEquals("s2", savedProduct.block().getStore());
-
-        verify(kafkaProducer).sendProduct(savedProduct.block());
+    public void testSaveProduct() throws InterruptedException {
+        when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(TestObjectCreator.createProduct()));
+        productService.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.getProductById(1))
+                .doOnNext(p -> {
+                    System.out.println("--- start assertion --- ");
+                    assertEquals(1, p.getId());
+                    assertEquals("p1", p.getName());
+                    assertEquals(1.0, p.getPrice().doubleValue());
+                    verify(kafkaProducer).sendProduct(any());
+                })
+                .then(mongoTemplate.dropCollection(Product.class))
+                .subscribe();
     }
 
     @Test
     public void testDeleteProductById(){
-        Product productToDelete = new Product();
-        productToDelete.setId("3");
-        productToDelete.setName("p3");
-        productToDelete.setStore("s3");
-
-        Mono<Product> savedProduct = productService.save(productToDelete);
-
-        assertEquals("3", savedProduct.block().getId());
-        assertEquals("p3", savedProduct.block().getName());
-        assertEquals("s3", savedProduct.block().getStore());
-
-        productService.deleteProductById("3");
-
-        assertThrows(ProductNotFoundException.class, () -> productService.getProductById("3"));
+        mongoTemplate.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.getProductByName("p1"))
+                .doOnNext(p -> {
+                    assertEquals(1, p.getId());
+                    assertEquals("p1", p.getName());
+                })
+                .flatMap(p -> productService.deleteProductById(1))
+                .flatMap(p -> mongoTemplate.findById(1, Product.class))
+                .doOnNext(Assertions::assertNull)
+                .flatMap(p -> productService.getProductById(1))
+                .doOnNext(Assertions::assertNotNull)
+                .then(mongoTemplate.dropCollection(Product.class))
+                .subscribe();
     }
 }

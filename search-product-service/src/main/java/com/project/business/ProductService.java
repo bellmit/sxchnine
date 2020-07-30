@@ -1,27 +1,30 @@
 package com.project.business;
 
 import com.project.model.Product;
-import com.project.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private ReactiveElasticsearchOperations reactiveElasticsearchOperations;
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductService(ReactiveElasticsearchOperations reactiveElasticsearchOperations) {
+        this.reactiveElasticsearchOperations = reactiveElasticsearchOperations;
     }
 
-    public List<Product> getProductsByQuery(String query) {
+    public Flux<Product> getProductsByQuery(String query) {
+        log.info("search product by name or brand or category");
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .should(QueryBuilders.queryStringQuery("*" + query + "*")
                         .analyzeWildcard(true)
@@ -30,18 +33,24 @@ public class ProductService {
                         .field("category"));
 
 
-        QueryBuilder matchName = QueryBuilders.fuzzyQuery("name", query);
+        QueryBuilder matchName = QueryBuilders.matchPhraseQuery("name", query);
         QueryBuilder matchBrand = QueryBuilders.fuzzyQuery("brand", query);
         QueryBuilder matchCategory = QueryBuilders.matchPhrasePrefixQuery("category", query);
-        QueryBuilder queryBuilder1 = QueryBuilders.boolQuery()
+        QueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                 .should(matchName)
                 .should(matchBrand)
                 .should(matchCategory);
 
-        return productRepository.search(queryBuilder1);
+        NativeSearchQueryBuilder nativeSearchQuery = new NativeSearchQueryBuilder();
+        nativeSearchQuery.withQuery(boolQueryBuilder);
+
+        return reactiveElasticsearchOperations
+                .search(nativeSearchQuery.build(), Product.class, Product.class)
+                .map(SearchHit::getContent)
+                .doOnError(error -> log.error("error occurred during search", error));
     }
 
-    public List<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {
+    public Flux<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {
         log.info(" ********************* search product by advanced filter " + Thread.currentThread().getName());
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
@@ -61,31 +70,28 @@ public class ProductService {
             queryBuilder.must(QueryBuilders.matchQuery("size", size));
         }
 
-        return productRepository.search(queryBuilder);
+        NativeSearchQueryBuilder nativeQuery = new NativeSearchQueryBuilder();
+        nativeQuery.withQuery(queryBuilder);
+
+        return reactiveElasticsearchOperations
+                .search(nativeQuery.build(), Product.class, Product.class)
+                .map(SearchHit::getContent)
+                .doOnError(error -> log.error("error occurred during advanced search", error));
     }
 
-    public List<Product> getAllProducts(){
-        return productRepository.findAll();
+
+    public Mono<Void> save(Product product) {
+        log.info("save product");
+        return reactiveElasticsearchOperations.save(product)
+                .doOnError(error -> log.error("error occurred during saving", error))
+                .then();
     }
 
-    public void save(Product product) {
-        productRepository.save(product);
-    }
-
-    public void saveProducts(List<Product> products) {
-        productRepository.saveAll(products);
-    }
-
-    public void delete(Product product){
-        productRepository.delete(product);
-    }
-
-    public void deleteById(String id){
-        productRepository.deleteById(id);
-    }
-
-    public void deleteProducts(List<Product> products){
-        productRepository.deleteAll(products);
+    public Mono<Void> deleteById(String id){
+        log.info("delete product {}", id);
+        return reactiveElasticsearchOperations.delete(id, Product.class)
+                .doOnError(error -> log.error("error occurred during delete product by id {}", id, error))
+                .then();
     }
 }
 

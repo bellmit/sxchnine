@@ -1,3 +1,4 @@
+/*
 package utils;
 
 import org.springframework.boot.test.context.TestConfiguration;
@@ -17,3 +18,4 @@ public class ResourceServerConfigMock extends ResourceServerConfigurerAdapter {
     }
 
 }
+*/

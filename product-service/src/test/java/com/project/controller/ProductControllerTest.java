@@ -1,93 +1,97 @@
-/*
 package com.project.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.business.ProductService;
 import com.project.model.Product;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import utils.ResourceServerConfigMock;
 import utils.TestObjectCreator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ProductController.class)
-@Import(ResourceServerConfigMock.class)
+@WebFluxTest(ProductController.class)
 @DirtiesContext
 public class ProductControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    private WebTestClient webTestClient;
 
     @MockBean
     private ProductService productService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
-    public void testGetProductById() throws Exception {
-        when(productService.getProductById(anyString())).thenReturn(Mono.just(new Product()));
+    public void testGetProductById(){
+        when(productService.getProductById(anyLong())).thenReturn(Mono.just(new Product()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/id/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        webTestClient.get()
+                .uri("/id/1")
+                .accept(APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Product.class);
+
+        verify(productService).getProductById(1);
     }
 
     @Test
-    public void testGetProducts() throws Exception {
-        when(productService.getAllProducts(anyInt(), anyInt())).thenReturn(Flux.just(TestObjectCreator.createProduct()));
+    public void testGetProducts(){
+        Product product = TestObjectCreator.createProduct();
 
-        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/all?pageNo=0&pageSize=1"))
-                .andReturn().getResponse();
+        when(productService.getAllProducts()).thenReturn(Flux.just(product));
 
-        assertTrue(response.getContentAsString().contains("1"));
-        assertTrue(response.getContentAsString().contains("p1"));
-        assertTrue(response.getContentAsString().contains("1.0"));
+        webTestClient.get()
+                .uri("/all?pageNo=0&pageSize=1")
+                .accept(APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Product.class)
+                .value(Product::getId, Matchers.equalTo(product.getId()))
+                .value(Product::getName, Matchers.equalTo(product.getName()));
+
+        verify(productService).getAllProducts();
     }
 
     @Test
-    public void testCreateOrUpdateProduct() throws Exception {
-        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(TestObjectCreator.createProduct())))
-                .andReturn().getResponse();
+    public void testCreateOrUpdateProduct() {
+
+        webTestClient.post()
+                .uri("/save")
+                .accept(APPLICATION_STREAM_JSON)
+                .body(Mono.just(TestObjectCreator.createProduct()), Product.class)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Product.class);
 
         ArgumentCaptor<Product> argumentCaptor = ArgumentCaptor.forClass(Product.class);
         verify(productService).save(argumentCaptor.capture());
 
-        assertEquals("1", argumentCaptor.getValue().getId());
+        assertEquals(1, argumentCaptor.getValue().getId());
         assertEquals("p1", argumentCaptor.getValue().getName());
-
-        assertEquals(200, response.getStatus());
     }
 
     @Test
-    public void testDeleteProductById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/delete/id/1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+    public void testDeleteProductById(){
+        webTestClient.delete()
+                .uri("/delete/id/1")
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+        verify(productService).deleteProductById(1);
     }
 
 
 }
-*/

@@ -61,7 +61,7 @@ public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/oauth/token", "/signup").permitAll();
+                .antMatchers("/oauth/token", "/oauth/auth", "/signup").permitAll();
                 //.anyRequest().authenticated();
                // .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
         /*http.headers().addHeaderWriter(
