@@ -29,3 +29,6 @@ spring:
 #-- deploy app
 #
 #oc new-app api-gateway --name=api-gateway -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
+
+# build based on docker image
+#oc new-build . --name order-service --docker-image="sifraden/order-service:1.0.0-SNAPSHOT" --strategy=docker
