@@ -12,11 +12,11 @@ import static com.project.utils.PaymentStatusCode.*;
 @Slf4j
 public class OrderConsumer {
 
-    private EmailConfirmationSender emailConfirmationSender;
+    private final EmailConfirmationSender emailConfirmationSender;
 
-    private EmailPendingSender emailPendingSender;
+    private final EmailPendingSender emailPendingSender;
 
-    private EmailRefusedSender emailRefusedSender;
+    private final EmailRefusedSender emailRefusedSender;
 
     public OrderConsumer(EmailConfirmationSender emailConfirmationSender, EmailPendingSender emailPendingSender, EmailRefusedSender emailRefusedSender) {
         this.emailConfirmationSender = emailConfirmationSender;

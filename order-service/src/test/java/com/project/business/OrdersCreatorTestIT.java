@@ -26,8 +26,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -55,7 +53,7 @@ public class OrdersCreatorTestIT {
     @Autowired
     private OrderRepository orderRepository;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
@@ -69,12 +67,9 @@ public class OrdersCreatorTestIT {
 
         Thread.sleep(1000L);
 
-        ordersCreator.saveOrders(order);
-
-        List<Order> savedOrder = orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail());
-
-        assertThat(savedOrder.get(0)).isEqualToComparingFieldByFieldRecursively(order);
-
+        ordersCreator.saveOrders(order)
+                .thenMany(orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail()))
+                .subscribe(o -> assertThat(o).usingRecursiveComparison().isEqualTo(order));
     }
 
 }

@@ -2,7 +2,6 @@ package com.project.business;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.project.config.CassandraTestConfig;
-import com.project.config.ResourceServerConfigTest;
 import com.project.model.Order;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -39,7 +38,6 @@ import org.springframework.util.SocketUtils;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
@@ -60,7 +58,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
 @EmbeddedKafka
-@Import({CassandraTestConfig.class, ResourceServerConfigTest.class})
+@Import({CassandraTestConfig.class})
 @ActiveProfiles("test")
 @DirtiesContext
 public class OrderServiceTestIT {
@@ -70,11 +68,11 @@ public class OrderServiceTestIT {
     @Autowired
     private OrderService orderService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
-    private static int port = SocketUtils.findAvailableTcpPort();
+    private static final int port = SocketUtils.findAvailableTcpPort();
 
     @ClassRule
     public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
@@ -99,20 +97,22 @@ public class OrderServiceTestIT {
 
         Thread.sleep(1000L);
 
-        int paymentStatus = orderService.checkoutOrderAndSave(order);
+        orderService.checkoutOrderAndSave(order)
+                .subscribe(paymentStatus -> assertThat(paymentStatus).isEqualTo(1));
 
 
-        assertThat(paymentStatus).isEqualTo(1);
+        orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail())
+                .subscribe(orderByEmail -> {
+                    assertThat(orderByEmail).usingRecursiveComparison().isEqualTo(order);
+                    assertThat(orderByEmail.getPaymentStatus()).isEqualTo(CONFIRMED.getValue());
+                });
 
-        List<Order> orderByUserEmail = orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail());
-        assertThat(orderByUserEmail.get(0)).isEqualToComparingFieldByFieldRecursively(order);
-        assertThat(orderByUserEmail.get(0).getPaymentStatus()).isEqualTo(CONFIRMED.getValue());
 
         Consumer kafkaConsumer = createKafkaConsumer();
         ConsumerRecord singleRecord = KafkaTestUtils.getSingleRecord(kafkaConsumer, ORDERS_QUEUE);
         kafkaConsumer.close();
 
-        assertThat((Order)singleRecord.value()).isEqualToComparingFieldByFieldRecursively(order);
+        assertThat((Order)singleRecord.value()).usingRecursiveComparison().isEqualTo(order);
 
     }
 

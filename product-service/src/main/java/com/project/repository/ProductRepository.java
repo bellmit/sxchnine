@@ -12,10 +12,12 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends ReactiveMongoRepository<Product, Long> {
 
+    Mono<Product> findProductById(Long id);
+
     Mono<Product> findProductByName(String name);
 
     Flux<Product> findAllBySex(char sex, Pageable page);
 
-    Flux<Product> findProductsByIdIn(List<String> ids);
+    Flux<Product> findProductsByIdIn(List<Long> ids);
 
 }

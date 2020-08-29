@@ -1,3 +1,4 @@
+/*
 package com.project.config;
 
 import feign.RequestInterceptor;
@@ -26,3 +27,4 @@ public class FeignClientInterceptor implements RequestInterceptor {
 
     }
 }
+*/

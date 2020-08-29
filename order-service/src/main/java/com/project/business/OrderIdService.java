@@ -3,8 +3,7 @@ package com.project.business;
 import com.project.model.OrderId;
 import com.project.repository.OrderByOrderIdRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 @Service
 public class OrderIdService {
@@ -15,11 +14,12 @@ public class OrderIdService {
         this.orderByOrderIdRepository = orderByOrderIdRepository;
     }
 
-    public OrderId getOrderByOrderId(String uuid){
-        return orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(UUID.fromString(uuid));
+    public Mono<OrderId> getOrderByOrderId(String uuid){
+        return orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(uuid);
     }
 
-    public void saveOrderId(OrderId orderId){
-        orderByOrderIdRepository.save(orderId);
+    public Mono<Void> saveOrderId(OrderId orderId){
+        return orderByOrderIdRepository.save(orderId)
+                .then();
     }
 }

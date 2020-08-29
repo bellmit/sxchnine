@@ -44,7 +44,7 @@ public class ProductControllerTest {
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Product.class);
 
-        verify(productService).getProductById(1);
+        verify(productService).getProductById(1L);
     }
 
     @Test

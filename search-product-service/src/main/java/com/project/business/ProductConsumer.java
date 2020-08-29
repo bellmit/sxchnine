@@ -13,8 +13,8 @@ import reactor.core.scheduler.Schedulers;
 @Slf4j
 public class ProductConsumer {
 
-    private ProductService productService;
-    private ObjectMapper objectMapper;
+    private final ProductService productService;
+    private final ObjectMapper objectMapper;
 
     public ProductConsumer(ProductService productService, ObjectMapper objectMapper) {
         this.productService = productService;

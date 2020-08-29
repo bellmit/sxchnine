@@ -2,13 +2,12 @@ package com.project.repository;
 
 import com.project.model.OrderId;
 import com.project.model.OrderPrimaryKey;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 @Repository
-public interface OrderByOrderIdRepository extends CrudRepository<OrderId, OrderPrimaryKey> {
+public interface OrderByOrderIdRepository extends ReactiveCassandraRepository<OrderId, OrderPrimaryKey> {
 
-    OrderId findOrderIdByOrderIdPrimaryKeyOrderId(UUID orderId);
+    Mono<OrderId> findOrderIdByOrderIdPrimaryKeyOrderId(String orderId);
 }

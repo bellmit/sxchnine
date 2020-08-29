@@ -2,7 +2,6 @@ package com.project.business;
 
 import com.project.config.CassandraTestConfig;
 import com.project.model.OrderId;
-import org.assertj.core.api.Assertions;
 import org.cassandraunit.spring.CassandraDataSet;
 import org.cassandraunit.spring.CassandraUnitDependencyInjectionTestExecutionListener;
 import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
@@ -26,6 +25,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
@@ -48,7 +49,7 @@ public class OrderIdServiceTestIT {
     @Autowired
     private OrderIdService orderIdService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private static final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
@@ -62,10 +63,8 @@ public class OrderIdServiceTestIT {
 
         Thread.sleep(1000L);
 
-        orderIdService.saveOrderId(orderId);
-
-        OrderId orderByOrderId = orderIdService.getOrderByOrderId(orderId.getOrderIdPrimaryKey().getOrderId().toString());
-
-        Assertions.assertThat(orderByOrderId).isEqualToComparingFieldByFieldRecursively(orderId);
+        orderIdService.saveOrderId(orderId)
+                .then(orderIdService.getOrderByOrderId(orderId.getOrderIdPrimaryKey().getOrderId().toString()))
+                .subscribe(o -> assertThat(o).usingRecursiveComparison().isEqualTo(orderId));
     }
 }

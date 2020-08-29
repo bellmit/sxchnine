@@ -6,14 +6,11 @@ import './Product.css';
 class Product extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
-        console.log('Product.js should component update');
-        console.log(this.props.name !== nextProps.name);
         return this.props.name !== nextProps.name;
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
         console.log('Product.js did update');
-        console.log(this.props);
     }
 
     render(){

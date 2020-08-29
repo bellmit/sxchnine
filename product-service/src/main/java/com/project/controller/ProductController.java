@@ -3,6 +3,7 @@ package com.project.controller;
 
 import com.project.business.ProductService;
 import com.project.model.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -10,22 +11,21 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
-    @GetMapping("/id/{id}")
+    @GetMapping(value = "/id/{id}")
     public Mono<Product> getProductById(@PathVariable Long id){
         return productService.getProductById(id);
     }
 
-    @GetMapping(value = "/ids", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-    public Flux<Product> getProductsByIds(@RequestParam List<String> ids){
+    @GetMapping(value = "/ids", produces = APPLICATION_JSON_VALUE)
+    public Flux<Product> getProductsByIds(@RequestParam List<Long> ids){
         return productService.getProductByIds(ids);
     }
 
@@ -40,7 +40,7 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping(value = "/allBySex", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @GetMapping(value = "/allBySex", produces = APPLICATION_JSON_VALUE)
     public Flux<Product> getProductsBySex(@RequestParam(defaultValue = "0") int pageNo,
                                           @RequestParam(defaultValue = "2") int pageSize,
                                           @RequestParam char sex){

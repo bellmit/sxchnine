@@ -6,8 +6,8 @@ import com.project.producer.OrderProducer;
 import com.project.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import static com.project.utils.PaymentStatusCode.getStatusByCode;
 
@@ -15,13 +15,13 @@ import static com.project.utils.PaymentStatusCode.getStatusByCode;
 @Slf4j
 public class OrderService {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    private OrdersCreator ordersCreator;
+    private final OrdersCreator ordersCreator;
 
-    private PaymentServiceClient paymentServiceClient;
+    private final PaymentServiceClient paymentServiceClient;
 
-    private OrderProducer orderProducer;
+    private final OrderProducer orderProducer;
 
     public OrderService(OrderRepository orderRepository, OrdersCreator ordersCreator, PaymentServiceClient paymentServiceClient, OrderProducer orderProducer) {
         this.orderRepository = orderRepository;
@@ -30,25 +30,29 @@ public class OrderService {
         this.orderProducer = orderProducer;
     }
 
-    public List<Order> getAllOrders(){
+    public Flux<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
-    public List<Order> getOrderByUserEmail(String userEmail){
+    public Flux<Order> getOrderByUserEmail(String userEmail) {
         return orderRepository.findOrdersByOrderPrimaryKeyUserEmail(userEmail);
     }
 
-    public int checkoutOrderAndSave(Order order){
-        int paymentStatus = paymentServiceClient.payOrder(order);
-        log.info("payment : {}", paymentStatus);
-        order.setPaymentStatus(getStatusByCode(paymentStatus));
-        ordersCreator.saveOrders(order);
-        orderProducer.sendOder(order);
-        return paymentStatus;
+    public Mono<Integer> checkoutOrderAndSave(Order order) {
+        Mono<Integer> paymentStatus = paymentServiceClient.payOrder(order);
+
+        return paymentStatus.map(i -> {
+            order.setPaymentStatus(getStatusByCode(i));
+            return order;
+        })
+                .flatMap(ordersCreator::saveOrders)
+                .then(orderProducer.sendOder(Mono.just(order)))
+                .then(paymentStatus);
     }
 
-    public void saveOrder(Order order){
-        ordersCreator.saveOrders(order);
-        orderProducer.sendOder(order);
+    public Mono<Void> saveOrder(Order order) {
+        return ordersCreator.saveOrders(order)
+                .then(orderProducer.sendOder(Mono.just(order)))
+                .then();
     }
 }

@@ -1,3 +1,4 @@
+/*
 import axios from 'axios';
 
 axios.defaults.headers.common['Authorization'] = 'Basic Y2xpZW50OnNlY3JldA==';
@@ -5,7 +6,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencod
 axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 
-export const auth = axios.get('http://localhost:9090/api/authentication/oauth/token?grant_type=password&client_id=client&client_secret=secret&username=toto2%40gmail.com&password=toto1234&scope=all',
+export const auth = axios.get('http://localhost:8080/auth/realms/api-gateway/protocol/openid-connect/token?grant_type=client_credentials&client_id=api-gateway-client&client_secret=c8e6e1c0-4440-4d42-bda7-0ca48e8d6412&username=api-gateway-user&password=passw0rd&scope=all',
     {
         headers: {
             "Content-Type": 'application/x-www-form-urlencoded;',
@@ -17,3 +18,4 @@ export const auth = axios.get('http://localhost:9090/api/authentication/oauth/to
         localStorage.setItem("refresh_token", response.data["refresh_token"]);
 });
 
+*/

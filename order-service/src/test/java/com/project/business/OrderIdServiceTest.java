@@ -9,10 +9,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,31 +27,33 @@ public class OrderIdServiceTest {
     @InjectMocks
     private OrderIdService orderIdService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private static final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
     @Test
-    public void testGetOrderByOrderId(){
+    public void testGetOrderByOrderId() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
-        when(orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(any())).thenReturn(orderId);
+        when(orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(any())).thenReturn(Mono.just(orderId));
 
-        OrderId orderByOrderId = orderIdService.getOrderByOrderId(UUID.randomUUID().toString());
-
-        assertThat(orderByOrderId.equals(orderId));
-
+        StepVerifier.create(orderIdService.getOrderByOrderId(UUID.randomUUID().toString()))
+                .expectNext(orderId)
+                .expectComplete()
+                .verify();
     }
 
     @Test
-    public void testSaveOrderId(){
+    public void testSaveOrderId() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
-        when(orderByOrderIdRepository.save(any())).thenReturn(orderId);
+        when(orderByOrderIdRepository.save(any())).thenReturn(Mono.just(orderId));
 
-        orderIdService.saveOrderId(orderId);
+        StepVerifier.create(orderIdService.saveOrderId(orderId))
+                .expectComplete()
+                .verify();
 
         verify(orderByOrderIdRepository).save(orderId);
     }

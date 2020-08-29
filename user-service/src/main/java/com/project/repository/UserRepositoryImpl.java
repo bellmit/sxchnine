@@ -1,51 +1,39 @@
 package com.project.repository;
 
 import com.project.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
-import java.util.Map;
-
-@Repository
-@Transactional
+@Component
 public class UserRepositoryImpl implements UserRepository {
-    private static final String KEY = "USER";
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-    private HashOperations<String, String, User> hashOperations;
+    private final ReactiveRedisTemplate<String, User> reactiveRedisTemplate;
 
-    @PostConstruct
-    private void init(){
-        hashOperations = redisTemplate.opsForHash();
+    public UserRepositoryImpl(ReactiveRedisTemplate<String, User> reactiveRedisTemplate) {
+        this.reactiveRedisTemplate = reactiveRedisTemplate;
     }
 
     @Override
-    public User findByEmail(String email) {
-        return hashOperations.get(KEY, email);
+    public Mono<User> findByEmail(String email) {
+        return reactiveRedisTemplate.opsForValue().get(email);
     }
 
     @Override
-    public Map<String, User> findAll() {
-        return hashOperations.entries(KEY);
+    public Mono<Void> save(User user) {
+        return reactiveRedisTemplate.opsForValue().set(user.getEmail(), user)
+                .then();
     }
 
     @Override
-    public void save(User user) {
-        hashOperations.put(KEY, user.getEmail(), user);
+    public Mono<Void> deleteUserById(String id) {
+        return reactiveRedisTemplate.opsForValue().delete(id)
+                .then();
     }
 
     @Override
-    public void deleteUserById(String id) {
-        hashOperations.delete(KEY, id);
-    }
-
-    @Override
-    public void deleteUser(User user) {
-        hashOperations.delete(KEY, user.getEmail());
+    public Mono<Void> deleteUserByEmail(String email) {
+        return reactiveRedisTemplate.opsForValue().delete(email)
+                .then();
     }
 }

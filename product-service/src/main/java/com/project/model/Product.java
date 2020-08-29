@@ -19,7 +19,7 @@ import java.util.Set;
 public class Product implements Serializable {
 
     @Id
-    private long id;
+    private Long id;
     private String reference;
     private String name;
     private char sex;

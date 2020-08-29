@@ -4,7 +4,6 @@ import com.project.business.KafkaProducer;
 import com.project.model.Product;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.ClassRule;
 import org.junit.jupiter.api.AfterAll;
@@ -29,7 +28,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -95,27 +93,6 @@ public class ProductControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Product.class);
-    }
-
-
-
-    //@Test
-    public void testSaveProduct() throws Exception {
-        Product productToSave = new Product();
-        productToSave.setId(2);
-        productToSave.setName("p2");
-
-        //ResponseEntity<Product> response = testRestTemplate.postForEntity("/save", productToSave, Product.class);
-
-        Consumer kafkaConsumer = createKafkaConsumer();
-        ConsumerRecord singleRecord = KafkaTestUtils.getSingleRecord(kafkaConsumer, "products");
-
-/*        assertEquals("2", response.getBody().getId());
-        assertEquals("p2", response.getBody().getName());*/
-
-        assertEquals("2", ((Product) singleRecord.value()).getId());
-        assertEquals("p2", ((Product) singleRecord.value()).getName());
-
     }
 
     @AfterAll

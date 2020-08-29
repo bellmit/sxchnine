@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Aux from '../../hoc/Aux/Aux';
 import Head from '../Head/Head';
 import Middle from '../../containers/Middle/Middle';
 import Footer from '../Footer/Footer';
-import * as auth from '../../authentication/authentication';
+import * as actionTypes from '../../store/actions/authentication';
 
 class Home extends Component {
 
     componentDidMount(): void {
-        console.log(auth.auth);
+        this.props.authenticate();
     }
 
     render() {
@@ -22,4 +23,10 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapDispatchToProps = dispatch => {
+    return {
+        authenticate: () => dispatch(actionTypes.authenticate())
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Home);

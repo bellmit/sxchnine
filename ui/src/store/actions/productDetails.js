@@ -28,7 +28,6 @@ export const loadProduct = (id, history) => {
         dispatch(startLoadingProduct(true));
         axios.get('/product/id/'+id).then(response => {
             dispatch(handleProductSuccess(response.data));
-            console.log('i got the response from the server man');
             dispatch(startLoadingProduct(false));
             history.push('/products/' + id);
         }).catch(error => {

@@ -1,15 +1,32 @@
 package com.project.client;
 
-import com.project.config.FeignClientInterceptor;
 import com.project.model.Order;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
-@FeignClient(name = "payment-service", fallback = PaymentServiceFallback.class, configuration = FeignClientInterceptor.class)
-public interface PaymentServiceClient {
+import java.time.Duration;
 
-    @PostMapping("/pay")
-    int payOrder(@RequestBody Order order);
+import static com.project.utils.PaymentStatusCode.WAITING;
+
+@Component
+public class PaymentServiceClient {
+
+    private final WebClient webClient;
+
+    public PaymentServiceClient(WebClient webClient) {
+        this.webClient = webClient;
+    }
+
+    public Mono<Integer> payOrder(Order order){
+        return webClient.post()
+                .uri("/pay")
+                .body(BodyInserters.fromValue(order))
+                .retrieve()
+                .bodyToMono(Integer.class)
+                .timeout(Duration.ofSeconds(5))
+                .onErrorReturn(WAITING.getCode());
+    }
 }
 

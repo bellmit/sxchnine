@@ -12,14 +12,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.Collections;
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
@@ -39,7 +39,7 @@ public class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
@@ -49,29 +49,39 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
+        when(ordersCreator.saveOrders(any())).thenReturn(Mono.empty());
+        when(orderProducer.sendOder(any())).thenReturn(Mono.empty());
+
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
-        when(paymentServiceClient.payOrder(order)).thenReturn(1);
+        when(paymentServiceClient.payOrder(order)).thenReturn(Mono.just(1));
 
-        orderService.checkoutOrderAndSave(order);
+        StepVerifier.create(orderService.checkoutOrderAndSave(order))
+                .expectNext(1)
+                .expectComplete()
+                .verify();
 
         verify(ordersCreator).saveOrders(orderCaptor.capture());
-        verify(orderProducer).sendOder(orderCaptor.capture());
+        verify(orderProducer).sendOder(any());
 
         assertThat(orderCaptor.getValue().getPaymentStatus()).isEqualTo("CONFIRMED");
 
     }
-
 
     @Test
     public void testSaveOrder(){
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        orderService.saveOrder(order);
+        when(ordersCreator.saveOrders(any())).thenReturn(Mono.empty());
+        when(orderProducer.sendOder(any())).thenReturn(Mono.empty());
+
+        StepVerifier.create(orderService.saveOrder(order))
+                .expectComplete()
+                .verify();
 
         verify(ordersCreator).saveOrders(order);
-        verify(orderProducer).sendOder(order);
+        verify(orderProducer).sendOder(any());
     }
 
     @Test
@@ -79,11 +89,12 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(orderRepository.findOrdersByOrderPrimaryKeyUserEmail(anyString())).thenReturn(Collections.singletonList(order));
+        when(orderRepository.findOrdersByOrderPrimaryKeyUserEmail(anyString())).thenReturn(Flux.just(order));
 
-        List<Order> orderByUserEmail = orderService.getOrderByUserEmail("toto@gmail.com");
-
-        assertThat(orderByUserEmail.get(0)).isEqualTo(order);
+        StepVerifier.create(orderService.getOrderByUserEmail("toto@gmail.com"))
+                .expectNextMatches(o -> o.getOrderPrimaryKey().getOrderId().toString().equals(order.getOrderPrimaryKey().getOrderId().toString()))
+                .expectComplete()
+                .verify();
     }
 
 
@@ -92,10 +103,11 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(orderRepository.findAll()).thenReturn(Collections.singletonList(order));
+        when(orderRepository.findAll()).thenReturn(Flux.just(order));
 
-        List<Order> orders = orderService.getAllOrders();
-
-        assertThat(orders.get(0)).isEqualTo(order);
+        StepVerifier.create(orderService.getAllOrders())
+                .expectNextMatches(o -> o.getOrderPrimaryKey().getUserEmail().equals(order.getOrderPrimaryKey().getUserEmail()))
+                .expectComplete()
+                .verify();
     }
 }

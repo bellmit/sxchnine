@@ -11,7 +11,6 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static org.springframework.data.cassandra.core.cql.Ordering.DESCENDING;
 import static org.springframework.data.cassandra.core.cql.PrimaryKeyType.CLUSTERED;
@@ -30,7 +29,7 @@ public class OrderPrimaryKey implements Serializable {
     private String userEmail;
 
     @PrimaryKeyColumn(name = "order_id", type = CLUSTERED, ordinal = 1)
-    private UUID orderId;
+    private String orderId;
 
     @PrimaryKeyColumn(name = "order_time", type = CLUSTERED, ordinal = 2, ordering = DESCENDING)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

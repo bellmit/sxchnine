@@ -15,7 +15,7 @@ public abstract class EmailSender {
     @Value("${sendGrid.mail.from}")
     private String from;
 
-    private SendGrid sendGrid;
+    private final SendGrid sendGrid;
 
     public EmailSender(SendGrid sendGrid) {
         this.sendGrid = sendGrid;
@@ -40,7 +40,7 @@ public abstract class EmailSender {
 
     }
 
-    public Mail mailBuilder(Order order) {
+    private Mail mailBuilder(Order order) {
         Email emailFrom = new Email(from);
         Email emailTo = new Email(order.getOrderPrimaryKey().getUserEmail());
 
@@ -52,7 +52,7 @@ public abstract class EmailSender {
         personalization.addDynamicTemplateData("taxe", "11");
         personalization.addTo(emailTo);
 
-        Content content = new Content("text/plain", "plain");
+        Content content = new Content("text/html", "plain");
         Mail mail = new Mail();
         mail.setFrom(emailFrom);
         mail.setTemplateId(getTemplateId());

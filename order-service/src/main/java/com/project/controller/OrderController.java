@@ -5,13 +5,16 @@ import com.project.business.OrderService;
 import com.project.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
 
 @RestController
 @Slf4j
@@ -26,36 +29,36 @@ public class OrderController {
         this.orderIdService = orderIdService;
     }
 
-    @GetMapping("/all")
-    public List<Order> getAllOrders(){
+    @GetMapping(value = "/all", produces = APPLICATION_STREAM_JSON_VALUE)
+    public Flux<Order> getAllOrders(){
         return orderService.getAllOrders();
     }
 
     @GetMapping("/orderId/{orderId}")
-    public OrderId getOrdersByOrderId(@PathVariable String orderId){
+    public Mono<OrderId> getOrdersByOrderId(@PathVariable String orderId){
         return orderIdService.getOrderByOrderId(orderId);
     }
 
-    @GetMapping("/userEmail/{userEmail:.+}")
-    public List<Order> getOrdersByEmail(@PathVariable String userEmail){
+    @GetMapping(value = "/userEmail/{userEmail:.+}", produces = APPLICATION_STREAM_JSON_VALUE)
+    public Flux<Order> getOrdersByEmail(@PathVariable String userEmail){
         return orderService.getOrderByUserEmail(userEmail);
     }
 
     @PostMapping("/checkoutOrder")
-    public int checkoutOrderAndSave(@RequestBody Order order){
+    public Mono<Integer> checkoutOrderAndSave(@RequestBody Order order){
         return orderService.checkoutOrderAndSave(order);
     }
 
     @PostMapping("/save")
-    public void saveOrder(@RequestBody Order order){
+    public Mono<Void> saveOrder(@RequestBody Order order){
         //TODO: delete simulationOrder
-        orderService.saveOrder(order);
+        return orderService.saveOrder(order);
     }
 
     public Order simulationOrder(){
         Order order = new Order();
         OrderPrimaryKey primaryKey = new OrderPrimaryKey();
-        primaryKey.setOrderId(UUID.randomUUID());
+        primaryKey.setOrderId("1234");
         primaryKey.setUserEmail("blindrider400@gmail.com");
         primaryKey.setOrderTime(LocalDateTime.now().withNano(0));
         primaryKey.setShippingTime(LocalDateTime.now().withNano(0));

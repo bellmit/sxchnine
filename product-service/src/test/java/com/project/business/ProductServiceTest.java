@@ -39,7 +39,7 @@ public class ProductServiceTest {
 
         when(productRepository.findById(1L)).thenReturn(Mono.just(TestObjectCreator.createProduct()));
 
-        Mono<Product> productFound = productService.getProductById(1);
+        Mono<Product> productFound = productService.getProductById(1L);
 
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
@@ -75,9 +75,9 @@ public class ProductServiceTest {
 
         verify(productRepository).save(argumentCaptor.capture());
 
-        assertEquals(1L, argumentCaptor.getValue().getId());
+        assertEquals(1L, argumentCaptor.getValue().getId().longValue());
 
-        assertEquals(1L, productSaved.getId());
+        assertEquals(1L, productSaved.getId().longValue());
         assertEquals("p1", productSaved.getName());
         assertEquals(BigDecimal.valueOf(1.0), productSaved.getPrice());
 

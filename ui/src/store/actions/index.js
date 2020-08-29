@@ -1,4 +1,8 @@
 export {
+    authenticate
+} from './authentication';
+
+export {
     loadProducts,
     loadGenders,
     loadTypes,

@@ -2,24 +2,26 @@ package com.project.service;
 
 import com.project.model.User;
 import com.project.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
@@ -31,7 +33,7 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
@@ -40,26 +42,11 @@ public class UserServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        when(userRepository.findByEmail(anyString())).thenReturn(user);
+        when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
 
-        User userByEmail = userService.getUserByEmail("toto@gmail.com");
+        Mono<User> userByEmail = userService.getUserByEmail("toto@gmail.com");
 
-        assertThat(userByEmail).isEqualToComparingFieldByFieldRecursively(user);
-    }
-
-    @Test
-    public void testGetAllUsers(){
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        User user = easyRandom.nextObject(User.class);
-
-        Map<String, User> map = new HashMap<>();
-        map.put("1", user);
-
-        when(userRepository.findAll()).thenReturn(map);
-
-        List<User> users = userService.getAllUsers();
-
-        assertThat(users.get(0)).isEqualToComparingFieldByFieldRecursively(user);
+        assertThat(userByEmail.block()).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
@@ -67,12 +54,12 @@ public class UserServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        doNothing().when(userRepository).save(any(User.class));
+        when(userRepository.save(any(User.class))).thenReturn(Mono.empty());
         when(bCryptPasswordEncoder.encode(anyString())).thenReturn("$$$");
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
-        userService.save(user);
+        userService.save(user).block();
 
         verify(userRepository).save(userCaptor.capture());
 
@@ -84,11 +71,11 @@ public class UserServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        doNothing().when(userRepository).deleteUser(any(User.class));
+        when(userRepository.deleteUserByEmail(anyString())).thenReturn(Mono.empty());
 
-        userService.deleteUser(user);
+        userService.deleteUserByEmail(user.getEmail());
 
-        verify(userRepository).deleteUser(user);
+        verify(userRepository).deleteUserByEmail(user.getEmail());
     }
 
     @Test
@@ -96,15 +83,27 @@ public class UserServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        when(userRepository.findByEmail(anyString())).thenReturn(user);
+        when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
         when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        assertThat(userService.login("toto@gmail.com", "toto")).isEqualToComparingFieldByFieldRecursively(user);
+        assertTrue(userService.login("toto@gmail.com", "toto").block());
+
+        verify(userRepository).findByEmail("toto@gmail.com");
+        verify(bCryptPasswordEncoder).matches(anyString(), anyString());
     }
 
     @Test
     public void testLoginFail(){
-        assertThat(userService.login("toto@gmail.com", "toto")).isNull();
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+
+        when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
+        when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
+
+        assertFalse(userService.login("toto@gmail.com", "toto").block());
+
+        verify(userRepository).findByEmail("toto@gmail.com");
+        verify(bCryptPasswordEncoder).matches(anyString(), anyString());
     }
 
 }

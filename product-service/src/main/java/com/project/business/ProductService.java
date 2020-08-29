@@ -5,6 +5,7 @@ import com.project.model.Product;
 import com.project.model.SizeQte;
 import com.project.repository.ProductRepository;
 import com.project.util.FallbackProductsSource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.data.domain.PageRequest;
@@ -20,33 +21,26 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    private KafkaProducer kafkaProducer;
+    private final KafkaProducer kafkaProducer;
 
-
-    public ProductService(ProductRepository productRepository, KafkaProducer kafkaProducer) {
-        this.productRepository = productRepository;
-        this.kafkaProducer = kafkaProducer;
-    }
-
-    //@Cacheable(value = "productsCache", key = "#id", unless = "#result==null")
-    public Mono<Product> getProductById(long id){
+    public Mono<Product> getProductById(Long id){
         log.info("Get Product {}", id);
-        return productRepository.findById(id)
+        return productRepository.findProductById(id)
                 .doOnError(error -> log.error("error occurred during getting product by id", error))
                 .onErrorReturn(new Product());
     }
 
-    public Flux<Product> getProductByIds(List<String> ids){
+    public Flux<Product> getProductByIds(List<Long> ids){
         log.info("Get Products by ids {}", ids);
         return productRepository.findProductsByIdIn(ids);
     }
 
-    //@Cacheable(value = "productsCache", key = "#name", unless = "#result==null")
     public Mono<Product> getProductByName(String name){
         log.info("Get Product {}", name);
         return productRepository.findProductByName(name)
@@ -56,15 +50,12 @@ public class ProductService {
                 .onErrorReturn(new Product());
     }
 
-    //@Cacheable("productsCache")
     public Flux<Product> getAllProducts(){
-        log.info("Get all products");
         return productRepository.findAll()
                 .doOnError(error -> log.error("error occurred during getting all products", error));
 
     }
 
-    //@Cacheable("productsCache")
     public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex){
         log.info("Get all products by sex");
         Pageable paging = PageRequest.of(pageNo, pageSize);
@@ -76,8 +67,6 @@ public class ProductService {
                 .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex));
     }
 
-
-    //@CachePut(value = "productsCache", key = "#product.id")
     public Mono<Product> save(Product product){
         log.info("save product");
         return productRepository.save(product)
@@ -97,7 +86,6 @@ public class ProductService {
                 .then();
     }
 
-    //@CacheEvict(value = "productsCache", key = "#id")
     public Mono<Void> deleteProductById(long id){
         log.debug("Product {}  delete ", id);
         return productRepository.deleteById(id);

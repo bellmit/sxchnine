@@ -7,8 +7,6 @@ import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.config.FeignClientInterceptor;
-import com.project.config.FeignConfiguration;
 import com.project.config.LocalRibbonClientConfigurationTest;
 import com.project.model.Order;
 import org.jeasy.random.EasyRandom;
@@ -21,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
-import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -39,11 +34,11 @@ import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PaymentServiceClient.class, PaymentServiceFallback.class,
-        ObjectMapper.class, FeignClientInterceptor.class, FeignConfiguration.class, LocalRibbonClientConfigurationTest.class})
+@SpringBootTest(classes = {PaymentServiceClient.class,
+        ObjectMapper.class, LocalRibbonClientConfigurationTest.class})
 @ActiveProfiles("test")
-@ImportAutoConfiguration({RibbonAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class,
-        FeignAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
+@ImportAutoConfiguration({RibbonAutoConfiguration.class,
+        HttpMessageConvertersAutoConfiguration.class})
 @DirtiesContext
 public class PaymentServiceClientTestIT {
 
@@ -91,7 +86,7 @@ public class PaymentServiceClientTestIT {
     @PactVerification(fragment = "pactForPayment")
     @Test
     public void testPayOrder() {
-        int paymentStatus = paymentServiceClient.payOrder(order);
+        int paymentStatus = paymentServiceClient.payOrder(order).block();
 
         assertThat(paymentStatus).isEqualTo(1);
     }

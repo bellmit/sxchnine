@@ -36,3 +36,6 @@ port:
 payment-service:
   ribbon:
     listOfServers: localhost:${wiremock.server.port}
+
+consumer:
+  payment-service: localhost:${wiremock.server.port}

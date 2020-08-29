@@ -6,6 +6,7 @@ import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import  thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
+import authenticationReducer from '../src/store/reducers/authentication';
 import productsReducer from '../src/store/reducers/products';
 import productDetails from '../src/store/reducers/productDetails';
 import productsToOrder from '../src/store/reducers/productToOrder';
@@ -14,6 +15,7 @@ import users from '../src/store/reducers/users';
 import * as serviceWorker from './serviceWorker';
 
 const reducers = combineReducers ({
+    authentication: authenticationReducer,
     products: productsReducer,
     product: productDetails,
     productsToOrder: productsToOrder,

@@ -12,6 +12,7 @@ import './ProductSlick.css';
 class ProductSlick extends Component {
 
     componentDidMount(){
+        console.log("ProductSlick did mount");
         console.log(this.props);
         console.log(this.props.product);
     }

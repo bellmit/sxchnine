@@ -13,6 +13,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.math.BigDecimal;
 
@@ -34,7 +36,7 @@ public class OrdersCreatorTest {
     @InjectMocks
     private OrdersCreator ordersCreator;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private static final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
@@ -46,10 +48,15 @@ public class OrdersCreatorTest {
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        ArgumentCaptor<OrderId> orderIdCaptor = ArgumentCaptor.forClass(OrderId.class);
 
+        when(orderRepository.save(order)).thenReturn(Mono.just(order));
         when(orderMapper.asOrderId(order)).thenReturn(orderId);
+        when(orderIdService.saveOrderId(orderId)).thenReturn(Mono.just(orderId).then());
 
-        ordersCreator.saveOrders(order);
+        StepVerifier.create(ordersCreator.saveOrders(order))
+                .expectComplete()
+                .verify();
 
         verify(orderMapper).asOrderId(orderCaptor.capture());
         verify(orderIdService).saveOrderId(orderId);
@@ -65,20 +72,21 @@ public class OrdersCreatorTest {
 
     @Test
     public void testSaveOrderNullOrder(){
-        ordersCreator.saveOrders(null);
+        StepVerifier.create(ordersCreator.saveOrders(null))
+                .expectComplete()
+                .verify();
 
         verify(orderMapper, times(0)).asOrderId(new Order());
     }
 
     @Test
     public void testSaveOrderNullOrderWithoutProducts(){
-        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        StepVerifier.create(ordersCreator.saveOrders(null))
+                .expectComplete()
+                .verify();
 
-        ordersCreator.saveOrders(new Order());
-
-        verify(orderMapper).asOrderId(orderCaptor.capture());
-        verify(orderMapper, times(0)).asOrderId(new Order());
-
-        assertThat(orderCaptor.getValue().getTotal()).isEqualByComparingTo(BigDecimal.ZERO);
+        verify(orderRepository, never()).save(any());
+        verify(orderIdService, never()).saveOrderId(any());
+        verify(orderMapper, never()).asOrderId(any());
     }
 }

@@ -43,7 +43,7 @@ public class ProductServiceTestIT {
     public void testGetProductById(){
         mongoTemplate.createCollection("products")
                 .flatMap(c -> mongoTemplate.save(TestObjectCreator.createProduct()))
-                .flatMap(p -> productService.getProductById(1))
+                .flatMap(p -> productService.getProductById(1L))
                 .doOnNext(p -> {
                     assertEquals(1, p.getId());
                     assertEquals("p1", p.getName());
@@ -83,7 +83,7 @@ public class ProductServiceTestIT {
     public void testSaveProduct() throws InterruptedException {
         when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(TestObjectCreator.createProduct()));
         productService.save(TestObjectCreator.createProduct())
-                .flatMap(p -> productService.getProductById(1))
+                .flatMap(p -> productService.getProductById(1L))
                 .doOnNext(p -> {
                     System.out.println("--- start assertion --- ");
                     assertEquals(1, p.getId());
@@ -100,13 +100,13 @@ public class ProductServiceTestIT {
         mongoTemplate.save(TestObjectCreator.createProduct())
                 .flatMap(p -> productService.getProductByName("p1"))
                 .doOnNext(p -> {
-                    assertEquals(1, p.getId());
+                    assertEquals(1L, p.getId());
                     assertEquals("p1", p.getName());
                 })
                 .flatMap(p -> productService.deleteProductById(1))
                 .flatMap(p -> mongoTemplate.findById(1, Product.class))
                 .doOnNext(Assertions::assertNull)
-                .flatMap(p -> productService.getProductById(1))
+                .flatMap(p -> productService.getProductById(1L))
                 .doOnNext(Assertions::assertNotNull)
                 .then(mongoTemplate.dropCollection(Product.class))
                 .subscribe();

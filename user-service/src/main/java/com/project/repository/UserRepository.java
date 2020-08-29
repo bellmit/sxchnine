@@ -1,19 +1,16 @@
 package com.project.repository;
 
 import com.project.model.User;
-
-import java.util.Map;
+import reactor.core.publisher.Mono;
 
 public interface UserRepository {
 
-    User findByEmail(String email);
+    Mono<User> findByEmail(String email);
 
-    Map<String, User> findAll();
+    Mono<Void> save(User user);
 
-    void save(User user);
+    Mono<Void> deleteUserById(String id);
 
-    void deleteUserById(String id);
-
-    void deleteUser(User user);
+    Mono<Void> deleteUserByEmail(String email);
 
 }

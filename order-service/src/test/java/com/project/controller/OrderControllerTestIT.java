@@ -2,7 +2,6 @@ package com.project.controller;
 
 import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.project.config.CassandraTestConfig;
-import com.project.config.ResourceServerConfigTest;
 import com.project.model.Order;
 import com.project.model.OrderId;
 import com.project.repository.OrderByOrderIdRepository;
@@ -19,11 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
@@ -34,12 +30,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.SocketUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.List;
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,14 +55,14 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 })
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
-@Import({ResourceServerConfigTest.class, CassandraTestConfig.class})
+@Import({CassandraTestConfig.class})
 @DirtiesContext
 public class OrderControllerTestIT {
 
     private static final String ORDERS_QUEUE = "orders";
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private WebTestClient webTestClient;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -75,7 +70,7 @@ public class OrderControllerTestIT {
     @Autowired
     private OrderByOrderIdRepository orderByOrderIdRepository;
 
-    private static int port = SocketUtils.findAvailableTcpPort();
+    private static final int port = SocketUtils.findAvailableTcpPort();
 
     private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
@@ -89,7 +84,7 @@ public class OrderControllerTestIT {
     public static WireMockClassRule wireMockClassRule = new WireMockClassRule(port);
 
     @BeforeClass
-    public static void setup(){
+    public static void setup() {
         System.setProperty("wiremock.server.port", String.valueOf(port));
     }
 
@@ -99,19 +94,23 @@ public class OrderControllerTestIT {
         Order orderToSave = easyRandom.nextObject(Order.class);
         Thread.sleep(1000L);
 
-        testRestTemplate.postForEntity("/save", orderToSave, Order.class);
+        webTestClient.post().uri("/save").body(orderToSave, Order.class);
 
-        List<Order> savedOrders = orderRepository
-                .findOrdersByOrderPrimaryKeyUserEmail(orderToSave.getOrderPrimaryKey().getUserEmail());
-        OrderId savedOrderId = orderByOrderIdRepository
-                .findOrderIdByOrderIdPrimaryKeyOrderId(orderToSave.getOrderPrimaryKey().getOrderId());
+        orderRepository.findOrdersByOrderPrimaryKeyUserEmail(orderToSave.getOrderPrimaryKey().getUserEmail())
+                .subscribe(savedOrder -> {
+                    assertThat(savedOrder).isEqualToIgnoringGivenFields(orderToSave, "total", "paymentInfo", "address");
+                    assertThat(savedOrder.getPaymentInfo()).isEqualToIgnoringGivenFields(orderToSave.getPaymentInfo());
+                    assertThat(savedOrder.getUserAddress()).isEqualToIgnoringGivenFields(orderToSave.getUserAddress());
+                });
 
-        assertThat(savedOrders.get(0)).isEqualToIgnoringGivenFields(orderToSave, "total", "paymentInfo", "address");
-        assertThat(savedOrders.get(0).getPaymentInfo()).isEqualToIgnoringGivenFields(orderToSave.getPaymentInfo());
-        assertThat(savedOrders.get(0).getUserAddress()).isEqualToIgnoringGivenFields(orderToSave.getUserAddress());
-        assertThat(savedOrderId.getOrderIdPrimaryKey()).isEqualToComparingFieldByField(orderToSave.getOrderPrimaryKey());
-        assertThat(savedOrderId.getPaymentInfo()).isEqualToComparingFieldByField(orderToSave.getPaymentInfo());
-        assertThat(savedOrderId.getUserAddress()).isEqualToComparingFieldByField(orderToSave.getUserAddress());
+        orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(orderToSave.getOrderPrimaryKey().getOrderId())
+                .subscribe(savedOrderId -> {
+                    assertThat(savedOrderId.getOrderIdPrimaryKey()).isEqualToComparingFieldByField(orderToSave.getOrderPrimaryKey());
+                    assertThat(savedOrderId.getPaymentInfo()).isEqualToComparingFieldByField(orderToSave.getPaymentInfo());
+                    assertThat(savedOrderId.getUserAddress()).isEqualToComparingFieldByField(orderToSave.getUserAddress());
+                });
+
+
     }
 
     @Test
@@ -121,15 +120,15 @@ public class OrderControllerTestIT {
 
         Thread.sleep(1000L);
 
-        orderRepository.save(orderToSave);
+        orderRepository.save(orderToSave).block();
 
-        ResponseEntity<List<Order>> response = testRestTemplate
-                .exchange("/all",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<Order>>() {});
-
-        assertThat(response.getBody().get(0)).isNotNull();
+        webTestClient.get()
+                .uri("/all")
+                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Order.class)
+                .isEqualTo(orderToSave);
     }
 
     @Test
@@ -137,15 +136,19 @@ public class OrderControllerTestIT {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderIdToSave = easyRandom.nextObject(OrderId.class);
         String uuid = randomUUID().toString();
-        orderIdToSave.getOrderIdPrimaryKey().setOrderId(UUID.fromString(uuid));
+        orderIdToSave.getOrderIdPrimaryKey().setOrderId(uuid);
 
         Thread.sleep(1000L);
 
-        orderByOrderIdRepository.save(orderIdToSave);
+        orderByOrderIdRepository.save(orderIdToSave).block();
 
-        OrderId orderId = testRestTemplate.getForObject("/orderId/" + uuid, OrderId.class);
-
-        assertThat(orderId).isEqualToComparingFieldByFieldRecursively(orderIdToSave);
+        webTestClient.get()
+                .uri("/orderId/" + uuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(OrderId.class)
+                .isEqualTo(orderIdToSave);
     }
 
     @Test
@@ -155,24 +158,23 @@ public class OrderControllerTestIT {
 
         Thread.sleep(1000L);
 
-        orderRepository.save(orderToSave);
+        orderRepository.save(orderToSave).block();
 
-        ResponseEntity<List<Order>> response = testRestTemplate
-                .exchange("/userEmail/" + orderToSave.getOrderPrimaryKey().getUserEmail(),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Order>>() {});
-
-        assertThat(response.getBody().get(0)).isEqualToComparingFieldByFieldRecursively(orderToSave);
-
+        webTestClient.get()
+                .uri("/userEmail/" + orderToSave.getOrderPrimaryKey().getUserEmail())
+                .accept(MediaType.APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Order.class)
+                .isEqualTo(orderToSave);
     }
 
-    public static int findRandomPort(){
+    public static int findRandomPort() {
         try {
             ServerSocket serverSocket = new ServerSocket(0);
             return serverSocket.getLocalPort();
 
-        } catch(IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

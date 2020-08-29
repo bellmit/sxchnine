@@ -35,7 +35,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
 
-import java.util.List;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
@@ -87,13 +86,13 @@ public class OrderCatchupConsumerTestIT {
 
         orderCatchupConsumer.consumeCatchupOrder(order, () -> {});
 
-        List<Order> ordersSaved = orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail());
+        orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail())
+                .subscribe(ordersSaved -> Assertions.assertThat(ordersSaved).isEqualToComparingFieldByFieldRecursively(order));
 
-        Assertions.assertThat(ordersSaved.get(0)).isEqualToComparingFieldByFieldRecursively(order);
     }
 
     public Producer createProducer(){
-        Map<String, Object> producerProps = KafkaTestUtils.senderProps(System.getProperty("spring.embedded.kafka.brokers"));
+        Map<String, Object> producerProps = KafkaTestUtils.producerProps(System.getProperty("spring.embedded.kafka.brokers"));
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 

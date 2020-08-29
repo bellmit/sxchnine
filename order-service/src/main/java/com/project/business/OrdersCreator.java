@@ -6,17 +6,18 @@ import com.project.model.Product;
 import com.project.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
 @Service
 public class OrdersCreator {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    private OrderIdService orderIdService;
+    private final OrderIdService orderIdService;
 
-    private OrderMapper orderMapper;
+    private final OrderMapper orderMapper;
 
     public OrdersCreator(OrderRepository orderRepository, OrderIdService orderIdService, OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
@@ -24,12 +25,13 @@ public class OrdersCreator {
         this.orderMapper = orderMapper;
     }
 
-    public void saveOrders(Order order) {
+    public Mono<Void> saveOrders(Order order) {
         if (order != null) {
             order.setTotal(sumTotal(order));
-            orderRepository.save(order);
-            orderIdService.saveOrderId(orderMapper.asOrderId(order));
+            return orderRepository.save(order)
+                    .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)));
         }
+        return Mono.empty().then();
     }
 
 

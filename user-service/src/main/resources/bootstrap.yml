@@ -3,6 +3,6 @@ spring:
     name: user-service
   cloud:
     config:
-      uri: ${CONFIG_SERVER:http://localhost:8888}
+      uri: ${CONFIG_SERVER:http://config-server:8888}
 
 #docker run --name user-service --network got-it-net -e EUREKA_SERVER=http://discovery-service:8761/eureka -e REDIS_SERVER=redis -e REDIS_PORT=6379 -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -d sifraden/user-service:1.0.0-SNAPSHOT

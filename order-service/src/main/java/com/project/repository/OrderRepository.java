@@ -2,19 +2,17 @@ package com.project.repository;
 
 import com.project.model.Order;
 import com.project.model.OrderPrimaryKey;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.UUID;
+import reactor.core.publisher.Flux;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Order, OrderPrimaryKey> {
+public interface OrderRepository extends ReactiveCassandraRepository<Order, OrderPrimaryKey> {
 
-    List<Order> findAll();
+    Flux<Order> findAll();
 
-    List<Order> findOrdersByOrderPrimaryKeyUserEmail(String userEmail);
+    Flux<Order> findOrdersByOrderPrimaryKeyUserEmail(String userEmail);
 
-    List<Order> findOrdersByOrderPrimaryKeyUserEmailAndOrderPrimaryKeyOrderId(String email, UUID orderId);
+    Flux<Order> findOrdersByOrderPrimaryKeyUserEmailAndOrderPrimaryKeyOrderId(String email, String orderId);
 
 }
