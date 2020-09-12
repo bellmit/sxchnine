@@ -31,3 +31,15 @@ spring:
 
 # build based on docker image
 #oc new-build . --name order-service --docker-image="sifraden/order-service:1.0.0-SNAPSHOT" --strategy=docker
+
+
+# kubernetes
+# brew install helm
+# optional: kubectl -n kube-system create serviceaccount tiller
+# optional: kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+# helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+# kubectl create namespace keycloak
+# helm install mysql --set mysqlRootPassword=password,mysqlUser=user,mysqlPassword=password,mysqlDatabase=keycloak-db stable/mysql -n keycloak
+# kubectl apply -f ./keycloak.yaml -n keycloak
+# kubectl apply -f ./keycloakService.yaml -n keycloak
+# minikube service keycloak -n keycloak --url
