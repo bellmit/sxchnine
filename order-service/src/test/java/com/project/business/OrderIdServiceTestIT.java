@@ -8,26 +8,23 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.web.ServletTestExecutionListener;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @TestPropertySource(properties = {"server.ssl.enabled=false", "spring.autoconfigure.exclude=" +
@@ -35,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestExecutionListeners(listeners = {
         CassandraUnitDependencyInjectionTestExecutionListener.class,
         CassandraUnitTestExecutionListener.class,
-        ServletTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class
 })
@@ -51,20 +47,26 @@ public class OrderIdServiceTestIT {
 
     private static final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
-            .scanClasspathForConcreteTypes(true);
-
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "products");
+            .scanClasspathForConcreteTypes(true)
+            .collectionSizeRange(1,2)
+            .stringLengthRange(1,20);
 
     @Test
-    public void testSaveOrderId() throws InterruptedException {
+    public void testSaveOrderId() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        String format = LocalDateTime.now().format(formatter);
 
-        orderIdService.saveOrderId(orderId)
-                .then(orderIdService.getOrderByOrderId(orderId.getOrderIdPrimaryKey().getOrderId().toString()))
-                .subscribe(o -> assertThat(o).usingRecursiveComparison().isEqualTo(orderId));
+        orderId.setPaymentTime(LocalDateTime.parse(format));
+        orderId.getOrderIdPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        orderId.getOrderIdPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+
+        OrderId resultOrderId = orderIdService.saveOrderId(orderId)
+                .then(orderIdService.getOrderByOrderId(orderId.getOrderIdPrimaryKey().getOrderId()))
+                .block();
+
+        assertThat(resultOrderId).usingRecursiveComparison().isEqualTo(orderId);
     }
 }

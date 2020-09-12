@@ -1,0 +1,50 @@
+.Customer-Image-div{
+    width: 100%;
+    object-fit: cover;
+    position: fixed;
+    display: flex;
+    align-items: center;
+}
+
+.Customer-Form-Div{
+    width: 30%;
+    height: 35%;
+    background-color: white;
+    position: fixed;
+    margin: 8% 0 0 35%;
+}
+
+.Customer-Container-div{
+    position: fixed;
+    margin: 6% 0 0 10%;
+}
+
+.Customer-Message-Text-p2-div{
+    font-family: "American Typewriter", "Times New Roman", Times;
+    font-size: 100%;
+    width: 60%;
+}
+
+.Customer-Continue-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    margin-top: 5%;
+    text-decoration: none;
+    outline: none;
+    position: absolute;
+}
+
+.Customer-Text-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    color: black;
+}
+
+.Customer-Yellow-second-bar-div {
+    border-top: 3px solid rgb(255, 240, 36);
+    width: 50%;
+    padding-top: 3%
+}

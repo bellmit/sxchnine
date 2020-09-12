@@ -66,7 +66,7 @@ export const loginUser = (email, password, history) => {
             .then(response => {
                 dispatch(loginUserStart(false));
                 dispatch(loginUserSuccess(response.data))
-                if (response.data.email != null){
+                if (response.data === true){
                     history.push('/orders')
                 }
             })

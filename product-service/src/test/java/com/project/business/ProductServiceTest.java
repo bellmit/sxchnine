@@ -37,13 +37,13 @@ public class ProductServiceTest {
     @Test
     public void testGetProductById(){
 
-        when(productRepository.findById(1L)).thenReturn(Mono.just(TestObjectCreator.createProduct()));
+        when(productRepository.findProductById(1L)).thenReturn(Mono.just(TestObjectCreator.createProduct()));
 
         Mono<Product> productFound = productService.getProductById(1L);
 
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
-        verify(productRepository).findById(argumentCaptor.capture());
+        verify(productRepository).findProductById(argumentCaptor.capture());
 
         assertEquals(1, argumentCaptor.getValue());
 

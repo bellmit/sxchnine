@@ -19,7 +19,7 @@ public class PaymentInfo {
     private String expDate;
 
     @Column("security_code")
-    private int securityCode;
+    private Integer securityCode;
 
     @Column("last_name")
     private String lastName;

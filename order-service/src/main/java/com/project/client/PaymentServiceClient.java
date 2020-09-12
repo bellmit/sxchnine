@@ -1,6 +1,7 @@
 package com.project.client;
 
 import com.project.model.Order;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,6 +23,7 @@ public class PaymentServiceClient {
     public Mono<Integer> payOrder(Order order){
         return webClient.post()
                 .uri("/pay")
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(order))
                 .retrieve()
                 .bodyToMono(Integer.class)

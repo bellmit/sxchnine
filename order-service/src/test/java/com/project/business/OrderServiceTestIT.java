@@ -1,6 +1,6 @@
 package com.project.business;
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.config.CassandraTestConfig;
 import com.project.model.Order;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -13,45 +13,41 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockserver.integration.ClientAndServer;
+import org.mockserver.model.HttpRequest;
+import org.mockserver.model.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.web.ServletTestExecutionListener;
-import org.springframework.util.SocketUtils;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Map;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static com.project.utils.PaymentStatusCode.CONFIRMED;
+import static com.project.utils.PaymentStatusCode.WAITING;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
 @TestExecutionListeners(listeners = {
         CassandraUnitDependencyInjectionTestExecutionListener.class,
         CassandraUnitTestExecutionListener.class,
-        ServletTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class
 })
@@ -65,54 +61,64 @@ public class OrderServiceTestIT {
 
     private static final String ORDERS_QUEUE = "orders";
 
+    private ClientAndServer clientAndServer;
+
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
-    private static final int port = SocketUtils.findAvailableTcpPort();
+    @BeforeEach
+    public void setup(){
+        clientAndServer = ClientAndServer.startClientAndServer(9000);
+    }
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
-
-    @ClassRule
-    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(port);
-
-    @BeforeClass
-    public static void setup(){
-        System.setProperty("wiremock.server.port", String.valueOf(port));
+    @AfterEach
+    public void teardown(){
+        clientAndServer.stop();
     }
 
     @Test
     public void testCheckoutOrderAndSave() throws Exception {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        String format = LocalDateTime.now().format(formatter);
 
-        stubFor(post(urlEqualTo("/pay"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("1")));
+        order.setPaymentTime(LocalDateTime.parse(format));
+        order.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        order.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
 
-        Thread.sleep(1000L);
+        clientAndServer.when(HttpRequest.request()
+                        .withMethod("POST")
+                        .withPath("/pay")
+                        .withHeader("Accept", MediaType.ALL_VALUE)
+                        .withBody(objectMapper.writeValueAsString(order)))
+                .respond(HttpResponse.response().withBody("2"));
 
-        orderService.checkoutOrderAndSave(order)
-                .subscribe(paymentStatus -> assertThat(paymentStatus).isEqualTo(1));
+        Integer paymentStatus = orderService.checkoutOrderAndSave(order)
+                .block();
+
+        assertThat(paymentStatus).isEqualTo(2);
 
 
-        orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail())
-                .subscribe(orderByEmail -> {
-                    assertThat(orderByEmail).usingRecursiveComparison().isEqualTo(order);
-                    assertThat(orderByEmail.getPaymentStatus()).isEqualTo(CONFIRMED.getValue());
-                });
+        Order orderByEmail = orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail())
+                .blockFirst();
+
+        assertThat(orderByEmail).usingRecursiveComparison().isEqualTo(order);
+        assertThat(orderByEmail.getPaymentStatus()).isEqualTo(WAITING.getValue());
 
 
         Consumer kafkaConsumer = createKafkaConsumer();
         ConsumerRecord singleRecord = KafkaTestUtils.getSingleRecord(kafkaConsumer, ORDERS_QUEUE);
         kafkaConsumer.close();
 
-        assertThat((Order)singleRecord.value()).usingRecursiveComparison().isEqualTo(order);
+        assertThat(((Order)singleRecord.value()).getOrderPrimaryKey().getOrderId()).isEqualTo(order.getOrderPrimaryKey().getOrderId());
 
     }
 
@@ -135,15 +141,5 @@ public class OrderServiceTestIT {
         Consumer<String, Order> consumer = consumerFactory.createConsumer();
         consumer.subscribe(Collections.singleton(ORDERS_QUEUE));
         return consumer;
-    }
-
-    public static int findRandomPort(){
-        try {
-            ServerSocket serverSocket = new ServerSocket(0);
-            return serverSocket.getLocalPort();
-
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
     }
 }

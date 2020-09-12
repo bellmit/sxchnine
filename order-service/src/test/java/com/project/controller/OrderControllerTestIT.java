@@ -1,6 +1,5 @@
 package com.project.controller;
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
 import com.project.config.CassandraTestConfig;
 import com.project.model.Order;
 import com.project.model.OrderId;
@@ -12,35 +11,32 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockserver.integration.ClientAndServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.util.SocketUtils;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
 @EmbeddedKafka
@@ -49,7 +45,6 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @TestExecutionListeners(listeners = {
         CassandraUnitDependencyInjectionTestExecutionListener.class,
         CassandraUnitTestExecutionListener.class,
-        ServletTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class
 })
@@ -70,31 +65,36 @@ public class OrderControllerTestIT {
     @Autowired
     private OrderByOrderIdRepository orderByOrderIdRepository;
 
-    private static final int port = SocketUtils.findAvailableTcpPort();
+    private ClientAndServer clientAndServer;
 
     private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .scanClasspathForConcreteTypes(true)
             .ignoreRandomizationErrors(true);
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
+    @BeforeEach
+    public void setup() {
+        clientAndServer = ClientAndServer.startClientAndServer(9000);
+    }
 
-    @ClassRule
-    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(port);
-
-    @BeforeClass
-    public static void setup() {
-        System.setProperty("wiremock.server.port", String.valueOf(port));
+    @AfterEach
+    public void teardown(){
+        clientAndServer.stop();
     }
 
     @Test
-    public void testSaveOrder() throws InterruptedException {
+    public void testSaveOrder() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order orderToSave = easyRandom.nextObject(Order.class);
-        Thread.sleep(1000L);
 
-        webTestClient.post().uri("/save").body(orderToSave, Order.class);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        String format = LocalDateTime.now().format(formatter);
+
+        orderToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderToSave.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        orderToSave.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+
+        webTestClient.post().uri("/save").body(Mono.just(orderToSave), Order.class);
 
         orderRepository.findOrdersByOrderPrimaryKeyUserEmail(orderToSave.getOrderPrimaryKey().getUserEmail())
                 .subscribe(savedOrder -> {
@@ -110,15 +110,19 @@ public class OrderControllerTestIT {
                     assertThat(savedOrderId.getUserAddress()).isEqualToComparingFieldByField(orderToSave.getUserAddress());
                 });
 
-
     }
 
     @Test
-    public void testGetAllOrders() throws InterruptedException {
+    public void testGetAllOrders() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order orderToSave = easyRandom.nextObject(Order.class);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
+        String format = LocalDateTime.now().format(formatter);
+
+        orderToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderToSave.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        orderToSave.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
 
         orderRepository.save(orderToSave).block();
 
@@ -128,17 +132,22 @@ public class OrderControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Order.class)
-                .isEqualTo(orderToSave);
+                .value(o -> assertThat(o.getOrderPrimaryKey().getOrderId()).isEqualTo(orderToSave.getOrderPrimaryKey().getOrderId()));
     }
 
     @Test
-    public void testGetOrdersByOrderId() throws InterruptedException {
+    public void testGetOrdersByOrderId() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderIdToSave = easyRandom.nextObject(OrderId.class);
         String uuid = randomUUID().toString();
         orderIdToSave.getOrderIdPrimaryKey().setOrderId(uuid);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
+        String format = LocalDateTime.now().format(formatter);
+
+        orderIdToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderIdToSave.getOrderIdPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        orderIdToSave.getOrderIdPrimaryKey().setShippingTime(LocalDateTime.parse(format));
 
         orderByOrderIdRepository.save(orderIdToSave).block();
 
@@ -148,15 +157,20 @@ public class OrderControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(OrderId.class)
-                .isEqualTo(orderIdToSave);
+                .value(o -> assertThat(o.getOrderIdPrimaryKey().getOrderId()).isEqualTo(orderIdToSave.getOrderIdPrimaryKey().getOrderId()));
     }
 
     @Test
-    public void testGetOrdersByEmail() throws InterruptedException, IOException {
+    public void testGetOrdersByEmail(){
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order orderToSave = easyRandom.nextObject(Order.class);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
+        String format = LocalDateTime.now().format(formatter);
+
+        orderToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderToSave.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        orderToSave.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
 
         orderRepository.save(orderToSave).block();
 
@@ -166,16 +180,6 @@ public class OrderControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Order.class)
-                .isEqualTo(orderToSave);
-    }
-
-    public static int findRandomPort() {
-        try {
-            ServerSocket serverSocket = new ServerSocket(0);
-            return serverSocket.getLocalPort();
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+                .value(o -> assertThat(o.getOrderPrimaryKey().getOrderId()).isEqualTo(orderToSave.getOrderPrimaryKey().getOrderId()));
     }
 }

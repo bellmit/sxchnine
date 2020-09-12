@@ -20,4 +20,4 @@ spring:
 #docker run --name product-service-graal --network got-it-net -p 8082:8082 -e EUREKA_SERVER=http://discovery-service:8761/eureka -e MONGO_SERVER=mongo -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -e KAFKA_SERVER=kafka:9092 -d sifraden/product-service:1.0.0-SNAPSHOT-GRAAL
 
 
-#docker run --name product-service-reactive --network got-it-net -p 8082:8082 -e EUREKA_SERVER=http://discovery-service:8761/eureka -e MONGO_SERVER=mongo -e RABBITMQ_SERVER=rabbitmq -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -e KAFKA_SERVER=kafka:9092 -d sifraden/product-service:1.0.0-SNAPSHOT-REACTIVE
+#docker run --name product-service-reactive --network got-it-net -p 8082:8080 -e EUREKA_SERVER=http://discovery-service:8761/eureka -e MONGO_SERVER=mongo -e CONFIG_SERVER=http://config-server:8888 -e ZIPKIN_SERVER=http://zipkin:9411 -e KAFKA_SERVER=kafka:9092 -d sifraden/product-service:1.0.0-SNAPSHOT-REACTIVE

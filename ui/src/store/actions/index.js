@@ -37,3 +37,7 @@ export {
     saveUser,
     loginUser
 } from './users';
+
+export {
+    contact
+} from './contact';

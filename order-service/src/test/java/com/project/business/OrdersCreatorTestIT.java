@@ -9,14 +9,12 @@ import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
 import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
@@ -24,7 +22,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.web.ServletTestExecutionListener;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestExecutionListeners(listeners = {
         CassandraUnitDependencyInjectionTestExecutionListener.class,
         CassandraUnitTestExecutionListener.class,
-        ServletTestExecutionListener.class,
         DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class
 })
@@ -57,19 +56,23 @@ public class OrdersCreatorTestIT {
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "products");
-
     @Test
     public void testSaveOrders() throws InterruptedException {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        String format = LocalDateTime.now().format(formatter);
 
-        ordersCreator.saveOrders(order)
+        order.setPaymentTime(LocalDateTime.parse(format));
+        order.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
+        order.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+
+        Order first = ordersCreator.saveOrders(order)
                 .thenMany(orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail()))
-                .subscribe(o -> assertThat(o).usingRecursiveComparison().isEqualTo(order));
+                .blockFirst();
+
+        assertThat(first).usingRecursiveComparison().isEqualTo(order);
     }
 
 }

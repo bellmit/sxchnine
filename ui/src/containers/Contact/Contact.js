@@ -15,8 +15,8 @@ class Contact extends PureComponent {
                         <Grid.Row columns={3} centered>
                             <Grid.Column>
                                 <div>
-                                    <a href="/contact-us" className="Contact-Link">
-                                        <span>Contact_US</span>
+                                    <a href="/tracking" className="Contact-Link">
+                                        <span>Tracking</span>
                                     </a>
                                     <a href="/shipping" className="Contact-Link">
                                         <span>Shipping_Delivery_Returns</span>
@@ -36,14 +36,14 @@ class Contact extends PureComponent {
 
                             <Grid.Column>
                                 <div>
-                                    <a href="/green" className="Contact-Link">
-                                        <span>Green_Brand</span>
-                                    </a>
-                                    <a href="/newsletter" className="Contact-Link">
-                                        <span>Newsletter</span>
+                                    <a href="/contactUs" className="Contact-Link">
+                                        <span>Contact_US</span>
                                     </a>
                                     <a href="/faq" className="Contact-Link">
                                         <span>FAQ</span>
+                                    </a>
+                                    <a href="/green" className="Contact-Link">
+                                        <span>Green_Brand</span>
                                     </a>
                                 </div>
                             </Grid.Column>

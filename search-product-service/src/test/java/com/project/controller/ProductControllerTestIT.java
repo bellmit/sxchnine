@@ -3,15 +3,13 @@ package com.project.controller;
 import com.project.business.ProductService;
 import com.project.model.Product;
 import org.jeasy.random.EasyRandom;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
@@ -24,7 +22,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @EmbeddedKafka(topics = "products")
 @ActiveProfiles("test")
@@ -104,16 +101,14 @@ public class ProductControllerTestIT {
         product.setId("100");
         product.setBrand("100");
 
-        productService.save(product).subscribe();
+        productService.save(product).block();
 
-        Flux<Product> productFlux = Mono.fromRunnable(() -> {
-            webTestClient.delete()
-                    .uri("/delete/100")
-                    .exchange()
-                    .expectStatus().is2xxSuccessful();
-        }).thenMany(productService.getProductsByQuery(product.getBrand()));
+        webTestClient.delete()
+                .uri("/delete/100")
+                .exchange()
+                .expectStatus().is2xxSuccessful();
 
-        StepVerifier.create(productFlux)
+        StepVerifier.create(productService.getProductsByQuery(product.getBrand()))
                 .expectNextCount(0)
                 .expectComplete()
                 .verify();

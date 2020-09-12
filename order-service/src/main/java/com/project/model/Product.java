@@ -34,7 +34,7 @@ public class Product {
     private String productColor;
 
     @Column("product_qte")
-    private int productQte;
+    private Integer productQte;
 
     @Column("unit_price")
     private BigDecimal unitPrice;

@@ -11,7 +11,7 @@ const confirmation = (props) => {
             Congrats. Your bag is on the way.
         </p>
         <p className="Confirmation-Message-Text-p2-div">
-            An email recept including the details bout your order has been sent to the email address
+            An email recept including the details about your order has been sent to the email address
             provided. Please keep it for your records.
         </p>
     </Aux>

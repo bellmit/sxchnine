@@ -3,7 +3,6 @@ package com.project.business;
 import com.project.mapper.OrderMapper;
 import com.project.model.Order;
 import com.project.model.OrderId;
-import com.project.model.Product;
 import com.project.repository.OrderRepository;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -16,9 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.math.BigDecimal;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -61,13 +57,6 @@ public class OrdersCreatorTest {
         verify(orderMapper).asOrderId(orderCaptor.capture());
         verify(orderIdService).saveOrderId(orderId);
         verify(orderRepository).save(order);
-
-        assertThat(orderCaptor.getValue().getTotal())
-                .isEqualByComparingTo(order.getProducts()
-                        .stream()
-                        .map(Product::getUnitPrice)
-                        .reduce(BigDecimal::add)
-                        .get());
     }
 
     @Test

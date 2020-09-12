@@ -17,7 +17,7 @@ class Home extends Component {
             <Aux>
                 <Head {...this.props}/>
                 <Middle/>
-                <Footer/>
+                <Footer {...this.props}/>
             </Aux>
         );
     }

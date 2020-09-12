@@ -1,6 +1,8 @@
-server:
-  port: ${wiremock.server.port}
+
 spring:
+  data:
+    cassandra:
+      local-datacenter: datacenter1
   kafka:
     producer:
       bootstrap-servers: ${spring.embedded.kafka.brokers}
@@ -26,16 +28,5 @@ kafka:
   producer:
     topic: orders
 
-eureka:
-  client:
-    enabled: false
-
-port:
-  ribbon: 9090
-
-payment-service:
-  ribbon:
-    listOfServers: localhost:${wiremock.server.port}
-
 consumer:
-  payment-service: localhost:${wiremock.server.port}
+  payment-service: http://localhost:9000

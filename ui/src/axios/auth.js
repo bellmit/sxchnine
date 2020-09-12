@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const auth = axios.create({
-    baseURL: 'http://localhost:8081'
+    baseURL: 'http://192.168.64.4:30922'
 });
 
 //auth.defaults.headers.common['Authorization'] = 'Basic YXBpLWdhdGV3YXktdXNlcjpwYXNzdzByZA==';

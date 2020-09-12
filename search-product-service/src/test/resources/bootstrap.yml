@@ -2,8 +2,4 @@ spring:
   cloud:
     config:
       enabled: false
-embedded:
-  elasticsearch:
-    dockerImage: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-    indices: store_products
-    enabled: true
+

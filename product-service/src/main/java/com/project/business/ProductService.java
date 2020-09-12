@@ -7,7 +7,6 @@ import com.project.repository.ProductRepository;
 import com.project.util.FallbackProductsSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,19 +29,16 @@ public class ProductService {
     private final KafkaProducer kafkaProducer;
 
     public Mono<Product> getProductById(Long id){
-        log.info("Get Product {}", id);
         return productRepository.findProductById(id)
                 .doOnError(error -> log.error("error occurred during getting product by id", error))
                 .onErrorReturn(new Product());
     }
 
     public Flux<Product> getProductByIds(List<Long> ids){
-        log.info("Get Products by ids {}", ids);
         return productRepository.findProductsByIdIn(ids);
     }
 
     public Mono<Product> getProductByName(String name){
-        log.info("Get Product {}", name);
         return productRepository.findProductByName(name)
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
                 .timeout(Duration.ofSeconds(2))
@@ -57,7 +53,6 @@ public class ProductService {
     }
 
     public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex){
-        log.info("Get all products by sex");
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return productRepository.findAllBySex(sex, paging)
                 .retry()
@@ -68,7 +63,6 @@ public class ProductService {
     }
 
     public Mono<Product> save(Product product){
-        log.info("save product");
         return productRepository.save(product)
                 .log()
                 .flatMap(p -> kafkaProducer
@@ -87,7 +81,6 @@ public class ProductService {
     }
 
     public Mono<Void> deleteProductById(long id){
-        log.debug("Product {}  delete ", id);
         return productRepository.deleteById(id);
     }
 
@@ -118,7 +111,7 @@ public class ProductService {
         availablities.put("White", sizeQtesBlack);
 
         return Product.builder()
-                .id(RandomUtils.nextLong())
+                .id(new Random().nextLong())
                 .name("Sweat - Crew")
                 .brand("Nike")
                 .logo("https://www.festisite.com/static/partylogo/img/logos/nike.png")

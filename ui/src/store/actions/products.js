@@ -4,12 +4,7 @@ import axios from '../../axios/axios';
 export const fetchProduct = (pageNo, pageSize, sex) => {
     return dispatch => {
         dispatch(loadProductsStart(true));
-        axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex,
-            {
-                headers: {
-                    "Content-Type": 'application/stream+json',
-                }
-            })
+        axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex)
             .then(response => {
                 if (response.data.length === 0)
                     return;

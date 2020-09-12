@@ -9,6 +9,11 @@ import ProductSlick from './containers/Shopping/ProductSlick';
 import Checkout from './containers/Checkout/Checkout';
 import Orders from "./containers/Payment/Orders";
 import Confirmation from './components/Confirmation/Confirmation';
+import Shipping from './components/Shipping/Shipping';
+import ContactUs from "./containers/ContactUs/ContactUs";
+import ContactUsSent from "./containers/ContactUs/ContactUsSent";
+import CustomerService from "./containers/CustomerService/CustomerService.js";
+import Tracking from "./containers/Tracking/Tracking";
 
 function App() {
   return (
@@ -22,6 +27,11 @@ function App() {
         <Route  path="/checkout" exact component={Checkout}/>
         <Route  path="/orders" exact component={Orders}/>
         <Route  path="/confirmation/:status" exact component={Confirmation} />
+        <Route  path="/shipping" exact component={Shipping} />
+        <Route  path="/contactUs" exact component={ContactUs} />
+        <Route  path="/contactSent" exact component={ContactUsSent} />
+        <Route  path="/customer" exact component={CustomerService} />
+        <Route  path="/tracking" exact component={Tracking} />
 
     </div>
   );

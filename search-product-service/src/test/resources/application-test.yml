@@ -7,6 +7,11 @@ elasticsearch:
   index: store_products
   server: ${embedded.elasticsearch.host}:${embedded.elasticsearch.httpPort}
 
+embedded:
+  elasticsearch:
+    dockerImage: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    indices: store_products
+    enabled: true
 
 spring:
   cloud:

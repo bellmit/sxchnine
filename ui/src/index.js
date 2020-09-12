@@ -12,6 +12,7 @@ import productDetails from '../src/store/reducers/productDetails';
 import productsToOrder from '../src/store/reducers/productToOrder';
 import order from '../src/store/reducers/order';
 import users from '../src/store/reducers/users';
+import contact from '../src/store/reducers/contact';
 import * as serviceWorker from './serviceWorker';
 
 const reducers = combineReducers ({
@@ -20,7 +21,8 @@ const reducers = combineReducers ({
     product: productDetails,
     productsToOrder: productsToOrder,
     order: order,
-    users: users
+    users: users,
+    contact: contact
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

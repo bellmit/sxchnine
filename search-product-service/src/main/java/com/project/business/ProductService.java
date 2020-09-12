@@ -2,7 +2,6 @@ package com.project.business;
 
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -10,6 +9,7 @@ import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperatio
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,19 +54,19 @@ public class ProductService {
         log.info(" ********************* search product by advanced filter " + Thread.currentThread().getName());
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
-        if (StringUtils.isNotBlank(gender)) {
+        if (StringUtils.hasText(gender)) {
             queryBuilder.must(QueryBuilders.matchQuery("sex", gender));
         }
 
-        if (StringUtils.isNotBlank(brand)) {
+        if (StringUtils.hasText(brand)) {
             queryBuilder.must(QueryBuilders.matchQuery("brand", brand));
         }
 
-        if (StringUtils.isNotBlank(category)) {
+        if (StringUtils.hasText(category)) {
             queryBuilder.must(QueryBuilders.matchQuery("category", category));
         }
 
-        if (StringUtils.isNotBlank(size)) {
+        if (StringUtils.hasText(size)) {
             queryBuilder.must(QueryBuilders.matchQuery("size", size));
         }
 

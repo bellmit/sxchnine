@@ -22,7 +22,7 @@ public class AuthenticationService {
     @Inject
     AuthenticationProperties authenticationProperties;
 
-    private WebClient webClient;
+    WebClient webClient;
 
     @PostConstruct
     public void initWebClient() {

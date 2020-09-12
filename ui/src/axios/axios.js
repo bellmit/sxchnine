@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:9090/api-gateway'
+    baseURL: 'http://192.168.64.4:30382'
 });
 
 instance.CancelToken = axios.CancelToken;

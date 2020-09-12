@@ -27,7 +27,6 @@ public class OrdersCreator {
 
     public Mono<Void> saveOrders(Order order) {
         if (order != null) {
-            order.setTotal(sumTotal(order));
             return orderRepository.save(order)
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)));
         }

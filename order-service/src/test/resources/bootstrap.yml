@@ -4,6 +4,8 @@ spring:
   cloud:
     config:
       enabled: false
+  zipkin:
+    enabled: false
 
 #CREATE KEYSPACE orderkeyspace WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
 #create type address (address text, postalcode text, city text, province text, country text);

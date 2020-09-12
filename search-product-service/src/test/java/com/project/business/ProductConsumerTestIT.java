@@ -9,39 +9,32 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @EmbeddedKafka(topics = "products")
 @ActiveProfiles("test")
 @DirtiesContext
 @TestInstance(PER_CLASS)
-@Testcontainers(disabledWithoutDocker = true)
 public class ProductConsumerTestIT {
 
     private static final String PRODUCT_QUEUE = "products";
@@ -56,14 +49,6 @@ public class ProductConsumerTestIT {
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
-
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, PRODUCT_QUEUE);
-
-    @BeforeAll
-    public void setup(){
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafkaRule.getEmbeddedKafka().getBrokersAsString());
-    }
 
     @Test
     public void testConsumeProduct() throws InterruptedException, JsonProcessingException {
@@ -80,7 +65,7 @@ public class ProductConsumerTestIT {
 
         Thread.sleep(3000L);
 
-        verify(productService).save(product);
+        verify(productService).save(eq(product));
     }
 
 

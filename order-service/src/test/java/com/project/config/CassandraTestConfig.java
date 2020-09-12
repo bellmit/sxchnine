@@ -16,6 +16,11 @@ public class CassandraTestConfig extends AbstractCassandraConfiguration {
     }
 
     @Override
+    protected String getLocalDataCenter() {
+        return "datacenter1";
+    }
+
+    @Override
     protected int getPort() {
         return 9142;
     }
