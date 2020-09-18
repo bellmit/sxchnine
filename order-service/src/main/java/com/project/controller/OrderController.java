@@ -39,7 +39,7 @@ public class OrderController {
         return orderIdService.getOrderByOrderId(orderId);
     }
 
-    @GetMapping(value = "/userEmail/{userEmail:.+}", produces = APPLICATION_STREAM_JSON_VALUE)
+    @GetMapping(value = "/userEmail/{userEmail:.+}")
     public Flux<Order> getOrdersByEmail(@PathVariable String userEmail){
         return orderService.getOrderByUserEmail(userEmail);
     }
