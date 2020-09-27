@@ -7,7 +7,7 @@ public interface UserRepository {
 
     Mono<User> findByEmail(String email);
 
-    Mono<Void> save(User user);
+    Mono<User> save(User user);
 
     Mono<Void> deleteUserById(String id);
 

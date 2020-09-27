@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import {connect} from 'react-redux';
-import uuid from 'uuid/v1';
 import date from 'date-and-time';
 import './Card.css';
 import {
@@ -82,7 +81,7 @@ class Card extends Component {
         return {
             orderPrimaryKey: {
                 userEmail: this.props.email,
-                orderId: uuid(),
+                orderId: this.generateId(),
                 orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
                 shippingTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss')
             },
@@ -102,8 +101,13 @@ class Card extends Component {
             orderStatus: this.evaluateStatus(this.props.paymentStatus),
             paymentStatus: this.evaluateStatus(this.props.paymentStatus),
             paymentTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            shippingStatus: this.evaluateStatus(this.props.paymentStatus)
+            shippingStatus: this.evaluateStatus(this.props.paymentStatus),
+            total: this.props.total
         }
+    }
+
+    generateId(){
+        return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
     }
 
     evaluateStatus(paymentStatus) {
@@ -124,8 +128,6 @@ class Card extends Component {
 
 
     render() {
-        const {name, number, expiry, cvc} = this.state;
-
         return (
             <div key="Payment">
                 <Dimmer active={this.props.loading} page>

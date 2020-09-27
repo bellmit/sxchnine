@@ -41,6 +41,12 @@ export const loadProductsFail = ( error ) => {
     }
 };
 
+export const clearProducts = () => {
+    return {
+        type: actionTypes.CLEAR_PRODUCTS
+    }
+}
+
 
 export const loadGenders = () => {
     return {
@@ -58,7 +64,7 @@ export const loadTypes = () => {
         types: [
             {key: '1', text: 'Hoodie', value: 'hoodie'},
             {key: '2', text: 'T-Shirt', value: 'tshirt'},
-            {key: '3', text: 'Sweatshirt', value: 'sweatshirt'},
+            {key: '3', text: 'Sweatshirt', value: 'sweat'},
             {key: '4', text: 'Jacket', value: 'jacket'},
         ]
     }
@@ -68,10 +74,10 @@ export const loadSize = () => {
     return {
         type: actionTypes.LOAD_SIZE,
         size: [
-            {key: '1', text: 'Small', value: 's'},
-            {key: '2', text: 'Medium', value: 'm'},
-            {key: '3', text: 'Large', value: 'l'},
-            {key: '4', text: 'XL', value: 'xl'},
+            {key: '1', text: 'Small', value: 'S'},
+            {key: '2', text: 'Medium', value: 'M'},
+            {key: '3', text: 'Large', value: 'L'},
+            {key: '4', text: 'XL', value: 'XL'},
         ]
     }
 }

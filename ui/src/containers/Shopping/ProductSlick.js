@@ -30,12 +30,19 @@ class ProductSlick extends Component {
             </div>
             <div className="Slick-Container-div">
             <Carousel fade={true} keyboard style={{textAlign: "center"}}>
-                <Carousel.Item>
+                {this.props.product.images.map((image, index) => (
+                    <Carousel.Item key={index}>
+                        <div><img alt= "" src={image} /></div>
+                    </Carousel.Item>
+                ))}
+
+
+{/*                <Carousel.Item>
                     <div><img alt= "" src={this.props.product.images[0]} /></div>
                 </Carousel.Item>
                 <Carousel.Item>
                     <div><img alt="" src={this.props.product.images[0]} /> </div>
-                </Carousel.Item>
+                </Carousel.Item>*/}
             </Carousel>
             </div>
             <div className="Product-Details-Div">

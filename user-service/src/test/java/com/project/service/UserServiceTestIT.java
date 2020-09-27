@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestRedisConfiguration.class)
@@ -28,7 +28,7 @@ public class UserServiceTestIT {
             .scanClasspathForConcreteTypes(true);
 
     @Test
-    public void testGetUserByEmail(){
+    public void testGetUserByEmail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
@@ -41,7 +41,7 @@ public class UserServiceTestIT {
     }
 
     @Test
-    public void testDeleteUser(){
+    public void testDeleteUser() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
@@ -60,23 +60,23 @@ public class UserServiceTestIT {
         user.setEmail("toto@gmail.com");
         user.setPassword("TOTO");
 
-        Boolean login = userService.save(user)
+        User userAuth = userService.save(user)
                 .then(userService.login("toto@gmail.com", "TOTO"))
                 .block();
 
-        assertTrue(login);
+        assertEquals(user.getId(), userAuth.getId());
     }
 
 
     @Test
-    public void testLoginFail(){
+    public void testLoginFail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        Object login = userService.save(user)
+        User userAuth = userService.save(user)
                 .then(userService.login(user.getEmail(), "TOTO"))
                 .block();
 
-        //assertFalse(login);
+        assertThat(userAuth.getId()).isNull();
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -94,15 +95,15 @@ public class UserControllerTest {
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
 
-        when(userService.login(anyString(), anyString())).thenReturn(Mono.just(true));
+        when(userService.login(anyString(), anyString())).thenReturn(Mono.just(user));
 
         webTestClient.post()
                 .uri("/login?email="+user.getEmail()+"&password="+user.getPassword())
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
-                .expectBody(Boolean.class)
-                .value(result -> assertTrue(result));
+                .expectBody(User.class)
+                .value(result -> assertEquals(user.getId(), result.getId()));
 
         verify(userService).login(user.getEmail(), user.getPassword());
     }

@@ -5,10 +5,15 @@ import {Icon} from "semantic-ui-react";
 import Product from '../Products/Product';
 import '@brainhubeu/react-carousel/lib/style.css';
 import './Recommendation.css';
+import * as actions from "../../store/actions";
 
 
 
 class Recommendation extends Component {
+
+    selectProductHandler = (id) => {
+        this.props.loadProduct(id, this.props.history);
+    };
 
     render() {
 
@@ -31,6 +36,7 @@ class Recommendation extends Component {
                                  id={product.id}
                                  height="120%"
                                  width="80%"
+                                 clicked={() => this.selectProductHandler(product.id)}
                         />
                     ))}
                 </Carousel>
@@ -45,4 +51,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Recommendation);
+const dispatchToProps = dispatch => {
+    return {
+        loadProduct: (id, history) => dispatch(actions.loadProduct(id, history))
+    }
+}
+
+export default connect(mapStateToProps, dispatchToProps)(Recommendation);

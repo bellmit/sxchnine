@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <springProfile name="local">
+<!--    <springProfile name="local">
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>
-                    %d{HH:mm:ss.SSS} | %5p | %logger{25} | %m%n
+                    %d{HH:mm:ss.SSS} | %5p | | %thread | %logger{25} | %m%n
                 </pattern>
                 <charset>utf8</charset>
             </encoder>
@@ -14,7 +14,7 @@
         <root level="INFO">
             <appender-ref ref="CONSOLE"/>
         </root>
-    </springProfile>
+    </springProfile>-->
 
     <springProperty scope="context" name="application_name" source="spring.application.name"/>
     <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">

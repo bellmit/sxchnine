@@ -45,6 +45,7 @@ export const fetchOrdersHistory = (email) => {
         axios.get('/order/userEmail/'+email)
             .then(response => {
             dispatch(fetchOrdersHistorySuccess(response.data));
+            console.log(response.data);
         }).catch(error => {
             dispatch(fetchOrdersHistoryError(error))
         })

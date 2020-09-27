@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Image, Label, Input, Form} from "semantic-ui-react";
+import {Grid, Image, Label, Form} from "semantic-ui-react";
 import { connect } from 'react-redux';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
@@ -28,6 +28,7 @@ class Orders extends Component {
             this.props.fetchOrdersHistory(this.props.user.email);
             this.setState({
                 email: this.props.user.email,
+                num: this.props.user.address.number,
                 avenue: this.props.user.address.address,
                 city: this.props.user.address.city,
                 postalCode: this.props.user.address.postalCode,
@@ -53,7 +54,9 @@ class Orders extends Component {
                     <OrderPlaceBanner {...this.props}/>
                 </header>
                 <div>
-                    <User {...this.props} top="70px" topIcon ="74px"/>
+                    {this.props.user !== '' && <User {...this.props}
+                                                     top="70px"
+                                                     topIcon ="74px"/>}
                 </div>
                 <div className="Orders-Bag-Resume">
                 <span className="Orders-Resume-Text">Your Bag : </span>
@@ -137,7 +140,8 @@ class Orders extends Component {
                           avenue={this.state.avenue}
                           city={this.state.city}
                           postalCode={this.state.postalCode}
-                          country={this.state.country}/>
+                          country={this.state.country}
+                          total={this.state.total}/>
                     <Contact />
                 </div>
             </div>

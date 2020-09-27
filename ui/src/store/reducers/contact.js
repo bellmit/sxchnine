@@ -9,7 +9,7 @@ const reducer = (state= initialState, action) =>{
     switch (action.type){
         case actionTypes.CONTACT_START:
             return {
-                ... state,
+                ...state,
                 loading: action.loading
             };
         case actionTypes.CONTACT_FAIL:

@@ -30,8 +30,10 @@ class Products extends Component {
         console.log(this.props);
 
         if (this.props.location.pathname === '/men') {
+            this.props.clearProducts();
             this.props.loadProducts(0, 9, 'M');
         } else if (this.props.location.pathname === '/women') {
+            this.props.clearProducts();
             this.props.loadProducts(0, 9, 'W');
         }
         this.props.loadGender();
@@ -50,7 +52,8 @@ class Products extends Component {
             } else if (this.props.location.pathname === '/women') {
                 this.props.loadProducts(0, 9, 'W');
             }
-        } else {
+        } else if (event.target.value.length >= 3) {
+            this.props.clearProducts();
             this.props.searchProducts(event.target.value);
         }
     };
@@ -73,11 +76,14 @@ class Products extends Component {
 
 
     searchAdvanced = () => {
+        this.props.clearProducts();
         this.props.searchAdvancedProducts(this.state.gender, this.state.category, this.state.size);
     };
 
     fetchMore = (index) => {
-        if (index >= 9) {
+        console.log("fetch more");
+        console.log(index);
+        if (index + 1 >= 9) {
             if (this.props.products.length < 27) {
                 this.setState((prev) => ({
                     count: prev.count + 1
@@ -161,7 +167,6 @@ class Products extends Component {
                 <div className="Product-Container">
                     <Grid centered columns={3} textAlign="center" padded="vertically">
                         <Grid.Row centered>
-
                             {this.props.products.map((product, index) => (
                                 <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true">
                                     <Aux>
@@ -172,7 +177,7 @@ class Products extends Component {
                                                  price={product.price}
                                                  size={product.size}
                                                  id={product.id}
-                                                 height="80%"
+                                                 height="85%"
                                                  width="80%"
                                                  clicked={() => this.selectProductHandler(product.id)}/>
 
@@ -211,6 +216,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        clearProducts: () => dispatch(actions.clearProducts()),
         loadProducts: (pageNo, pageSize, sex) => dispatch(actions.fetchProduct(pageNo, pageSize, sex)),
         loadGender: () => dispatch(actions.loadGenders()),
         loadTypes: () => dispatch(actions.loadTypes()),

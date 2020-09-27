@@ -14,7 +14,7 @@ class UserIcon extends Component {
                                  className="User-button-icon"
                                  style={{top: this.props.top}}
                                  onClick={this.props.show}>
-                            <Icon name="child"
+                            <Icon name="universal access"
                                   size='large'
                                   style={{top: this.props.topIcon}}
                                   className="User-div-button-icon" />

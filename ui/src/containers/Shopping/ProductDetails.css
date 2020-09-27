@@ -13,6 +13,19 @@
     color: black;
 }
 
+.Product-Radio-Text{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    color: black;
+}
+
+.Product-Radio-Text:hover {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    background-color: rgb(255, 240, 36);
+}
 
 .Product-Delivery-Div{
     font-family: Anton;

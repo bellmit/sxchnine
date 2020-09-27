@@ -42,6 +42,8 @@
     font-family: Anton;
     font-size: 2vw;
     text-transform: uppercase;
+    position: relative;
+    top: 10px;
 }
 
 .History-Resume-Text:hover{
@@ -49,4 +51,5 @@
     font-size: 2vw;
     text-transform: uppercase;
     color: rgb(255, 240, 36);
+    padding-top: 10px;
 }

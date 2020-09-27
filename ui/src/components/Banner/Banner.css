@@ -37,6 +37,18 @@
     left: 6%;
 }
 
+.BannerUserAccount-Header-img {
+    height: 270px;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    display: inherit;
+    align-items: center;
+    object-position: 0 55%;
+    transform: scaleX(1);
+    left: 6%;
+}
+
 
 .Banner-Container-Men {
     line-height: 0;

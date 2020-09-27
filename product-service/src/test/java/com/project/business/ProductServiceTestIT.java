@@ -1,8 +1,7 @@
 package com.project.business;
 
 import com.project.model.Product;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,22 +10,21 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 import utils.TestObjectCreator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@TestPropertySource(properties = {"application-test.yml"})
 @ActiveProfiles("test")
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(PER_CLASS)
 @DirtiesContext
-@Slf4j
 public class ProductServiceTestIT {
 
     @Autowired
@@ -38,77 +36,74 @@ public class ProductServiceTestIT {
     @MockBean
     private KafkaProducer kafkaProducer;
 
+    @AfterEach
+    public void dropCollection(){
+        mongoTemplate.dropCollection("products").block();
+    }
 
     @Test
     public void testGetProductById(){
-        mongoTemplate.createCollection("products")
-                .flatMap(c -> mongoTemplate.save(TestObjectCreator.createProduct()))
-                .flatMap(p -> productService.getProductById(1L))
-                .doOnNext(p -> {
-                    assertEquals(1, p.getId());
-                    assertEquals("p1", p.getName());
-                })
-                .then(mongoTemplate.dropCollection("products"))
-                .subscribe();
+        Mono<Product> products = mongoTemplate.createCollection("products")
+                .then(mongoTemplate.save(TestObjectCreator.createProduct()))
+                .then(productService.getProductById(1L));
+
+        StepVerifier.create(products)
+                .expectSubscription()
+                .expectNextCount(1)
+                .expectComplete()
+                .verify();
     }
 
     @Test
     public void testGetProductByName(){
-        mongoTemplate.createCollection("products")
-                .flatMap(c -> mongoTemplate.save(TestObjectCreator.createProduct()))
-                .flatMap(p -> productService.getProductByName("p1"))
-                .doOnNext(p -> {
-                    assertEquals(1, p.getId());
-                    assertEquals("p1", p.getName());
-                })
-                .then(mongoTemplate.dropCollection("products"))
-                .subscribe();
+        Mono<Product> productMono = mongoTemplate.createCollection("products")
+                .then(mongoTemplate.save(TestObjectCreator.createProduct()))
+                .then(productService.getProductByName("p1"));
+
+        StepVerifier.create(productMono)
+                .expectSubscription()
+                .expectNextCount(1)
+                .expectComplete()
+                .verify();
     }
 
     @Test
     public void testGetAllProducts(){
-        mongoTemplate.save(TestObjectCreator.createProduct())
-                .log()
-                .map(p -> productService.getAllProducts())
-                .flatMap(Flux::count)
-                .doOnNext(p -> {
-                    System.out.println("----- start assertions ----");
-                    assertEquals(1, p);
-                })
-                .then(mongoTemplate.dropCollection("products"))
-                .subscribe();
+        Flux<Product> productFlux = mongoTemplate.save(TestObjectCreator.createProduct())
+                .thenMany(productService.getAllProducts());
+
+        StepVerifier.create(productFlux)
+                .expectSubscription()
+                .expectNextCount(1)
+                .expectComplete()
+                .verify();
     }
 
     @Test
-    public void testSaveProduct() throws InterruptedException {
+    public void testSaveProduct() {
         when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(TestObjectCreator.createProduct()));
-        productService.save(TestObjectCreator.createProduct())
-                .flatMap(p -> productService.getProductById(1L))
-                .doOnNext(p -> {
-                    System.out.println("--- start assertion --- ");
-                    assertEquals(1, p.getId());
-                    assertEquals("p1", p.getName());
-                    assertEquals(1.0, p.getPrice().doubleValue());
-                    verify(kafkaProducer).sendProduct(any());
-                })
-                .then(mongoTemplate.dropCollection(Product.class))
-                .subscribe();
+        Product product = productService.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.getProductById(1L)).block();
+
+        assertEquals(1, product.getId());
+        assertEquals("p1", product.getName());
+        assertEquals(1.0, product.getPrice().doubleValue());
+        verify(kafkaProducer).sendProduct(any());
+
     }
 
     @Test
     public void testDeleteProductById(){
-        mongoTemplate.save(TestObjectCreator.createProduct())
+        Mono<Product> product = mongoTemplate.save(TestObjectCreator.createProduct())
                 .flatMap(p -> productService.getProductByName("p1"))
-                .doOnNext(p -> {
-                    assertEquals(1L, p.getId());
-                    assertEquals("p1", p.getName());
-                })
                 .flatMap(p -> productService.deleteProductById(1))
-                .flatMap(p -> mongoTemplate.findById(1, Product.class))
-                .doOnNext(Assertions::assertNull)
-                .flatMap(p -> productService.getProductById(1L))
-                .doOnNext(Assertions::assertNotNull)
-                .then(mongoTemplate.dropCollection(Product.class))
-                .subscribe();
+                .then(productService.getProductById(1L));
+
+        StepVerifier.create(product)
+                .expectSubscription()
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
+
     }
 }

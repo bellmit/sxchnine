@@ -6,18 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SizeQte {
+public class SizeQte implements Serializable {
 
     private char size;
     private int qte;
-
-
-/*    public SizeQte() {
-        super(SizeQte.class);
-    }*/
 }

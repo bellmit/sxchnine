@@ -35,7 +35,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Mono<Boolean> login(@RequestParam String email, @RequestParam String password){
+    public Mono<User> login(@RequestParam String email, @RequestParam String password){
         return userService.login(email, password);
+    }
+
+    @PostMapping("/changePassword")
+    public Mono<User> changePassword(@RequestParam String email,
+                                     @RequestParam String oldPassword,
+                                     @RequestParam String newPassword,
+                                     @RequestParam String confirmNewPassword){
+
+        return userService.changePassword(email, oldPassword, newPassword, confirmNewPassword);
+
     }
 }

@@ -98,7 +98,7 @@ public class UserControllerTestIT {
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
-                .expectBody(Boolean.class)
-                .value(response -> assertThat(response).isTrue());
+                .expectBody(User.class)
+                .value(response -> assertThat(response.getId()).isEqualTo(user.getId()));
     }
 }

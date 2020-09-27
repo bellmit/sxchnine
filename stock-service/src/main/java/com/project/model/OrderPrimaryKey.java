@@ -5,16 +5,18 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderPrimaryKey implements Serializable {
 
     private String userEmail;
-
     private String orderId;
-
     private String orderTime;
-
     private String shippingTime;
 
 }

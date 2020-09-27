@@ -1,10 +1,13 @@
 package com.project.service;
 
+import com.project.exception.ConfirmPasswordException;
+import com.project.exception.IncorrectPasswordException;
 import com.project.model.User;
 import com.project.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -23,14 +26,20 @@ public class UserService {
 
     public Mono<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .doOnError(error -> log.error("error occurred during get by email: {}",email, error));
+                .doOnError(error -> log.error("error occurred during get by email: {}", email, error));
     }
 
     public Mono<Void> save(User user) {
-        return Mono.fromCallable(() -> {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            return user;
-        })
+        return getUserByEmail(user.getEmail())
+                .switchIfEmpty(Mono.just(user))
+                .flatMap(u -> Mono.fromCallable(() -> {
+                    if (StringUtils.hasText(user.getPassword())) {
+                        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+                    } else {
+                        user.setPassword(u.getPassword());
+                    }
+                    return user;
+                }))
                 .flatMap(userRepository::save)
                 .then()
                 .doOnError(error -> log.error("error occurred during saving user", error))
@@ -47,15 +56,33 @@ public class UserService {
                 .doOnError(error -> log.error("error occurred during delete by email: {}", email, error));
     }
 
-    public Mono<Boolean> login(String email, String password){
+    public Mono<User> login(String email, String password) {
         return getUserByEmail(email)
                 .flatMap(user -> validateUser(user, password))
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
-    private Mono<Boolean> validateUser(User user, String password){
-         return Mono.fromCallable(() -> {
-            return user != null && bCryptPasswordEncoder.matches(password, user.getPassword());
+    private Mono<User> validateUser(User user, String password) {
+        return Mono.fromCallable(() -> {
+            if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+                return user;
+            } else {
+                return null;
+            }
         });
+    }
+
+    public Mono<User> changePassword(String email, String oldPassword, String newPassword, String confirmNewPassword){
+        if (!newPassword.equals(confirmNewPassword)){
+            return Mono.error(new ConfirmPasswordException("Confirm password is not correct !"));
+        }
+
+        return login(email, oldPassword)
+                .switchIfEmpty(Mono.error(new IncorrectPasswordException("Old password is not correct")))
+                .flatMap(user -> Mono.fromCallable(() ->{
+                    user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+                    return user;
+                }))
+                .flatMap(userRepository::save);
     }
 }

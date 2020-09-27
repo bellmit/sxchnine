@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Dimmer, Divider, Form, Grid, Input, Loader} from "semantic-ui-react";
+import {Button, Dimmer, Divider, Grid, Input, Label, Loader} from "semantic-ui-react";
 import { connect } from 'react-redux';
 import Banner from "../../components/Banner/Banner";
 import './Checkout.css';
@@ -40,7 +40,7 @@ class Checkout extends Component {
     };
 
     login = () => {
-        this.props.loginUser(this.state.email, this.state.password, this.props.history);
+        this.props.loginUser(this.state.email, this.state.password, this.props.history, true);
     };
 
 
@@ -127,6 +127,7 @@ class Checkout extends Component {
                                                onChange={this.handleChange}
                                         />
                                     </Grid.Column>
+                                    {this.props.error !== '' && <Label color="red">{this.props.error}</Label>}
                                 </Grid.Row>
                                 <Grid.Row centered>
                                     <button className="Checkout-Continue-Button" onClick={this.login}>
@@ -158,15 +159,14 @@ const mapStateToProps = state => {
     return {
         userAuth: state.users.userAuth,
         status: state.users.status,
-        loading: state.users.loading
+        loading: state.users.loading,
+        error: state.users.error
     }
 };
 
 const dispatchToProps = dispatch => {
     return {
-        loginUser: (email, password, history) => dispatch(actions.loginUser(email, password, history)),
-        fetchOrdersHistory: (email) => dispatch(actions.fetchOrdersHistory(email))
-
+        loginUser: (email, password, history, order) => dispatch(actions.loginUser(email, password, history, order))
     }
 };
 

@@ -1,29 +1,28 @@
 package com.project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
+import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Product {
+public class ProductOrder implements Serializable {
 
     private String productName;
-
     private String productBrand;
-
     private String productId;
-
     private String productSize;
-
     private String productColor;
-
     private int productQte;
-
     private BigDecimal unitPrice;
-
     private String store;
 
 }

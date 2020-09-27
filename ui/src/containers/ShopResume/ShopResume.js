@@ -4,7 +4,7 @@ import ShoppingCart from '../../components/ShoppingCart/ShoppingCart';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import './ShopResume.css';
-import panierPic from './image80s.jpeg';
+import gameon from './gameon.jpg';
 import trash from './trash-10-48.png';
 
 class ShopResume extends Component {
@@ -38,7 +38,7 @@ class ShopResume extends Component {
                 <div className="Modal-Content-div">
                     <Modal size={size} open={open} onClose={this.close}
                            style={{position: 'static', height: 'auto'}}>
-                        <Modal.Header><Image src={panierPic} fluid style={{height: '220px'}}/></Modal.Header>
+                        <Modal.Header><Image src={gameon} fluid style={{height: '250px', objectFit: 'cover'}}/></Modal.Header>
                         {/*
                     <span className="Panier-Resume-Text"> You GOT : </span>
 */}

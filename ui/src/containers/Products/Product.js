@@ -18,8 +18,12 @@ class Product extends Component {
         return (
             <ThemeProvider>
                 <CSSReset/>
-                <Box w={this.props.width} h={this.props.height} borderWidth="1px" rounded="lg" overflow="hidden" maxH="90%">
-                    <Box h="60%" textAlign="center">
+                <Box w={this.props.width} h={this.props.height}
+                     borderWidth="1px"
+                     rounded="lg"
+                     overflow="hidden"
+                     maxH="90%">
+                    <Box maxH="50%" minH="50%" textAlign="center">
                     <img src={this.props.image[0]} alt={this.props.name}
                          onClick={this.props.clicked}
                          style={{cursor: 'pointer'}}/>
@@ -30,7 +34,7 @@ class Product extends Component {
                                 New
                             </Badge>
                         </Box>
-                        <Box maxW="30%">
+                        <Box maxW="30%" minW="30%" marginTop="30%">
                             <Image src={this.props.logo} alt={this.props.name}/>
                         </Box>
 

@@ -38,7 +38,7 @@ class ContactUs extends PureComponent {
     render() {
         return (
             <div>
-                <img src={contact_back} className="ContactUs-Image-div"/>
+                <img src={contact_back} alt="contact" className="ContactUs-Image-div"/>
 
                 <Dimmer active={this.state.loading} page>
                     <Loader content='Loading'/>

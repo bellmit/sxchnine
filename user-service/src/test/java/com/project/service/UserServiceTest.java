@@ -14,9 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +54,7 @@ public class UserServiceTest {
         User user = easyRandom.nextObject(User.class);
 
         when(userRepository.save(any(User.class))).thenReturn(Mono.empty());
+        when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
         when(bCryptPasswordEncoder.encode(anyString())).thenReturn("$$$");
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
@@ -86,7 +86,8 @@ public class UserServiceTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
         when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(true);
 
-        assertTrue(userService.login("toto@gmail.com", "toto").block());
+        User userAuth = userService.login("toto@gmail.com", "toto").block();
+        assertThat(userAuth.getId()).isEqualTo(user.getId());
 
         verify(userRepository).findByEmail("toto@gmail.com");
         verify(bCryptPasswordEncoder).matches(anyString(), anyString());
@@ -100,7 +101,8 @@ public class UserServiceTest {
         when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
         when(bCryptPasswordEncoder.matches(anyString(), anyString())).thenReturn(false);
 
-        assertFalse(userService.login("toto@gmail.com", "toto").block());
+        User userAuth = userService.login("toto@gmail.com", "toto").block();
+        assertThat(userAuth).isNull();
 
         verify(userRepository).findByEmail("toto@gmail.com");
         verify(bCryptPasswordEncoder).matches(anyString(), anyString());

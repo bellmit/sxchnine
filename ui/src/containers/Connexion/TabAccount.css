@@ -1,0 +1,77 @@
+
+.rwt__tablist:not([aria-orientation="vertical"]) .rwt__tab[aria-selected="true"]:after {
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    border-bottom: 3px solid rgb(255, 240, 36) !important;
+}
+
+.rwt__tablist[aria-orientation="vertical"] .rwt__tab[aria-selected="true"]:after {
+    right: -1px;
+    top: 0;
+    height: 100%;
+    border-right: 5px solid rgb(255, 240, 36) !important;
+}
+
+.rwt__tablist:not([aria-orientation="vertical"]) {
+    border-bottom: 1px solid #000000 !important;
+}
+
+.rwt__tablist[aria-orientation="vertical"] {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border-right: 1px solid #000000 !important;
+    margin-right: 1rem;
+}
+
+.TabAccount-Welcome-Message{
+    font-family: Anton;
+    font-size: 180%;
+    top: 36%;
+    left: 20%;
+    position: absolute;
+}
+
+.TabAccount-Message{
+    font-family: Anton;
+    font-size: 1vm;
+    padding-left: 5%;
+}
+
+.TabAccount-Grid{
+    left: 5%;
+
+}
+
+.TabAccount-Text{
+    font-family: Anton;
+    font-size: 1vw;
+}
+
+.TabAccount-EditUser-Icon{
+    height: 15%;
+    width: 30%;
+}
+
+.TabAccount-EditUser-Icon:hover{
+    height: 15%;
+    width: 30%;
+    cursor: pointer;
+}
+
+.TabAccount-Edit-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    align-content: center;
+}
+
+.TabAccount-Text-Edit-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+

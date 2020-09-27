@@ -13,29 +13,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
-
 @RestController
 @Slf4j
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/search/{value}", produces = APPLICATION_STREAM_JSON_VALUE)
+    @GetMapping(value = "/search/{value}")
     public Flux<Product> searchProduct(@PathVariable String value) {
         return productService.getProductsByQuery(value);
     }
 
-   @GetMapping(value = "/advancedSearch", produces = APPLICATION_STREAM_JSON_VALUE)
+   @GetMapping(value = "/advancedSearch")
     public Flux<Product> advancedSearchProduct(@RequestParam(required = false) String gender,
                                                @RequestParam(required = false) String brand,
                                                @RequestParam(required = false) String category,
                                                @RequestParam(required = false) String size) {
-        log.trace("ProductController::advancedSearchProduct");
         return productService.getProductsByAdvancedFiltering(gender, brand, category, size);
     }
 

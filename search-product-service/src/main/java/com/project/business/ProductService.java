@@ -17,14 +17,13 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class ProductService {
 
-    private ReactiveElasticsearchOperations reactiveElasticsearchOperations;
+    private final ReactiveElasticsearchOperations reactiveElasticsearchOperations;
 
     public ProductService(ReactiveElasticsearchOperations reactiveElasticsearchOperations) {
         this.reactiveElasticsearchOperations = reactiveElasticsearchOperations;
     }
 
     public Flux<Product> getProductsByQuery(String query) {
-        log.info("search product by name or brand or category");
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .should(QueryBuilders.queryStringQuery("*" + query + "*")
                         .analyzeWildcard(true)
@@ -51,7 +50,6 @@ public class ProductService {
     }
 
     public Flux<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {
-        log.info(" ********************* search product by advanced filter " + Thread.currentThread().getName());
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
         if (StringUtils.hasText(gender)) {
@@ -81,14 +79,12 @@ public class ProductService {
 
 
     public Mono<Void> save(Product product) {
-        log.info("save product");
         return reactiveElasticsearchOperations.save(product)
                 .doOnError(error -> log.error("error occurred during saving", error))
                 .then();
     }
 
     public Mono<Void> deleteById(String id){
-        log.info("delete product {}", id);
         return reactiveElasticsearchOperations.delete(id, Product.class)
                 .doOnError(error -> log.error("error occurred during delete product by id {}", id, error))
                 .then();

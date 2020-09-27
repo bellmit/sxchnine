@@ -7,7 +7,8 @@ export {
     loadGenders,
     loadTypes,
     loadSize,
-    fetchProduct
+    fetchProduct,
+    clearProducts
 } from './products';
 
 export {
@@ -35,7 +36,8 @@ export {
 
 export {
     saveUser,
-    loginUser
+    loginUser,
+    changePassword
 } from './users';
 
 export {

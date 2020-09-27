@@ -4,7 +4,9 @@ import bannerMen from './men_banner.png';
 import bannerWomen from './women_banner.jpg';
 import orderPlace from './order_place.jpg';
 import checkout from './checkout.jpg';
+import open from './open1.jpg';
 import './Banner.css';
+
 
 class Banner extends Component {
 
@@ -54,6 +56,16 @@ class Banner extends Component {
                 <img alt="" src={checkout} className="BannerCheckout-Header-img"/>
                 <div className="Banner-Container-Men">
                     <p> CHECKOUT </p>
+                </div>
+                <div className="Banner-Empty-Div"/>
+            </Aux>
+        }
+
+        if (this.props.location.pathname === '/userAccount'){
+            banner = <Aux>
+                <img alt="" src={open} className="BannerUserAccount-Header-img"/>
+                <div className="Banner-Container-Men">
+                    <p> What you Got  </p>
                 </div>
                 <div className="Banner-Empty-Div"/>
             </Aux>

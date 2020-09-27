@@ -14,17 +14,22 @@ import ContactUs from "./containers/ContactUs/ContactUs";
 import ContactUsSent from "./containers/ContactUs/ContactUsSent";
 import CustomerService from "./containers/CustomerService/CustomerService.js";
 import Tracking from "./containers/Tracking/Tracking";
+import Connexion from "./containers/Connexion/Connexion";
+import UserAccount from "./containers/Connexion/UserAccount";
 
 function App() {
   return (
     <div className="App-Container">
         <Menu />
         <Logo />
+        <Connexion />
         <Route  path="/" exact component={Home}/>
+        <Route  path="/" exact component={Connexion}/>
         <Route  path="/men" exact component={Products}/>
         <Route  path="/women" exact component={Products}/>
         <Route  path="/products/:productId" exact component={ProductSlick}/>
         <Route  path="/checkout" exact component={Checkout}/>
+        <Route  path="/userAccount" exact component={UserAccount}/>
         <Route  path="/orders" exact component={Orders}/>
         <Route  path="/confirmation/:status" exact component={Confirmation} />
         <Route  path="/shipping" exact component={Shipping} />
