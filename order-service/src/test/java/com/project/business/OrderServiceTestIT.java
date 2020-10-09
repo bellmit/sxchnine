@@ -3,6 +3,7 @@ package com.project.business;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.config.CassandraTestConfig;
 import com.project.model.Order;
+import com.project.model.PaymentResponse;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -94,14 +95,17 @@ public class OrderServiceTestIT {
         order.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
         order.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
 
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.setStatus(WAITING.getValue());
+
         clientAndServer.when(HttpRequest.request()
                         .withMethod("POST")
                         .withPath("/pay")
                         .withHeader("Accept", MediaType.ALL_VALUE)
                         .withBody(objectMapper.writeValueAsString(order)))
-                .respond(HttpResponse.response().withBody("2"));
+                .respond(HttpResponse.response().withBody(objectMapper.writeValueAsString(paymentResponse)));
 
-        Integer paymentStatus = orderService.checkoutOrderAndSave(order)
+        PaymentResponse paymentStatus = orderService.checkoutOrderAndSave(order)
                 .block();
 
         assertThat(paymentStatus).isEqualTo(2);

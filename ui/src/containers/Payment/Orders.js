@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Grid, Image, Label, Form} from "semantic-ui-react";
+import {Grid, Image, Label, Form, Dimmer, Loader} from "semantic-ui-react";
 import { connect } from 'react-redux';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
@@ -18,7 +18,8 @@ class Orders extends Component {
         city: '',
         postalCode: '',
         country: '',
-        email: ''
+        email: '',
+        loading: false
 
     };
 
@@ -37,6 +38,13 @@ class Orders extends Component {
         }
     }
 
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        let params = new URLSearchParams(this.props.location.search);
+        console.log(params.get("payment_intent"));
+        console.log(params.get("payment_intent_client_secret"));
+        console.log(this.props.productsToOrder);
+    }
+
     handleOrder = () => {
         console.log("handle Order ");
     }
@@ -49,6 +57,9 @@ class Orders extends Component {
 
         return (
             <div>
+                <Dimmer active={this.state.loading} page>
+                    <Loader content='Loading'/>
+                </Dimmer>
                 <div className="Orders-Yellow-bar-div" />
                 <header>
                     <OrderPlaceBanner {...this.props}/>

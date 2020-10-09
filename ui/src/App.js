@@ -30,7 +30,7 @@ function App() {
         <Route  path="/products/:productId" exact component={ProductSlick}/>
         <Route  path="/checkout" exact component={Checkout}/>
         <Route  path="/userAccount" exact component={UserAccount}/>
-        <Route  path="/orders" exact component={Orders}/>
+        <Route  path="/orders" component={Orders} />
         <Route  path="/confirmation/:status" exact component={Confirmation} />
         <Route  path="/shipping" exact component={Shipping} />
         <Route  path="/contactUs" exact component={ContactUs} />

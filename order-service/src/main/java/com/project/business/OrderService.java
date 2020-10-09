@@ -2,14 +2,13 @@ package com.project.business;
 
 import com.project.client.PaymentServiceClient;
 import com.project.model.Order;
+import com.project.model.PaymentResponse;
 import com.project.producer.OrderProducer;
 import com.project.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import static com.project.utils.PaymentStatusCode.getStatusByCode;
 
 @Service
 @Slf4j
@@ -38,11 +37,11 @@ public class OrderService {
         return orderRepository.findOrdersByOrderPrimaryKeyUserEmail(userEmail);
     }
 
-    public Mono<Integer> checkoutOrderAndSave(Order order) {
-        Mono<Integer> paymentStatus = paymentServiceClient.payOrder(order);
+    public Mono<PaymentResponse> checkoutOrderAndSave(Order order) {
+        Mono<PaymentResponse> paymentStatus = paymentServiceClient.payOrder(order);
 
         return paymentStatus.map(i -> {
-            order.setPaymentStatus(getStatusByCode(i));
+            order.setPaymentStatus(i.getStatus());
             return order;
         })
                 .flatMap(ordersCreator::saveOrders)

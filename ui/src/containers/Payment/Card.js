@@ -62,7 +62,6 @@ class Card extends Component {
     };
 
     handleOrder = () => {
-        //this.setState({loading: true});
         if (this.state.number !== ''
             && this.state.name !== ''
             && this.state.expiry !== ''
@@ -71,8 +70,7 @@ class Card extends Component {
             console.log(this.props);
             console.log('----> products to order');
             console.log(this.createOrder());
-            this.props.processOrder(this.createOrder());
-            this.props.history.replace('/confirmation/' + this.props.paymentStatus);
+            this.props.processOrder(this.createOrder(), this.props.history);
         }
 
     };
@@ -90,7 +88,8 @@ class Card extends Component {
                 noCreditCard: this.state.number.trim(),
                 expDate: this.state.expiry,
                 securityCode: this.state.cvc,
-                lastName: this.state.name
+                lastName: this.state.name,
+                type: 'card'
             },
             userAddress: {
                 address: this.props.num + ' ' + this.props.avenue,
@@ -230,7 +229,7 @@ const mapStateToProps = state => {
 
 const dispatchToProps = dispatch => {
     return {
-        processOrder: (productsToOrder) => dispatch(actions.order(productsToOrder))
+        processOrder: (productsToOrder, history) => dispatch(actions.order(productsToOrder, history))
     }
 };
 

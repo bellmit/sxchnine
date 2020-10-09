@@ -2,6 +2,7 @@ package com.project.business;
 
 import com.project.configuration.KafkaConfig;
 import com.project.model.Order;
+import com.project.model.PaymentResponse;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -23,6 +24,7 @@ import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -70,7 +72,7 @@ public class OrderConsumerTestIT {
         producer.send(producerRecord);
         producer.close();
 
-        when(paymentService.checkout(any(Order.class))).thenReturn(1);
+        when(paymentService.checkout(any(Order.class))).thenReturn(Mono.just(new PaymentResponse()));
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
@@ -82,7 +84,7 @@ public class OrderConsumerTestIT {
     }
 
     private Producer createProducer(){
-        Map<String, Object> config = KafkaTestUtils.senderProps(System.getProperty("spring.embedded.kafka.brokers"));
+        Map<String, Object> config = KafkaTestUtils.producerProps(System.getProperty("spring.embedded.kafka.brokers"));
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 

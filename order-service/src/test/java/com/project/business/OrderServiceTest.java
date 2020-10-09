@@ -2,6 +2,7 @@ package com.project.business;
 
 import com.project.client.PaymentServiceClient;
 import com.project.model.Order;
+import com.project.model.PaymentResponse;
 import com.project.producer.OrderProducer;
 import com.project.repository.OrderRepository;
 import org.jeasy.random.EasyRandom;
@@ -16,10 +17,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static com.project.utils.PaymentStatusCode.CONFIRMED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
@@ -54,10 +57,13 @@ public class OrderServiceTest {
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
-        when(paymentServiceClient.payOrder(order)).thenReturn(Mono.just(1));
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.setStatus(CONFIRMED.getValue());
+
+        when(paymentServiceClient.payOrder(order)).thenReturn(Mono.just(paymentResponse));
 
         StepVerifier.create(orderService.checkoutOrderAndSave(order))
-                .expectNext(1)
+                .expectNext(paymentResponse)
                 .expectComplete()
                 .verify();
 

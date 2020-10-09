@@ -45,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/checkoutOrder")
-    public Mono<Integer> checkoutOrderAndSave(@RequestBody Order order){
+    public Mono<PaymentResponse> checkoutOrderAndSave(@RequestBody Order order){
         return orderService.checkoutOrderAndSave(order);
     }
 

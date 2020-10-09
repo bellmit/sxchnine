@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class OrderClientFallback implements OrderClient {
+public class OrderClientFallback {
 
     private OrderProducer orderProducer;
 
@@ -14,7 +14,6 @@ public class OrderClientFallback implements OrderClient {
         this.orderProducer = orderProducer;
     }
 
-    @Override
     public void saveOrder(Order order) {
         log.info("fallback - send order {}", order.getOrderPrimaryKey().getOrderId());
         orderProducer.sendOrder(order);

@@ -10,7 +10,6 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 
 @Getter
@@ -23,7 +22,7 @@ import java.util.UUID;
 public class OrderPrimaryKey implements Serializable {
 
     private String userEmail;
-    private UUID orderId;
+    private String orderId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)

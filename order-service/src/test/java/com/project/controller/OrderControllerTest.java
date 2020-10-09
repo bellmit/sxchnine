@@ -4,6 +4,7 @@ import com.project.business.OrderIdService;
 import com.project.business.OrderService;
 import com.project.model.Order;
 import com.project.model.OrderId;
+import com.project.model.PaymentResponse;
 import org.assertj.core.api.Assertions;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -18,6 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static com.project.utils.PaymentStatusCode.CONFIRMED;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -100,7 +102,10 @@ public class OrderControllerTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(orderService.checkoutOrderAndSave(any())).thenReturn(Mono.just(1));
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.setStatus(CONFIRMED.getValue());
+
+        when(orderService.checkoutOrderAndSave(any())).thenReturn(Mono.just(paymentResponse));
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
@@ -110,8 +115,8 @@ public class OrderControllerTest {
                 .body(Mono.just(order), Order.class)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
-                .expectBody(Integer.class)
-                .isEqualTo(1);
+                .expectBody(PaymentResponse.class)
+                .isEqualTo(paymentResponse);
 
         verify(orderService).checkoutOrderAndSave(orderCaptor.capture());
     }

@@ -3,23 +3,17 @@ package com.project.business;
 import com.project.model.Order;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static com.project.utils.PaymentStatusCode.REFUSED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentServiceTest {
-
-    @Mock
-    private OrderClient orderClient;
 
     @InjectMocks
     private PaymentService paymentService;
@@ -41,8 +35,6 @@ public class PaymentServiceTest {
 
         paymentService.recheckout(order);
 
-        verify(orderClient).saveOrder(orderCaptor.capture());
-
         assertThat(orderCaptor.getValue().getPaymentStatus()).isEqualTo(REFUSED.getValue());
     }
 
@@ -52,9 +44,5 @@ public class PaymentServiceTest {
         Order order = easyRandom.nextObject(Order.class);
 
         paymentService.recheckout(order);
-
-
-        verify(orderClient, times(1)).saveOrder(order);
-
     }
 }

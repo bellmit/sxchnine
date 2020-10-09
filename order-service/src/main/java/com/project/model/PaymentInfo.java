@@ -1,6 +1,7 @@
 package com.project.model;
 
 import lombok.*;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
@@ -11,6 +12,11 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 @AllArgsConstructor
 @ToString
 public class PaymentInfo {
+
+    @Transient
+    private String type;
+    @Transient
+    private String paymentIntentId;
 
     @Column("no_credit_card")
     private String noCreditCard;

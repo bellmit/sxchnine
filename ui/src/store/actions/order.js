@@ -2,13 +2,26 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
 
 
-export const order = (productsToOrder) => {
+export const order = (productsToOrder, history) => {
     return dispatch => {
         dispatch(orderStart(true));
         axios.post('/order/checkoutOrder', productsToOrder)
             .then(response => {
-                dispatch(orderSuccess(response.data));
-                dispatch(orderStart(false));
+                if (response.data.status === 'CONFIRMED'){
+                    dispatch(orderSuccess(response.data));
+                    dispatch(orderStart(false));
+                    history.replace('/confirmation/1');
+                } else if (response.data.status === 'REQUIRED_ACTION'){
+                    dispatch(orderStart(false));
+                    console.log("TODO: Handle required action");
+                    window.location.replace(response.data.nextAction);
+                } else {
+                    dispatch(orderError(response.data));
+                    history.replace('/confirmation/0');
+                    dispatch(orderStart(false));
+                }
+                //this.props.history.replace('/confirmation/' + this.props.paymentStatus);
+
             })
             .catch(error => {
                 dispatch(orderStart(false));
@@ -16,6 +29,13 @@ export const order = (productsToOrder) => {
             })
     }
 };
+
+export const confirmOrder = (payment_intentId) => {
+    return dispatch => {
+        dispatch(orderStart(true));
+
+    }
+}
 
 
 export const orderStart = (start) => {
