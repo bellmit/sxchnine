@@ -5,10 +5,11 @@ public enum PaymentStatusCode {
     CONFIRMED(1, "CONFIRMED"),
     WAITING(2,"WAITING"),
     REQUIRED_ACTION(3,"REQUIRED_ACTION"),
-    UNKNOWN(4, "UNKNOWN");
+    REQUIRED_CONFIRMATION(4,"REQUIRED_CONFIRMATION"),
+    UNKNOWN(5, "UNKNOWN");
 
-    private int code;
-    private String value;
+    private final int code;
+    private final String value;
 
     PaymentStatusCode(int code, String value) {
         this.code = code;
@@ -19,15 +20,5 @@ public enum PaymentStatusCode {
 
     public String getValue() {
         return value;
-    }
-
-    public static String getStatusByCode(int code){
-        for (PaymentStatusCode paymentStatusCode : PaymentStatusCode.values()){
-            if (paymentStatusCode.getCode() == code){
-                return paymentStatusCode.getValue();
-            }
-        }
-
-        return UNKNOWN.getValue();
     }
 }

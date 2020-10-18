@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import reactor.core.publisher.Mono;
 
 import static com.project.utils.PaymentStatusCode.REFUSED;
 import static com.project.utils.PaymentStatusCode.WAITING;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.*;
 public class OrderConsumerTest {
 
     @Mock
-    private PaymentService paymentService;
+    private CatchupOrder catchupOrder;
 
     @InjectMocks
     private OrderConsumer orderConsumer;
@@ -28,11 +29,11 @@ public class OrderConsumerTest {
         Order order = easyRandom.nextObject(Order.class);
         order.setPaymentStatus(WAITING.getValue());
 
-        doNothing().when(paymentService).recheckout(any(Order.class));
+        when(catchupOrder.catchUpCheckout(any(Order.class))).thenReturn(Mono.empty());
 
         orderConsumer.consumeOrder(order, () -> {});
 
-        verify(paymentService).recheckout(order);
+        verify(catchupOrder).catchUpCheckout(order);
     }
 
 
@@ -44,7 +45,7 @@ public class OrderConsumerTest {
 
         orderConsumer.consumeOrder(order, () -> {});
 
-        verify(paymentService, times(0)).recheckout(order);
+        verify(catchupOrder, times(0)).catchUpCheckout(order);
     }
 
     @Test(expected = NullPointerException.class)

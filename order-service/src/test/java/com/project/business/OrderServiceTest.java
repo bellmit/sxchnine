@@ -60,7 +60,7 @@ public class OrderServiceTest {
         PaymentResponse paymentResponse = new PaymentResponse();
         paymentResponse.setStatus(CONFIRMED.getValue());
 
-        when(paymentServiceClient.payOrder(order)).thenReturn(Mono.just(paymentResponse));
+        when(paymentServiceClient.payOrder(any(), any())).thenReturn(Mono.just(paymentResponse));
 
         StepVerifier.create(orderService.checkoutOrderAndSave(order))
                 .expectNext(paymentResponse)

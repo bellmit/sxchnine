@@ -2,7 +2,6 @@ package com.project.business;
 
 import com.project.configuration.KafkaConfig;
 import com.project.model.Order;
-import com.project.model.PaymentResponse;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -40,10 +39,10 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 public class OrderConsumerTestIT {
 
-    private static String ORDERS_QUEUE = "orders";
+    private static final String ORDERS_QUEUE = "orders";
 
     @MockBean
-    private PaymentService paymentService;
+    private CatchupOrder catchupOrder;
 
     @Autowired
     private OrderConsumer orderConsumer;
@@ -72,13 +71,13 @@ public class OrderConsumerTestIT {
         producer.send(producerRecord);
         producer.close();
 
-        when(paymentService.checkout(any(Order.class))).thenReturn(Mono.just(new PaymentResponse()));
+        when(catchupOrder.catchUpCheckout(any(Order.class))).thenReturn(Mono.empty());
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
         orderConsumer.consumeOrder(order, () -> {});
 
-        verify(paymentService).recheckout(orderCaptor.capture());
+        verify(catchupOrder).catchUpCheckout(orderCaptor.capture());
 
         assertThat(orderCaptor.getValue()).isEqualToComparingFieldByFieldRecursively(order);
     }

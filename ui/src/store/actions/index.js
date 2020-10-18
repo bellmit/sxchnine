@@ -31,7 +31,8 @@ export {
 
 export {
     order,
-    fetchOrdersHistory
+    fetchOrdersHistory,
+    confirmOrder
 } from './order';
 
 export {

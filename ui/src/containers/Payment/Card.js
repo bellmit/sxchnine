@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PureComponent} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import {connect} from 'react-redux';
@@ -9,10 +9,10 @@ import {
     formatCVC,
     formatExpirationDate,
 } from './utils';
-import {Dimmer, Loader} from "semantic-ui-react";
+import {Dimmer, Label, Loader} from "semantic-ui-react";
 import * as actions from "../../store/actions";
 
-class Card extends Component {
+class Card extends PureComponent {
     state = {
         number: '',
         name: '',
@@ -21,7 +21,17 @@ class Card extends Component {
         issuer: '',
         focused: '',
         formData: null,
+        errorName: ''
     };
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        console.log("Card updated");
+        console.log(this.props.error);
+        if (this.props.handledErrors !== undefined &&
+             this.props.handledErrors.errorReason !== undefined){
+            this.setState({errorName: this.props.handledErrors.errorReason.message});
+        }
+    }
 
 
     handleCallback = ({issuer}, isValid) => {
@@ -133,7 +143,8 @@ class Card extends Component {
                     <Loader content='Loading'/>
                 </Dimmer>
                 <div className="App-payment">
-                    <h4 className="Cards-h4">PAYMENT:</h4>
+                    <h4 className="Cards-h4">PAYMENT:&nbsp;&nbsp;
+                        {this.state.errorName !== '' && <Label color='red'>{this.state.errorName}</Label>}</h4>
                     <Cards
                         number={this.state.number}
                         name={this.state.name}
@@ -223,6 +234,7 @@ const mapStateToProps = state => {
     return {
         productsToOrder: state.productsToOrder.productsToOrder,
         paymentStatus: state.order.paymentStatus,
+        handledErrors: state.order.handledErrors,
         loading: state.order.loading,
     }
 };

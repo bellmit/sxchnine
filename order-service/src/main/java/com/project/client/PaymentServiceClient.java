@@ -2,6 +2,8 @@ package com.project.client;
 
 import com.project.model.Order;
 import com.project.model.PaymentResponse;
+import com.project.model.PaymentResponseWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -10,9 +12,10 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-import static com.project.utils.PaymentStatusCode.WAITING;
+import static com.project.utils.PaymentStatusCode.*;
 
 @Component
+@Slf4j
 public class PaymentServiceClient {
 
     private final WebClient webClient;
@@ -21,7 +24,7 @@ public class PaymentServiceClient {
         this.webClient = webClient;
     }
 
-    public Mono<PaymentResponse> payOrder(Order order){
+    public Mono<PaymentResponse> payOrder(Order order, PaymentResponseWrapper paymentResponseWrapper){
         return webClient.post()
                 .uri("/pay")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -29,12 +32,27 @@ public class PaymentServiceClient {
                 .retrieve()
                 .bodyToMono(PaymentResponse.class)
                 .timeout(Duration.ofSeconds(15))
-                .onErrorReturn(buildPaymentResponseFallBack());
+                .onErrorReturn(buildPaymentResponseFallBack(CHECKOUT_OP.getValue()))
+                .doOnSuccess(paymentResponseWrapper::setPaymentResponse);
     }
 
-    private PaymentResponse buildPaymentResponseFallBack(){
+    public Mono<PaymentResponse> confirmPay(String paymentIntentId, PaymentResponseWrapper paymentResponseReceived){
+        return webClient.post()
+                .uri("/confirmPay/"+paymentIntentId)
+                .retrieve()
+                .bodyToMono(PaymentResponse.class)
+                .timeout(Duration.ofSeconds(15))
+                .onErrorReturn(buildPaymentResponseFallBack(CONFIRM_OP.getValue()))
+                .doOnSuccess(paymentResponseReceived::setPaymentResponse);
+    }
+
+    private PaymentResponse buildPaymentResponseFallBack(String operation){
         PaymentResponse paymentResponse = new PaymentResponse();
-        paymentResponse.setStatus(WAITING.getValue());
+        if (operation.equals(CHECKOUT_OP.getValue())){
+            paymentResponse.setStatus(WAITING.getValue());
+        } else {
+            paymentResponse.setStatus(CONFIRM_OP.getValue());
+        }
         return paymentResponse;
     }
 }

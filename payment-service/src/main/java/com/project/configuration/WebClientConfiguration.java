@@ -1,27 +1,30 @@
 package com.project.configuration;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@ConfigurationProperties(prefix = "stripe")
-@Getter
-@Setter
+@RequiredArgsConstructor
 public class WebClientConfiguration {
 
-    private String url;
-    private String publicKey;
+    private final StConfigurationProperties vendorProperties;
+    private final OrderConfigurationProperties orderProperties;
 
     @Bean
-    public WebClient webClient(){
+    public WebClient vendorWebClient() {
         return WebClient
                 .builder()
-                .baseUrl(url)
-                .defaultHeader("Authorization", "Bearer " + publicKey)
+                .baseUrl(vendorProperties.getUrl())
+                .defaultHeader("Authorization", "Bearer " + vendorProperties.getPublicKey())
+                .build();
+    }
+
+    @Bean
+    public WebClient orderWebClient() {
+        return WebClient.builder()
+                .baseUrl(orderProperties.getUrl())
                 .build();
     }
 }

@@ -4,6 +4,7 @@ const initialState = {
     loading: false,
     error: '',
     paymentStatus: -1,
+    handledErrors: '',
     ordersHistory: []
 };
 
@@ -24,6 +25,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.error
+            };
+        case (actionTypes.ORDER_ERROR_HANDLED):
+            return {
+                ...state,
+                handledErrors: action.handledErrors
             };
         case (actionTypes.FETCH_ORDERS_HISTORY_SUCCESS):
             return {

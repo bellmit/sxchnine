@@ -1,0 +1,8 @@
+.Processing-Image-div{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    position: fixed;
+    display: flex;
+    align-items: center;
+}

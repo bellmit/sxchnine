@@ -16,6 +16,7 @@
         <dockerfile.spotify.version>1.4.13</dockerfile.spotify.version>
         <lombok.version>1.18.12</lombok.version>
         <logstash.logback.version>6.4</logstash.logback.version>
+        <kafka.reactor.version>1.2.2.RELEASE</kafka.reactor.version>
         <stripe.version>20.14.0</stripe.version>
         <easy.random.version>4.2.0</easy.random.version>
         <pact.jvm.version>4.1.0</pact.jvm.version>
@@ -64,6 +65,11 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor.kafka</groupId>
+            <artifactId>reactor-kafka</artifactId>
+            <version>${kafka.reactor.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

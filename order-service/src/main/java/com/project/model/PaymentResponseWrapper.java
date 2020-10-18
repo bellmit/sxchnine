@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorReason {
+public class PaymentResponseWrapper {
 
-    private String code;
-    private String declinedCode;
-    private String message;
+    private PaymentResponse paymentResponse;
 }

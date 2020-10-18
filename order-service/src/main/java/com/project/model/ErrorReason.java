@@ -13,4 +13,5 @@ public class ErrorReason {
 
     private String code;
     private String declinedCode;
+    private String message;
 }

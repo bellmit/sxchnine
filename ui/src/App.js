@@ -16,6 +16,7 @@ import CustomerService from "./containers/CustomerService/CustomerService.js";
 import Tracking from "./containers/Tracking/Tracking";
 import Connexion from "./containers/Connexion/Connexion";
 import UserAccount from "./containers/Connexion/UserAccount";
+import Processing from "./containers/Payment/Processing";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route  path="/checkout" exact component={Checkout}/>
         <Route  path="/userAccount" exact component={UserAccount}/>
         <Route  path="/orders" component={Orders} />
+        <Route  path="/processing" component={Processing} />
         <Route  path="/confirmation/:status" exact component={Confirmation} />
         <Route  path="/shipping" exact component={Shipping} />
         <Route  path="/contactUs" exact component={ContactUs} />
