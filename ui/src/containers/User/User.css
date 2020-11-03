@@ -43,13 +43,10 @@
     font-size: 2vw;
     text-transform: uppercase;
     position: relative;
-    top: 10px;
+    background-color: rgb(255, 240, 36);
+    padding: 1% 0 1% 2%;
 }
 
-.History-Resume-Text:hover{
-    font-family: Anton;
-    font-size: 2vw;
-    text-transform: uppercase;
-    color: rgb(255, 240, 36);
-    padding-top: 10px;
+.History-Progress-Text {
+    font-size: 75%;
 }

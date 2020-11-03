@@ -3,7 +3,6 @@ package com.project.client;
 import com.project.model.Order;
 import com.project.model.PaymentResponse;
 import com.project.model.PaymentResponseWrapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -15,7 +14,6 @@ import java.time.Duration;
 import static com.project.utils.PaymentStatusCode.*;
 
 @Component
-@Slf4j
 public class PaymentServiceClient {
 
     private final WebClient webClient;
@@ -51,7 +49,7 @@ public class PaymentServiceClient {
         if (operation.equals(CHECKOUT_OP.getValue())){
             paymentResponse.setStatus(WAITING.getValue());
         } else {
-            paymentResponse.setStatus(CONFIRM_OP.getValue());
+            paymentResponse.setStatus(CANNOT_CONFIRMED.getValue());
         }
         return paymentResponse;
     }

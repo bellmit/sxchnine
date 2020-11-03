@@ -32,7 +32,8 @@ export {
 export {
     order,
     fetchOrdersHistory,
-    confirmOrder
+    confirmOrder,
+    trackOrder
 } from './order';
 
 export {

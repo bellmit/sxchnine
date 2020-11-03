@@ -2,8 +2,7 @@
   "orderPrimaryKey": {
     "userEmail": "blindrider123@gmail.com",
     "orderId": "6b351c64-773a-498f-8fd1-bec318e40400",
-    "orderTime": "2019-06-16 23:58:58.000",
-    "shippingTime": "2019-06-16 23:58:58.000"
+    "orderTime": "2019-06-16 23:58:58.000"
   },
   "products": [
     {
@@ -44,7 +43,7 @@
     "province": "QC",
     "country": "CA"
   },
-  "orderStatus": "PENDING",
+  "orderStatus": "ORDERED",
   "paymentStatus": "REFUSED",
   "paymentTime": "2019-06-16 23:58:58.000",
   "shippingStatus": "PENDING"

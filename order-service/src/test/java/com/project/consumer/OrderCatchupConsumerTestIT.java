@@ -79,7 +79,7 @@ public class OrderCatchupConsumerTestIT {
 
         orderCatchupConsumer.consumeCatchupOrder(order, () -> {});
 
-        orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail())
+        orderRepository.findOrdersByOrderKeyUserEmail(order.getOrderKey().getUserEmail())
                 .subscribe(ordersSaved -> Assertions.assertThat(ordersSaved).isEqualToComparingFieldByFieldRecursively(order));
 
     }

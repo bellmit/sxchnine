@@ -92,8 +92,8 @@ public class OrderServiceTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         order.setPaymentTime(LocalDateTime.parse(format));
-        order.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        order.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        order.getOrderKey().setOrderTime(LocalDateTime.parse(format));
+        order.setShippingTime(LocalDateTime.parse(format));
 
         PaymentResponse paymentResponse = new PaymentResponse();
         paymentResponse.setStatus(WAITING.getValue());
@@ -108,13 +108,12 @@ public class OrderServiceTestIT {
         PaymentResponse paymentStatus = orderService.checkoutOrderAndSave(order)
                 .block();
 
-        assertThat(paymentStatus).isEqualTo(2);
+        assertThat(paymentStatus).usingRecursiveComparison().isEqualTo(paymentResponse);
 
-
-        Order orderByEmail = orderService.getOrderByUserEmail(order.getOrderPrimaryKey().getUserEmail())
+        Order orderByEmail = orderService.getOrderByUserEmail(order.getOrderKey().getUserEmail())
                 .blockFirst();
 
-        assertThat(orderByEmail).usingRecursiveComparison().isEqualTo(order);
+        assertThat(orderByEmail).usingRecursiveComparison().ignoringFields("paymentInfo.paymentIntentId", "paymentInfo.type").isEqualTo(order);
         assertThat(orderByEmail.getPaymentStatus()).isEqualTo(WAITING.getValue());
 
 
@@ -122,7 +121,7 @@ public class OrderServiceTestIT {
         ConsumerRecord singleRecord = KafkaTestUtils.getSingleRecord(kafkaConsumer, ORDERS_QUEUE);
         kafkaConsumer.close();
 
-        assertThat(((Order)singleRecord.value()).getOrderPrimaryKey().getOrderId()).isEqualTo(order.getOrderPrimaryKey().getOrderId());
+        assertThat(((Order)singleRecord.value()).getOrderKey().getOrderId()).isEqualTo(order.getOrderKey().getOrderId());
 
     }
 

@@ -1,11 +1,16 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
+import {store} from "../../index";
 
 
 export const contact = (contact) => {
     return dispatch => {
         dispatch(contactStart(true));
-        axios.post("/mail/contact", contact)
+        axios.post("/mail/contact", contact, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 dispatch(contactStart(false));
             })

@@ -60,11 +60,11 @@ public class OrderIdServiceTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         orderId.setPaymentTime(LocalDateTime.parse(format));
-        orderId.getOrderIdPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        orderId.getOrderIdPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        orderId.getOrderIdKey().setOrderTime(LocalDateTime.parse(format));
+        orderId.setShippingTime(LocalDateTime.parse(format));
 
         OrderId resultOrderId = orderIdService.saveOrderId(orderId)
-                .then(orderIdService.getOrderByOrderId(orderId.getOrderIdPrimaryKey().getOrderId()))
+                .then(orderIdService.getOrderByOrderId(orderId.getOrderIdKey().getOrderId()))
                 .block();
 
         assertThat(resultOrderId).usingRecursiveComparison().isEqualTo(orderId);

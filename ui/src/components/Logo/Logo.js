@@ -1,6 +1,6 @@
 import React from 'react';
 import './Logo.css';
-import naybxrz from '../../images/logo-naybxrz2.png';
+import naybxrz from '../../images/naybxrz3.png';
 
 
 const logo = () => {

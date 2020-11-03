@@ -3,6 +3,8 @@ import jordan from './jordan2.png';
 import './Head.css';
 import HomeSearch from '../../containers/HomeSearch/HomeSearch';
 import Aux from '../../hoc/Aux/Aux';
+import Connexion from "./../../containers/Connexion/Connexion";
+
 
 class Head extends Component{
 
@@ -22,7 +24,7 @@ class Head extends Component{
                     </div>
                     <div className="Empty-Div"/>
                 </div>
-
+                <Connexion />
                 <div className="Home-Search-Div">
                     <HomeSearch {...this.props}/>
                 </div>

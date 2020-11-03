@@ -26,7 +26,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -91,21 +90,21 @@ public class OrderControllerTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         orderToSave.setPaymentTime(LocalDateTime.parse(format));
-        orderToSave.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        orderToSave.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        orderToSave.getOrderKey().setOrderTime(LocalDateTime.parse(format));
+        orderToSave.setShippingTime(LocalDateTime.parse(format));
 
         webTestClient.post().uri("/save").body(Mono.just(orderToSave), Order.class);
 
-        orderRepository.findOrdersByOrderPrimaryKeyUserEmail(orderToSave.getOrderPrimaryKey().getUserEmail())
+        orderRepository.findOrdersByOrderKeyUserEmail(orderToSave.getOrderKey().getUserEmail())
                 .subscribe(savedOrder -> {
                     assertThat(savedOrder).isEqualToIgnoringGivenFields(orderToSave, "total", "paymentInfo", "address");
                     assertThat(savedOrder.getPaymentInfo()).isEqualToIgnoringGivenFields(orderToSave.getPaymentInfo());
                     assertThat(savedOrder.getUserAddress()).isEqualToIgnoringGivenFields(orderToSave.getUserAddress());
                 });
 
-        orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(orderToSave.getOrderPrimaryKey().getOrderId())
+        orderByOrderIdRepository.findOrderIdByOrderIdKeyOrderId(orderToSave.getOrderKey().getOrderId())
                 .subscribe(savedOrderId -> {
-                    assertThat(savedOrderId.getOrderIdPrimaryKey()).isEqualToComparingFieldByField(orderToSave.getOrderPrimaryKey());
+                    assertThat(savedOrderId.getOrderIdKey()).isEqualToComparingFieldByField(orderToSave.getOrderKey());
                     assertThat(savedOrderId.getPaymentInfo()).isEqualToComparingFieldByField(orderToSave.getPaymentInfo());
                     assertThat(savedOrderId.getUserAddress()).isEqualToComparingFieldByField(orderToSave.getUserAddress());
                 });
@@ -121,8 +120,8 @@ public class OrderControllerTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         orderToSave.setPaymentTime(LocalDateTime.parse(format));
-        orderToSave.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        orderToSave.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        orderToSave.getOrderKey().setOrderTime(LocalDateTime.parse(format));
+        orderToSave.setShippingTime(LocalDateTime.parse(format));
 
         orderRepository.save(orderToSave).block();
 
@@ -132,7 +131,7 @@ public class OrderControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Order.class)
-                .value(o -> assertThat(o.getOrderPrimaryKey().getOrderId()).isEqualTo(orderToSave.getOrderPrimaryKey().getOrderId()));
+                .value(o -> assertThat(o.getOrderKey().getOrderId()).isEqualTo(orderToSave.getOrderKey().getOrderId()));
     }
 
     @Test
@@ -140,14 +139,14 @@ public class OrderControllerTestIT {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderIdToSave = easyRandom.nextObject(OrderId.class);
         String uuid = randomUUID().toString();
-        orderIdToSave.getOrderIdPrimaryKey().setOrderId(uuid);
+        orderIdToSave.getOrderIdKey().setOrderId(uuid);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
         String format = LocalDateTime.now().format(formatter);
 
         orderIdToSave.setPaymentTime(LocalDateTime.parse(format));
-        orderIdToSave.getOrderIdPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        orderIdToSave.getOrderIdPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        orderIdToSave.getOrderIdKey().setOrderTime(LocalDateTime.parse(format));
+        orderIdToSave.setShippingTime(LocalDateTime.parse(format));
 
         orderByOrderIdRepository.save(orderIdToSave).block();
 
@@ -157,7 +156,7 @@ public class OrderControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(OrderId.class)
-                .value(o -> assertThat(o.getOrderIdPrimaryKey().getOrderId()).isEqualTo(orderIdToSave.getOrderIdPrimaryKey().getOrderId()));
+                .value(o -> assertThat(o.getOrderIdKey().getOrderId()).isEqualTo(orderIdToSave.getOrderIdKey().getOrderId()));
     }
 
     @Test
@@ -169,17 +168,17 @@ public class OrderControllerTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         orderToSave.setPaymentTime(LocalDateTime.parse(format));
-        orderToSave.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        orderToSave.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        orderToSave.getOrderKey().setOrderTime(LocalDateTime.parse(format));
+        orderToSave.setShippingTime(LocalDateTime.parse(format));
 
         orderRepository.save(orderToSave).block();
 
         webTestClient.get()
-                .uri("/userEmail/" + orderToSave.getOrderPrimaryKey().getUserEmail())
+                .uri("/userEmail/" + orderToSave.getOrderKey().getUserEmail())
                 .accept(MediaType.APPLICATION_STREAM_JSON)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Order.class)
-                .value(o -> assertThat(o.getOrderPrimaryKey().getOrderId()).isEqualTo(orderToSave.getOrderPrimaryKey().getOrderId()));
+                .value(o -> assertThat(o.getOrderKey().getOrderId()).isEqualTo(orderToSave.getOrderKey().getOrderId()));
     }
 }

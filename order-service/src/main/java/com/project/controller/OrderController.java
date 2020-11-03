@@ -2,32 +2,29 @@ package com.project.controller;
 
 import com.project.business.OrderIdService;
 import com.project.business.OrderService;
+import com.project.business.OrderStatusService;
 import com.project.model.Order;
 import com.project.model.OrderId;
 import com.project.model.PaymentResponse;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON_VALUE;
-
 @RestController
-@Slf4j
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
     private final OrderIdService orderIdService;
 
-    public OrderController(OrderService orderService, OrderIdService orderIdService) {
-        this.orderService = orderService;
-        this.orderIdService = orderIdService;
-    }
+    private final OrderStatusService orderStatusService;
 
-    @GetMapping(value = "/all", produces = APPLICATION_STREAM_JSON_VALUE)
-    public Flux<Order> getAllOrders(){
-        return orderService.getAllOrders();
+
+    @GetMapping("/lastOrders")
+    public Flux<Order> getLastOrders(){
+        return orderStatusService.getOrdersByOrderStatus();
     }
 
     @GetMapping("/orderId/{orderId}")
@@ -35,9 +32,14 @@ public class OrderController {
         return orderIdService.getOrderByOrderId(orderId);
     }
 
-    @GetMapping(value = "/userEmail/{userEmail:.+}")
+    @GetMapping("/userEmail/{userEmail:.+}")
     public Flux<Order> getOrdersByEmail(@PathVariable String userEmail){
         return orderService.getOrderByUserEmail(userEmail);
+    }
+
+    @GetMapping("/trackOrder")
+    public Flux<Order> trackOrder(@RequestParam String orderId, @RequestParam String email){
+        return orderService.trackOrder(orderId, email);
     }
 
     @PostMapping("/checkoutOrder")
@@ -47,7 +49,6 @@ public class OrderController {
 
     @PostMapping("/save")
     public Mono<Void> saveOrder(@RequestBody Order order){
-        //TODO: delete simulationOrder
         return orderService.saveOrder(order);
     }
 

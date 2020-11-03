@@ -23,23 +23,21 @@ import static org.springframework.data.cassandra.core.cql.PrimaryKeyType.PARTITI
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OrderPrimaryKey implements Serializable {
+public class OrderStatusKey implements Serializable {
 
-    @PrimaryKeyColumn(name = "user_email", type = PARTITIONED, ordinal = 0)
-    private String userEmail;
+    @PrimaryKeyColumn(name = "bucket", type = PARTITIONED, ordinal = 0)
+    private String bucket;
 
-    @PrimaryKeyColumn(name = "order_id", type = CLUSTERED, ordinal = 1)
-    private String orderId;
-
-    @PrimaryKeyColumn(name = "order_time", type = CLUSTERED, ordinal = 2, ordering = DESCENDING)
+    @PrimaryKeyColumn(name = "order_time", type = CLUSTERED, ordinal = 1)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime orderTime;
 
-    @PrimaryKeyColumn(name = "shipping_time", type = CLUSTERED, ordinal = 3, ordering = DESCENDING)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime shippingTime;
+    @PrimaryKeyColumn(name = "user_email", type = CLUSTERED, ordinal = 2, ordering = DESCENDING)
+    private String userEmail;
+
+    @PrimaryKeyColumn(name = "order_id", type = CLUSTERED, ordinal = 3, ordering = DESCENDING)
+    private String orderId;
+
 }

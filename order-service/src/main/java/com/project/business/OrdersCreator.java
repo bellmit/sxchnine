@@ -4,34 +4,32 @@ import com.project.mapper.OrderMapper;
 import com.project.model.Order;
 import com.project.model.Product;
 import com.project.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class OrdersCreator {
 
     private final OrderRepository orderRepository;
-
     private final OrderIdService orderIdService;
-
+    private final OrderStatusService orderStatusService;
     private final OrderMapper orderMapper;
 
-    public OrdersCreator(OrderRepository orderRepository, OrderIdService orderIdService, OrderMapper orderMapper) {
-        this.orderRepository = orderRepository;
-        this.orderIdService = orderIdService;
-        this.orderMapper = orderMapper;
-    }
 
     public Mono<Void> saveOrders(Order order) {
         if (order != null) {
             return orderRepository.save(order)
-                    .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)));
+                    .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
+                    .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)));
         }
         return Mono.empty().then();
     }
@@ -40,6 +38,7 @@ public class OrdersCreator {
         if (order != null) {
             return orderRepository.save(order)
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
+                    .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)))
                     .then(Mono.just(order));
         }
         return Mono.empty();
@@ -55,6 +54,17 @@ public class OrdersCreator {
         } else {
             return Mono.empty();
         }
+    }
+
+    public Flux<Order> getOrderByOrderIdAndEmail(String orderId, String email){
+        return orderIdService.getOrderByOrderIdAndEmail(orderId, email)
+                .map(orderMapper::asOrder);
+    }
+
+    public Flux<Order> getOrderByOrderId(String orderId){
+        return orderIdService.getOrderByOrderId(orderId)
+                .map(orderMapper::asOrder)
+                .flux();
     }
 
 

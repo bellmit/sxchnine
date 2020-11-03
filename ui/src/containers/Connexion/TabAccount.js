@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {Tabs, Tab, TabPanel, TabList} from 'react-web-tabs';
-import {Dimmer, Form, Grid, Image, Label, Loader, Modal} from "semantic-ui-react";
+import {Dimmer, Form, Grid, Image, Label, Loader, Modal, Progress} from "semantic-ui-react";
 import Aux from "../../hoc/Aux/Aux";
 import 'react-web-tabs/dist/react-web-tabs.css';
 import './TabAccount.css';
@@ -36,14 +36,14 @@ class TabAccount extends PureComponent {
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     statusOrder = (status) => {
-        if (status === 'WAITING')
-            return <Label circular color='orange'/>
-        else if (status === 'CONFIRMED')
-            return <Label circular color='green'/>
-        else if (status === 'REFUSED')
-            return <Label circular color='red'/>
-        else if (status === 'UNKNOWN')
-            return <Label circular color='yellow'/>
+        if (status === 'ORDERED')
+            return 20;
+        else if (status === 'PROCESSING')
+            return 50;
+        else if (status === 'PREPARING')
+            return 79;
+        else if (status === 'SHIPPED')
+            return 100;
 
     };
 
@@ -71,25 +71,25 @@ class TabAccount extends PureComponent {
     }
 
     changePassword = () => {
-        if (this.state.oldPassword !== '' && this.state.newPassword !== '' && this.state.confirmNewPassword !== ''){
+        if (this.state.oldPassword !== '' && this.state.newPassword !== '' && this.state.confirmNewPassword !== '') {
             this.props.changedPassword(this.props.user.email, this.state.oldPassword, this.state.newPassword, this.state.confirmNewPassword);
         }
 
-        if (this.state.oldPassword === ''){
+        if (this.state.oldPassword === '') {
             this.setState({errorOldPassword: 'Missing Old Password !'});
             this.setState({flagErrorOldPassword: true});
         } else {
             this.setState({flagErrorOldPassword: false});
         }
 
-        if (this.state.newPassword === ''){
+        if (this.state.newPassword === '') {
             this.setState({errorNewPassword: 'Missing New Password !'});
             this.setState({flagErrorNewPassword: true});
         } else {
             this.setState({flagErrorNewPassword: false});
         }
 
-        if (this.state.confirmNewPassword === ''){
+        if (this.state.confirmNewPassword === '') {
             this.setState({errorConfirmNewPassword: 'Missing Confirm Password !'});
             this.setState({flagErrorConfirmNewPassword: true});
         } else {
@@ -118,28 +118,21 @@ class TabAccount extends PureComponent {
         </Aux>
 
         if (this.props.ordersHistory
-            .filter(o => o.orderStatus === 'UNKNOWN')
+            .filter(o => o.orderStatus !== 'SHIPPED')
             .length > 0) {
             orderInprogress = this.props.ordersHistory
-                .filter(o => o.orderStatus === 'UNKNOWN')
+                .filter(o => o.orderStatus !== 'SHIPPED')
                 .map((order, index) => (
                     <Grid key={index}>
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <span className="TabAccount-Message">
-                                    Order: {order.orderPrimaryKey.orderId}
+                                    Order ID: {order.orderKey.orderId}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <span className="TabAccount-Message">
-                                    Order time: {order.orderPrimaryKey.orderTime}
-                                </span>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
-                                    Order Status: {order.orderStatus} {this.statusOrder(order.orderStatus)}
+                                    Order time: {order.orderKey.orderTime}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>
@@ -149,9 +142,25 @@ class TabAccount extends PureComponent {
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
+                            <Grid.Column width={5}>
+                                <span className="TabAccount-Message">
+                                    Order Status:
+                                </span>
+                            </Grid.Column>
+                            <Grid.Column width={6}>
+                                <Progress size='small' percent={this.statusOrder(order.orderStatus)}
+                                          indicating>
+                                    <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        shipped</span>
+                                </Progress>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
                             <Grid container>
                                 {order.products.map((product, indexProduct) => (
-                                    <Grid.Row key={indexProduct} stretched>
+                                    <Grid.Row key={indexProduct}>
                                         <Grid.Column width={5} style={{left: '40px'}}>
                                             <Image wrapped
                                                    size='small'
@@ -185,34 +194,43 @@ class TabAccount extends PureComponent {
         </Aux>
 
         if (this.props.ordersHistory
-            .filter(o => o.orderStatus === 'CONFIRMED')
+            .filter(o => o.orderStatus === 'SHIPPED')
             .length > 0) {
             orderConfirmed = this.props.ordersHistory
-                .filter(o => o.orderStatus === 'CONFIRMED')
+                .filter(o => o.orderStatus === 'SHIPPED')
                 .map((order, index) => (
                     <Grid key={index}>
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <span className="TabAccount-Message">
-                                    Order ID: {order.orderPrimaryKey.orderId}
+                                    Order ID: {order.orderKey.orderId}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <span className="TabAccount-Message">
-                                    Order time: {order.orderPrimaryKey.orderTime}
-                                </span>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
-                                    Status: {order.orderStatus} {this.statusOrder(order.orderStatus)}
+                                    Order time: {order.orderKey.orderTime}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <span>
                                     <Label tag color='red'>${order.total}</Label>
                                 </span>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={5}>
+                                <span className="TabAccount-Message">
+                                    Order Status:
+                                </span>
+                            </Grid.Column>
+                            <Grid.Column width={6}>
+                                <Progress size='small' percent={this.statusOrder(order.orderStatus)}
+                                          indicating>
+                                    <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        shipped</span>
+                                </Progress>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -224,7 +242,7 @@ class TabAccount extends PureComponent {
                                                    size='small'
                                                    src={product.image}/>
                                         </Grid.Column>
-                                        <Grid.Column width={5} style={{left: '50px'}}>
+                                        <Grid.Column width={5} style={{left: '40px'}}>
                                             <p className="TabAccount-Message">
                                                 {product.productName}
                                             </p>
@@ -355,8 +373,10 @@ class TabAccount extends PureComponent {
                                     </Grid>
                                 </Grid.Column>
                                 <Grid.Column width={3}>
-                                    <img src={grunge} alt="edit" className="TabAccount-EditUser-Icon" onClick={this.show}/>
-                                    <img src={pencil} alt="edit" className="TabAccount-EditUser-Icon" onClick={this.show}/>
+                                    <img src={grunge} alt="edit" className="TabAccount-EditUser-Icon"
+                                         onClick={this.show}/>
+                                    <img src={pencil} alt="edit" className="TabAccount-EditUser-Icon"
+                                         onClick={this.show}/>
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
@@ -371,12 +391,12 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                                 <Grid.Column width={6}>
                                     <Form inverted>
-                                    <Form.Input placeholder="Old password..."
-                                                type="password"
-                                                name='oldPassword'
-                                                error = {this.state.flagErrorOldPassword && this.state.errorOldPassword}
-                                                value={this.state.oldPassword}
-                                                onChange={this.handleChange}/>
+                                        <Form.Input placeholder="Old password..."
+                                                    type="password"
+                                                    name='oldPassword'
+                                                    error={this.state.flagErrorOldPassword && this.state.errorOldPassword}
+                                                    value={this.state.oldPassword}
+                                                    onChange={this.handleChange}/>
                                     </Form>
                                 </Grid.Column>
                             </Grid.Row>
@@ -388,12 +408,12 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                                 <Grid.Column width={6}>
                                     <Form inverted>
-                                    <Form.Input placeholder="New password..."
-                                                type="password"
-                                                name='newPassword'
-                                                error = {this.state.flagErrorNewPassword && this.state.errorNewPassword}
-                                                value={this.state.newPassword}
-                                                onChange={this.handleChange}/>
+                                        <Form.Input placeholder="New password..."
+                                                    type="password"
+                                                    name='newPassword'
+                                                    error={this.state.flagErrorNewPassword && this.state.errorNewPassword}
+                                                    value={this.state.newPassword}
+                                                    onChange={this.handleChange}/>
                                     </Form>
                                 </Grid.Column>
                             </Grid.Row>
@@ -405,12 +425,12 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                                 <Grid.Column width={6}>
                                     <Form inverted>
-                                    <Form.Input placeholder="Confirm password..."
-                                                type="password"
-                                                name='confirmNewPassword'
-                                                error = {this.state.flagErrorConfirmNewPassword && this.state.errorConfirmNewPassword}
-                                                value={this.state.confirmNewPassword}
-                                                onChange={this.handleChange}/>
+                                        <Form.Input placeholder="Confirm password..."
+                                                    type="password"
+                                                    name='confirmNewPassword'
+                                                    error={this.state.flagErrorConfirmNewPassword && this.state.errorConfirmNewPassword}
+                                                    value={this.state.confirmNewPassword}
+                                                    onChange={this.handleChange}/>
                                     </Form>
                                 </Grid.Column>
                             </Grid.Row>

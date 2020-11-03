@@ -1,5 +1,6 @@
 package com.project.business;
 
+import com.project.configuration.OrderConfigurationProperties;
 import com.project.model.ErrorReason;
 import com.project.model.Order;
 import com.project.model.PaymentResponse;
@@ -26,9 +27,11 @@ import static com.project.utils.PaymentStatusCode.*;
 public class StPaymentOpsImpl implements PaymentOps {
 
     private final WebClient webClient;
+    private final OrderConfigurationProperties orderConfigurationProperties;
 
-    public StPaymentOpsImpl(@Qualifier("vendorWebClient") WebClient webClient) {
+    public StPaymentOpsImpl(@Qualifier("vendorWebClient") WebClient webClient, OrderConfigurationProperties orderConfigurationProperties) {
         this.webClient = webClient;
+        this.orderConfigurationProperties = orderConfigurationProperties;
     }
 
     @Override
@@ -83,8 +86,8 @@ public class StPaymentOpsImpl implements PaymentOps {
             params.add("confirm", paymentIntent.getConfirm().toString());
             //params.add("confirmation_method", paymentIntent.getConfirmationMethod().getValue());
             params.add("confirmation_method", PaymentIntentCreateParams.ConfirmationMethod.MANUAL.getValue());
-            params.add("return_url", "http://localhost:3000/processing");
-            params.add("metadata[orderId]", order.getOrderPrimaryKey().getOrderId());
+            params.add("return_url", orderConfigurationProperties.getRedirect());
+            params.add("metadata[orderId]", order.getOrderKey().getOrderId());
 
             return webClient.post()
                     .uri("/v1/payment_intents")

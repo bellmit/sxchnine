@@ -29,6 +29,9 @@ public class OrdersCreatorTest {
     @Mock
     private OrderMapper orderMapper;
 
+    @Mock
+    private OrderStatusService orderStatusService;
+
     @InjectMocks
     private OrdersCreator ordersCreator;
 
@@ -44,11 +47,11 @@ public class OrdersCreatorTest {
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
-        ArgumentCaptor<OrderId> orderIdCaptor = ArgumentCaptor.forClass(OrderId.class);
 
         when(orderRepository.save(order)).thenReturn(Mono.just(order));
         when(orderMapper.asOrderId(order)).thenReturn(orderId);
         when(orderIdService.saveOrderId(orderId)).thenReturn(Mono.just(orderId).then());
+        when(orderStatusService.saveOrderStatus(any())).thenReturn(Mono.empty());
 
         StepVerifier.create(ordersCreator.saveOrders(order))
                 .expectComplete()

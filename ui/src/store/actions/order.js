@@ -1,13 +1,18 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
+import {store} from "../../index";
 
 
 export const order = (productsToOrder, history) => {
     return dispatch => {
         dispatch(orderStart(true));
         history.push('/processing');
-        window.localStorage.setItem("orderId", productsToOrder.orderPrimaryKey.orderId);
-        axios.post('/order/checkoutOrder', productsToOrder)
+        window.localStorage.setItem("orderId", productsToOrder.orderKey.orderId);
+        axios.post('/order/checkoutOrder', productsToOrder, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 if (response.data.status === 'CONFIRMED') {
                     dispatch(orderSuccess(response.data));
@@ -15,22 +20,23 @@ export const order = (productsToOrder, history) => {
                     history.replace('/confirmation/1');
                     window.localStorage.removeItem("orderId");
                 } else if (response.data.status === 'REQUIRED_ACTION') {
+                    dispatch(orderSuccess(response.data));
                     dispatch(orderStart(false));
                     window.location.replace(response.data.nextAction);
-                } else if (response.data.status === 'WAITING'){
+                } else if (response.data.status === 'WAITING') {
                     dispatch(orderSuccess(response.data));
                     dispatch(orderStart(false));
                     history.replace('/confirmation/2');
                     window.localStorage.removeItem("orderId");
                 } else {
-                    dispatch(orderError(response.data));
+                    dispatch(orderSuccess(response.data));
                     console.log(response.data);
                     if (response.data.errorReason.code === 'incorrect_number'
                         || response.data.errorReason.code === 'invalid_number'
                         || response.data.errorReason.code === 'expired_card'
                         || response.data.errorReason.code === 'incorrect_cvc'
                         || response.data.errorReason.code === 'invalid_cvc'
-                        || response.data.errorReason.code === 'invalid_expiry_year'){
+                        || response.data.errorReason.code === 'invalid_expiry_year') {
                         dispatch(orderStart(false));
                         dispatch(orderHandledError(response.data));
                         history.goBack();
@@ -55,7 +61,11 @@ export const order = (productsToOrder, history) => {
 export const confirmOrder = (paymentIntentId, orderId, history) => {
     return dispatch => {
         dispatch(orderStart(true));
-        axios.post('/order/confirmOrder?paymentIntentId=' + paymentIntentId + '&orderId=' + orderId)
+        axios.post('/order/confirmOrder?paymentIntentId=' + paymentIntentId + '&orderId=' + orderId, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 if (response.data.status === 'CONFIRMED') {
                     dispatch(orderSuccess(response.data));
@@ -63,7 +73,7 @@ export const confirmOrder = (paymentIntentId, orderId, history) => {
                     history.replace('/confirmation/1');
                     window.localStorage.removeItem("orderId");
                 } else {
-                    dispatch(orderError(response.data));
+                    dispatch(orderSuccess(response.data));
                     history.replace('/confirmation/0');
                     dispatch(orderStart(false));
                     window.localStorage.removeItem("orderId");
@@ -110,10 +120,13 @@ export const orderHandledError = (response) => {
 
 export const fetchOrdersHistory = (email) => {
     return dispatch => {
-        axios.get('/order/userEmail/' + email)
+        axios.get('/order/userEmail/' + email, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 dispatch(fetchOrdersHistorySuccess(response.data));
-                console.log(response.data);
             }).catch(error => {
             dispatch(fetchOrdersHistoryError(error))
         })
@@ -130,6 +143,58 @@ export const fetchOrdersHistorySuccess = (orders) => {
 export const fetchOrdersHistoryError = (error) => {
     return {
         type: actionTypes.FETCH_ORDERS_HISTORY_FAIL,
+        error: error
+    }
+};
+
+export const trackOrder = (orderId, email) => {
+    return dispatch => {
+        dispatch(trackOrderStart(true));
+        axios.get('/order/trackOrder?orderId=' + orderId + '&email=' + email, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
+            .then(response => {
+                dispatch(trackOrderSuccess(response.data));
+                dispatch(trackOrderStart(false));
+                if (response.data.length > 0) {
+                    dispatch(trackOrderFound(true));
+                } else {
+                    dispatch(trackOrderFound(false));
+                }
+            })
+            .catch(error => {
+                dispatch(trackOrderStart(false));
+                dispatch(trackOrderError(error));
+            })
+    }
+};
+
+export const trackOrderStart = (start) => {
+    return {
+        type: actionTypes.TRACK_ORDER_START,
+        loading: start
+    }
+};
+
+export const trackOrderSuccess = (orders) => {
+    return {
+        type: actionTypes.TRACK_ORDER_SUCCESS,
+        trackOrder: orders
+    }
+};
+
+export const trackOrderFound = (found) => {
+    return {
+        type: actionTypes.TRACK_ORDER_FOUND,
+        trackOrderFound: found
+    }
+};
+
+export const trackOrderError = (error) => {
+    return {
+        type: actionTypes.TRACK_ORDER_FAIL,
         error: error
     }
 };

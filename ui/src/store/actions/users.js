@@ -1,5 +1,10 @@
 import axios from '../../axios/axios';
 import * as actionTypes from './actionTypes';
+import {store} from "../../index";
+
+const setAxiosToken = () => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+};
 
 export const saveUserStart = (loading) => {
     return {
@@ -32,6 +37,7 @@ export const addedUser = (addedUser) => {
 export const saveUser = (userToAdd) => {
     return dispatch => {
         dispatch(saveUserStart(true));
+        setAxiosToken();
         axios.post('/user/save', userToAdd)
             .then(response => {
                 dispatch(saveUserAuth(userToAdd));
@@ -83,10 +89,11 @@ export const changePasswordUserFail = (error) => {
 export const changePassword = (email, oldPassword, newPassword, confirmNewPassword) => {
     return dispatch => {
         dispatch(changePasswordUserStart(true));
-        axios.post('/user/changePassword?email='+email+'&oldPassword='+oldPassword+'&newPassword='+newPassword+'&confirmNewPassword='+confirmNewPassword)
+        setAxiosToken();
+        axios.post('/user/changePassword?email=' + email + '&oldPassword=' + oldPassword + '&newPassword=' + newPassword + '&confirmNewPassword=' + confirmNewPassword)
             .then(response => {
                 dispatch(changePasswordUserStart(false));
-                if (response.data.id){
+                if (response.data.id) {
                     console.log("SUCCESS");
                     console.log(response.data);
                     dispatch(changePasswordUserSuccess(true));
@@ -99,15 +106,15 @@ export const changePassword = (email, oldPassword, newPassword, confirmNewPasswo
                     dispatch(changePasswordUserSuccessInit(undefined));
                 }
 
-               /* if (!response.data.error){
-                    console.log("ERROR");
-                    console.log(response.data);
-                    dispatch(changePasswordUserFail(response.data.error));
-                } else {
-                    console.log("SUCCESS");
-                    console.log(response.data);
-                    dispatch(changePasswordUserSuccess(true));
-                }*/
+                /* if (!response.data.error){
+                     console.log("ERROR");
+                     console.log(response.data);
+                     dispatch(changePasswordUserFail(response.data.error));
+                 } else {
+                     console.log("SUCCESS");
+                     console.log(response.data);
+                     dispatch(changePasswordUserSuccess(true));
+                 }*/
             })
             .catch(error => {
                 dispatch(changePasswordUserStart(false));
@@ -142,6 +149,7 @@ export const loginUserFail = (error) => {
 export const loginUser = (email, password, history, order) => {
     return dispatch => {
         dispatch(loginUserStart(true));
+        setAxiosToken();
         axios.post('/user/login?email=' + email + "&password=" + password)
             .then(response => {
                 dispatch(loginUserStart(false));

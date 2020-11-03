@@ -36,7 +36,7 @@ public class OrderIdServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderId orderId = easyRandom.nextObject(OrderId.class);
 
-        when(orderByOrderIdRepository.findOrderIdByOrderIdPrimaryKeyOrderId(any())).thenReturn(Mono.just(orderId));
+        when(orderByOrderIdRepository.findOrderIdByOrderIdKeyOrderId(any())).thenReturn(Mono.just(orderId));
 
         StepVerifier.create(orderIdService.getOrderByOrderId(UUID.randomUUID().toString()))
                 .expectNext(orderId)

@@ -1,4 +1,4 @@
-import React, {Component, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import {connect} from 'react-redux';
@@ -87,12 +87,12 @@ class Card extends PureComponent {
 
     createOrder() {
         return {
-            orderPrimaryKey: {
-                userEmail: this.props.email,
+            orderKey: {
                 orderId: this.generateId(),
+                userEmail: this.props.email,
                 orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-                shippingTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss')
             },
+            orderStatus: 'ORDERED',
             products: this.props.productsToOrder,
             paymentInfo: {
                 noCreditCard: this.state.number.trim(),
@@ -107,10 +107,8 @@ class Card extends PureComponent {
                 city: this.props.city,
                 country: this.props.country
             },
-            orderStatus: this.evaluateStatus(this.props.paymentStatus),
-            paymentStatus: this.evaluateStatus(this.props.paymentStatus),
+            paymentStatus: this.props.paymentStatus,
             paymentTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            shippingStatus: this.evaluateStatus(this.props.paymentStatus),
             total: this.props.total
         }
     }

@@ -1,7 +1,7 @@
 package com.project.mapper;
 
-import com.project.model.OrderIdPrimaryKey;
-import com.project.model.OrderPrimaryKey;
+import com.project.model.OrderIdKey;
+import com.project.model.OrderKey;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.junit.Test;
@@ -12,11 +12,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OrderPrimaryKeyMapperTest {
+public class OrderKeyMapperTest {
 
-    private OrderPrimaryKeyMapper mapper = Mappers.getMapper(OrderPrimaryKeyMapper.class);
+    private OrderKeyMapper mapper = Mappers.getMapper(OrderKeyMapper.class);
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
@@ -24,21 +24,23 @@ public class OrderPrimaryKeyMapperTest {
     @Test
     public void testAsOrderPrimaryKey(){
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        OrderIdPrimaryKey orderIdPrimaryKey = easyRandom.nextObject(OrderIdPrimaryKey.class);
+        OrderIdKey orderIdKey = easyRandom.nextObject(OrderIdKey.class);
 
-        OrderPrimaryKey orderPrimaryKey = mapper.asOrderPrimaryKey(orderIdPrimaryKey);
+        OrderKey orderKey = mapper.asOrderPrimaryKey(orderIdKey);
 
-        assertThat(orderPrimaryKey).isEqualToComparingFieldByFieldRecursively(orderIdPrimaryKey);
+        assertThat(orderKey.getOrderTime()).isEqualTo(orderIdKey.getOrderTime());
+        assertThat(orderKey.getUserEmail()).isEqualTo(orderIdKey.getUserEmail());
     }
 
     @Test
     public void testAsOrderIdPrimaryKey(){
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        OrderPrimaryKey orderPrimaryKey = easyRandom.nextObject(OrderPrimaryKey.class);
+        OrderKey orderKey = easyRandom.nextObject(OrderKey.class);
 
-        OrderIdPrimaryKey orderIdPrimaryKey = mapper.asOrderIdPrimaryKey(orderPrimaryKey);
+        OrderIdKey orderIdKey = mapper.asOrderIdPrimaryKey(orderKey);
 
-        assertThat(orderIdPrimaryKey).isEqualToComparingFieldByFieldRecursively(orderPrimaryKey);
+        assertThat(orderKey.getOrderTime()).isEqualTo(orderIdKey.getOrderTime());
+        assertThat(orderKey.getUserEmail()).isEqualTo(orderIdKey.getUserEmail());
     }
 
     @Test

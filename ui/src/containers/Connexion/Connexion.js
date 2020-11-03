@@ -26,6 +26,12 @@ class Connexion extends Component {
 
     };
 
+    checkIfAuthenticatedAndRedirect = () => {
+        if (this.props.userAuthenticated !== ''){
+            this.props.history.push('/userAccount');
+        }
+    }
+
 
     render() {
         return (
@@ -34,8 +40,13 @@ class Connexion extends Component {
                     <Loader content='Loading'/>
                 </Dimmer>
                 <div>
-                    <Popup pinned on='click' position="bottom center"
-                           trigger={ <img src={user} alt="connexion" onClick={this.show('small')} className="Connexion-Button"/>}>
+
+                    <Popup pinned on='click'
+                           position="bottom center"
+                           trigger={ <img src={user}
+                                          alt="connexion"
+                                          onClick={this.checkIfAuthenticatedAndRedirect}
+                                          className="Connexion-Button"/>}>
 
                     <Popup.Content>
                         <Form>
@@ -77,6 +88,7 @@ class Connexion extends Component {
 const mapStateToProps = state => {
     return {
         userAuth: state.users.userAuth,
+        userAuthenticated: state.users.userAuthenticated,
         status: state.users.status,
         loading: state.users.loading,
         error: state.users.error

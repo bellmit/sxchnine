@@ -6,8 +6,8 @@ export const authenticate = () => {
         auth.get('/authenticate')
             .then(response => {
                 dispatch(authenticateSuccess(response.data));
-                localStorage.setItem("access_token", response.data["access_token"]);
-                localStorage.setItem("refresh_token", response.data["refresh_token"]);
+                //localStorage.setItem("access_token", response.data["access_token"]);
+                //localStorage.setItem("refresh_token", response.data["refresh_token"]);
             })
             .catch(error => {
                 dispatch(authenticateError(error));

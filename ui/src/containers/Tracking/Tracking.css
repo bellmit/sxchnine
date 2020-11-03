@@ -14,6 +14,23 @@
     margin: 8% 0 0 5%;
 }
 
+.Tracking-Order-Form-Div{
+    width: 43% !important;
+    height: 60% !important;
+    background-color: whitesmoke !important;
+    position: fixed !important;
+    margin: 7% 0 0 45% !important;
+    overflow-y: scroll;
+}
+
+.Tracking-Not-Found-Order-Form-Div{
+    width: 30%;
+    height: 30%;
+    background-color: transparent;
+    position: fixed;
+    margin: 7% 0 0 15%;
+}
+
 .Tracking-Container-div{
     position: fixed;
     margin: 3% 0 0 10%;
@@ -46,4 +63,14 @@
     font-size: 1vw;
     text-transform: uppercase;
     color: rgb(255, 240, 36);
+}
+
+.Tracking-Progress-Text {
+    font-size: 80%;
+}
+
+.Tracking-Order-Message{
+    font-family: Anton;
+    font-size: 1vm;
+    padding-left: 5%;
 }

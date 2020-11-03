@@ -3,9 +3,11 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     loading: false,
     error: '',
-    paymentStatus: -1,
+    paymentStatus: '',
     handledErrors: '',
-    ordersHistory: []
+    ordersHistory: [],
+    trackOrder: [],
+    trackOrderFound: undefined
 };
 
 
@@ -19,7 +21,7 @@ const reducer = (state = initialState, action) => {
         case (actionTypes.ORDER_SUCCESS):
             return {
                 ...state,
-                paymentStatus: action.paymentStatus
+                paymentStatus: action.paymentStatus.status
             };
         case (actionTypes.ORDER_FAIL):
             return {
@@ -37,6 +39,26 @@ const reducer = (state = initialState, action) => {
                 ordersHistory: action.ordersHistory
             };
         case (actionTypes.FETCH_ORDERS_HISTORY_FAIL):
+            return {
+                ...state,
+                error: action.error
+            };
+        case (actionTypes.TRACK_ORDER_START):
+            return {
+                ...state,
+                loading: action.loading
+            };
+        case (actionTypes.TRACK_ORDER_SUCCESS):
+            return {
+                ...state,
+                trackOrder: action.trackOrder
+            };
+        case (actionTypes.TRACK_ORDER_FOUND):
+            return {
+                ...state,
+                trackOrderFound: action.trackOrderFound
+            };
+        case (actionTypes.TRACK_ORDER_FAIL):
             return {
                 ...state,
                 error: action.error

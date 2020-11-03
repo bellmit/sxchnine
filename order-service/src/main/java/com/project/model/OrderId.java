@@ -1,5 +1,10 @@
 package com.project.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
@@ -19,7 +24,10 @@ import java.util.List;
 public class OrderId {
 
     @PrimaryKey
-    private OrderIdPrimaryKey orderIdPrimaryKey;
+    private OrderIdKey orderIdKey;
+
+    @Column("order_status")
+    private String orderStatus;
 
     @Column("products")
     private List<Product> products;
@@ -39,9 +47,6 @@ public class OrderId {
     @Column("user_address")
     private Address userAddress;
 
-    @Column("order_status")
-    private String orderStatus;
-
     @Column("payment_status")
     private String paymentStatus;
 
@@ -50,5 +55,14 @@ public class OrderId {
 
     @Column("shipping_status")
     private String shippingStatus;
+
+    @Column("shipping_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime shippingTime;
+
+    @Column("tracking_number")
+    private String trackingNumber;
 
 }

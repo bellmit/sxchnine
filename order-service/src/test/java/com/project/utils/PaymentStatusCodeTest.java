@@ -16,7 +16,7 @@ public class PaymentStatusCodeTest {
         assertEquals("REFUSED", PaymentStatusCode.getStatusByCode(0));
         assertEquals("CONFIRMED", PaymentStatusCode.getStatusByCode(1));
         assertEquals("WAITING", PaymentStatusCode.getStatusByCode(2));
-        assertEquals("UNKNOWN", PaymentStatusCode.getStatusByCode(3));
+        assertEquals("REQUIRED_ACTION", PaymentStatusCode.getStatusByCode(3));
     }
 
     @Test

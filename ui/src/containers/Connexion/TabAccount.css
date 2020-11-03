@@ -26,6 +26,11 @@
     margin-right: 1rem;
 }
 
+.progress {
+    overflow: visible;
+
+}
+
 .TabAccount-Welcome-Message{
     font-family: Anton;
     font-size: 180%;
@@ -42,7 +47,6 @@
 
 .TabAccount-Grid{
     left: 5%;
-
 }
 
 .TabAccount-Text{
@@ -73,5 +77,9 @@
     font-family: Anton;
     font-size: 1vw;
     text-transform: uppercase;
+}
+
+.TabAccount-Progress-Text {
+    font-size: 90%;
 }
 

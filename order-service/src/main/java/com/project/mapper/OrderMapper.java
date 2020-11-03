@@ -2,16 +2,43 @@ package com.project.mapper;
 
 import com.project.model.Order;
 import com.project.model.OrderId;
-import org.mapstruct.InheritInverseConfiguration;
+import com.project.model.OrderStatus;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Mapper(uses = OrderPrimaryKeyMapper.class)
-public interface OrderMapper {
+import static java.time.LocalDate.now;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
-    @Mapping(target = "orderPrimaryKey", source = "orderIdPrimaryKey")
-    Order asOrder(OrderId orderId);
+@Mapper(uses = {
+        OrderKeyMapper.class,
+        OrderStatusKeyMapper.class
+})
+public abstract class OrderMapper {
 
-    @InheritInverseConfiguration
-    OrderId asOrderId(Order order);
+    @Mapping(target = "orderKey", source = "orderIdKey")
+    public abstract Order asOrder(OrderId orderId);
+
+    @Mapping(target = "orderKey", source = "orderStatusKey")
+    public abstract Order asOrderByOrderStatus(OrderStatus orderStatus);
+
+    @Mapping(target = "orderIdKey", source = "orderKey")
+    public abstract OrderId asOrderId(Order order);
+
+
+    @Mapping(target = "orderIdKey", source = "orderStatusKey")
+    public abstract OrderId asOrderIdByOrderStatus(OrderStatus orderStatus);
+
+    @Mapping(target = "orderStatusKey", source = "orderKey")
+    public abstract OrderStatus asOrderStatusByOrder(Order order);
+
+    @AfterMapping
+    public void setBucketValue(@MappingTarget OrderStatus orderStatus, Order order){
+        orderStatus.getOrderStatusKey().setBucket(now().format(ofPattern("yyyyMM")));
+    }
+
+
+    @Mapping(target = "orderStatusKey", source = "orderIdKey")
+    public abstract OrderStatus asOrderStatusByOrderId(OrderId orderId);
 }

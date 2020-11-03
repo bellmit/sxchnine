@@ -54,6 +54,7 @@ public class OrdersCreatorTestIT {
 
     private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .ignoreRandomizationErrors(true)
+            .collectionSizeRange(1,2)
             .scanClasspathForConcreteTypes(true);
 
     @Test
@@ -65,14 +66,14 @@ public class OrdersCreatorTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         order.setPaymentTime(LocalDateTime.parse(format));
-        order.getOrderPrimaryKey().setOrderTime(LocalDateTime.parse(format));
-        order.getOrderPrimaryKey().setShippingTime(LocalDateTime.parse(format));
+        order.getOrderKey().setOrderTime(LocalDateTime.parse(format));
+        order.setShippingTime(LocalDateTime.parse(format));
 
         Order first = ordersCreator.saveOrders(order)
-                .thenMany(orderRepository.findOrdersByOrderPrimaryKeyUserEmail(order.getOrderPrimaryKey().getUserEmail()))
+                .thenMany(orderRepository.findOrdersByOrderKeyUserEmail(order.getOrderKey().getUserEmail()))
                 .blockFirst();
 
-        assertThat(first).usingRecursiveComparison().isEqualTo(order);
+        assertThat(first).usingRecursiveComparison().ignoringFields("paymentInfo.type", "paymentInfo.paymentIntentId").isEqualTo(order);
     }
 
 }

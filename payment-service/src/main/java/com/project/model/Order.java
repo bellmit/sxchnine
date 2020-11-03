@@ -21,19 +21,23 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
-    private OrderPrimaryKey orderPrimaryKey;
+    private OrderKey orderKey;
+    private String orderStatus;
     private List<Product> products;
     private String productBrand;
     private String productName;
     private BigDecimal total;
     private PaymentInfo paymentInfo;
     private Address userAddress;
-    private String orderStatus;
     private String paymentStatus;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime paymentTime;
     private String shippingStatus;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime shippingTime;
+    private String trackingNumber;
 }

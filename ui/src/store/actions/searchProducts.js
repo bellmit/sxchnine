@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
+import {store} from "../../index";
 
 export const searchProducts = (event) => {
     return dispatch => {
@@ -12,8 +13,11 @@ export const searchProducts = (event) => {
             cancel();
         }
         axios.get('/elastic/search/'+event, {
-                cancelToken: new CancelToken(c => cancel = c)
-            }).then(response => {
+                cancelToken: new CancelToken(c => cancel = c),
+                headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }})
+            .then(response => {
             console.log(response.data);
             dispatch(searchProductsSuccess(response.data));
             dispatch(searchProductsStart(false));

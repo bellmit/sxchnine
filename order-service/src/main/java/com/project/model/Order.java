@@ -24,7 +24,10 @@ import java.util.List;
 public class Order {
 
     @PrimaryKey
-    private OrderPrimaryKey orderPrimaryKey;
+    private OrderKey orderKey;
+
+    @Column("order_status")
+    private String orderStatus;
 
     @Column("products")
     private List<Product> products;
@@ -44,9 +47,6 @@ public class Order {
     @Column("user_address")
     private Address userAddress;
 
-    @Column("order_status")
-    private String orderStatus;
-
     @Column("payment_status")
     private String paymentStatus;
 
@@ -58,5 +58,14 @@ public class Order {
 
     @Column("shipping_status")
     private String shippingStatus;
+
+    @Column("shipping_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime shippingTime;
+
+    @Column("tracking_number")
+    private String trackingNumber;
 
 }

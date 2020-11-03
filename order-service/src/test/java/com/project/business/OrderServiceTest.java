@@ -62,10 +62,7 @@ public class OrderServiceTest {
 
         when(paymentServiceClient.payOrder(any(), any())).thenReturn(Mono.just(paymentResponse));
 
-        StepVerifier.create(orderService.checkoutOrderAndSave(order))
-                .expectNext(paymentResponse)
-                .expectComplete()
-                .verify();
+        orderService.checkoutOrderAndSave(order).block();
 
         verify(ordersCreator).saveOrders(orderCaptor.capture());
         verify(orderProducer).sendOder(any());
@@ -95,10 +92,10 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(orderRepository.findOrdersByOrderPrimaryKeyUserEmail(anyString())).thenReturn(Flux.just(order));
+        when(orderRepository.findOrdersByOrderKeyUserEmail(anyString())).thenReturn(Flux.just(order));
 
         StepVerifier.create(orderService.getOrderByUserEmail("toto@gmail.com"))
-                .expectNextMatches(o -> o.getOrderPrimaryKey().getOrderId().toString().equals(order.getOrderPrimaryKey().getOrderId().toString()))
+                .expectNextMatches(o -> o.getOrderKey().getOrderId().equals(order.getOrderKey().getOrderId()))
                 .expectComplete()
                 .verify();
     }
@@ -112,7 +109,7 @@ public class OrderServiceTest {
         when(orderRepository.findAll()).thenReturn(Flux.just(order));
 
         StepVerifier.create(orderService.getAllOrders())
-                .expectNextMatches(o -> o.getOrderPrimaryKey().getUserEmail().equals(order.getOrderPrimaryKey().getUserEmail()))
+                .expectNextMatches(o -> o.getOrderKey().getUserEmail().equals(order.getOrderKey().getUserEmail()))
                 .expectComplete()
                 .verify();
     }

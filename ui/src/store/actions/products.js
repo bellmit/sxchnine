@@ -1,16 +1,22 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
+import {store} from '../../index';
 
 export const fetchProduct = (pageNo, pageSize, sex) => {
     return dispatch => {
         dispatch(loadProductsStart(true));
-        axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex)
+        axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 if (response.data.length === 0)
                     return;
                 dispatch(loadProducts(response.data));
                 dispatch(loadProductsStart(false));
-            }).catch(error => {
+            })
+            .catch(error => {
             dispatch(loadProductsFail(error)) ;
             dispatch(loadProductsStart(false));
 

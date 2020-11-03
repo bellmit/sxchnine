@@ -8,13 +8,6 @@ const instance = axios.create({
 instance.CancelToken = axios.CancelToken;
 instance.isCancel = axios.isCancel;
 
-instance.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem("access_token");
-
-/*
-axios.defaults.headers.post['Content-Type'] ='application/json;charset=utf-8';
-*/
-/*
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-*/
+//instance.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token //localStorage.getItem("access_token");
 
 export default instance;

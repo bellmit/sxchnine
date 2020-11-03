@@ -35,7 +35,18 @@ public class OrderService {
     }
 
     public Flux<Order> getOrderByUserEmail(String userEmail) {
-        return orderRepository.findOrdersByOrderPrimaryKeyUserEmail(userEmail);
+        return orderRepository.findOrdersByOrderKeyUserEmail(userEmail);
+    }
+
+    public Flux<Order> trackOrder(String orderId, String email){
+        if (!orderId.isBlank() && !email.isBlank()){
+            return ordersCreator.getOrderByOrderIdAndEmail(orderId, email);
+        } else if (!orderId.isBlank() && email.isBlank()){
+            return ordersCreator.getOrderByOrderId(orderId);
+        } else if (orderId.isBlank() && !email.isBlank()){
+            return getOrderByUserEmail(email);
+        }
+        return Flux.empty();
     }
 
     public Mono<PaymentResponse> checkoutOrderAndSave(Order order) {
@@ -47,7 +58,7 @@ public class OrderService {
                 })
                 .flatMap(ordersCreator::saveOrders)
                 .then(orderProducer.sendOder(Mono.just(order)))
-                .then(Mono.defer(() -> Mono.just(paymentResponseReceived.getPaymentResponse())));
+                .then(Mono.defer(() -> Mono.just(paymentResponseReceived.getPaymentResponse() != null ? paymentResponseReceived.getPaymentResponse() : new PaymentResponse())));
     }
 
     public Mono<PaymentResponse> confirmOrderAndSave(String paymentIntentId, String orderId) {

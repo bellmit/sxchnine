@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import Aux from '../../hoc/Aux/Aux';
 import UserIcon from './UserIcon';
-import {Image, Modal, Grid, Label} from "semantic-ui-react";
+import {Grid, Image, Label, Modal, Progress} from "semantic-ui-react";
 import stickers from "./stickers.jpg";
 
 
@@ -16,82 +16,90 @@ class User extends Component {
     close = () => this.setState({open: false});
 
     statusOrder = (status) => {
-        if (status === 'WAITING')
-            return <Label circular color='orange' />
-        else if (status === 'CONFIRMED')
-            return <Label circular color='green' />
-        else if (status === 'REFUSED')
-            return <Label circular color='red' />
-        else if (status === 'UNKNOWN')
-            return <Label circular color='yellow' />
-
+        if (status === 'ORDERED')
+            return 20;
+        else if (status === 'PROCESSING')
+            return 50;
+        else if (status === 'PREPARING')
+            return 79;
+        else if (status === 'SHIPPED')
+            return 100;
     };
 
 
-    render(){
+    render() {
         const {open, size} = this.state;
 
-        let historyBody = <Label color="red">No history with us for now ... Start picking before is too late -> Go Got it !</Label>
+        let historyBody = <Label color="red">No history with us for now ... Start picking before is too late -> Go Got
+            it !</Label>
 
-        if (this.props.ordersHistory.length > 0){
+        if (this.props.ordersHistory.length > 0) {
             historyBody = this.props.ordersHistory.map((order, index) => (
-                    <Modal.Content image key={index} scrolling>
-                        <Modal.Description>
-                            <Grid className="Grid-div">
-                                <Grid.Row floated='right'>
-                                    <span className="History-Items-Text">Order ID: {order.orderPrimaryKey.orderId}</span>
-                                </Grid.Row>
-                                <Grid.Row floated='right'>
-                                    <span className="History-Items-Text">Order time: {order.orderPrimaryKey.orderTime}</span>
-                                </Grid.Row>
+                <Modal.Content image key={index} scrolling>
+                    <Modal.Description>
+                        <Grid className="Grid-div">
+                            <Grid.Row floated='right'>
+                                <Grid.Column width={4}>
+                                    <span className="History-Items-Text">Order ID: {order.orderKey.orderId}</span>
+                                </Grid.Column>
+                                <Grid.Column width={5}>
+                                    <span className="History-Items-Text">Order time: {order.orderKey.orderTime}</span>
+                                </Grid.Column>
+                                <Grid.Column floated='left' width={4}>
+                                    <span className="History-Items-Text"><Label tag color='red'>${order.total}</Label></span>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column width={5}>
+                                    <span className="History-Items-Text">Status:</span>
+                                </Grid.Column>
+                                <Grid.Column width={8}>
+                                    <Progress size='small'
+                                              percent={this.statusOrder(order.orderStatus)}
+                                              indicating>
+                                        <span className="History-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    shipped</span>
+                                    </Progress>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Grid className="Grid-div">
+                            {order.products.map((product, index) => (
                                 <Grid.Row>
-                                    <Grid className="Grid-div">
-                                        <Grid.Row floated='right'>
-                                            <Grid.Column floated='right' width={12}>
-                                                <span className="History-Items-Text">Status: {order.orderStatus} {this.statusOrder(order.orderStatus)}</span>
-                                            </Grid.Column>
-
-                                            <Grid.Column floated='left' width={4}>
-                                                <span className="History-Items-Text"><Label tag color='red'>${order.total}</Label></span>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
+                                    <Grid.Column width={4}>
+                                        <Image wrapped size='tiny'
+                                               src={product.image}/>
+                                    </Grid.Column>
+                                    <Grid.Column width={8}>
+                                        <span className="History-Items-Text-Header">{product.productName}</span>
+                                        <p className="History-Items-Text">{product.productColor}</p>
+                                        <p className="History-Items-Text">{product.productSize}</p>
+                                        <p className="History-Items-Text">${product.unitPrice}</p>
+                                    </Grid.Column>
                                 </Grid.Row>
-                            </Grid>
-                            <Grid className="Grid-div">
-                                {order.products.map((product, index) => (
-                                    <Grid.Row>
-                                        <Grid.Column width={4}>
-                                            <Image wrapped size='tiny'
-                                                   src={product.image}/>
-                                        </Grid.Column>
-                                        <Grid.Column width={8}>
-                                            <span className="History-Items-Text-Header">{product.productName}</span>
-                                            <p className="History-Items-Text">{product.productColor}</p>
-                                            <p className="History-Items-Text">{product.productSize}</p>
-                                            <p className="History-Items-Text">${product.unitPrice}</p>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                ))}
-                            </Grid>
-                        </Modal.Description>
-                    </Modal.Content>
-                ))
+                            ))}
+                        </Grid>
+                    </Modal.Description>
+                </Modal.Content>
+            ))
         }
 
         return (
             <Aux>
                 <UserIcon show={this.show('small')}
-                          user = {this.props.user}
-                          top={this.props.top} topIcon={this.props.topIcon} />
+                          user={this.props.user}
+                          top={this.props.top} topIcon={this.props.topIcon}/>
 
                 <div>
                     <Modal size={size} open={open} onClose={this.close}
                            style={{position: 'static', height: 'auto'}}>
-                        <Modal.Header><Image src={stickers} fluid style={{height: '220px', width:'100%'}}/></Modal.Header>
+                        <Modal.Header><Image src={stickers} fluid
+                                             style={{height: '220px', width: '100%'}}/></Modal.Header>
 
 
-                        <span className="History-Resume-Text"> You GOT : </span>
+                        <span className="History-Resume-Text">You GOT : </span>
                         {historyBody}
                         <Modal.Actions>
                             {/*<Button color='black'>
