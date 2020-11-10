@@ -14,6 +14,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PaymentInfo implements Serializable {
 
+    private String type;
+    private String paymentIntentId;
     private String noCreditCard;
     private String expDate;
     private int securityCode;

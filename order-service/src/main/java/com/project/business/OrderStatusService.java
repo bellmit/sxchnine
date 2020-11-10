@@ -19,12 +19,14 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 public class OrderStatusService {
 
     private final OrderStatusRepository orderStatusRepository;
-
     private final OrderMapper orderMapper;
 
-    public Flux<Order> getOrdersByOrderStatus(){
+    public Flux<Order> getOrdersByOrderStatus(String date){
+        if (date.isBlank()){
+            date = LocalDateTime.now().format(ofPattern("yyyyMM"));
+        }
         return orderStatusRepository
-                .findOrderStatusesByOrderStatusKeyBucket(LocalDateTime.now().format(ofPattern("yyyyMM")))
+                .findOrderStatusesByOrderStatusKeyBucket(date)
                 .filter(orderStatus -> orderStatus.getOrderStatus().equals(ORDERED.getValue())
                         || orderStatus.getOrderStatus().equals(PROCESSING.getValue())
                         || orderStatus.getOrderStatus().equals(PREPARE_TO_SHIP.getValue()))

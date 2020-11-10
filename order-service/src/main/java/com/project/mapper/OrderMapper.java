@@ -38,7 +38,6 @@ public abstract class OrderMapper {
         orderStatus.getOrderStatusKey().setBucket(now().format(ofPattern("yyyyMM")));
     }
 
-
     @Mapping(target = "orderStatusKey", source = "orderIdKey")
     public abstract OrderStatus asOrderStatusByOrderId(OrderId orderId);
 }

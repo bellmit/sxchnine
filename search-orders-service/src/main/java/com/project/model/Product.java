@@ -17,10 +17,11 @@ public class Product {
 
     private String productName;
     private String productBrand;
+    private String image;
     private String productId;
     private String productSize;
     private String productColor;
-    private int productQte;
+    private Integer productQte;
     private BigDecimal unitPrice;
     private String store;
 }

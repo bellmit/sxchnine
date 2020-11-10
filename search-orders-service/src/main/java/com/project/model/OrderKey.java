@@ -20,16 +20,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderPrimaryKey implements Serializable {
+public class OrderKey implements Serializable {
 
     private String userEmail;
-    private UUID orderId;
+    private String orderId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime orderTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime shippingTime;
 }

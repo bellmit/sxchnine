@@ -8,8 +8,8 @@ public enum PaymentStatusCode {
     CANNOT_CONFIRMED(4,"CANNOT_CONFIRMED"),
     UNKNOWN(5, "UNKNOWN"),
 
-    CHECKOUT_OP(6, "CHECKOUT_CALL_ERROR"),
-    CONFIRM_OP(7, "CONFIRM_CALL_ERROR");
+    CHECKOUT_OP(6, "CHECKOUT_OP"),
+    CONFIRM_OP(7, "CONFIRM_OP");
 
     private final int code;
     private final String value;

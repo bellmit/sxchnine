@@ -62,7 +62,7 @@ public class ProductServiceClient {
                     }
                 })
                 .ifNoItem()
-                .after(Duration.ofSeconds(5))
+                .after(Duration.ofSeconds(15))
                 .recoverWithItem(Collections.singletonList(Product.builder().id(PRODUCT_FALLBACK.getValue()).build()))
                 .onFailure()
                 .recoverWithItem(t -> {
