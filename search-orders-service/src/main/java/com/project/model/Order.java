@@ -8,7 +8,10 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Document(indexName = "orders_idx", type = "order", createIndex = false)
+@Document(indexName = "store_orders", createIndex = false)
 public class Order {
 
     @Id
@@ -35,11 +38,13 @@ public class Order {
     private PaymentInfo paymentInfo;
     private Address userAddress;
     private String paymentStatus;
+    @Field(type = FieldType.Date_Nanos, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime paymentTime;
     private String shippingStatus;
+    @Field(type = FieldType.Date_Nanos, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

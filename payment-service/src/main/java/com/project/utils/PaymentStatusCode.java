@@ -6,7 +6,9 @@ public enum PaymentStatusCode {
     WAITING(2,"WAITING"),
     REQUIRED_ACTION(3,"REQUIRED_ACTION"),
     REQUIRED_CONFIRMATION(4,"REQUIRED_CONFIRMATION"),
-    UNKNOWN(5, "UNKNOWN");
+    UNKNOWN(5, "UNKNOWN"),
+    CHECKOUT_OP(6, "CHECKOUT_CALL_ERROR"),
+    CONFIRM_OP(7, "CONFIRM_CALL_ERROR");
 
     private final int code;
     private final String value;

@@ -6,6 +6,7 @@ import com.project.model.OrderStatus;
 import com.project.repository.OrderStatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 import static com.project.utils.OrderStatusEnum.*;
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static org.springframework.util.StringUtils.hasText;
 
 @Service
 @RequiredArgsConstructor
@@ -22,14 +24,11 @@ public class OrderStatusService {
     private final OrderMapper orderMapper;
 
     public Flux<Order> getOrdersByOrderStatus(String date){
-        if (date.isBlank()){
+        if (!hasText(date)){
             date = LocalDateTime.now().format(ofPattern("yyyyMM"));
         }
         return orderStatusRepository
                 .findOrderStatusesByOrderStatusKeyBucket(date)
-                .filter(orderStatus -> orderStatus.getOrderStatus().equals(ORDERED.getValue())
-                        || orderStatus.getOrderStatus().equals(PROCESSING.getValue())
-                        || orderStatus.getOrderStatus().equals(PREPARE_TO_SHIP.getValue()))
                 .map(orderMapper::asOrderByOrderStatus);
     }
 

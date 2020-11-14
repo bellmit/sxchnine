@@ -18,11 +18,14 @@ public class OrderConsumer {
 
     @KafkaListener(groupId = "${kafka.groupId}", topics = "${kafka.topic}")
     public void consumeOrder(Order order, Acknowledgment acknowledgment) {
-        log.info("*******************");
+        log.info("***************************************");
         log.info("consume order {} ", order.toString());
-        log.info("*******************");
+        log.info("***************************************");
         order.setOrderId(order.getOrderKey().getOrderId());
-        orderService.indexOrder(order);
+        orderService.indexOrder(order)
+                .subscribe(
+                        o -> log.info("order is indexed into ES successfully"),
+                        error -> log.error("order cannot get indexed into ES {}", order.toString(), error));
         acknowledgment.acknowledge();
     }
 }

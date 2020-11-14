@@ -32,6 +32,16 @@ public class CatchupOrder {
                 .then();
     }
 
+    public Mono<Void> confirmCheckout(Order order) {
+        return paymentService.checkout3DSecure(order.getPaymentInfo().getPaymentIntentId())
+                .map(paymentResponse -> {
+                    order.setPaymentStatus(paymentResponse.getStatus());
+                    return order;
+                })
+                .flatMap(this::saveOrder)
+                .then();
+    }
+
     private Mono<Void> saveOrder(Order order){
         return orderClient.post()
                 .uri("/save")

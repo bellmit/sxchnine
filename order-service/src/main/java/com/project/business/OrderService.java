@@ -57,6 +57,10 @@ public class OrderService {
                     return order;
                 })
                 .flatMap(ordersCreator::saveOrders)
+                .onErrorResume(error -> {
+                    log.error("cannot save order to the database, we will send it to kafka as well {}", order.toString(), error);
+                    return Mono.empty();
+                })
                 .then(orderProducer.sendOder(Mono.just(order)))
                 .then(Mono.defer(() -> Mono.just(paymentResponseReceived.getPaymentResponse() != null ? paymentResponseReceived.getPaymentResponse() : new PaymentResponse())));
     }
@@ -64,7 +68,7 @@ public class OrderService {
     public Mono<PaymentResponse> confirmOrderAndSave(String paymentIntentId, String orderId) {
         PaymentResponseWrapper paymentResponseReceived = new PaymentResponseWrapper();
         return paymentServiceClient.confirmPay(paymentIntentId, paymentResponseReceived)
-                .flatMap(paymentResponse -> ordersCreator.getOrderByOrderId(orderId, paymentResponse.getStatus()))
+                .flatMap(paymentResponse -> ordersCreator.getOrderByOrderId(orderId, paymentResponse.getStatus(), paymentIntentId))
                 .flatMap(ordersCreator::saveOrdersAndReturnOrder)
                 .flatMap(order -> orderProducer.sendOder(Mono.just(order)))
                 .then(Mono.defer(() -> Mono.just(paymentResponseReceived.getPaymentResponse())));

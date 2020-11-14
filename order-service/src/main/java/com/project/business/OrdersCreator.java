@@ -2,6 +2,7 @@ package com.project.business;
 
 import com.project.mapper.OrderMapper;
 import com.project.model.Order;
+import com.project.model.PaymentInfo;
 import com.project.model.Product;
 import com.project.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +45,16 @@ public class OrdersCreator {
         return Mono.empty();
     }
 
-    public Mono<Order> getOrderByOrderId(String orderId, String paymentStatus){
+    public Mono<Order> getOrderByOrderId(String orderId, String paymentStatus, String paymentIntentId){
         if (StringUtils.hasText(orderId)) {
             return orderIdService.getOrderByOrderId(orderId)
                     .map(retrievedOrder -> {
                         retrievedOrder.setPaymentStatus(paymentStatus);
+                        if (retrievedOrder.getPaymentInfo() != null) {
+                            retrievedOrder.getPaymentInfo().setPaymentIntentId(paymentIntentId);
+                        } else {
+                            retrievedOrder.setPaymentInfo(fallbackPaymentInfo(paymentIntentId));
+                        }
                         return orderMapper.asOrder(retrievedOrder);
                     });
         } else {
@@ -67,6 +73,11 @@ public class OrdersCreator {
                 .flux();
     }
 
+    private PaymentInfo fallbackPaymentInfo(String paymentIntentId){
+        PaymentInfo paymentInfo = new PaymentInfo();
+        paymentInfo.setPaymentIntentId(paymentIntentId);
+        return paymentInfo;
+    }
 
     private BigDecimal sumTotal(Order order) {
         if (order != null && !CollectionUtils.isEmpty(order.getProducts())) {

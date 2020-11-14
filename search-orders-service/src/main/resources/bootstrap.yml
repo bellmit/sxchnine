@@ -3,10 +3,11 @@ spring:
     name: search-orders-service
   cloud:
     config:
-      discovery:
-        service-id: config-service
+      uri: ${CONFIG_SERVER:http://config-server:8888}
   zipkin:
     base-url: ${ZIPKIN_SERVER:http://localhost:9411}
   sleuth:
     sampler:
       probability: 1
+    reactor:
+      enabled: true

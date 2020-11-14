@@ -13,9 +13,10 @@ import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 @ToString
 public class PaymentInfo {
 
-    @Transient
+    @Column("payment_type")
     private String type;
-    @Transient
+
+    @Column("payment_intent_id")
     private String paymentIntentId;
 
     @Column("no_credit_card")

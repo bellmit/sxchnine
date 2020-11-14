@@ -23,7 +23,7 @@ public class OrderController {
 
 
     @GetMapping("/lastOrders")
-    public Flux<Order> getLastOrders(@RequestParam String date){
+    public Flux<Order> getLastOrders(@RequestParam(required = false) String date){
         return orderStatusService.getOrdersByOrderStatus(date);
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 
@@ -30,7 +31,8 @@ public class PaymentServiceClient {
                 .retrieve()
                 .bodyToMono(PaymentResponse.class)
                 .timeout(Duration.ofSeconds(15))
-                .onErrorReturn(buildPaymentResponseFallBack(CHECKOUT_OP.getValue()))
+                .retryWhen(Retry.backoff(2, Duration.ofSeconds(2)))
+                .onErrorReturn(buildPaymentResponseFallBack(CHECKOUT_OP.getValue(), ""))
                 .doOnSuccess(paymentResponseWrapper::setPaymentResponse);
     }
 
@@ -40,16 +42,18 @@ public class PaymentServiceClient {
                 .retrieve()
                 .bodyToMono(PaymentResponse.class)
                 .timeout(Duration.ofSeconds(15))
-                .onErrorReturn(buildPaymentResponseFallBack(CONFIRM_OP.getValue()))
+                .retryWhen(Retry.backoff(2, Duration.ofSeconds(2)))
+                .onErrorReturn(buildPaymentResponseFallBack(CONFIRM_OP.getValue(), paymentIntentId))
                 .doOnSuccess(paymentResponseReceived::setPaymentResponse);
     }
 
-    private PaymentResponse buildPaymentResponseFallBack(String operation){
+    private PaymentResponse buildPaymentResponseFallBack(String operation, String paymentIntentId){
         PaymentResponse paymentResponse = new PaymentResponse();
         if (operation.equals(CHECKOUT_OP.getValue())){
-            paymentResponse.setStatus(WAITING.getValue());
+            paymentResponse.setStatus(CHECKOUT_OP.getValue());
         } else {
-            paymentResponse.setStatus(CANNOT_CONFIRMED.getValue());
+            paymentResponse.setStatus(CONFIRM_OP.getValue());
+            paymentResponse.setPaymentIntentId(paymentIntentId);
         }
         return paymentResponse;
     }

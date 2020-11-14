@@ -1,0 +1,44 @@
+.Login-bg {
+    background-image: url("./g-floyd-bg.jpg");
+}
+
+.Login-Image-div{
+    width: 100%;
+    object-fit: cover;
+    position: fixed;
+    display: flex;
+    align-items: center;
+}
+
+.Login-Form-Div{
+    width: 20%;
+    height: 25%;
+    background-color: rgb(255, 240, 36);
+    position: fixed;
+    margin: 3% 0 0 2%;
+}
+
+.Info-Text {
+    padding-top: 5%;
+}
+
+.Label-Text {
+    top: 1%;
+}
+
+.Login-Button{
+    background-color: black;
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 8px 20px;
+    margin-top: 1%;
+    text-decoration: none;
+    outline: none;
+}
+
+.Login-Text-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    color: rgb(255, 240, 36);
+}

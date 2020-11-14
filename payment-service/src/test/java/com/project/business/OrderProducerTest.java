@@ -10,6 +10,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.kafka.sender.KafkaSender;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class OrderProducerTest {
 
     @Mock
-    private KafkaTemplate kafkaTemplate;
+    private KafkaSender kafkaSender;
 
     @InjectMocks
     private OrderProducer orderProducer;
@@ -35,11 +38,11 @@ public class OrderProducerTest {
         EasyRandom easyRandom = new EasyRandom();
         Order order = easyRandom.nextObject(Order.class);
 
-        when(kafkaTemplate.send(anyString(), any(Order.class))).thenReturn(null);
+        when(kafkaSender.send(any())).thenReturn(Flux.empty());
 
         orderProducer.sendOrder(order);
 
-        verify(kafkaTemplate).send("topic", order);
+        verify(kafkaSender).send(any());
     }
 
     @Test(expected = NullPointerException.class)
