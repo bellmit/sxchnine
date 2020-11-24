@@ -1,0 +1,18 @@
+.search-products-id-text {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.search-products-id-text:hover {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.table-search-products {
+    width: 40%;
+    height: 30%;
+    margin: 15% 0 0 18%;
+    font-size: 75%;
+    position: absolute;
+}

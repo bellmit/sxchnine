@@ -47,6 +47,14 @@ public class ProductController {
         return productService.getAllProductsBySex(pageNo, pageSize, sex);
     }
 
+    @GetMapping("/admin/searchProducts")
+    public Flux<Product> searchProducts(@RequestParam(required = false) Long id,
+                                        @RequestParam(required = false) String name,
+                                        @RequestParam(required = false) String brand,
+                                        @RequestParam(required = false) String sex){
+        return productService.searchProducts(id, name, brand, sex);
+    }
+
     @PostMapping("/save")
     public Mono<Product> createOrUpdateProduct(@RequestBody Product product){
         return productService.save(product);

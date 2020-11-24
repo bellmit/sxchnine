@@ -15,6 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
+import static com.project.utils.OrderHelper.evaluateStatus;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,6 +30,7 @@ public class OrdersCreator {
 
     public Mono<Void> saveOrders(Order order) {
         if (order != null) {
+            order.setTotal(sumTotal(order));
             return orderRepository.save(order)
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
                     .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)));
@@ -37,6 +40,7 @@ public class OrdersCreator {
 
     public Mono<Order> saveOrdersAndReturnOrder(Order order) {
         if (order != null) {
+            order.setTotal(sumTotal(order));
             return orderRepository.save(order)
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
                     .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)))
@@ -50,6 +54,7 @@ public class OrdersCreator {
             return orderIdService.getOrderByOrderId(orderId)
                     .map(retrievedOrder -> {
                         retrievedOrder.setPaymentStatus(paymentStatus);
+                        retrievedOrder.setOrderStatus(evaluateStatus(paymentStatus));
                         if (retrievedOrder.getPaymentInfo() != null) {
                             retrievedOrder.getPaymentInfo().setPaymentIntentId(paymentIntentId);
                         } else {

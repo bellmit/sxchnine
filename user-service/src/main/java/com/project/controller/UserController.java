@@ -39,6 +39,11 @@ public class UserController {
         return userService.login(email, password);
     }
 
+    @PostMapping("/loginAdmin")
+    public Mono<User> loginAdmin(@RequestParam String email, @RequestParam String password){
+        return userService.loginAdmin(email, password);
+    }
+
     @PostMapping("/changePassword")
     public Mono<User> changePassword(@RequestParam String email,
                                      @RequestParam String oldPassword,

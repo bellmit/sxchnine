@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimmer, Form, Grid, Label} from "semantic-ui-react";
+import {Dimmer, Form, Grid, Label, Loader} from "semantic-ui-react";
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/';
 import './Login.css';
@@ -18,7 +18,6 @@ class Login extends Component {
 
     componentDidMount() {
         this.props.authenticate();
-        console.log(this.props.history);
     }
 
     handleChange = (e, {name, value}) => this.setState({[name]: value});
@@ -26,6 +25,8 @@ class Login extends Component {
     authenticateUser = () => {
         if (this.state.email !== '' && this.state.password !== '') {
             this.props.login(this.state.email, this.state.password, this.props.history);
+            this.props.ordersByMonth();
+            this.props.getOrdersNumber();
         }
 
         if (this.state.email === ''){
@@ -50,7 +51,9 @@ class Login extends Component {
         return (
             <div>
                 <img alt="login" className="Login-Image-div" src={bg}/>
-                <Dimmer active={this.props.loading}/>
+                <Dimmer active={this.props.loading} page>
+                    <Loader content='Loading'/>
+                </Dimmer>
                 <div className="Login-Form-Div">
                     <Grid inverted centered>
                         {error}
@@ -98,7 +101,9 @@ const mapStateToProps = state => {
 const dispatchToProps = dispatch => {
     return {
         authenticate: () => dispatch(actions.authenticate()),
-        login: (email, password, history) => dispatch(actions.login(email, password, history))
+        login: (email, password, history) => dispatch(actions.login(email, password, history)),
+        ordersByMonth: () => dispatch(actions.ordersByMonth()),
+        getOrdersNumber: () => dispatch(actions.getOrdersNumber())
     }
 }
 

@@ -117,23 +117,6 @@ class Card extends PureComponent {
         return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
     }
 
-    evaluateStatus(paymentStatus) {
-        if (paymentStatus === 0) {
-            return 'REFUSED';
-        } else if (paymentStatus === 1) {
-            return 'CONFIRMED';
-        } else if (paymentStatus === 2) {
-            return 'WAITING';
-        } else {
-            return 'UNKNOWN';
-        }
-    }
-
-    componentWillUnmount(): void {
-        console.log(this.props)
-    }
-
-
     render() {
         return (
             <div key="Payment">

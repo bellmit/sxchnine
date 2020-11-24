@@ -23,7 +23,9 @@ public class OrderCatchupConsumer {
         log.info("order to catchup {}", order.toString());
         log.info("***************************************");
 
-        orderService.saveOrders(order);
+        orderService.saveOrders(order)
+                .subscribe(o -> log.info("Catching up order has been successfully saved"),
+                        error -> log.error("error occurred during consuming order to catchup {}", order, error));
         ack.acknowledge();
     }
 }

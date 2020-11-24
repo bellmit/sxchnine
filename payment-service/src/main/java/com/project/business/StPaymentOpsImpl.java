@@ -62,10 +62,12 @@ public class StPaymentOpsImpl implements PaymentOps {
                 .exchange()
                 .flatMap(clientResponse -> {
                     if (clientResponse.statusCode().is2xxSuccessful()) {
+                        log.info(" payment method {}", clientResponse);
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildPaymentResponse((LinkedHashMap) o));
                     } else {
                         log.warn("Publish to kafka to be treated after");
+                        log.info("error payment method {}", clientResponse);
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
@@ -96,10 +98,12 @@ public class StPaymentOpsImpl implements PaymentOps {
                     .exchange()
                     .flatMap(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
+                            log.info("create payment intent{}", clientResponse);
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildPaymentResponse((LinkedHashMap) o));
                         } else {
                             log.warn("Publish to kafka to be treated after");
+                            log.info("error create payment intent{}", clientResponse);
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                         }
@@ -116,10 +120,12 @@ public class StPaymentOpsImpl implements PaymentOps {
                 .exchange()
                 .flatMap(clientResponse -> {
                     if (clientResponse.statusCode().is2xxSuccessful()) {
+                        log.info("retrieve payment {}", clientResponse);
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildPaymentResponse((LinkedHashMap) o));
                     } else {
                         log.warn("Publish to kafka to be treated after");
+                        log.info("error retrieve payment {}", clientResponse);
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
@@ -139,10 +145,12 @@ public class StPaymentOpsImpl implements PaymentOps {
                     .exchange()
                     .flatMap(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
+                            log.info("confirm payment {}", clientResponse);
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildPaymentResponse((LinkedHashMap) o));
                         } else {
                             log.warn("Publish to kafka to be treated after");
+                            log.info("error confirm payment {}", clientResponse);
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                         }

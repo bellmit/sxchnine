@@ -8,8 +8,12 @@ import com.project.producer.OrderProducer;
 import com.project.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import static com.project.utils.OrderHelper.evaluateStatus;
+import static org.springframework.util.StringUtils.hasText;
 
 @Service
 @Slf4j
@@ -39,11 +43,11 @@ public class OrderService {
     }
 
     public Flux<Order> trackOrder(String orderId, String email){
-        if (!orderId.isBlank() && !email.isBlank()){
+        if (hasText(orderId) && hasText(email)){
             return ordersCreator.getOrderByOrderIdAndEmail(orderId, email);
-        } else if (!orderId.isBlank() && email.isBlank()){
+        } else if (hasText(orderId) && !hasText(email)){
             return ordersCreator.getOrderByOrderId(orderId);
-        } else if (orderId.isBlank() && !email.isBlank()){
+        } else if (!hasText(orderId) && hasText(email)){
             return getOrderByUserEmail(email);
         }
         return Flux.empty();
@@ -52,8 +56,10 @@ public class OrderService {
     public Mono<PaymentResponse> checkoutOrderAndSave(Order order) {
         PaymentResponseWrapper paymentResponseReceived = new PaymentResponseWrapper();
         return paymentServiceClient.payOrder(order, paymentResponseReceived)
-                .map(i -> {
-                    order.setPaymentStatus(i.getStatus());
+                .map(paymentResponse -> {
+                    order.setPaymentStatus(paymentResponse.getStatus());
+                    order.setOrderStatus(evaluateStatus(paymentResponse.getStatus()));
+                    order.getPaymentInfo().setPaymentIntentId(paymentResponse.getPaymentIntentId());
                     return order;
                 })
                 .flatMap(ordersCreator::saveOrders)

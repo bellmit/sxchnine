@@ -4,12 +4,15 @@ import com.project.exception.ConfirmPasswordException;
 import com.project.exception.IncorrectPasswordException;
 import com.project.model.User;
 import com.project.repository.UserRepository;
+import com.project.util.UserCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+
+import static com.project.util.UserCode.ADMIN;
 
 @Service
 @Slf4j
@@ -54,6 +57,13 @@ public class UserService {
     public Mono<Void> deleteUserByEmail(String email) {
         return userRepository.deleteUserByEmail(email)
                 .doOnError(error -> log.error("error occurred during delete by email: {}", email, error));
+    }
+
+    public Mono<User> loginAdmin(String email, String password) {
+        return getUserByEmail(email)
+                .filter(u -> u.getRole().equalsIgnoreCase(ADMIN.getValue()))
+                .flatMap(user -> validateUser(user, password))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     public Mono<User> login(String email, String password) {

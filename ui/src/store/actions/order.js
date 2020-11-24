@@ -2,6 +2,9 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
 import {store} from "../../index";
 
+const setAxiosToken = () => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+};
 
 export const order = (productsToOrder, history) => {
     return dispatch => {
@@ -60,12 +63,9 @@ export const order = (productsToOrder, history) => {
 
 export const confirmOrder = (paymentIntentId, orderId, history) => {
     return dispatch => {
+        setAxiosToken();
         dispatch(orderStart(true));
-        axios.post('/order/confirmOrder?paymentIntentId=' + paymentIntentId + '&orderId=' + orderId, {
-            headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
-            }
-        })
+        axios.post('/order/confirmOrder?paymentIntentId=' + paymentIntentId + '&orderId=' + orderId)
             .then(response => {
                 if (response.data.status === 'CONFIRMED') {
                     dispatch(orderSuccess(response.data));

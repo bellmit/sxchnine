@@ -36,11 +36,11 @@ class TabAccount extends PureComponent {
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     statusOrder = (status) => {
-        if (status === 'ORDERED')
+        if (status === 'ORDERED' || status === 'REQUIRED_ACTION' || status === 'WAITING')
             return 20;
-        else if (status === 'PROCESSING')
+        else if (status === 'CONFIRMED')
             return 50;
-        else if (status === 'PREPARING')
+        else if (status === 'PROCESSING')
             return 79;
         else if (status === 'SHIPPED')
             return 100;
@@ -99,8 +99,6 @@ class TabAccount extends PureComponent {
     }
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        console.log("tab account did update");
-        console.log(this.props.userChangedPassword);
         if (this.props.userChangedPassword === true) {
             this.setState({oldPassword: ''});
             this.setState({newPassword: ''});
@@ -151,8 +149,8 @@ class TabAccount extends PureComponent {
                                 <Progress size='small' percent={this.statusOrder(order.orderStatus)}
                                           indicating>
                                     <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        confirmed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         shipped</span>
                                 </Progress>
                             </Grid.Column>
@@ -227,8 +225,8 @@ class TabAccount extends PureComponent {
                                 <Progress size='small' percent={this.statusOrder(order.orderStatus)}
                                           indicating>
                                     <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        confirmed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         shipped</span>
                                 </Progress>
                             </Grid.Column>

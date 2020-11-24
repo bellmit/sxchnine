@@ -45,7 +45,7 @@ export const login = (email, password, history) => {
     return dispatch => {
         setAxiosToken();
         dispatch(authenticatedUserStart(true));
-        axios.post('/user/login?email=' + email + "&password=" + password)
+        axios.post('/user/loginAdmin?email=' + email + "&password=" + password)
             .then(response => {
                 dispatch(authenticatedUserSuccess(response.data))
                 dispatch(authenticatedUserStart(false));

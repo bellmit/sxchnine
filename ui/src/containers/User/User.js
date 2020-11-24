@@ -16,7 +16,7 @@ class User extends Component {
     close = () => this.setState({open: false});
 
     statusOrder = (status) => {
-        if (status === 'ORDERED')
+        if (status === 'ORDERED' | status === 'REQUIRED_ACTION' || status === 'WAITING')
             return 20;
         else if (status === 'PROCESSING')
             return 50;

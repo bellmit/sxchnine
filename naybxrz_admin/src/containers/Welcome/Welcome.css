@@ -1,0 +1,13 @@
+.Welcome-Message-Div{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    position: fixed;
+    margin: 0 0 0 -68%;
+}
+
+.img-props {
+    height: 5%;
+    width: 5%;
+    margin-top: 2%;
+}

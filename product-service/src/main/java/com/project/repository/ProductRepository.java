@@ -20,4 +20,13 @@ public interface ProductRepository extends ReactiveMongoRepository<Product, Long
 
     Flux<Product> findProductsByIdIn(List<Long> ids);
 
+    Flux<Product> findProductsByIdAndNameAndBrandAndSex(Long id, String name, String brand, String sex);
+
+    Flux<Product> findProductsByNameAndBrandAndSex(String name, String brand, String sex);
+
+    Flux<Product> findProductsByBrandAndSex(String brand, String sex);
+
+    Flux<Product> findProductsByBrand(String brand);
+
+    Flux<Product> findProductsByNameAndBrand(String name, String brand);
 }

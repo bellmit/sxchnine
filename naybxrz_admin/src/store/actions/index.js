@@ -5,3 +5,18 @@ export {
 export {
     login
 } from './user';
+
+export {
+    ordersByMonth,
+    getOrdersNumber,
+    orderById,
+    orderByIdPopup,
+    saveOrder,
+    searchOrders
+} from './orders';
+
+export  {
+    searchProducts,
+    getProductById,
+    productByIdPopup
+} from './products';

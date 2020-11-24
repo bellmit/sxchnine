@@ -2,7 +2,6 @@ package com.project.business;
 
 
 import com.project.model.Product;
-import com.project.model.SizeQte;
 import com.project.repository.ProductRepository;
 import com.project.util.FallbackProductsSource;
 import lombok.RequiredArgsConstructor;
@@ -10,13 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
-import java.math.BigDecimal;
 import java.time.Duration;
-import java.util.*;
+import java.util.List;
 
 
 @Service
@@ -28,17 +27,17 @@ public class ProductService {
 
     private final KafkaProducer kafkaProducer;
 
-    public Mono<Product> getProductById(Long id){
+    public Mono<Product> getProductById(Long id) {
         return productRepository.findProductById(id)
                 .doOnError(error -> log.error("error occurred during getting product by id", error))
                 .onErrorReturn(new Product());
     }
 
-    public Flux<Product> getProductByIds(List<Long> ids){
+    public Flux<Product> getProductByIds(List<Long> ids) {
         return productRepository.findProductsByIdIn(ids);
     }
 
-    public Mono<Product> getProductByName(String name){
+    public Mono<Product> getProductByName(String name) {
         return productRepository.findProductByName(name)
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
                 .timeout(Duration.ofSeconds(2))
@@ -46,13 +45,13 @@ public class ProductService {
                 .onErrorReturn(new Product());
     }
 
-    public Flux<Product> getAllProducts(){
+    public Flux<Product> getAllProducts() {
         return productRepository.findAll()
                 .doOnError(error -> log.error("error occurred during getting all products", error));
 
     }
 
-    public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex){
+    public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return productRepository.findAllBySex(sex, paging)
                 .retry()
@@ -62,7 +61,36 @@ public class ProductService {
                 .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex));
     }
 
-    public Mono<Product> save(Product product){
+    public Flux<Product> searchProducts(Long id, String name, String brand, String sex) {
+        if (id != null){
+            return Flux.from(productRepository.findProductById(id));
+
+        } else if (StringUtils.hasText(name)
+                && StringUtils.hasText(brand)
+                && StringUtils.hasText(sex)) {
+
+            return productRepository.findProductsByNameAndBrandAndSex(name, brand, sex);
+
+        } else if (StringUtils.hasText(name)
+                && StringUtils.hasText(brand)) {
+
+            return productRepository.findProductsByNameAndBrand(name, brand);
+
+        } else if (StringUtils.hasText(brand)
+                && StringUtils.hasText(sex)) {
+            return productRepository.findProductsByBrandAndSex(brand, sex);
+
+        } else if (StringUtils.hasText(brand)){
+            return productRepository.findProductsByBrand(brand);
+
+        } else if (StringUtils.hasText(name)) {
+            return Flux.from(productRepository.findProductByName(name));
+        } else {
+             return productRepository.findProductsByIdAndNameAndBrandAndSex(id, name, brand, sex);
+         }
+    }
+
+    public Mono<Product> save(Product product) {
         return productRepository.save(product)
                 .log()
                 .flatMap(p -> kafkaProducer
@@ -71,7 +99,7 @@ public class ProductService {
                 .doOnError(error -> log.error("Error during saving", error));
     }
 
-    public Mono<Void> saveProducts(Flux<Product> products){
+    public Mono<Void> saveProducts(Flux<Product> products) {
         return productRepository.saveAll(products)
                 .flatMap(p -> kafkaProducer
                         .sendProduct(Mono.just(p))
@@ -80,49 +108,8 @@ public class ProductService {
                 .then();
     }
 
-    public Mono<Void> deleteProductById(long id){
+    public Mono<Void> deleteProductById(long id) {
         return productRepository.deleteById(id);
     }
 
-    private Product createMockProduct(){
-        Set<String> size = new HashSet<>();
-        size.add("S");
-        size.add("M");
-        size.add("L");
-
-        Set<String> colors = new HashSet<>();
-        colors.add("Black");
-        colors.add("White");
-
-        SizeQte sizeQteS = new SizeQte();
-        sizeQteS.setSize('S');
-        sizeQteS.setQte(2);
-
-        SizeQte sizeQteM = new SizeQte();
-        sizeQteM.setSize('M');
-        sizeQteM.setQte(3);
-
-        Set<SizeQte> sizeQtesBlack = new HashSet<>();
-        sizeQtesBlack.add(sizeQteS);
-        sizeQtesBlack.add(sizeQteM);
-
-        Map<String, Set<SizeQte>> availablities = new HashMap<>();
-        availablities.put("Black", sizeQtesBlack);
-        availablities.put("White", sizeQtesBlack);
-
-        return Product.builder()
-                .id(new Random().nextLong())
-                .name("Sweat - Crew")
-                .brand("Nike")
-                .logo("https://www.festisite.com/static/partylogo/img/logos/nike.png")
-                .sex('W')
-                .category("Sweat")
-                .price(BigDecimal.valueOf(80))
-                .images(Collections.singleton("https://images.asos-media.com/products/nike-logo-crew-sweat-in-white-804340-100/7134528-3?$XXL$&wid=513&fit=constrain"))
-                .size(size)
-                .colors(colors)
-                .availability(availablities)
-                .build();
-
-    }
 }

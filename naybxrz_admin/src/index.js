@@ -13,10 +13,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import authentication from './store/reducers/authentication';
 import user from './store/reducers/user';
+import orders from './store/reducers/orders';
+import products from './store/reducers/products';
 
 const reducers = combineReducers({
     authentication: authentication,
-    user: user
+    user: user,
+    orders: orders,
+    products: products
 });
 
 const encryptor = encryptTransform({

@@ -6,6 +6,7 @@ import com.project.business.OrderStatusService;
 import com.project.model.Order;
 import com.project.model.OrderId;
 import com.project.model.PaymentResponse;
+import com.project.model.admin.OrdersNumber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -28,8 +29,8 @@ public class OrderController {
     }
 
     @GetMapping("/orderId/{orderId}")
-    public Mono<OrderId> getOrdersByOrderId(@PathVariable String orderId){
-        return orderIdService.getOrderByOrderId(orderId);
+    public Mono<Order> getOrdersByOrderId(@PathVariable String orderId){
+        return orderIdService.getMappedOrderByOrderId(orderId);
     }
 
     @GetMapping("/userEmail/{userEmail:.+}")
@@ -38,7 +39,7 @@ public class OrderController {
     }
 
     @GetMapping("/trackOrder")
-    public Flux<Order> trackOrder(@RequestParam String orderId, @RequestParam String email){
+    public Flux<Order> trackOrder(@RequestParam(required = false) String orderId, @RequestParam(required = false) String email){
         return orderService.trackOrder(orderId, email);
     }
 
@@ -53,7 +54,12 @@ public class OrderController {
     }
 
     @PostMapping("/confirmOrder")
-    public Mono<PaymentResponse> confirmOrder(@RequestParam String paymentIntentId, @RequestParam String orderId){
+    public Mono<PaymentResponse> confirmOrder(@RequestParam String paymentIntentId, @RequestParam(required = false) String orderId){
         return orderService.confirmOrderAndSave(paymentIntentId, orderId);
+    }
+
+    @GetMapping("/admin/ordersNumber")
+    public Mono<OrdersNumber> getOrdersNumber(@RequestParam(required = false) String date){
+        return orderStatusService.getOrdersNumber(date);
     }
 }
