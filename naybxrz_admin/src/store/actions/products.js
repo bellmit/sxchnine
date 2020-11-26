@@ -1,7 +1,6 @@
 import axios from '../../axios/axios';
 import * as actions from './actions';
 import {store} from "../../index";
-import {orderByIdPopup} from "./orders";
 
 const setAxiosToken = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
@@ -10,7 +9,7 @@ const setAxiosToken = () => {
 const searchProductsStart = (loading) => {
     return {
         type: actions.SEARCH_PRODUCTS_START,
-        searchProductsStart: loading
+        searchProductsLoading: loading
     }
 };
 
@@ -36,6 +35,7 @@ export const searchProducts = (productId, productName, brand, sex) => {
             .then(response => {
                 dispatch(searchProductsSuccess(response.data));
                 dispatch(searchProductsStart(false));
+                dispatch(searchProductsFail(undefined));
             })
             .catch(error => {
                 dispatch(searchProductsStart(false));
@@ -86,6 +86,36 @@ export const getProductById = (productId) => {
             .catch(error => {
                 dispatch(productByIdStart(false));
                 dispatch(productByIdFail(error));
+            })
+    }
+};
+
+const saveProductStart = (loading) => {
+    return {
+        type: actions.SAVE_PRODUCT_START,
+        saveProductLoading: loading
+    }
+};
+
+const saveProductFail = (error) => {
+    return {
+        type: actions.SAVE_PRODUCT_FAIL,
+        saveProductError: error
+    }
+};
+
+export const saveProduct = (product) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(saveProductStart(true));
+        axios.post('/product/save', product)
+            .then(response => {
+                dispatch(saveProductStart(false));
+                dispatch(productByIdPopup(false));
+            })
+            .catch(error => {
+                dispatch(saveProductStart(false));
+                dispatch(saveProductFail(error));
             })
     }
 }

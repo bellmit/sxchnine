@@ -18,5 +18,6 @@ export {
 export  {
     searchProducts,
     getProductById,
-    productByIdPopup
+    productByIdPopup,
+    saveProduct
 } from './products';

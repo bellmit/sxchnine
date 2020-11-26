@@ -1,14 +1,15 @@
 import * as actions from '../actions/actions';
-import {productByIdPopup} from "../actions/products";
 
 const initialState = {
     searchProductsLoading: false,
     searchProductsData: [],
-    searchProductsError: '',
+    searchProductsError: undefined,
     productByIdLoading: false,
     productByIdData: '',
     productByIdError: '',
-    productByIdPopup: false
+    productByIdPopup: false,
+    saveProductLoading: false,
+    saveProductError: undefined
 }
 
 const reducer = (state = initialState, action) => {
@@ -47,7 +48,17 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 productByIdPopup: action.productByIdPopup
-            }
+            };
+        case actions.SAVE_PRODUCT_START:
+            return {
+                ...state,
+                saveProductLoading: action.saveProductLoading
+            };
+        case actions.SAVE_PRODUCT_FAIL:
+            return {
+                ...state,
+                saveProductError: action.saveProductError
+            };
         default:
             return state;
     }

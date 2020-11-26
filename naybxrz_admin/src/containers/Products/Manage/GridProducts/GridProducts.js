@@ -8,6 +8,9 @@ import EditProduct from "../EditProduct/EditProduct";
 
 class GridProducts extends Component {
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.props.searchProductsError)
+    }
 
     checkAvailableIcon(available){
         if (available){
@@ -30,6 +33,13 @@ class GridProducts extends Component {
     }
 
     render() {
+
+        let errors = undefined;
+
+        if (this.props.searchProductsError){
+            errors = <Label color='red'>{this.props.searchProductsError.message}</Label>;
+        }
+
         let headers = <Table.Header>
             <Table.Row>
                 <Table.HeaderCell>ID</Table.HeaderCell>
@@ -146,6 +156,7 @@ class GridProducts extends Component {
                 <Dimmer active={this.props.loading} page>
                     <Loader content='Loading'/>
                 </Dimmer>
+                {errors}
                 {body}
 
                 <EditProduct />
