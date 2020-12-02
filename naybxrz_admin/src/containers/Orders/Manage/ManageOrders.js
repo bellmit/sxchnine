@@ -5,17 +5,14 @@ import GridOrders from "./GridOrders/GridOrders";
 
 class ManageOrders extends Component {
 
-
-
     render() {
         return (
             <Aux>
                 <SearchOrders />
-                <GridOrders />
+                <GridOrders {...this.props}/>
             </Aux>
         );
     }
 }
-
 
 export default ManageOrders;

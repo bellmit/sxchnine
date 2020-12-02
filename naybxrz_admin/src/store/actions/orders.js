@@ -71,6 +71,13 @@ export const getOrdersNumber = () => {
     }
 };
 
+export const closeModalAndRedirectBack = (open, history) => {
+    return dispatch => {
+        dispatch(orderByIdPopup(open));
+        history.goBack();
+    }
+};
+
 export const orderByIdPopup = (open) => {
     return {
         type: actions.ORDER_BY_ID_POPUP,
@@ -99,7 +106,7 @@ const orderByIdSuccess = (response) => {
     }
 };
 
-export const orderById = (orderId) => {
+export const orderById = (orderId, history) => {
     return dispatch => {
         setAxiosToken();
         dispatch(orderByIdStart(true));
@@ -114,6 +121,8 @@ export const orderById = (orderId) => {
                     dispatch(orderByIdSuccess(order));
                     dispatch(orderByIdStart(false));
                     dispatch(orderByIdPopup(true));
+                    history.push('/order/' + orderId);
+                    console.log(history);
 
                 }
             })

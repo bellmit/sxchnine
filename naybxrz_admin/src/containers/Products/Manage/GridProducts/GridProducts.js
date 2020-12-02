@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Dimmer, Icon, Image, Label, List, Loader, Table} from "semantic-ui-react";
+import {Button, Dimmer, Icon, Image, Label, List, Loader, Table} from "semantic-ui-react";
 import Aux from '../../../../adhoc/Aux/Aux';
 import './GridProducts.css';
 import * as actions from "../../../../store/actions";
-import EditProduct from "../EditProduct/EditProduct";
 
 class GridProducts extends Component {
 
@@ -12,32 +11,38 @@ class GridProducts extends Component {
         console.log(this.props.searchProductsError)
     }
 
-    checkAvailableIcon(available){
-        if (available){
-            return <Icon name='check' color='green' size='large' />
+    checkAvailableIcon(available) {
+        if (available) {
+            return <Icon name='check' color='green' size='large'/>
         } else {
-            return <Icon name='close' color='red' size='large' />
+            return <Icon name='close' color='red' size='large'/>
         }
     }
 
-    checkSexIcon(sex){
-        if (sex === 'M'){
-            return <Icon name='male' color='blue' size='large' />
+    checkSexIcon(sex) {
+        if (sex === 'M') {
+            return <Icon name='male' color='blue' size='large'/>
         } else {
-            return <Icon name='female' color='pink' size='large' />
+            return <Icon name='female' color='pink' size='large'/>
         }
     }
 
     handleProduct = (productId) => {
-        this.props.getProductById(productId);
+        this.props.getProductById(productId, this.props.history);
     }
 
     render() {
 
         let errors = undefined;
 
-        if (this.props.searchProductsError){
-            errors = <Label color='red'>{this.props.searchProductsError.message}</Label>;
+        if (this.props.searchProductsError) {
+            errors = <Label color='red'>Search Error: {this.props.searchProductsError.message}</Label>;
+        }
+
+        let productByIdErrorMessage = undefined;
+
+        if (this.props.productByIdError) {
+            productByIdErrorMessage = <Label color='red'>Select Product: {this.props.productByIdError.message}</Label>;
         }
 
         let headers = <Table.Header>
@@ -79,7 +84,7 @@ class GridProducts extends Component {
                                         <List.Item>
                                             <List.Content>
                                                 <List.Header>
-                                                    <Image avatar src = {p.logo} size='mini' />
+                                                    <Image avatar src={p.logo} size='mini'/>
                                                 </List.Header>
                                                 <List.Description>
                                                     {p.brand}
@@ -94,7 +99,7 @@ class GridProducts extends Component {
                                         <List.Item>
                                             <List.Content>
                                                 <List.Header>
-                                                    <Image avatar src = {p.images[0]} size='mini' />
+                                                    <Image avatar src={p.images[0]} size='mini'/>
                                                 </List.Header>
                                                 <List.Description>
                                                     {p.name}
@@ -114,30 +119,30 @@ class GridProducts extends Component {
                                     {this.checkSexIcon(p.sex)}
                                 </Table.Cell>
                                 <Table.Cell>
-                                {p.size.map((size, idxS) => (
-                                    <List key={idxS}>
-                                        <List.Item>
-                                            <List.Content>
-                                                <List.Description>
-                                                    {size}
-                                                </List.Description>
-                                            </List.Content>
-                                        </List.Item>
-                                    </List>
-                                ))}
+                                    {p.size.map((size, idxS) => (
+                                        <List key={idxS}>
+                                            <List.Item>
+                                                <List.Content>
+                                                    <List.Description>
+                                                        {size}
+                                                    </List.Description>
+                                                </List.Content>
+                                            </List.Item>
+                                        </List>
+                                    ))}
                                 </Table.Cell>
                                 <Table.Cell>
-                                {p.colors.map((color, idxC) => (
-                                    <List key={idxC}>
-                                        <List.Item>
-                                            <List.Content>
-                                                <List.Description>
-                                                    {color}
-                                                </List.Description>
-                                            </List.Content>
-                                        </List.Item>
-                                    </List>
-                                ))}
+                                    {p.colors.map((color, idxC) => (
+                                        <List key={idxC}>
+                                            <List.Item>
+                                                <List.Content>
+                                                    <List.Description>
+                                                        {color}
+                                                    </List.Description>
+                                                </List.Content>
+                                            </List.Item>
+                                        </List>
+                                    ))}
                                 </Table.Cell>
                                 <Table.Cell singleLine>h: x w: </Table.Cell>
                                 <Table.Cell>{p.quantity}</Table.Cell>
@@ -157,9 +162,14 @@ class GridProducts extends Component {
                     <Loader content='Loading'/>
                 </Dimmer>
                 {errors}
+                {productByIdErrorMessage}
+                <div className="button-add-product">
+                    <Button content='New Product'
+                            icon='plus'
+                            labelPosition='left'
+                            color='purple' size='mini' onClick={() => this.props.addProductClicked(this.props.history)}/>
+                </div>
                 {body}
-
-                <EditProduct />
             </div>
         );
     }
@@ -170,13 +180,15 @@ const mapStateToProps = state => {
     return {
         loading: state.products.searchProductsLoading,
         searchProductsData: state.products.searchProductsData,
-        searchProductsError: state.products.searchProductsError
+        searchProductsError: state.products.searchProductsError,
+        productByIdError: state.products.productByIdError
     }
 }
 
 const dispatchToProps = dispatch => {
     return {
-        getProductById: (productId) => dispatch(actions.getProductById(productId)),
+        getProductById: (productId, history) => dispatch(actions.getProductById(productId, history)),
+        addProductClicked: (history) => dispatch(actions.addProductClicked(history))
     }
 }
 

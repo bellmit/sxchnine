@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 import static java.lang.Double.parseDouble;
@@ -53,7 +54,7 @@ public class FallbackProductsSource {
                         .available(true)
                         .category("All")
                         .quantity(1)
-                        .dateTime(LocalDateTime.now().toString())
+                        .dateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")))
                         .build());
     }
 }

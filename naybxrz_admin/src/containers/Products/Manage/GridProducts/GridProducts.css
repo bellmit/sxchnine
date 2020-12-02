@@ -16,3 +16,9 @@
     font-size: 75%;
     position: absolute;
 }
+
+.button-add-product {
+    width: 40%;
+    margin: -5% 0 0 -8%;
+    position: absolute;
+}

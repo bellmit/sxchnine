@@ -2,6 +2,7 @@ package com.project.business;
 
 
 import com.project.model.Product;
+import com.project.model.SizeQte;
 import com.project.repository.ProductRepository;
 import com.project.util.FallbackProductsSource;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -91,12 +94,21 @@ public class ProductService {
     }
 
     public Mono<Product> save(Product product) {
+        sumQteAndSetDate(product);
         return productRepository.save(product)
-                .log()
                 .flatMap(p -> kafkaProducer
                         .sendProduct(Mono.just(p))
                         .doOnError(error -> log.info("error happened when sending to Kafka {}", product, error)))
                 .doOnError(error -> log.error("Error during saving", error));
+    }
+
+    private void sumQteAndSetDate(Product product) {
+        Integer totalQte = product.getAvailability().values()
+                .stream()
+                .flatMap(v -> v.stream().map(SizeQte::getQte))
+                .reduce(0, Integer::sum);
+        product.setQuantity(totalQte);
+        product.setDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
     }
 
     public Mono<Void> saveProducts(Flux<Product> products) {

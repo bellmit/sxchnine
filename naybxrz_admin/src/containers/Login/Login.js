@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimmer, Form, Grid, Label, Loader} from "semantic-ui-react";
+import {Button, Dimmer, Form, Grid, Label, Loader} from "semantic-ui-react";
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/';
 import './Login.css';
@@ -77,9 +77,9 @@ class Login extends Component {
                                         onChange={this.handleChange}/>
                         </Grid.Row>
                         <Grid.Row>
-                            <button className="Login-Button" onClick={this.authenticateUser}>
+                            <Button className="Login-Button" color='black' onClick={this.authenticateUser}>
                                 <span className="Login-Text-Button">Enter</span>
-                            </button>
+                            </Button>
                         </Grid.Row>
                     </Grid>
                 </div>

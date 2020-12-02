@@ -12,12 +12,15 @@ export {
     orderById,
     orderByIdPopup,
     saveOrder,
-    searchOrders
+    searchOrders,
+    closeModalAndRedirectBack
 } from './orders';
 
 export  {
     searchProducts,
     getProductById,
     productByIdPopup,
-    saveProduct
+    saveProduct,
+    addProductClicked,
+    closeProductModalAndRedirectBack
 } from './products';

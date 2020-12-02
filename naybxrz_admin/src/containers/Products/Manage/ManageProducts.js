@@ -10,7 +10,7 @@ class ManageProducts extends Component {
         return (
             <Aux>
                 <SearchProducts />
-                <GridProducts />
+                <GridProducts {...this.props} />
             </Aux>
         );
     }

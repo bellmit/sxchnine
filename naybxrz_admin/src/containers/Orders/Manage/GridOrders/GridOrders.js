@@ -3,13 +3,12 @@ import {connect} from 'react-redux';
 import {Image, List, Table} from "semantic-ui-react";
 import Aux from '../../../../adhoc/Aux/Aux';
 import './GirdOrders.css';
-import EditOrder from "../EditOrder/EditOrder";
 import * as actions from "../../../../store/actions";
 
 
 class GridOrders extends Component {
 
-    handleOrder = (orderId) => this.props.getOrderById(orderId);
+    handleOrder = (orderId, history) => this.props.getOrderById(orderId, this.props.history);
 
     getColor(orderStatus) {
         if (orderStatus === 'WAITING'){
@@ -98,8 +97,6 @@ class GridOrders extends Component {
         return (
             <div className="table-search-orders">
                 {ordersBody}
-
-                <EditOrder />
             </div>
         );
     }
@@ -113,7 +110,7 @@ const mapStateToProps = state => {
 
 const dispatchToProps = dispatch => {
     return {
-        getOrderById: (orderId) => dispatch(actions.orderById(orderId)),
+        getOrderById: (orderId, history) => dispatch(actions.orderById(orderId, history)),
     }
 }
 

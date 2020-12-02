@@ -44,6 +44,21 @@ export const searchProducts = (productId, productName, brand, sex) => {
     }
 };
 
+export const addProductClicked = (history) => {
+    return dispatch => {
+        dispatch(productByIdSuccess(undefined));
+        dispatch(productByIdPopup(true));
+        history.push('/product/new');
+    }
+};
+
+export const closeProductModalAndRedirectBack = (history) => {
+    return dispatch => {
+        dispatch(productByIdPopup(false));
+        history.goBack();
+    }
+};
+
 export const productByIdPopup = (open) => {
     return {
         type: actions.PRODUCT_BY_ID_POPUP,
@@ -72,7 +87,7 @@ const productByIdFail = (error) => {
     }
 };
 
-export const getProductById = (productId) => {
+export const getProductById = (productId, history) => {
     return dispatch => {
         setAxiosToken();
         dispatch(productByIdStart(true));
@@ -81,6 +96,8 @@ export const getProductById = (productId) => {
                 dispatch(productByIdSuccess(response.data));
                 dispatch(productByIdStart(false));
                 dispatch(productByIdPopup(true));
+                dispatch(productByIdFail(undefined));
+                history.push('/product/'+productId)
 
             })
             .catch(error => {
@@ -104,7 +121,7 @@ const saveProductFail = (error) => {
     }
 };
 
-export const saveProduct = (product) => {
+export const saveProduct = (product, history) => {
     return dispatch => {
         setAxiosToken();
         dispatch(saveProductStart(true));
@@ -112,10 +129,13 @@ export const saveProduct = (product) => {
             .then(response => {
                 dispatch(saveProductStart(false));
                 dispatch(productByIdPopup(false));
+                history.goBack();
+
             })
             .catch(error => {
                 dispatch(saveProductStart(false));
                 dispatch(saveProductFail(error));
+                history.goBack();
             })
     }
 }

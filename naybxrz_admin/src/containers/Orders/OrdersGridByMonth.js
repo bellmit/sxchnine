@@ -4,12 +4,10 @@ import {Image, Label, List, Table} from "semantic-ui-react";
 import * as actions from '../../store/actions/index';
 import Aux from "../../adhoc/Aux/Aux";
 import './OrdersGridByMonth.css';
-import EditOrder from "./Manage/EditOrder/EditOrder";
-
 
 class OrdersGridByMonth extends PureComponent {
 
-    handleOrder = (orderId) => this.props.getOrderById(orderId);
+    handleOrder = (orderId) => this.props.getOrderById(orderId, this.props.history);
 
     render() {
 
@@ -291,8 +289,6 @@ class OrdersGridByMonth extends PureComponent {
                     {confirmedOrders}
                     {processingOrders}
                     {refusedOrders}
-                    <EditOrder/>
-
                 </div>
             </div>
         );
@@ -307,7 +303,7 @@ const mapStateToProps = state => {
 
 const dispatchToProps = dispatch => {
     return {
-        getOrderById: (orderId) => dispatch(actions.orderById(orderId)),
+        getOrderById: (orderId, history) => dispatch(actions.orderById(orderId, history)),
     }
 }
 

@@ -10,7 +10,7 @@ class EditOrder extends PureComponent {
     state = {
         orderStatus: this.props.orderById.orderStatus,
         shippingStatus: this.props.orderById.shippingStatus,
-        shippingTime: this.props.orderById.shippingTime, //!== null ? moment(this.props.orderById.shippingTime).format("YYYY-MM-DD") : null,
+        shippingTime: this.props.orderById.shippingTime,
         trackingNumber: this.props.orderById.trackingNumber,
         products: this.props.orderById.products,
         showDeleteButton: false
@@ -20,7 +20,7 @@ class EditOrder extends PureComponent {
         this.setState({
             orderStatus: this.props.orderById.orderStatus,
             shippingStatus: this.props.orderById.shippingStatus,
-            shippingTime: this.props.orderById.shippingTime,// !== null ? moment(this.props.orderById.shippingTime).format("YYYY-MM-DD") : null,
+            shippingTime: this.props.orderById.shippingTime,
             trackingNumber: this.props.orderById.trackingNumber,
             products: this.props.orderById.products
         });
@@ -29,7 +29,7 @@ class EditOrder extends PureComponent {
 
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
-    closeModal = () => this.props.closeOrderByIdPopup(false);
+    closeModal = () => this.props.closeOrderByIdPopup(false, this.props.history);
 
     handleChangeOrderStatus = (e, {value}) => this.setState({value, orderStatus: value});
 
@@ -106,7 +106,8 @@ class EditOrder extends PureComponent {
 
             <Modal open={this.props.orderByIdPopup}
                    onClose={this.closeModal}
-                   size='large' onOpen={this.refreshState} onMount={this.refreshState}>
+                   size='large' onOpen={this.refreshState}
+                   onMount={this.refreshState}>
                 <Modal.Content>
                     <Segment.Group>
                         <Segment>
@@ -350,7 +351,7 @@ const mapStateToProps = state => {
 const dispatchToProps = dispatch => {
     return {
         getOrderById: (orderId) => dispatch(actions.orderById(orderId)),
-        closeOrderByIdPopup: (open) => dispatch(actions.orderByIdPopup(open)),
+        closeOrderByIdPopup: (open, history) => dispatch(actions.closeModalAndRedirectBack(open, history)),
         saveOrder: (order) => dispatch(actions.saveOrder(order))
     }
 }

@@ -1,0 +1,35 @@
+.product-edit-text {
+    font-weight: bold;
+    font-size: smaller;
+    background-color: rgb(255, 240, 36);
+}
+
+.product-delete-button {
+    cursor: pointer;
+    margin: 5% 0 0 5%;
+}
+
+.product-delete-button:hover {
+    cursor: pointer;
+}
+
+.product-save-button-text{
+    color: rgb(255, 240, 36);
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.product-save-button{
+    padding-bottom: 10%;
+}
+
+.product-availability-align{
+    margin: 1% 4% 0 0%;
+    font-weight: bold;
+}
+
+.product-availability-align-label{
+    margin: 1% 1% 0 0% !important;
+    font-weight: bold;
+    height: 50% !important;
+}

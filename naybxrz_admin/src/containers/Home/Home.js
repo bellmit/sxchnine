@@ -10,7 +10,7 @@ class Home extends Component {
         return (
             <Aux>
                 <Dashboard />
-                <OrdersGridByMonth />
+                <OrdersGridByMonth {...this.props}/>
             </Aux>
         )
     };
