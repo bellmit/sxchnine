@@ -1,0 +1,20 @@
+.div-bulk-products {
+    margin: 5% 0 0 18%;
+    font-size: 75%;
+    position: absolute;
+}
+
+.product-bulk-button-text{
+    color: rgb(255, 240, 36);
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.product-bulk-button{
+    padding-bottom: 10%;
+}
+
+.product-bulk-textArea{
+    height: 450%;
+    width: 120%;
+}

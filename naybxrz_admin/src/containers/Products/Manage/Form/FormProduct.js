@@ -1,23 +1,10 @@
 import React, {PureComponent} from "react";
 import {connect} from 'react-redux';
-import {
-    Button,
-    Dimmer,
-    Dropdown,
-    Form,
-    Grid,
-    Icon,
-    Image,
-    Label,
-    List,
-    Loader,
-    Modal,
-    Segment
-} from "semantic-ui-react";
+import {Button, Dimmer, Dropdown, Form, Grid, Icon, Image, Label, Loader, Modal, Segment} from "semantic-ui-react";
 import * as actions from "../../../../store/actions";
+import Aux from '../../../../adhoc/Aux/Aux';
 import './FormProduct.css';
 import trash from './trash.png';
-import Aux from "../../../../adhoc/Aux/Aux";
 
 class FormProduct extends PureComponent {
 
@@ -97,7 +84,10 @@ class FormProduct extends PureComponent {
 
     showAddColor = () => this.setState({showAddColor: !this.state.showAddColor});
 
-    showAddAvailability = () => this.setState({showAddAvailability: !this.state.showAddAvailability});
+    showAddAvailability = () => {
+        this.setState({showAddAvailability: !this.state.showAddAvailability});
+        this.addNewAvailability();
+    }
 
 
     addNewImage = () => {
@@ -157,38 +147,24 @@ class FormProduct extends PureComponent {
         this.setState({availability: availabilityToSave});
     }
 
-    // for New Product
-    addAvailability(col, size) {
-        let availability = {...this.state.availability};
-        if (availability[col] === undefined) {
-            availability[col] = [{'size': size, 'qte': this.state.newQte}];
-            this.setState({availability: availability});
-        } else {
-            let oldAv = {...this.state.availability};
-            let oldSizeQte = [...oldAv[col]];
-            let existingSize = false;
-            for (var existSize of oldSizeQte) {
-                if (existSize.size === size) {
-                    existSize.qte = this.state.newQte;
-                    existingSize = true;
-                }
-            }
-            if (!existingSize) {
-                let newSizeQte = {'size': size, 'qte': this.state.newQte};
-                oldSizeQte.push(newSizeQte);
-            }
-            oldAv[col] = oldSizeQte;
-            this.setState({availability: oldAv});
-        }
+    // For New Product
+    addNewAvailability() {
+        let currentAvailability = {...this.state.availability};
+        this.state.colors.forEach((color, i) => currentAvailability[JSON.stringify(color)] = Object.values(this.state.size).map((sz) => ({
+            'size': sz,
+            'qte': 0
+        })));
 
+
+        this.setState({availability: currentAvailability});
     }
 
     // for Edit Product
-    addAvailabilityByNewColor(){
-        if (this.props.editMode){
+    addAvailabilityByNewColor() {
+        if (this.props.editMode) {
             let currentAvailability = {...this.state.availability};
             let oldSize = [];
-            for (var sz of this.state.size){
+            for (var sz of this.state.size) {
                 oldSize.push({'size': sz, 'qte': 0});
             }
             currentAvailability[this.state.newColor] = oldSize
@@ -309,41 +285,47 @@ class FormProduct extends PureComponent {
                 </Form.Group>
         }
 
-        let availabilityBlock = undefined;
-        if (this.props.editMode) {
-            availabilityBlock =
-                <Form.Group grouped>
+        let availabilityBlock =
+            <Form.Group grouped>
+                <Grid>
                     {Object.keys(this.state.availability).map((key, idx) => (
-                        <Form.Group key={idx} inline>
-                            <Label size='small'
-                                   basic
-                                   color='green'>Color:</Label>
-                            <span style={{margin: '0 10% 0 1%', fontWeight: 'bold'}}>{key}</span>
+                        <Grid.Row key={idx}>
+                            <Grid.Column width={1}>
+                                <Label size='small'
+                                       basic
+                                       color='green'>Color:</Label>
+                            </Grid.Column>
+                            <Grid.Column width={1}>
+                                <span style={{fontWeight: 'bold'}}>{key}</span>
+                            </Grid.Column>
+                            <Grid.Column width={1}>
+                                <Label size='small'
+                                       basic
+                                       color='green'>Size:</Label>
+                            </Grid.Column>
                             {this.state.availability[key].map((av, indV) => (
-                                <List key={indV} horizontal relaxed>
-                                    <List.Item>
-                                        <Label size='small'
-                                               basic
-                                               color='green'>Size:</Label>
-                                    </List.Item>
-                                    <List.Item>
+                                <Aux key={indV}>
+                                    <Grid.Column width={1}>
                                         <span style={{fontWeight: 'bold'}}>{av.size}</span>
-                                    </List.Item>
-                                    <List.Item>
+                                    </Grid.Column>
+                                    <Grid.Column width={1}>
                                         <span>{av.qte}</span>
-                                    </List.Item>
-                                    <List.Item>
+                                    </Grid.Column>
+                                    <Grid.Column width={1}>
                                         <Button circular icon='add' size='small' color='green'
                                                 onClick={() => this.incrementSize(key, av.size)}/>
+                                    </Grid.Column>
+                                    <Grid.Column width={1}>
                                         <Button circular icon='delete' size='small' color='red'
                                                 onClick={() => this.decrementSize(key, av.size)}/>
-                                    </List.Item>
-                                </List>
+                                    </Grid.Column>
+                                </Aux>
                             ))}
-                        </Form.Group>
+                        </Grid.Row>
+
                     ))}
-                </Form.Group>
-        }
+                </Grid>
+            </Form.Group>
 
         let buttonAddAvailability = undefined;
         if (this.state.availability.length === 0) {
@@ -356,49 +338,6 @@ class FormProduct extends PureComponent {
                 onClick={this.showAddAvailability}/>
         }
 
-        let addAvailabilty = undefined;
-        if (this.state.showAddAvailability) {
-            addAvailabilty = <Aux>
-                {this.state.colors.map((col, idxC) => (
-                    <Form.Group key={idxC} widths='equal'>
-                        <Label className="product-availability-align-label"
-                               size='small'
-                               basic
-                               color='green'>Color:</Label>
-                        <span className="product-availability-align">{col}</span>
-                        <List.Item className="product-availability-align-label">
-                            <Label
-                                   size='small'
-                                   basic
-                                   color='green'>Size:</Label>
-                        </List.Item>
-                        {this.state.size.map((sz, id) => (
-                            <Form.Group key={id} widths='equal' inline>
-                                <List key={sz} horizontal>
-                                    <List.Item>
-                                        <span className="product-availability-align">{sz}</span>
-                                    </List.Item>
-                                    <List.Item>
-                                        <Form.Input label="Qte."
-                                                    name="newQte"
-                                                    value={this.state.newQte}
-                                                    onChange={this.handleChangeNewQte}/>
-                                    </List.Item>
-                                    <List.Item>
-                                        <Button circular
-                                                icon='add'
-                                                size='tiny'
-                                                color='green'
-                                                onClick={() => this.addAvailability(col, sz)}/>
-                                    </List.Item>
-                                </List>
-
-                            </Form.Group>
-                        ))}
-                    </Form.Group>
-                ))}</Aux>
-        }
-
         let resumeAvailabilityForAddNewProduct = undefined;
         if (!this.props.editMode && Object.keys(this.state.availability).length > 0) {
             resumeAvailabilityForAddNewProduct =
@@ -409,27 +348,27 @@ class FormProduct extends PureComponent {
                     </Segment>
                     <Segment.Group>
                         <Segment>
-                    <Grid>
-                        {Object.keys(this.state.availability).map((keyV, idxV) => (
-                            <Grid.Row key={idxV}>
-                                <Grid.Column width={2}>
-                                    <Label color='red' basic content='Color:'/>
-                                </Grid.Column>
-                                <Grid.Column width={2}>
-                                    <span style={{fontWeight: 'bold'}}>{keyV}</span>
-                                </Grid.Column>
-                                <Grid.Column width={2}>
-                                    <Label color='red' basic content='Size:'/>
-                                </Grid.Column>
-                                {this.state.availability[keyV].map((avl, indV) => (
-                                    <Grid.Column key={indV} width={4}>
-                                        <Label color='green' circular inverted="true" content={avl.size}/>
-                                        <Label color='green' circular inverted="true" content={avl.qte}/>
-                                    </Grid.Column>
+                            <Grid>
+                                {Object.keys(this.state.availability).map((keyV, idxV) => (
+                                    <Grid.Row key={idxV}>
+                                        <Grid.Column width={2}>
+                                            <Label color='red' basic content='Color:'/>
+                                        </Grid.Column>
+                                        <Grid.Column width={2}>
+                                            <span style={{fontWeight: 'bold'}}>{keyV}</span>
+                                        </Grid.Column>
+                                        <Grid.Column width={2}>
+                                            <Label color='red' basic content='Size:'/>
+                                        </Grid.Column>
+                                        {this.state.availability[keyV].map((avl, indV) => (
+                                            <Grid.Column key={indV} width={4}>
+                                                <Label color='green' circular inverted="true" content={avl.size}/>
+                                                <Label color='green' circular inverted="true" content={avl.qte}/>
+                                            </Grid.Column>
+                                        ))}
+                                    </Grid.Row>
                                 ))}
-                            </Grid.Row>
-                        ))}
-                    </Grid>
+                            </Grid>
                         </Segment>
                     </Segment.Group>
                 </Segment.Group>
@@ -608,7 +547,6 @@ class FormProduct extends PureComponent {
                                         {availabilityBlock}
                                         {resumeAvailabilityForAddNewProduct}
                                         {buttonAddAvailability}
-                                        {addAvailabilty}
                                     </Segment>
                                 </Form>
                             </Segment>

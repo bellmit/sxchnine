@@ -139,3 +139,42 @@ export const saveProduct = (product, history) => {
             })
     }
 }
+
+const bulkProductsStart = (loading) => {
+    return {
+        type: actions.BULK_PRODUCTS_START,
+        bulkProductsLoading: loading
+    }
+};
+
+const bulkProductsFail = (error) => {
+    return {
+        type: actions.BULK_PRODUCTS_FAIL,
+        bulkProductsError: error
+    }
+};
+
+const bulkProductsSuccess = (response) => {
+    return {
+        type: actions.BULK_PRODUCTS_FAIL,
+        bulkProductsSuccess: response
+    }
+};
+
+export const bulkProducts = (products) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(bulkProductsStart(true));
+        axios.post('/product/bulk', products)
+            .then(response => {
+                dispatch(bulkProductsStart(false));
+                dispatch(bulkProductsSuccess("success"));
+                dispatch(bulkProductsFail(undefined));
+            })
+            .catch(error => {
+                dispatch(bulkProductsStart(false));
+                dispatch(bulkProductsFail(error));
+                dispatch(bulkProductsSuccess(undefined));
+            })
+    }
+}

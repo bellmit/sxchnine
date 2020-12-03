@@ -12,6 +12,7 @@ import ManageProducts from "./containers/Products/Manage/ManageProducts";
 import EditOrder from "./containers/Orders/Manage/EditOrder/EditOrder";
 import EditProduct from "./containers/Products/Manage/EditProduct/EditProduct";
 import AddProduct from "./containers/Products/Manage/AddProduct/AddProduct";
+import Bulk from "./containers/Products/Bulk/Bulk";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
             <PrivateRoute path='/manageProducts' exact component={ManageProducts} />
             <PrivateRoute path='/product/:productId' exact component={EditProduct} />
             <PrivateRoute path='/product/new' exact component={AddProduct} />
+            <PrivateRoute path='/bulkProducts' exact component={Bulk} />
         </div>
     );
 }

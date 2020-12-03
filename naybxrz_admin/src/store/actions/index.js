@@ -22,5 +22,6 @@ export  {
     productByIdPopup,
     saveProduct,
     addProductClicked,
-    closeProductModalAndRedirectBack
+    closeProductModalAndRedirectBack,
+    bulkProducts
 } from './products';

@@ -9,7 +9,10 @@ const initialState = {
     productByIdError: '',
     productByIdPopup: false,
     saveProductLoading: false,
-    saveProductError: undefined
+    saveProductError: undefined,
+    bulkProductsLoading: false,
+    bulkProductsSuccess: '',
+    bulkProductsError: undefined
 }
 
 const reducer = (state = initialState, action) => {
@@ -58,6 +61,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 saveProductError: action.saveProductError
+            };
+        case actions.BULK_PRODUCTS_START:
+            return {
+                ...state,
+                bulkProductsLoading: action.bulkProductsLoading
+            };
+        case actions.BULK_PRODUCTS_FAIL:
+            return {
+                ...state,
+                bulkProductsError: action.bulkProductsError
+            };
+        case actions.BULK_PRODUCTS_SUCCESS:
+            return {
+                ...state,
+                bulkProductsSuccess: action.bulkProductsSuccess
             };
         default:
             return state;

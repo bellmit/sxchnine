@@ -61,7 +61,7 @@ public class ProductController {
     }
 
     @PostMapping("/bulk")
-    public Mono<Void> createOrUpdateProducts(@RequestBody Flux<Product> products){
+    public Mono<Void> createOrUpdateProducts(@RequestBody List<Product> products){
         return productService.saveProducts(products);
     }
 
