@@ -23,9 +23,11 @@ public abstract class EmailSender {
 
     public abstract String getTemplateId();
 
+    public abstract String type();
+
     public void sendEmail(Order order) {
         log.info("sending email to {} with this templateId {}",
-                order.getOrderPrimaryKey().getUserEmail(),
+                order.getOrderKey().getUserEmail(),
                 getTemplateId());
         try {
             Request request = new Request();
@@ -42,10 +44,10 @@ public abstract class EmailSender {
 
     private Mail mailBuilder(Order order) {
         Email emailFrom = new Email(from);
-        Email emailTo = new Email(order.getOrderPrimaryKey().getUserEmail());
+        Email emailTo = new Email(order.getOrderKey().getUserEmail());
 
         Personalization personalization = new Personalization();
-        personalization.addDynamicTemplateData("commandId", order.getOrderPrimaryKey().getOrderId());
+        personalization.addDynamicTemplateData("commandId", order.getOrderKey().getOrderId());
         personalization.addDynamicTemplateData("total", order.getTotal());
         personalization.addDynamicTemplateData("currency", "$");
         personalization.addDynamicTemplateData("prix", order.getTotal());

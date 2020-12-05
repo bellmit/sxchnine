@@ -60,7 +60,7 @@ public class ProductController {
         return productService.save(product);
     }
 
-    @PostMapping("/bulk")
+    @PostMapping(value = "/bulk", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Mono<Void> createOrUpdateProducts(@RequestBody List<Product> products){
         return productService.saveProducts(products);
     }

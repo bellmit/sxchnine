@@ -17,7 +17,8 @@ class AdminMenu extends PureComponent {
             this.setState({activeItem: 'manageProducts'});
         } else if (this.props.history.location.pathname === '/bulkProducts'){
             this.setState({activeItem: 'bulkProducts'});
-
+        } else if (this.props.history.location.pathname === '/manageUsers'){
+            this.setState({activeItem: 'manageUsers'});
         }
     }
 
@@ -42,6 +43,8 @@ class AdminMenu extends PureComponent {
             this.props.history.push('/manageProducts');
         } else if (name === 'bulkProducts'){
             this.props.history.push('/bulkProducts');
+        } else if (name === 'manageUsers') {
+            this.props.history.push('/manageUsers');
         }
     }
 

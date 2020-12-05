@@ -4,6 +4,9 @@ import com.sendgrid.SendGrid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import static com.project.utils.PaymentStatusCode.REFUSED;
+import static com.project.utils.PaymentStatusCode.WAITING;
+
 @Service
 public class EmailPendingSender extends EmailSender {
 
@@ -17,5 +20,10 @@ public class EmailPendingSender extends EmailSender {
     @Override
     public String getTemplateId() {
         return templatePendingId;
+    }
+
+    @Override
+    public String type() {
+        return WAITING.getValue();
     }
 }

@@ -111,7 +111,7 @@ public class ProductService {
         product.setDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
     }
 
-    public Mono<Void> saveProducts(Flux<Product> products) {
+    public Mono<Void> saveProducts(List<Product> products) {
         return productRepository.saveAll(products)
                 .flatMap(p -> kafkaProducer
                         .sendProduct(Mono.just(p))

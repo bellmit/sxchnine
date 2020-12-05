@@ -36,7 +36,7 @@ public class UserService {
         return getUserByEmail(user.getEmail())
                 .switchIfEmpty(Mono.just(user))
                 .flatMap(u -> Mono.fromCallable(() -> {
-                    if (StringUtils.hasText(user.getPassword())) {
+                    if (StringUtils.hasText(user.getPassword()) && user.getPassword().length() < 20) {
                         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
                     } else {
                         user.setPassword(u.getPassword());

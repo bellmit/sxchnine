@@ -9,16 +9,16 @@ const initialState = {
 
     orderByIdLoading: false,
     orderById: '',
-    orderByIdError: '',
+    orderByIdError: undefined,
     orderByIdPopup: false,
 
     saveOrderLoading: false,
     saveOrderResponse: '',
-    saveOrderError: '',
+    saveOrderError: undefined,
 
     searchOrdersData: [],
     searchOrdersLoading: false,
-    searchOrdersError: ''
+    searchOrdersError: undefined
 }
 
 const reducer = (state = initialState, action) => {

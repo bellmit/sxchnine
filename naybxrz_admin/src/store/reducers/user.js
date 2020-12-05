@@ -4,7 +4,22 @@ const initialState = {
     loading: false,
     userFail: false,
     authenticatedUser: '',
-    userError: ''
+    userError: '',
+
+    usersLoading: false,
+    usersData: undefined,
+    usersError: undefined,
+    usersNotFound: false,
+
+    getUserLoading: false,
+    getUserData: '',
+    getUserError: undefined,
+    getUserPopup: false,
+
+    saveUserLoading: false,
+    saveUserSuccess: '',
+    saveUserError: undefined
+
 }
 
 const reducer = (state = initialState, action) => {
@@ -34,6 +49,61 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 userError: '',
                 userFail: false
+            };
+        case actions.SEARCH_USERS_START:
+            return {
+                ...state,
+                usersLoading: action.usersLoading
+            };
+        case actions.SEARCH_USERS_SUCCESS:
+            return {
+                ...state,
+                usersData: action.usersData
+            };
+        case actions.SEARCH_USERS_FAIL:
+            return {
+                ...state,
+                usersError: action.usersError
+            };
+        case actions.SEARCH_USERS_NOT_FOUND:
+            return {
+                ...state,
+                usersNotFound: action.usersNotFound
+            };
+        case actions.GET_USER_START:
+            return {
+                ...state,
+                getUserLoading: action.getUserLoading
+            };
+        case actions.GET_USER_SUCCESS:
+            return {
+                ...state,
+                getUserData: action.getUserData
+            };
+        case actions.GET_USER_FAIL:
+            return {
+                ...state,
+                getUserError: action.getUserError
+            };
+        case actions.GET_USER_POPUP:
+            return {
+                ...state,
+                getUserPopup: action.getUserPopup
+            };
+        case actions.SAVE_USER_START:
+            return {
+                ...state,
+                saveUserLoading: action.saveUserLoading
+            };
+        case actions.SAVE_USER_FAIL:
+            return {
+                ...state,
+                saveUserError: action.saveUserError
+            };
+        case actions.SAVE_USER_SUCCESS:
+            return {
+                ...state,
+                saveUserSuccess: action.saveUserSuccess
             };
         default:
             return state;

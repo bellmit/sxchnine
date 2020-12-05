@@ -2,9 +2,15 @@ package com.project.business;
 
 import com.project.model.Order;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.project.utils.PaymentStatusCode.*;
 
@@ -12,16 +18,14 @@ import static com.project.utils.PaymentStatusCode.*;
 @Slf4j
 public class OrderConsumer {
 
-    private final EmailConfirmationSender emailConfirmationSender;
+    @Autowired
+    private List<EmailSender> emailSenderList;
 
-    private final EmailPendingSender emailPendingSender;
+    private final Map<String, EmailSender> context = new ConcurrentHashMap<>();
 
-    private final EmailRefusedSender emailRefusedSender;
-
-    public OrderConsumer(EmailConfirmationSender emailConfirmationSender, EmailPendingSender emailPendingSender, EmailRefusedSender emailRefusedSender) {
-        this.emailConfirmationSender = emailConfirmationSender;
-        this.emailPendingSender = emailPendingSender;
-        this.emailRefusedSender = emailRefusedSender;
+    @PostConstruct
+    public void init(){
+        emailSenderList.forEach(emailSender -> context.put(emailSender.type(), emailSender));
     }
 
     @KafkaListener(groupId = "${kafka.groupId}", topics = "${kafka.topic}")
@@ -29,15 +33,7 @@ public class OrderConsumer {
         log.info("*************************************");
         log.info("**** Received: {}", order.toString());
         log.info("*************************************");
-        if (order.getPaymentStatus().equalsIgnoreCase(CONFIRMED.getValue())) {
-            emailConfirmationSender.sendEmail(order);
-        }
-        if (order.getPaymentStatus().equalsIgnoreCase(WAITING.getValue())) {
-            emailPendingSender.sendEmail(order);
-        }
-        if (order.getPaymentStatus().equalsIgnoreCase(REFUSED.getValue())){
-            emailRefusedSender.sendEmail(order);
-        }
+        context.get(order.getOrderStatus()).sendEmail(order);
         acknowledgment.acknowledge();
     }
 }

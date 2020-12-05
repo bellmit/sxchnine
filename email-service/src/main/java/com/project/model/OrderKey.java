@@ -13,14 +13,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ToString
-public class OrderPrimaryKey implements Serializable {
+public class OrderKey implements Serializable {
 
     private String orderId;
     private String userEmail;
-    private String productName;
-    private String productBrand;
     @JsonIgnore
     private String orderTime;
-    @JsonIgnore
-    private String shippingTime;
 }

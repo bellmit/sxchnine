@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Image, List, Table} from "semantic-ui-react";
+import {Image, Label, List, Table} from "semantic-ui-react";
 import Aux from '../../../../adhoc/Aux/Aux';
 import './GirdOrders.css';
 import * as actions from "../../../../store/actions";
@@ -27,6 +27,17 @@ class GridOrders extends Component {
     }
 
     render() {
+
+        let searchErrors = undefined;
+        if (this.props.searchOrdersError !== undefined){
+            searchErrors = <Label color='red'>Search Failed:{this.props.searchOrdersError.message}</Label>
+        }
+
+        let selectOrderErrors = undefined;
+        if (this.props.orderByIdError !== undefined){
+            selectOrderErrors = <Label color='red'>Cannot select Order:{this.props.orderByIdError.message}</Label>
+        }
+
         let header = <Table.Header>
             <Table.Row>
                 <Table.HeaderCell>Order ID</Table.HeaderCell>
@@ -96,6 +107,8 @@ class GridOrders extends Component {
 
         return (
             <div className="table-search-orders">
+                {searchErrors}
+                {selectOrderErrors}
                 {ordersBody}
             </div>
         );
@@ -104,7 +117,9 @@ class GridOrders extends Component {
 
 const mapStateToProps = state => {
     return {
-        searchOrdersData: state.orders.searchOrdersData
+        searchOrdersData: state.orders.searchOrdersData,
+        orderByIdError: state.orders.orderByIdError,
+        searchOrdersError: state.orders.searchOrdersError
     }
 }
 

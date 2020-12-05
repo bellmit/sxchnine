@@ -85,8 +85,10 @@ class FormProduct extends PureComponent {
     showAddColor = () => this.setState({showAddColor: !this.state.showAddColor});
 
     showAddAvailability = () => {
-        this.setState({showAddAvailability: !this.state.showAddAvailability});
-        this.addNewAvailability();
+        if (this.state.colors.length > 0 && this.state.size.length > 0){
+            this.setState({showAddAvailability: !this.state.showAddAvailability});
+            this.addNewAvailability();
+        }
     }
 
 
@@ -330,6 +332,7 @@ class FormProduct extends PureComponent {
         let buttonAddAvailability = undefined;
         if (this.state.availability.length === 0) {
             buttonAddAvailability = <Button
+                style={{marginTop: '2%'}}
                 icon='add'
                 content="Add Availability"
                 labelPosition='right'

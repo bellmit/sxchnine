@@ -7,17 +7,18 @@ import './Bulk.css';
 class Bulk extends Component {
 
     state = {
-        products: []
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(this.props.bulkProductsError);
+        products: [],
+        error: ''
     }
 
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     saveProducts = () => {
-        this.props.bulkProducts(this.state.products);
+        if (this.state.products.length > 0) {
+            this.props.bulkProducts(this.state.products);
+        } else {
+            this.setState({error: 'Content cannot be empty !'});
+        }
     }
 
     render() {
@@ -32,11 +33,17 @@ class Bulk extends Component {
             success = <Label color='green'>Bulk was successfully completed</Label>
         }
 
+        let validation = undefined;
+        if (this.state.error !== ''){
+            validation = <Label color='red'>{this.state.error}</Label>
+        }
+
         return (
             <div className="div-bulk-products">
                 <Dimmer active={this.props.loading} page>
                     <Loader content='Loading...'/>
                 </Dimmer>
+                {validation}
                 {errors}
                 {success}
                 <Grid centered>

@@ -3,7 +3,13 @@ export {
 } from './authentication';
 
 export {
-    login
+    login,
+    searchUsers,
+    getUser,
+    getUserPopup,
+    closeUserModalAndRedirectBack,
+    addUserClicked,
+    saveUser
 } from './user';
 
 export {

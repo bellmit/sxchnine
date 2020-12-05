@@ -121,6 +121,7 @@ export const orderById = (orderId, history) => {
                     dispatch(orderByIdSuccess(order));
                     dispatch(orderByIdStart(false));
                     dispatch(orderByIdPopup(true));
+                    dispatch(orderByIdFail(undefined));
                     history.push('/order/' + orderId);
                     console.log(history);
 
@@ -208,6 +209,7 @@ export const searchOrders = (orderId, email) => {
                         }
                         dispatch(searchOrdersSuccess(order));
                         dispatch(searchOrdersStart(false));
+                        dispatch(searchOrdersFail(undefined));
                     }
                 }
             )

@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public enum OrderStatusEnum {
     ORDERED("ORDERED"),
+    CONFIRMED("CONFIRMED"),
+    REFUSED("REFUSED"),
     PROCESSING("PROCESSING"),
     PREPARE_TO_SHIP("PREPARING"),
     SHIPPED("SHIPPED");

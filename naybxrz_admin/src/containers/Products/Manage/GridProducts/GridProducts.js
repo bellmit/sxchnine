@@ -7,10 +7,6 @@ import * as actions from "../../../../store/actions";
 
 class GridProducts extends Component {
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(this.props.searchProductsError)
-    }
-
     checkAvailableIcon(available) {
         if (available) {
             return <Icon name='check' color='green' size='large'/>
