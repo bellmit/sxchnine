@@ -5,7 +5,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case actionTypes.ADD_PRODUCT_TO_ORDER:
             return {
                 ...state,
@@ -17,8 +17,14 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 productsToOrder: products
-            }
-        default: return state;
+            };
+        case actionTypes.RESET_PRODUCT_TO_ORDER:
+            return {
+                ...state,
+                productsToOrder: action.productToOrder
+            };
+        default:
+            return state;
     }
 }
 

@@ -74,6 +74,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 userChangedPassword: action.userChangedPassword
             };
+        case actionTypes.SIGNOFF_USER_SUCESS:
+            return {
+                ...state,
+                userAuthenticated: action.user
+            };
 
         default:
             return state;

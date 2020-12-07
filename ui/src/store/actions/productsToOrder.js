@@ -14,3 +14,10 @@ export const removeProductToOrder = (id) => {
     }
 }
 
+export const resetProductToOrder = () => {
+    return {
+        type: actionTypes.RESET_PRODUCT_TO_ORDER,
+        productToOrder: []
+    }
+}
+

@@ -28,7 +28,21 @@
 
 .progress {
     overflow: visible;
-
+}
+.log-off-icon{
+    float: right;
+}
+.log-off-icon:hover{
+    float: right;
+    cursor: pointer;
+}
+.log-off-text{
+    font-family: Anton;
+    font-size: 50%;
+    width: 5%;
+    padding-top: 1%;
+    text-decoration: underline;
+    position: absolute;
 }
 
 .TabAccount-Welcome-Message{

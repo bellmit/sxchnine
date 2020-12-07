@@ -17,7 +17,8 @@ export {
 
 export {
     addProductToOrder,
-    removeProductToOrder
+    removeProductToOrder,
+    resetProductToOrder
 } from './productsToOrder';
 
 export {
@@ -39,7 +40,8 @@ export {
 export {
     saveUser,
     loginUser,
-    changePassword
+    changePassword,
+    signOffUser
 } from './users';
 
 export {

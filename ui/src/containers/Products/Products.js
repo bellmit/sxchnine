@@ -147,7 +147,7 @@ class Products extends Component {
                                         width={6}
                                         options={this.props.types}
                                         value={this.state.category}
-                                        placeholder='Genre'
+                                        placeholder='Category'
                                         className="Product-Search-Advanced"/>
                                     <Dropdown
                                         onChange={this.handleChangeSize}

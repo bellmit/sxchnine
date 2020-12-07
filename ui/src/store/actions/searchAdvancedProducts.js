@@ -58,7 +58,8 @@ export const homeSearchProducts = (gender, category, size, history) => {
                     history.push('/women');
                 else if (gender === 'M')
                     history.push('/men');
-            }).catch(error => {
+            })
+            .catch(error => {
             dispatch(homeSearchStart(false));
             dispatch(homeSearchFail(error));
         })

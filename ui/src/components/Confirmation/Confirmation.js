@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from "react-redux";
 import { persistor } from './../../index';
 import Aux from '../../hoc/Aux/Aux';
 import {Container, Header} from 'semantic-ui-react';
+import * as actions from '../../store/actions/index';
 import './Confirmation.css';
 import thank from './thankYou.jpg';
 
@@ -12,6 +14,13 @@ class Confirmation extends Component {
         console.log(window.localStorage.getItem("persist:root"));
         window.localStorage.removeItem("persist:root");
         persistor.purge();
+        if (this.props.match.params.status === '1' || this.props.match.params.status === '2'){
+            this.resetState();
+        }
+    }
+
+    resetState = () => {
+        this.props.resetProductToOrder();
     }
 
     render() {
@@ -76,5 +85,11 @@ class Confirmation extends Component {
     }
 }
 
+const dispatchToProps = dispatch => {
+    return {
+        resetProductToOrder: () => dispatch(actions.resetProductToOrder())
+    }
+}
 
-export default Confirmation;
+
+export default connect(null, dispatchToProps)(Confirmation);

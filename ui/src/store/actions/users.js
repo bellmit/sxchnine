@@ -171,3 +171,20 @@ export const loginUser = (email, password, history, order) => {
     }
 };
 
+const signOffUserSuccess = () => {
+    return {
+        type: actionTypes.SIGNOFF_USER_SUCESS,
+        user: ''
+    }
+};
+
+export const signOffUser = (history) => {
+    return dispatch => {
+        dispatch(signOffUserSuccess());
+        history.push('/');
+    }
+}
+
+
+
+

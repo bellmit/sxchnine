@@ -155,7 +155,7 @@ const saveOrderFail = (error) => {
     }
 };
 
-export const saveOrder = (order) => {
+export const saveOrder = (order, history) => {
     return dispatch => {
         setAxiosToken();
         dispatch(saveOrderStart(true));
@@ -166,6 +166,7 @@ export const saveOrder = (order) => {
                 dispatch(getOrdersNumber());
                 dispatch(orderByIdPopup(false));
                 dispatch(saveOrderStart(false));
+                history.goBack();
             })
             .catch(error => {
                 dispatch(saveOrderFail(error));

@@ -45,7 +45,7 @@ class EditOrder extends PureComponent {
 
     saveCurrentOrder = () => {
         console.log(this.createOrder());
-        this.props.saveOrder(this.createOrder());
+        this.props.saveOrder(this.createOrder(), this.props.history);
     }
 
     createOrder(){
@@ -352,7 +352,7 @@ const dispatchToProps = dispatch => {
     return {
         getOrderById: (orderId) => dispatch(actions.orderById(orderId)),
         closeOrderByIdPopup: (open, history) => dispatch(actions.closeModalAndRedirectBack(open, history)),
-        saveOrder: (order) => dispatch(actions.saveOrder(order))
+        saveOrder: (order, history) => dispatch(actions.saveOrder(order, history))
     }
 }
 

@@ -28,7 +28,9 @@ class Connexion extends Component {
 
     checkIfAuthenticatedAndRedirect = () => {
         if (this.props.userAuthenticated !== ''){
+            this.props.fetchOrdersHistory(this.props.userAuthenticated.email);
             this.props.history.push('/userAccount');
+
         }
     }
 

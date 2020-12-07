@@ -16,7 +16,7 @@ class User extends Component {
     close = () => this.setState({open: false});
 
     statusOrder = (status) => {
-        if (status === 'ORDERED' | status === 'REQUIRED_ACTION' || status === 'WAITING')
+        if (status === 'ORDERED' || status === 'REQUIRED_ACTION' || status === 'WAITING')
             return 20;
         else if (status === 'PROCESSING')
             return 50;
@@ -46,7 +46,8 @@ class User extends Component {
                                     <span className="History-Items-Text">Order time: {order.orderKey.orderTime}</span>
                                 </Grid.Column>
                                 <Grid.Column floated='left' width={4}>
-                                    <span className="History-Items-Text"><Label tag color='red'>${order.total}</Label></span>
+                                    <span className="History-Items-Text"><Label tag
+                                                                                color='red'>${order.total}</Label></span>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
@@ -54,20 +55,20 @@ class User extends Component {
                                     <span className="History-Items-Text">Status:</span>
                                 </Grid.Column>
                                 <Grid.Column width={8}>
-                                    <Progress size='small'
-                                              percent={this.statusOrder(order.orderStatus)}
-                                              indicating>
-                                        <span className="History-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    shipped</span>
-                                    </Progress>
+                                    {order.orderStatus === 'REFUSED' ?
+                                        <Progress size='small' percent={100} error indicating> Refused </Progress> :
+                                        <Progress size='small' percent={this.statusOrder(order.orderStatus)} indicating>
+                                        <span
+                                            className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            shipped</span></Progress>}
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                         <Grid className="Grid-div">
                             {order.products.map((product, index) => (
-                                <Grid.Row>
+                                <Grid.Row key={index}>
                                     <Grid.Column width={4}>
                                         <Image wrapped size='tiny'
                                                src={product.image}/>
@@ -102,9 +103,6 @@ class User extends Component {
                         <span className="History-Resume-Text">You GOT : </span>
                         {historyBody}
                         <Modal.Actions>
-                            {/*<Button color='black'>
-                                <span>CHECKOUT</span><Icon name='right chevron' color='yellow'/>
-                            </Button>*/}
                         </Modal.Actions>
                     </Modal>
                 </div>

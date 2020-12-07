@@ -6,9 +6,15 @@ import './UserAccount.css';
 import Contact from "../Contact/Contact";
 import TabAccount from "./TabAccount";
 import salute1 from "./salute1.png";
+import {Icon} from "semantic-ui-react";
+import * as actions from "../../store/actions";
 
 
 class UserAccount extends Component {
+
+    signOff = () => {
+        this.props.signOffUser(this.props.history);
+    }
 
     render() {
         return (
@@ -22,7 +28,11 @@ class UserAccount extends Component {
 
 
                 <span className="TabAccount-Welcome-Message">
-                    Hi {this.props.user.firstName} {this.props.user.lastName}, Welcome back ! <img src={salute1} alt="salute" style={{height: '5%', width: '5%'}} />
+                    Hi {this.props.user.firstName} {this.props.user.lastName}, Welcome back !
+                    <img src={salute1} alt="salute" style={{height: '5%', width: '5%'}} />
+                    <Icon name='power off' color='red' className="log-off-icon" onClick={this.signOff}>
+                        <span className="log-off-text">Sign off</span>
+                    </Icon>
                 </span>
 
                 <div className="UserTabAccount-Container">
@@ -45,4 +55,10 @@ const mapPropsToState = state => {
     }
 }
 
-export default connect(mapPropsToState, null)(UserAccount);
+const dispatchToProps = dispatch => {
+    return {
+        signOffUser: (history) => dispatch(actions.signOffUser(history))
+    }
+}
+
+export default connect(mapPropsToState, dispatchToProps)(UserAccount);

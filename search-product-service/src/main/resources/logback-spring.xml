@@ -2,6 +2,7 @@
 <configuration>
 
     <springProperty scope="context" name="application_name" source="spring.application.name"/>
+    <logger name="org.springframework.data.elasticsearch.client.WIRE" level="trace"/>
     <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>

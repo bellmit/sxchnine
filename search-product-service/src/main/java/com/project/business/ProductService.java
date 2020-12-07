@@ -2,7 +2,9 @@ package com.project.business;
 
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
@@ -24,24 +26,15 @@ public class ProductService {
     }
 
     public Flux<Product> getProductsByQuery(String query) {
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .should(QueryBuilders.queryStringQuery("*" + query + "*")
-                        .analyzeWildcard(true)
-                        .field("name")
-                        .field("brand")
-                        .field("category"));
-
-
-        QueryBuilder matchName = QueryBuilders.matchPhraseQuery("name", query);
-        QueryBuilder matchBrand = QueryBuilders.fuzzyQuery("brand", query);
-        QueryBuilder matchCategory = QueryBuilders.matchPhrasePrefixQuery("category", query);
-        QueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .should(matchName)
-                .should(matchBrand)
-                .should(matchCategory);
+        MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders
+                .multiMatchQuery(query)
+                .field("name")
+                .field("brand", 5.0F)
+                .field("category")
+                .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS);
 
         NativeSearchQueryBuilder nativeSearchQuery = new NativeSearchQueryBuilder();
-        nativeSearchQuery.withQuery(boolQueryBuilder);
+        nativeSearchQuery.withQuery(multiMatchQueryBuilder);
 
         return reactiveElasticsearchOperations
                 .search(nativeSearchQuery.build(), Product.class, Product.class)

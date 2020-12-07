@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Aux from '../../hoc/Aux/Aux';
-import {Grid, Dropdown} from 'semantic-ui-react';
+import {Grid, Dropdown, Button} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import './HomeSearch.css';
 import * as actions from "../../store/actions";
@@ -73,9 +73,9 @@ class HomeSearch extends Component {
                               value={this.state.size} />
                 </Grid.Column>
                 <Grid.Column >
-                    <button className="Home-Search-Continue-Button" onClick={this.searchAdvanced}>
-                        <span className="Home-Search-Text-Button">GOT IT -></span>
-                    </button>
+                    <Button className="Home-Search-Continue-Button" style={{background: 'yellow'}} onClick={this.searchAdvanced}>
+                        <span className="Home-Search-Text-Button">GOT IT !</span>
+                    </Button>
                 </Grid.Column>
             </Grid>
           </Aux>
