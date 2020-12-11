@@ -125,7 +125,7 @@ class Products extends Component {
                         <Input inverted icon={<Icon name='search' inverted circular link/>}
                                placeholder='Search...'
                                onChange={this.searchProducts}
-                               style={{marginBottom: '10px', fontFamily: 'Anton', fontSize: '10px'}}/>
+                               className="Product-Search-Text-Input"/>
 
                         <img alt="" src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
                         <Collapse isOpen={this.state.show}>

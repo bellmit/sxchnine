@@ -72,7 +72,7 @@ class HomeSearch extends Component {
                               selection
                               value={this.state.size} />
                 </Grid.Column>
-                <Grid.Column >
+                <Grid.Column>
                     <Button className="Home-Search-Continue-Button" style={{background: 'yellow'}} onClick={this.searchAdvanced}>
                         <span className="Home-Search-Text-Button">GOT IT !</span>
                     </Button>

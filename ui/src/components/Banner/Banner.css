@@ -71,6 +71,122 @@
     position: absolute;
 }
 
+@media only screen and (max-width: 1024px) {
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 5%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 15%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 7%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 16%;
+        position: absolute;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Banner-Header-img {
         height: 270px;
@@ -127,6 +243,65 @@
         top: 27%;
         position: absolute;
     }
+}
+
+@media only screen and (max-width: 280px) {
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 19%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 27%;
+        position: absolute;
+    }
+
 }
 
 @media only screen and (max-width: 375px) {

@@ -18,6 +18,7 @@ import Connexion from "./containers/Connexion/Connexion";
 import UserAccount from "./containers/Connexion/UserAccount";
 import Processing from "./containers/Payment/Processing";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import OurStory from "./components/Story/OurStory";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route  path="/contactSent" exact component={ContactUsSent} />
         <Route  path="/customer" exact component={CustomerService} />
         <Route  path="/tracking" exact component={Tracking} />
+        <Route  path="/ourStory" exact component={OurStory} />
 
         <PrivateRoute  path="/userAccount" exact component={UserAccount}/>
     </div>

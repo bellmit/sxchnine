@@ -62,13 +62,14 @@ class Tracking extends Component {
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={10}>
-                                <Progress size='small' percent={this.statusOrder(order.orderStatus)}
-                                          indicating>
-                                    <span className="Tracking-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        confirmed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        shipped</span>
-                                </Progress>
+                                {order.orderStatus === 'REFUSED' ?
+                                    <Progress size='small' percent={100} error indicating> Refused </Progress> :
+                                    <Progress size='small' percent={this.statusOrder(order.orderStatus)} indicating>
+                                        <span
+                                            className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            shipped</span></Progress>}
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>

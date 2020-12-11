@@ -305,6 +305,7 @@ class EditOrder extends PureComponent {
                                                            src={product.image}/>
                                                 </Grid.Column>
                                                 <Grid.Column width={8}>
+                                                    <p><span style={{fontWeight: 'bold', fontSize: 'small'}}>{product.productId}</span></p>
                                                     <span style={{fontWeight: 'bold', fontSize: 'small'}}>{product.productName}</span>
                                                     <p style={{fontWeight: 'bold', fontSize: 'small'}}>{product.productColor}</p>
                                                     <p style={{fontWeight: 'bold', fontSize: 'small'}}>{product.productSize}</p>

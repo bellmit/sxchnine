@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 @ToString
 public class Product {
 
+    @Column("product_id")
+    private String productId;
+
     @Column("product_name")
     private String productName;
 
@@ -24,8 +27,6 @@ public class Product {
     @Column("image")
     private String image;
 
-    @Column("product_id")
-    private String productId;
 
     @Column("product_size")
     private String productSize;

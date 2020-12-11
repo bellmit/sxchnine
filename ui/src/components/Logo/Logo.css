@@ -9,7 +9,7 @@
 @media only screen and (max-width: 414px) {
     .Got-it-logo {
         top: -8%;
-        right: -12%;
+        right: -10%;
         height: 30%;
         position: absolute;
         float: right;
@@ -21,7 +21,7 @@
 @media only screen and (max-width: 375px) {
     .Got-it-logo {
         top: -8%;
-        right: -12%;
+        right: -10%;
         height: 30%;
         position: absolute;
         float: right;

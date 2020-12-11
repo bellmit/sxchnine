@@ -51,7 +51,7 @@ class Connexion extends Component {
                                           className="Connexion-Button"/>}>
 
                     <Popup.Content>
-                        <Form>
+                        <Form className="Connexion-div">
                             <Form.Field inline>
                                 <p className="Connexion-Email-Text">EMAIL:</p>
                                 <Form.Input size="small"

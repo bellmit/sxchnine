@@ -1,12 +1,11 @@
 .Container-footer-img {
     height: 300px;
     width: 100%;
-/*    left: 65px;
-    right: 65px;*/
     object-fit: cover;
     position: absolute;
     display: flex;
     align-items: center;
+    top: 190%;
 }
 
 
@@ -19,7 +18,20 @@
     position: absolute;
     width: 50%;
     left: 5%;
+    top: 210%;
+}
+
+.Paragraph-footer:hover {
+    line-height: 0;
+    font-family: Anton;
+    font-size: 5vw;
+    text-transform: uppercase;
+    color: rgb(255, 240, 36);
+    position: absolute;
+    width: 50%;
+    left: 5%;
     bottom: -105%;
+    cursor: pointer;
 }
 
 .Empty-Div-footer {
@@ -31,8 +43,62 @@
     position: absolute;
 }
 
+@media only screen and (max-width: 1024px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 110%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 110%;
+    }
 
-@media only screen and (max-width: 414px) {
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 120%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 120%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 125%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 105%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 330%;
+    }
+
     .Paragraph-footer {
         line-height: 0;
         font-family: Anton;
@@ -43,6 +109,18 @@
         width: 50%;
         left: 5%;
         top: 350%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 350%;
+        cursor: pointer;
     }
 
     .Empty-Div-footer {
@@ -55,7 +133,16 @@
     }
 }
 
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 414px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 325%;
+    }
     .Paragraph-footer {
         line-height: 0;
         font-family: Anton;
@@ -65,7 +152,19 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 390%;
+        top: 350%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 350%;
+        cursor: pointer;
     }
 
     .Empty-Div-footer {
@@ -73,8 +172,219 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 395%;
+        top: 355%;
         position: absolute;
     }
 }
+
+@media only screen and (max-width: 375px){
+    .Container-footer-img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 360%;
+    }
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 380%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 380%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 385%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 360px){
+    .Container-footer-img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 375%;
+    }
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 400%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 400%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 405%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 320px){
+    .Container-footer-img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 430%;
+    }
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 460%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 460%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 465%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 280px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 115%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 370%;
+    }
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 400%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 400%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 405%;
+        position: absolute;
+    }
+}
+
+/*@media only screen and (max-width: 375px), screen and (max-height: 812px) {
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 310%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 310%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 315%;
+        position: absolute;
+    }
+}*/
 

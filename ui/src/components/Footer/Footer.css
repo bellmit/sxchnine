@@ -43,8 +43,20 @@
 .Footer-Container-Div {
     width: 100%;
     position: absolute;
-    top: 220%;
+    top: 230%;
     left: -5%;
+}
+
+@media only screen and (max-width: 540px) {
+    .Footer-Container-Div {
+        width: 100%;
+        position: absolute;
+        top: 380%;
+        left: 0%;
+    }
+    .Footer-Container-Div {
+        position: absolute;
+    }
 }
 
 @media only screen and (max-width: 414px) {
@@ -54,10 +66,21 @@
         top: 380%;
         left: 0%;
     }
+    .Footer-Container-Div {
+        position: absolute;
+    }
 
 }
 
 @media only screen and (max-width: 375px) {
+    .Footer-Container-Div {
+        width: 100%;
+        position: absolute;
+        top: 420%;
+    }
+}
+
+@media only screen and (max-width: 280px) {
     .Footer-Container-Div {
         width: 100%;
         position: absolute;

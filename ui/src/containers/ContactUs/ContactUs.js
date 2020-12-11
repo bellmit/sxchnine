@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {Container, Header, Grid, Form, TextArea, Icon, Dimmer, Loader} from 'semantic-ui-react';
+import {Container, Dimmer, Form, Grid, Header, Icon, Loader, TextArea} from 'semantic-ui-react';
 import * as actionTypes from '../../store/actions';
 import contact_back from './contact_back.jpg';
 import './ContactUs.css';
@@ -12,7 +12,13 @@ class ContactUs extends PureComponent {
         email: '',
         phone: '',
         message: '',
-        loading: false
+        loading: false,
+        errorEmail:'',
+        errorEmailFlag: false,
+        errorFullName: '',
+        errorFullNameFlag: false,
+        errorMessage: '',
+        errorMessageFlag: false
     }
 
     componentDidMount() {
@@ -22,8 +28,33 @@ class ContactUs extends PureComponent {
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     contactUs = () => {
-        this.props.contact(this.createContact());
-        this.props.history.push('/contactSent');
+        if (this.state.email === ''){
+            this.setState({
+                errorEmailFlag: true,
+                errorEmail: 'Email is missing'
+            })
+        }
+
+        if (this.state.fullName === ''){
+            this.setState({
+                errorFullNameFlag: true,
+                errorFullName: 'Name is missing'
+            })
+        }
+
+        if (this.state.message === ''){
+            this.setState({
+                errorMessageFlag: true,
+                errorMessage: 'Message is missing'
+            })
+        }
+
+        if (this.state.email !== ''
+            && this.state.fullName !== ''
+            && this.state.message !== ''){
+            this.props.contact(this.createContact());
+            this.props.history.push('/contactSent');
+        }
     };
 
     createContact() {
@@ -52,32 +83,37 @@ class ContactUs extends PureComponent {
                         <div className="ContactUs-Grid-div">
                             <Grid inverted>
                                 <Grid.Row>
+                                    <Form>
                                     <Form.Input required inverted
-                                                style={{fontFamily: "American Typewriter, Times", fontSize: '60%'}}
-                                                size="mini"
+                                                size="small"
                                                 placeholder='Full Name ...'
-                                                className="Info-Text"
+                                                className="ContactUs-Info-Text"
                                                 name='fullName'
                                                 value={this.state.fullName}
+                                                error={this.state.errorFullNameFlag && this.state.errorFullName}
                                                 onChange={this.handleChange}/>
+                                    </Form>
                                 </Grid.Row>
                                 <Grid.Row>
-                                    <Form.Input inverted required size="mini"
-                                                style={{fontFamily: "American Typewriter", fontSize: '60%'}}
+                                <Form>
+                                    <Form.Input inverted required size="small"
                                                 placeholder='Email ...'
-                                                className="Info-Text"
+                                                className="ContactUs-Info-Text"
                                                 name='email'
                                                 value={this.state.email}
+                                                error={this.state.errorEmailFlag && this.state.errorEmail}
                                                 onChange={this.handleChange}/>
+                                </Form>
                                 </Grid.Row>
                                 <Grid.Row>
-                                    <Form.Input inverted required size="mini"
-                                                style={{fontFamily: "American Typewriter", fontSize: '60%'}}
+                                <Form>
+                                    <Form.Input inverted required size="small"
                                                 placeholder='Phone ...'
-                                                className="Info-Text"
+                                                className="ContactUs-Info-Text"
                                                 name='phone'
                                                 value={this.state.phone}
                                                 onChange={this.handleChange}/>
+                                </Form>
                                 </Grid.Row>
 
                                 <Grid.Row>
@@ -86,6 +122,7 @@ class ContactUs extends PureComponent {
                                                   style={{fontFamily: "American Typewriter", height: '150%'}}
                                                   name='message'
                                                   value={this.state.message}
+                                                  error={this.state.errorMessageFlag && this.state.errorMessage}
                                                   onChange={this.handleChange}/>
                                     </Form>
                                 </Grid.Row>

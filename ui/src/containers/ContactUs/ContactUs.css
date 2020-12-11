@@ -8,7 +8,7 @@
 
 .ContactUs-Form-Div{
     width: 30%;
-    height: 65%;
+    height: 75%;
     background-color: rgb(255, 240, 36);
     position: fixed;
     margin: 8% 0 0 5%;
@@ -54,4 +54,10 @@
     bottom: 0;
     width: 100%;
     text-align: center;
+}
+
+.ContactUs-Info-Text{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
 }

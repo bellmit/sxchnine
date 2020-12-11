@@ -53,3 +53,172 @@
     text-decoration: none;
     outline: none;
 }
+
+@media only screen and (max-width: 1024px) {
+    .Connexion-Email-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+    .Connexion-Button{
+        background: url('./user.png');
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        border-image: 0;
+        border: 0;
+    }
+    .Connexion-Button:hover{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        cursor: pointer;
+    }
+    .Connexion-Button:focus{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+    }
+    .Connexion-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Connexion-Email-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+    .Connexion-Button{
+        background: url('./user.png');
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        border-image: 0;
+        border: 0;
+    }
+    .Connexion-Button:hover{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        cursor: pointer;
+    }
+    .Connexion-Button:focus{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+    }
+    .Connexion-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+}
+
+@media only screen and (max-width: 414px) {
+    .Connexion-Email-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+    .Connexion-Button{
+        background: url('./user.png');
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        border-image: 0;
+        border: 0;
+    }
+    .Connexion-Button:hover{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        cursor: pointer;
+    }
+    .Connexion-Button:focus{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+    }
+    .Connexion-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Connexion-Email-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+    .Connexion-Button{
+        background: url('./user.png');
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        border-image: 0;
+        border: 0;
+    }
+    .Connexion-Button:hover{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+        cursor: pointer;
+    }
+    .Connexion-Button:focus{
+        color: rgb(255, 240, 36);
+        border-color: rgb(255, 240, 36);
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 80px;
+    }
+    .Connexion-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+}
