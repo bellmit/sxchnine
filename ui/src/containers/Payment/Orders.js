@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Grid, Image, Label, Form, Dimmer, Loader} from "semantic-ui-react";
-import { connect } from 'react-redux';
+import {Dimmer, Form, Grid, Image, Label, Loader} from "semantic-ui-react";
+import {connect} from 'react-redux';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
 import Card from './Card';
@@ -25,7 +25,7 @@ class Orders extends Component {
 
     componentDidMount(): void {
         this.setState({total: this.props.productsToOrder.map(p => p.unitPrice).reduce((p1, p2) => p1 + p2, 0)});
-        if (this.props.user.email != null){
+        if (this.props.user.email != null) {
             this.props.fetchOrdersHistory(this.props.user.email);
             this.setState({
                 email: this.props.user.email,
@@ -38,19 +38,18 @@ class Orders extends Component {
         }
     }
 
-/*    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        let params = new URLSearchParams(this.props.location.search);
-        console.log(params.get("payment_intent"));
-        console.log(params.get("payment_intent_client_secret"));
-        console.log(this.props.productsToOrder);
-    }*/
+    /*    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+            let params = new URLSearchParams(this.props.location.search);
+            console.log(params.get("payment_intent"));
+            console.log(params.get("payment_intent_client_secret"));
+            console.log(this.props.productsToOrder);
+        }*/
 
     handleOrder = () => {
         console.log("handle Order ");
     }
 
-    handleChange = (e, { name, value }) => this.setState({ [name]: value })
-
+    handleChange = (e, {name, value}) => this.setState({[name]: value})
 
 
     render() {
@@ -60,24 +59,24 @@ class Orders extends Component {
                 <Dimmer active={this.state.loading} page>
                     <Loader content='Loading'/>
                 </Dimmer>
-                <div className="Orders-Yellow-bar-div" />
+                <div className="Orders-Yellow-bar-div"/>
                 <header>
                     <OrderPlaceBanner {...this.props}/>
                 </header>
                 <div>
                     {this.props.user !== '' && <User {...this.props}
                                                      top="70px"
-                                                     topIcon ="74px"/>}
+                                                     topIcon="74px"/>}
                 </div>
                 <div className="Orders-Bag-Resume">
-                <span className="Orders-Resume-Text">Your Bag : </span>
+                    <span className="Orders-Resume-Text">Your Bag : </span>
                 </div>
                 <div className="Orders-Resume">
                     <Grid columns={2} centered>
                         {this.props.productsToOrder.map(product => (
                             <Grid.Row centered key={product.id + product.productSize}>
                                 <Grid.Column width={3}>
-                                    <Image src={product.image} size='small' circular />
+                                    <Image src={product.image} size='small' circular/>
                                 </Grid.Column>
                                 <Grid.Column width={3}>
                                     <span className="Orders-Items-Text-Header">{product.productName}</span>
@@ -96,7 +95,7 @@ class Orders extends Component {
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
-                            <span className="Orders-Yellow-second-bar-div" />
+                            <span className="Orders-Yellow-second-bar-div"/>
                         </Grid.Row>
                     </Grid>
                     <Grid centered>
@@ -106,10 +105,10 @@ class Orders extends Component {
                             </Grid.Column>
 
                             <Grid.Column width={3}>
-                                <Form.Input  inverted placeholder='email address...'
-                                             name='email'
-                                             value={this.state.email}
-                                             onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='email address...'
+                                            name='email'
+                                            value={this.state.email}
+                                            onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -119,30 +118,30 @@ class Orders extends Component {
                             </Grid.Column>
 
                             <Grid.Column width={3}>
-                                <Form.Input  inverted placeholder='N°'
-                                             name='num'
-                                             value={this.state.num}
-                                             onChange={this.handleChange}/>
-                                <Form.Input  inverted placeholder='street/avenue'
-                                             name='avenue'
-                                             value={this.state.avenue}
-                                             onChange={this.handleChange}/>
-                                <Form.Input  inverted placeholder='city'
-                                             name='city'
-                                             value={this.state.city}
-                                             onChange={this.handleChange}/>
-                                <Form.Input  inverted placeholder='postal code'
-                                             name='postalCode'
-                                             value={this.state.postalCode}
-                                             onChange={this.handleChange}/>
-                                <Form.Input  inverted placeholder='country'
-                                             name='country'
-                                             value={this.state.country}
-                                             onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='N°'
+                                            name='num'
+                                            value={this.state.num}
+                                            onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='street/avenue'
+                                            name='avenue'
+                                            value={this.state.avenue}
+                                            onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='city'
+                                            name='city'
+                                            value={this.state.city}
+                                            onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='postal code'
+                                            name='postalCode'
+                                            value={this.state.postalCode}
+                                            onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='country'
+                                            name='country'
+                                            value={this.state.country}
+                                            onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
-                            <span className="Orders-Yellow-second-bar-div" />
+                            <span className="Orders-Yellow-second-bar-div"/>
                         </Grid.Row>
                     </Grid>
                     <Card {...this.props}
@@ -153,7 +152,9 @@ class Orders extends Component {
                           postalCode={this.state.postalCode}
                           country={this.state.country}
                           total={this.state.total}/>
-                    <Contact />
+                    <div className="Orders-footer">
+                        <Contact/>
+                    </div>
                 </div>
             </div>
         );

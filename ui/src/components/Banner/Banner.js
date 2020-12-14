@@ -64,7 +64,7 @@ class Banner extends Component {
         if (this.props.location.pathname === '/userAccount'){
             banner = <Aux>
                 <img alt="" src={open} className="BannerUserAccount-Header-img"/>
-                <div className="Banner-Container-Men">
+                <div className="Banner-Container-User">
                     <p> What you Got  </p>
                 </div>
                 <div className="Banner-Empty-Div"/>

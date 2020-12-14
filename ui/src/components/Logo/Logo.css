@@ -6,11 +6,49 @@
     z-index:1;
 }
 
+@media only screen and (max-width: 1024px) {
+    .Got-it-logo {
+        top: -5% !important;
+        right: -2% !important;
+        height: auto !important;
+        width: 25%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Got-it-logo {
+        top: -6% !important;
+        right: -10% !important;
+        height: auto !important;
+        width: 35% !important;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Got-it-logo {
-        top: -8%;
-        right: -10%;
-        height: 30%;
+        top: -5% !important;
+        right: -10% !important;
+        height: auto !important;
+        width: 45%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+
+}
+
+@media only screen and (max-width: 411px) {
+    .Got-it-logo {
+        top: -5% !important;
+        right: -10% !important;
+        height: auto !important;
+        width: 45%;
         position: absolute;
         float: right;
         z-index:1;
@@ -20,12 +58,35 @@
 
 @media only screen and (max-width: 375px) {
     .Got-it-logo {
-        top: -8%;
+        top: -4% !important;
         right: -10%;
         height: 30%;
         position: absolute;
         float: right;
         z-index:1;
     }
+}
 
+@media only screen and (max-width: 360px) {
+    .Got-it-logo {
+        top: -5% !important;
+        right: -5% !important;
+        height: auto !important;
+        width: 45% !important;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+}
+
+@media only screen and (max-width: 280px) {
+    .Got-it-logo {
+        top: -5% !important;
+        right: -10% !important;
+        height: auto !important;
+        width: 60%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
 }

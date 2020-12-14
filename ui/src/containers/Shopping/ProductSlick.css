@@ -60,6 +60,167 @@
     left: -5%;
 }
 
+@media only screen and (max-width: 1024px) {
+    .Got-it-logo {
+        top: -10%;
+        right: -5%;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+
+    .Slick-Container-div {
+        text-align: center;
+        width: 50%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 150%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        float: right;
+        position: absolute;
+        top: 50%;
+        left: 25%;
+    }
+
+    .Reco-Container-div {
+        margin: 30% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 160%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Got-it-logo {
+        top: -10%;
+        right: -20%;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 160%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+
+    .Reco-Container-div {
+        margin: 40% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 170%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .Got-it-logo {
+        top: -10%;
+        right: 20%;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 170%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 80%;
+    }
+
+    .Reco-Container-div {
+        margin: 50% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 180%;
+        left: 0;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Slick-Container-div {
         text-align: center;
@@ -78,7 +239,7 @@
         background: rgb(255, 240, 36);
         height: 1%;
         width: 50%;
-        top: 120%;
+        top: 165%;
         left: 22%;
         position: absolute;
         align-items: center;
@@ -122,7 +283,7 @@
         background: rgb(255, 240, 36);
         height: 1%;
         width: 50%;
-        top: 120%;
+        top: 165%;
         left: 22%;
         position: absolute;
         align-items: center;
@@ -135,6 +296,96 @@
 
     .Reco-Container-div {
         margin: 70% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 170%;
+        left: 0;
+    }
+
+}
+
+@media only screen and (max-width: 360px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 165%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+
+    .Reco-Container-div {
+        margin: 60% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 170%;
+        left: 0;
+    }
+
+}
+
+@media only screen and (max-width: 320px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 22%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 165%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+
+    .Reco-Container-div {
+        margin: 60% 0 0 0;
         position: absolute;
         width: 100%;
         align-content: center;

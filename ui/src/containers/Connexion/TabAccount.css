@@ -53,6 +53,19 @@
     position: absolute;
 }
 
+.TabAccount-Welcome-Icon{
+    height: 5%;
+    width: 5%;
+}
+
+.TabAccount-Menu-Message {
+    font-family: Anton;
+    font-size: 1vw;
+}
+
+.TabAccount-Label-Message {
+}
+
 .TabAccount-Message{
     font-family: Anton;
     font-size: 1vm;
@@ -95,5 +108,65 @@
 
 .TabAccount-Progress-Text {
     font-size: 90%;
+}
+
+
+@media only screen and (max-width: 375px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 45%;
+        left: 20%;
+        position: absolute;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+        float: right;
+        left: 40%;
+    }
+    .log-off-icon:hover{
+        float: right;
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 70% !important;
+        padding: 0 20% 0 20% !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .TabAccount-Grid{
+        left: 30% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: auto !important;
+        display: inline-block !important;
+    }
+
 }
 

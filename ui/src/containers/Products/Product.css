@@ -5,5 +5,57 @@
     max-height: 90%;
     text-align: center;
     align-items: center;
+}
 
+.Product-div{
+    height: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .Product-div{
+        width: 80% !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .Product-div{
+        width: 80% !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 414px) {
+    .Product-div{
+        width: 80% !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Product-div{
+        width: 80% !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Product-div{
+        width: 80% !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .Product-div{
+        width: 80% !important;
+        height: auto !important;
+    }
+}
+
+@media only screen and (max-width: 280px) {
+    .Product-div{
+        width: 90% !important;
+        height: auto !important;
+    }
 }

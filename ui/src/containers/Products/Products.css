@@ -187,8 +187,29 @@
     .Product-Container {
         width: 60%;
         position: absolute;
-        top: 60%;
+        top: 40%;
         left: 20%;
+        margin: 0;
+    }
+
+    .Product-Message{
+        font-family: Anton;
+        font-size: 15px;
+        text-transform: uppercase;
+        top: 28%;
+        left: 22%;
+        position: absolute;
+    }
+
+    .Product-Message:hover{
+        color: rgb(255, 240, 36);
+    }
+    .Product-Search-Input {
+        top: 31%;
+        left: 22%;
+        position: absolute;
+        width: 52%;
+        background-color: rgb(255, 240, 36);
     }
 
     .Add-Icon {
@@ -216,13 +237,7 @@
         text-transform: uppercase;
     }
 
-
     .Product-footer{
-        width: 160%;
-        position: absolute;
-        left: -30%;
-        margin-top: 20%;
-
     }
 
     .Product-Empty-Div{
@@ -388,13 +403,26 @@
         font-family: Anton;
         font-size: 15px;
         text-transform: uppercase;
-        top: 41%;
+        top: 50%;
         left: 22%;
         position: absolute;
     }
 
     .Product-Message:hover{
         color: rgb(255, 240, 36);
+    }
+
+    .Product-Search-Input {
+        top: 55%;
+        left: 22%;
+        position: absolute;
+        width: 52%;
+        background-color: rgb(255, 240, 36);
+    }
+    .Product-Search-Text-Input {
+        margin-bottom: 10px;
+        font-family: Anton;
+        font-size: 15px;
     }
 
     .Product-Container {

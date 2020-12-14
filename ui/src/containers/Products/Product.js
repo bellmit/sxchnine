@@ -18,7 +18,7 @@ class Product extends Component {
         return (
             <ThemeProvider>
                 <CSSReset/>
-                <Box w={this.props.width} h={this.props.height}
+                <Box w={this.props.width} h={this.props.height} className="Product-div"
                      borderWidth="1px"
                      rounded="lg"
                      overflow="hidden"

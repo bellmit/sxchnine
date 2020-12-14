@@ -60,7 +60,7 @@
     }
 }
 
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 414px) {
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
@@ -87,6 +87,36 @@
         left: -40%;
         margin-top: 20%;
 
+    }
+
+}
+
+@media only screen and (max-width: 375px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 8%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 5%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        left: -40%;
+        margin-top: 20%;
     }
 
 }

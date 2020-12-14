@@ -122,7 +122,7 @@ class ProductDetails extends PureComponent {
 
                         <Form.Group inline widths='equal'>
                             <span className="Product-Props-Div">COLOR:&nbsp;&nbsp;&nbsp;</span>
-                            <Dropdown className="Product-Radio-Text"
+                            <Dropdown className="Product-Dropdown-Text"
                                       onChange={this.handleChangeColor}
                                       fluid
                                       options={this.state.colors}

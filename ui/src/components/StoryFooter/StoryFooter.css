@@ -45,13 +45,13 @@
 
 @media only screen and (max-width: 1024px) {
     .Container-footer-img {
-        height: 300px;
-        width: 110%;
+        height: 20%;
+        width: 100%;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 110%;
+        top: 105%;
     }
 
     .Paragraph-footer {
@@ -63,7 +63,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 120%;
+        top: 115%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -74,7 +74,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 120%;
+        top: 115%;
         cursor: pointer;
     }
 
@@ -83,20 +83,65 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 125%;
+        top: 118%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 190% !important;
+    }
+
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 200%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 200%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 203%;
         position: absolute;
     }
 }
 
 @media only screen and (max-width: 540px) {
     .Container-footer-img {
-        height: 300px;
-        width: 105%;
+        height: 30%;
+        width: 100%;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 330%;
+        top: 330% !important;
     }
 
     .Paragraph-footer {
@@ -136,12 +181,56 @@
 @media only screen and (max-width: 414px) {
     .Container-footer-img {
         height: 300px;
-        width: 100%;
+        width: 100% !important;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
         top: 325%;
+    }
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 350%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 350%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 355%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 101% !important;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 325% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -185,7 +274,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 360%;
+        top: 430% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -196,7 +285,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 380%;
+        top: 450%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -207,7 +296,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 380%;
+        top: 450%;
         cursor: pointer;
     }
 
@@ -216,7 +305,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 385%;
+        top: 455%;
         position: absolute;
     }
 }
@@ -224,12 +313,12 @@
 @media only screen and (max-width: 360px){
     .Container-footer-img {
         height: 300px;
-        width: 100%;
+        width: 120% !important;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 375%;
+        top: 375% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -268,12 +357,12 @@
 @media only screen and (max-width: 320px){
     .Container-footer-img {
         height: 300px;
-        width: 100%;
+        width: 118% !important;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 430%;
+        top: 430% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -312,17 +401,17 @@
 @media only screen and (max-width: 280px) {
     .Container-footer-img {
         height: 300px;
-        width: 115%;
+        width: 131%;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 370%;
+        top: 370% !important;
     }
     .Paragraph-footer {
         line-height: 0;
         font-family: Anton;
-        font-size: 5vw;
+        font-size: 5vw !important;
         text-transform: uppercase;
         color: rgb(255, 255, 255);
         position: absolute;

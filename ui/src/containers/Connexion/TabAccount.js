@@ -110,7 +110,7 @@ class TabAccount extends PureComponent {
         const {open} = this.state;
 
         let orderInprogress = <Aux>
-            <Label color="red" attached="top right">No order in progress with us for now ... Start picking before is too
+            <Label className="TabAccount-Label-Message" color="red" attached="top right">No order in progress with us for now ... Start picking before is too
                 late -> Go Got it !</Label>
         </Aux>
 
@@ -184,7 +184,7 @@ class TabAccount extends PureComponent {
         }
 
         let orderConfirmed = <Aux>
-            <Label color="red" attached="top right">No history with us for now ... Start picking before is too late ->
+            <Label className="TabAccount-Label-Message" color="red" attached="top right">No history with us for now ... Start picking before is too late ->
                 Go Got it !</Label>
         </Aux>
 
@@ -273,16 +273,16 @@ class TabAccount extends PureComponent {
                 <Tabs defaultTab="vertical-tab-one" vertical>
                     <TabList>
                         <Tab tabFor="vertical-tab-one">
-                            <span style={{fontFamily: 'Anton', fontSize: '1vw'}}>Order in progress..</span>
+                            <span className="TabAccount-Menu-Message">Order in progress..</span>
                         </Tab>
                         <Tab tabFor="vertical-tab-two">
-                            <span style={{fontFamily: 'Anton', fontSize: '1vw'}}>Order History</span>
+                            <span className="TabAccount-Menu-Message">Order History</span>
                         </Tab>
                         <Tab tabFor="vertical-tab-three">
-                            <span style={{fontFamily: 'Anton', fontSize: '1vw'}}>Personal Info</span>
+                            <span className="TabAccount-Menu-Message">Personal Info</span>
                         </Tab>
                         <Tab tabFor="vertical-tab-four">
-                            <span style={{fontFamily: 'Anton', fontSize: '1vw'}}>Change password</span>
+                            <span className="TabAccount-Menu-Message">Change password</span>
                         </Tab>
                     </TabList>
                     <TabPanel tabId="vertical-tab-one">
@@ -298,27 +298,27 @@ class TabAccount extends PureComponent {
                     <TabPanel tabId="vertical-tab-three">
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={9} className="TabAccount-Grid">
+                                <Grid.Column width={9} mobile className="TabAccount-Grid">
                                     <Grid>
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} className="TabAccount-Grid2">
                                                 <span className="TabAccount-Message">
                                                     First name:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} className="TabAccount-Grid2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.firstName}
                                                 </span>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} className="TabAccount-Grid2">
                                                 <span className="TabAccount-Message">
                                                     Last name:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} className="TabAccount-Grid2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.lastName}
                                                 </span>

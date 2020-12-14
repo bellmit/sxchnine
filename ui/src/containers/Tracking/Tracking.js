@@ -118,7 +118,7 @@ class Tracking extends Component {
                 <div className="Tracking-Form-Div">
                     <Container text className="Tracking-Container-div">
                         <Header>
-                            <span className="ContactUs-Message-Text-h1-div">Track your Order:</span>
+                            <span className="Tracking-Message-Text-h1-div">Track your Order:</span>
                             {trackOrderNotFound}
                         </Header>
 
@@ -126,19 +126,17 @@ class Tracking extends Component {
                             <Grid inverted>
                                 <Grid.Row>
                                     <Form.Input required inverted
-                                                style={{fontFamily: "American Typewriter, Times", fontSize: '60%'}}
                                                 size="mini"
                                                 placeholder='Order ID ...'
-                                                className="Info-Text"
+                                                className="Tracking-Message-Text-div"
                                                 name='orderId'
                                                 value={this.state.orderId}
                                                 onChange={this.handleChange}/>
                                 </Grid.Row>
                                 <Grid.Row>
                                     <Form.Input inverted required size="mini"
-                                                style={{fontFamily: "American Typewriter", fontSize: '60%'}}
                                                 placeholder='Email ... (optional)'
-                                                className="Info-Text"
+                                                className="Tracking-Message-Text-div"
                                                 name='email'
                                                 value={this.state.email}
                                                 onChange={this.handleChange}/>
