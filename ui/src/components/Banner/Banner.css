@@ -139,6 +139,29 @@
         top: 15%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 5%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 }
 
 @media only screen and (max-width: 768px) {
@@ -205,6 +228,29 @@
         top: 16%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 7%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 }
 
 @media only screen and (max-width: 540px) {
@@ -263,6 +309,29 @@
         top: 27%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 }
 
 @media only screen and (max-width: 414px) {
@@ -321,6 +390,29 @@
         top: 27%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 }
 
 @media only screen and (max-width: 360px) {
@@ -387,6 +479,29 @@
         top: 27%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 }
 
 @media only screen and (max-width: 280px) {
@@ -453,6 +568,30 @@
         top: 27%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 
 }
 

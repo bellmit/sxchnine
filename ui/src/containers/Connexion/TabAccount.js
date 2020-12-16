@@ -120,32 +120,39 @@ class TabAccount extends PureComponent {
             orderInprogress = this.props.ordersHistory
                 .filter(o => o.orderStatus !== 'SHIPPED')
                 .map((order, index) => (
-                    <Grid key={index}>
-                        <Grid.Row>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
+                    <Grid key={index} className="TabAccount-Orders-Grid">
+                        <Grid.Row className="TabAccount-Orders-Grid-Row">
+                            <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
+                                <span className="TabAccount-Orders-Message">
                                     Order ID: {order.orderKey.orderId}
                                 </span>
                             </Grid.Column>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
+                            <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
+                                <span className="TabAccount-Orders-Message">
                                     Order time: {order.orderKey.orderTime}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <span>
-                                    <Label tag color='red'>${order.total}</Label>
+                                    <Label tag color='red' className="TabAccount-Orders-Grid-Label">${order.total}</Label>
                                 </span>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
+                        <Grid.Row className="TabAccount-Orders-Grid-Row">
+                            <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
+                                <span className="TabAccount-Orders-Message">
                                     Order Status:
                                 </span>
                             </Grid.Column>
-                            <Grid.Column width={6}>
-                                {order.orderStatus === 'REFUSED' ? <Progress size='small' percent={100} error indicating> Refused </Progress>: <Progress size='small' percent={this.statusOrder(order.orderStatus)} indicating>
+                            <Grid.Column width={6} className="TabAccount-Orders-Grid-Row">
+                                {order.orderStatus === 'REFUSED' ? <Progress className="TabAccount-Orders-Message-Progress"
+                                    size='small'
+                                    percent={100}
+                                    error
+                                    indicating> Refused </Progress>: <Progress className="TabAccount-Orders-Message-Progress"
+                                                                               size='small'
+                                                                               percent={this.statusOrder(order.orderStatus)}
+                                                                               indicating>
                                         <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -156,22 +163,22 @@ class TabAccount extends PureComponent {
                             <Grid container>
                                 {order.products.map((product, indexProduct) => (
                                     <Grid.Row key={indexProduct}>
-                                        <Grid.Column width={5} style={{left: '40px'}}>
+                                        <Grid.Column width={5} className="TabAccount-Orders-Product">
                                             <Image wrapped
                                                    size='small'
                                                    src={product.image}/>
                                         </Grid.Column>
-                                        <Grid.Column width={5} style={{left: '40px'}}>
-                                            <p className="TabAccount-Message">
+                                        <Grid.Column width={5} className="TabAccount-Orders-Product">
+                                            <p className="TabAccount-Orders-Message">
                                                 {product.productName}
                                             </p>
-                                            <p className="TabAccount-Message">
+                                            <p className="TabAccount-Orders-Message">
                                                 {product.productColor}
                                             </p>
-                                            <p className="TabAccount-Message">
+                                            <p className="TabAccount-Orders-Message">
                                                 {product.productSize}
                                             </p>
-                                            <p className="TabAccount-Message">
+                                            <p className="TabAccount-Orders-Message">
                                                 ${product.unitPrice}
                                             </p>
                                         </Grid.Column>
@@ -194,32 +201,39 @@ class TabAccount extends PureComponent {
             orderConfirmed = this.props.ordersHistory
                 .filter(o => o.orderStatus === 'SHIPPED')
                 .map((order, index) => (
-                    <Grid key={index}>
-                        <Grid.Row>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
+                    <Grid key={index} className="TabAccount-Orders-Grid">
+                        <Grid.Row className="TabAccount-Orders-Grid-Row">
+                            <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
+                                <span className="TabAccount-Orders-Message">
                                     Order ID: {order.orderKey.orderId}
                                 </span>
                             </Grid.Column>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
+                            <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
+                                <span className="TabAccount-Orders-Message">
                                     Order time: {order.orderKey.orderTime}
                                 </span>
                             </Grid.Column>
-                            <Grid.Column width={5}>
+                            <Grid.Column width={5} >
                                 <span>
-                                    <Label tag color='red'>${order.total}</Label>
+                                    <Label tag color='red' className="TabAccount-Orders-Grid-Label">${order.total}</Label>
                                 </span>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={5}>
-                                <span className="TabAccount-Message">
+                        <Grid.Row className="TabAccount-Orders-Grid-Row">
+                            <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
+                                <span className="TabAccount-Orders-Message">
                                     Order Status:
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={6}>
-                                {order.orderStatus === 'REFUSED' ? <Progress size='small' percent={100} error indicating> Refused </Progress>: <Progress size='small' percent={this.statusOrder(order.orderStatus)} indicating>
+                                {order.orderStatus === 'REFUSED' ? <Progress className="TabAccount-Orders-Message-Progress"
+                                                                             size='small'
+                                                                             percent={100}
+                                                                             error
+                                                                             indicating> Refused </Progress>: <Progress className="TabAccount-Orders-Message-Progress"
+                                                                                                                        size='small'
+                                                                                                                        percent={this.statusOrder(order.orderStatus)}
+                                                                                                                        indicating>
                                         <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -230,22 +244,22 @@ class TabAccount extends PureComponent {
                             <Grid container>
                                 {order.products.map((product, indexProduct) => (
                                     <Grid.Row key={indexProduct}>
-                                        <Grid.Column width={5} style={{left: '40px'}}>
+                                        <Grid.Column width={5} className="TabAccount-Orders-Product">
                                             <Image wrapped
                                                    size='small'
                                                    src={product.image}/>
                                         </Grid.Column>
-                                        <Grid.Column width={5} style={{left: '40px'}}>
-                                            <p className="TabAccount-Message">
+                                        <Grid.Column width={5} className="TabAccount-Orders-Product">
+                                            <p className="TabAccount-Orders-Message">
                                                 {product.productName}
                                             </p>
-                                            <p className="TabAccount-Message">
+                                            <p className="TabAccount-Orders-Message">
                                                 {product.productColor}
                                             </p>
-                                            <p className="TabAccount-Message">
+                                            <p className="TabAccount-Orders-Message">
                                                 {product.productSize}
                                             </p>
-                                            <p className="TabAccount-Message">
+                                            <p className="TabAccount-Orders-Message">
                                                 ${product.unitPrice}
                                             </p>
                                         </Grid.Column>
@@ -299,26 +313,26 @@ class TabAccount extends PureComponent {
                         <Grid>
                             <Grid.Row>
                                 <Grid.Column width={9} mobile className="TabAccount-Grid">
-                                    <Grid>
+                                    <Grid className="TabAccount-User-Grid">
                                         <Grid.Row>
-                                            <Grid.Column width={5} className="TabAccount-Grid2">
+                                            <Grid.Column width={5}>
                                                 <span className="TabAccount-Message">
                                                     First name:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5} className="TabAccount-Grid2">
+                                            <Grid.Column width={5}>
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.firstName}
                                                 </span>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid.Column width={5} className="TabAccount-Grid2">
+                                            <Grid.Column width={5}>
                                                 <span className="TabAccount-Message">
                                                     Last name:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5} className="TabAccount-Grid2">
+                                            <Grid.Column width={5}>
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.lastName}
                                                 </span>
@@ -384,7 +398,9 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                                 <Grid.Column width={6}>
                                     <Form inverted>
-                                        <Form.Input placeholder="Old password..."
+                                        <Form.Input className="TabAccount-Grid2"
+                                                    placeholder="Old password..."
+                                                    size="small"
                                                     type="password"
                                                     name='oldPassword'
                                                     error={this.state.flagErrorOldPassword && this.state.errorOldPassword}
@@ -399,9 +415,11 @@ class TabAccount extends PureComponent {
                                         New password:
                                     </span>
                                 </Grid.Column>
-                                <Grid.Column width={6}>
+                                <Grid.Column width={6} className="TabAccount-Grid2">
                                     <Form inverted>
-                                        <Form.Input placeholder="New password..."
+                                        <Form.Input className="TabAccount-Grid2"
+                                                    placeholder="New password..."
+                                                    size="small"
                                                     type="password"
                                                     name='newPassword'
                                                     error={this.state.flagErrorNewPassword && this.state.errorNewPassword}
@@ -418,7 +436,9 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                                 <Grid.Column width={6}>
                                     <Form inverted>
-                                        <Form.Input placeholder="Confirm password..."
+                                        <Form.Input className="TabAccount-Grid2"
+                                                    size="small"
+                                                    placeholder="Confirm password..."
                                                     type="password"
                                                     name='confirmNewPassword'
                                                     error={this.state.flagErrorConfirmNewPassword && this.state.errorConfirmNewPassword}
@@ -441,7 +461,7 @@ class TabAccount extends PureComponent {
 
 
                 <Modal open={open} onClose={this.close}
-                       style={{position: 'static', height: 'auto', width: '50%'}} closeIcon>
+                       className="TabAccount-User-Modal" closeIcon>
 
                     <Dimmer active={this.props.loading} page>
                         <Loader content='Loading'/>

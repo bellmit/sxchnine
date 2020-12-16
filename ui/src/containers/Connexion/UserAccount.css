@@ -30,7 +30,38 @@
 }
 
 
-@media only screen and (max-width: 414px) {
+
+@media only screen and (max-width: 1024px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 50%;
+        left: 15%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 25%;
+        margin-top: 40%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        margin-top: 50%;
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
@@ -41,23 +72,55 @@
         width: 60%;
         position: absolute;
         top: 60%;
-        left: 20%;
+        left: 6%;
     }
     .UserTabAccount-Empty-Div{
         background: rgb(255, 240, 36);
         height: 0.5%;
         width: 80%;
-        left: 5%;
+        left: 25%;
+        margin-top: 40%;
         position: absolute;
         align-items: center;
     }
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        left: -40%;
-        margin-top: 20%;
-
+        left: -10%;
+        margin-top: -150%;
     }
+
+}
+
+@media only screen and (max-width: 540px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 8%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 25%;
+        margin-top: 40%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        left: -10%;
+        margin-top: -150%;
+    }
+
 }
 
 @media only screen and (max-width: 414px) {
@@ -71,22 +134,53 @@
         width: 60%;
         position: absolute;
         top: 60%;
-        left: 25%;
+        left: 8%;
     }
     .UserTabAccount-Empty-Div{
         background: rgb(255, 240, 36);
         height: 0.5%;
         width: 80%;
-        left: 5%;
+        left: 25%;
+        margin-top: 40%;
         position: absolute;
         align-items: center;
     }
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        left: -40%;
-        margin-top: 20%;
+        left: -10%;
+        margin-top: -150%;
+    }
 
+}
+
+@media only screen and (max-width: 411px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 8%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 25%;
+        margin-top: 40%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        left: -10%;
+        margin-top: -150%;
     }
 
 }
@@ -108,15 +202,75 @@
         background: rgb(255, 240, 36);
         height: 0.5%;
         width: 80%;
-        left: 5%;
+        left: 25%;
+        margin-top: 40%;
         position: absolute;
         align-items: center;
     }
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        left: -40%;
-        margin-top: 20%;
+        left: -10%;
+        margin-top: -150%;
     }
+}
 
+@media only screen and (max-width: 360px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 2%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 25%;
+        margin-top: 40%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        left: -10%;
+        margin-top: -150%;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 17%;
+        height: 100%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 8%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 25%;
+        margin-top: 40%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        left: -10%;
+        margin-top: -150%;
+    }
 }
