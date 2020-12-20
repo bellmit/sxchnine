@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const auth = axios.create({
     //baseURL: 'http://192.168.64.4:30922'
-    baseURL: 'http://localhost:9292'
+    //baseURL: 'http://localhost:9292'
+    baseURL: 'http://192.168.1.65:9292'
 });
 
 //auth.defaults.headers.common['Authorization'] = 'Basic YXBpLWdhdGV3YXktdXNlcjpwYXNzdzByZA==';

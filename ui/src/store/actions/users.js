@@ -155,6 +155,7 @@ export const loginUser = (email, password, history, order) => {
                 dispatch(loginUserStart(false));
                 dispatch(loginUserSuccess(response.data))
                 if (response.data !== '') {
+                    dispatch(loginUserFail(''));
                     if (order === true) {
                         history.push('/orders');
                     } else {

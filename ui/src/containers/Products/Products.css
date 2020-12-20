@@ -117,13 +117,13 @@
         top: 28%;
         left: 22%;
         position: absolute;
-        width: 52%;
+        width: 70%;
         background-color: rgb(255, 240, 36);
     }
     .Product-Search-Text-Input {
         margin-bottom: 10px;
         font-family: Anton;
-        font-size: 15px;
+        font-size: 1.5vw;
     }
     .Product-Container {
         width: 60%;
@@ -131,30 +131,30 @@
         top: 35%;
         left: 20%;
     }
-
     .Add-Icon {
         float: right;
-        right: 2%;
+        left: 22% !important;
         width: 10% !important;
         height: auto;
-        top: 15%;
-        display: none;
     }
     .Add-Icon:hover {
         cursor: pointer;
     }
     .Search-Icon{
-        position: absolute;
+        left: 93% !important;
+        width: 8% !important;
+        padding-left: 2%;
     }
     .Search-Icon:hover{
         cursor: pointer;
+        left: 93% !important;
+        width: 8% !important;
     }
-
-
     .Product-Search-Advanced {
         font-family: Anton;
-        font-size: 8px;
+        font-size: 1.5vw;
         text-transform: uppercase;
+        width: 30% !important;
     }
 
 
@@ -208,33 +208,34 @@
         top: 31%;
         left: 22%;
         position: absolute;
-        width: 52%;
+        width: 75%;
         background-color: rgb(255, 240, 36);
     }
-
     .Add-Icon {
         float: right;
-        right: 2%;
-        width: 10% !important;
+        left: 22% !important;
+        width: 8% !important;
         height: auto;
-        top: 15%;
-        display: none;
     }
     .Add-Icon:hover {
         cursor: pointer;
     }
     .Search-Icon{
-        position: absolute;
+        left: 95% !important;
+        width: 8% !important;
+        padding-left: 2%;
     }
     .Search-Icon:hover{
         cursor: pointer;
+        left: 95% !important;
+        width: 8% !important;
+        padding-left: 2%;
     }
-
-
     .Product-Search-Advanced {
         font-family: Anton;
-        font-size: 8px;
+        font-size: 15px;
         text-transform: uppercase;
+        width: 30% !important;
     }
 
     .Product-footer{
@@ -274,7 +275,7 @@
         top: 45%;
         left: 22%;
         position: absolute;
-        width: 52%;
+        width: 70%;
         background-color: rgb(255, 240, 36);
     }
     .Product-Search-Text-Input {
@@ -289,32 +290,27 @@
         top: 60%;
         left: 20%;
     }
-
     .Add-Icon {
         float: right;
-        right: 2%;
+        left: 22% !important;
         width: 10% !important;
         height: auto;
-        top: 15%;
-        display: none;
     }
     .Add-Icon:hover {
         cursor: pointer;
     }
     .Search-Icon{
-        position: absolute;
+        left: 93% !important;
     }
     .Search-Icon:hover{
         cursor: pointer;
     }
-
-
     .Product-Search-Advanced {
         font-family: Anton;
-        font-size: 8px;
+        font-size: 10px;
         text-transform: uppercase;
+        width: 30% !important;
     }
-
 
     .Product-footer{
         width: 160%;
@@ -347,32 +343,102 @@
         top: 60%;
         left: 20%;
     }
-
+    .Product-Search-Input {
+        top: 45%;
+        left: 22%;
+        position: absolute;
+        width: 70%;
+        background-color: rgb(255, 240, 36);
+    }
     .Add-Icon {
         float: right;
-        right: 2%;
+        left: 22% !important;
         width: 10% !important;
         height: auto;
-        top: 15%;
-        display: none;
     }
     .Add-Icon:hover {
         cursor: pointer;
     }
     .Search-Icon{
-        position: absolute;
+        left: 93% !important;
+        padding-left: 2%;
     }
     .Search-Icon:hover{
         cursor: pointer;
+        left: 93% !important;
+        padding-left: 2%;
     }
-
-
     .Product-Search-Advanced {
         font-family: Anton;
-        font-size: 8px;
+        font-size: 10px;
         text-transform: uppercase;
+        width: 30% !important;
     }
 
+    .Product-footer{
+        width: 160%;
+        position: absolute;
+        left: -30%;
+        margin-top: 20%;
+
+    }
+
+    .Product-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.1%;
+        width: 80%;
+        left: 5%;
+        position: absolute;
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Products-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 16%;
+        height: 250%;
+        position: absolute;
+    }
+
+    .Product-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 20%;
+    }
+    .Product-Search-Input {
+        top: 45%;
+        left: 22%;
+        position: absolute;
+        width: 70%;
+        background-color: rgb(255, 240, 36);
+    }
+    .Add-Icon {
+        float: right;
+        left: 22% !important;
+        width: 10% !important;
+        height: auto;
+    }
+    .Add-Icon:hover {
+        cursor: pointer;
+    }
+    .Search-Icon{
+        left: 93% !important;
+        padding-left: 2%;
+    }
+    .Search-Icon:hover{
+        cursor: pointer;
+        left: 93% !important;
+        padding-left: 2%;
+
+    }
+    .Product-Search-Advanced {
+        font-family: Anton;
+        font-size: 10px;
+        text-transform: uppercase;
+        width: 30% !important;
+    }
 
     .Product-footer{
         width: 160%;
@@ -399,6 +465,27 @@
         height: 250%;
         position: absolute;
     }
+    .Add-Icon {
+        float: right;
+        left: 22% !important;
+        width: 10% !important;
+        height: auto;
+    }
+    .Add-Icon:hover {
+        cursor: pointer;
+    }
+    .Search-Icon{
+        left: 93% !important;
+    }
+    .Search-Icon:hover{
+        cursor: pointer;
+    }
+    .Product-Search-Advanced {
+        font-family: Anton;
+        font-size: 10px;
+        text-transform: uppercase;
+        width: 30% !important;
+    }
     .Product-Message{
         font-family: Anton;
         font-size: 15px;
@@ -416,7 +503,7 @@
         top: 55%;
         left: 22%;
         position: absolute;
-        width: 52%;
+        width: 90%;
         background-color: rgb(255, 240, 36);
     }
     .Product-Search-Text-Input {
@@ -448,6 +535,8 @@
         position: absolute;
         align-items: center;
     }
+
+
 
 }
 
@@ -475,7 +564,7 @@
         top: 48%;
         left: 22%;
         position: absolute;
-        width: 52%;
+        width: 75%;
         background-color: rgb(255, 240, 36);
     }
     .Product-Search-Text-Input {
@@ -506,6 +595,34 @@
         left: 5%;
         position: absolute;
         align-items: center;
+    }
+    .Add-Icon {
+        float: right;
+        left: 22% !important;
+        width: 10% !important;
+        height: auto;
+    }
+
+    .Add-Icon:hover {
+        cursor: pointer;
+    }
+    .Search-Icon{
+        left: 93% !important;
+        width: 8% !important;
+        padding-left: 2%;
+    }
+    .Search-Icon:hover{
+        cursor: pointer;
+        left: 93% !important;
+        width: 8% !important;
+        padding-left: 2%;
+    }
+
+    .Product-Search-Advanced {
+        font-family: Anton;
+        font-size: 8px;
+        text-transform: uppercase;
+        width: 30% !important;
     }
 
 }
@@ -534,7 +651,7 @@
         top: 55%;
         left: 22%;
         position: absolute;
-        width: 70%;
+        width: 80%;
         background-color: rgb(255, 240, 36);
     }
     .Product-Search-Text-Input {
@@ -566,6 +683,28 @@
         position: absolute;
         align-items: center;
     }
+    .Add-Icon {
+        float: right;
+        left: 22% !important;
+        width: 10% !important;
+        height: auto;
+    }
+    .Add-Icon:hover {
+        cursor: pointer;
+    }
+    .Search-Icon{
+        left: 93% !important;
+        width: 10% !important;
+    }
+    .Search-Icon:hover{
+        cursor: pointer;
+    }
+    .Product-Search-Advanced {
+        font-family: Anton;
+        font-size: 10px;
+        text-transform: uppercase;
+        width: 30% !important;
+    }
 
 }
 
@@ -580,13 +719,26 @@
         font-family: Anton;
         font-size: 15px;
         text-transform: uppercase;
-        top: 41%;
+        top: 45%;
         left: 22%;
         position: absolute;
     }
 
     .Product-Message:hover{
         color: rgb(255, 240, 36);
+    }
+
+    .Product-Search-Input {
+        top: 50%;
+        left: 22%;
+        position: absolute;
+        width: 90%;
+        background-color: rgb(255, 240, 36);
+    }
+    .Product-Search-Text-Input {
+        margin-bottom: 10px;
+        font-family: Anton;
+        font-size: 15px;
     }
 
     .Product-Container {
@@ -611,6 +763,27 @@
         left: 5%;
         position: absolute;
         align-items: center;
+    }
+    .Add-Icon {
+        float: right;
+        left: 22% !important;
+        width: 10% !important;
+        height: auto;
+    }
+    .Add-Icon:hover {
+        cursor: pointer;
+    }
+    .Search-Icon{
+        left: 93% !important;
+    }
+    .Search-Icon:hover{
+        cursor: pointer;
+    }
+    .Product-Search-Advanced {
+        font-family: Anton;
+        font-size: 10px;
+        text-transform: uppercase;
+        width: 30% !important;
     }
 
 }

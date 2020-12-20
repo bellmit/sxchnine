@@ -1,4 +1,4 @@
-.Processing-Image-div{
+.Processing-Image-div {
     width: 100%;
     height: auto;
     object-fit: cover;
@@ -6,3 +6,76 @@
     display: flex;
     align-items: center;
 }
+
+@media only screen and (max-width: 1024px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 414px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+@media only screen and (max-width: 280px) {
+    .Processing-Image-div {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
