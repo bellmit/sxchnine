@@ -124,7 +124,7 @@ class Card extends PureComponent {
                     <Loader content='Loading'/>
                 </Dimmer>
                 <div className="App-payment">
-                    <h4 className="Cards-h4">PAYMENT:&nbsp;&nbsp;
+                    <h4 className="Cards-h4">
                         {this.state.errorName !== '' && <Label color='red'>{this.state.errorName}</Label>}</h4>
                     <Cards
                         number={this.state.number}
@@ -193,16 +193,9 @@ class Card extends PureComponent {
                             </button>
                         </div>
                         <div className="form-actions">
-                            <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Got_IT, which may be used to make future shopping experiences better for you.</span>
+                            <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Naybxrz, which may be used to make future shopping experiences better for you.</span>
 
                         </div>
-                        {/*                        <div>
-                            <p>number: {number}</p>
-                            <p>name: {name}</p>
-                            <p>expiry: {expiry}</p>
-                            <p>cvc: {cvc}</p>
-
-                        </div>*/}
                     </form>
                 </div>
             </div>

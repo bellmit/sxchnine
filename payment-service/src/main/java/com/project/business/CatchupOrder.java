@@ -1,12 +1,18 @@
 package com.project.business;
 
+import com.project.exception.PaymentMethodException;
+import com.project.exception.SaveOrderException;
 import com.project.model.Order;
+import com.project.utils.OrderProcessingStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import static com.project.utils.OrderProcessingStatus.*;
+import static com.project.utils.PaymentStatusCode.*;
 
 @Service
 @Slf4j
@@ -22,39 +28,56 @@ public class CatchupOrder {
         this.paymentService = paymentService;
     }
 
-    public Mono<Void> catchUpCheckout(Order order) {
+    public Mono<Order> catchUpCheckout(Order order) {
+        order.setProcessingStatus(ORDER_PAYMENT_PROCESS.getValue());
         return paymentService.checkout(order)
                 .map(paymentResponse -> {
                     order.setPaymentStatus(paymentResponse.getStatus());
+                    order.setOrderStatus(paymentResponse.getStatus());
+                    order.getPaymentInfo().setPaymentIntentId(paymentResponse.getPaymentIntentId());
+                    order.setProcessingStatus(evaluateProcessingStatus(paymentResponse.getStatus()));
+                    order.setTypeProcessing(CHECKOUT_OP.getValue());
                     return order;
                 })
-                .flatMap(this::saveOrder)
-                .then();
+                .flatMap(this::saveOrder);
     }
 
-    public Mono<Void> confirmCheckout(Order order) {
+    public Mono<Order> confirmCheckout(Order order) {
+        order.setProcessingStatus(ORDER_PAYMENT_PROCESS.getValue());
         return paymentService.checkout3DSecure(order.getPaymentInfo().getPaymentIntentId())
                 .map(paymentResponse -> {
                     order.setPaymentStatus(paymentResponse.getStatus());
+                    order.setOrderStatus(paymentResponse.getStatus());
+                    order.setProcessingStatus(evaluateProcessingStatus(paymentResponse.getStatus()));
+                    order.setTypeProcessing(CONFIRM_OP.getValue());
+
                     return order;
                 })
-                .flatMap(this::saveOrder)
-                .then();
+                .flatMap(this::saveOrder);
     }
 
-    private Mono<Void> saveOrder(Order order){
+    public Mono<Order> saveOrder(Order order){
         return orderClient.post()
                 .uri("/save")
                 .body(BodyInserters.fromValue(order))
                 .exchange()
                 .flatMap(clientResponse -> {
-                    if (clientResponse.statusCode().is2xxSuccessful()) {
-                        return Mono.empty();
-                    } else {
+                    if (!clientResponse.statusCode().is2xxSuccessful()) {
                         log.info("Error occurred while saving order -> we will sent order to kafka");
-                        return orderProducer.sendOrder(order);
+                        orderProducer.sendOrder(order);
                     }
+                    return Mono.defer(() -> Mono.just(order));
                 })
-                .onErrorResume(error -> orderProducer.sendOrder(order));
+                .onErrorResume(error -> {
+                    orderProducer.sendOrder(order);
+                    return Mono.defer(() -> Mono.just(order));
+                });
+    }
+
+    private String evaluateProcessingStatus(String status){
+        if (!status.equals(WAITING_TIMEOUT.getValue()))
+            return ORDER_PAYMENT_PROCESSED.getValue();
+        else
+            return WAITING_TIMEOUT.getValue();
     }
 }

@@ -163,7 +163,7 @@ public class StPaymentOpsImpl implements PaymentOps {
 
     private PaymentResponse buildErrorPaymentResponse(){
         PaymentResponse paymentResponse = new PaymentResponse();
-        paymentResponse.setStatus(REFUSED.getValue());
+        paymentResponse.setStatus(WAITING_TIMEOUT.getValue());
         return paymentResponse;
     }
 

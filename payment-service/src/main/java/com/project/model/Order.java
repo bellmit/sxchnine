@@ -40,4 +40,6 @@ public class Order {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime shippingTime;
     private String trackingNumber;
+    private String processingStatus;
+    private String typeProcessing;
 }

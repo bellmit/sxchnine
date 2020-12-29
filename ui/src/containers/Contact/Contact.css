@@ -138,7 +138,7 @@
         width: 100%;
         height: 40%;
         position: absolute;
-        margin: 130% 0 0 2% !important;
+        margin: 70% 0 0 2% !important;
 
     }
     .Reserved-right {
@@ -185,7 +185,7 @@
         width: 100%;
         height: 20%;
         position: absolute;
-        top: 300% !important;
+        top: 190% !important;
         left: 2%;
     }
     .Reserved-right {
@@ -231,9 +231,10 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 320% !important;
+        top: 220% !important;
         left: 2%;
     }
+
     .Reserved-right {
         font-family: Anton;
         font-size: 8px;
@@ -277,7 +278,7 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 320% !important;
+        top: 210% !important;
         left: 2%;
     }
     .Reserved-right {
@@ -304,7 +305,7 @@
     .Container-div {
         display: flex;
         flex-direction: row;
-        margin: 320px 0 30px 0;
+        margin: 200px 0 30px 0;
     }
     .Icon {
         width: 100%;
@@ -321,7 +322,7 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 380% !important;
+        top: 200% !important;
         left: 2%;
     }
 
@@ -366,7 +367,7 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 410% !important;
+        top: 270% !important;
         left: 2%;
     }
 
@@ -411,7 +412,7 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 440% !important;
+        top: 300% !important;
         left: 2%;
     }
 
@@ -456,7 +457,7 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 425%;
+        top: 268% !important;
         left: 2%;
     }
 
@@ -501,7 +502,7 @@
     .Contact-footer{
         width: 100%;
         position: absolute;
-        top: 380% !important;
+        top: 250% !important;
         left: 2%;
     }
 

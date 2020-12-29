@@ -55,7 +55,7 @@ class Contact extends PureComponent {
 
                             <Grid.Column width={8}>
                                 <div>
-                                    <p className="Reserved-right">© 2019 got_it. All rights reserved</p>
+                                    <p className="Reserved-right">© 2020 Naybxrz. All rights reserved</p>
                                 </div>
                             </Grid.Column>
 

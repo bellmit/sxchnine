@@ -9,7 +9,9 @@ public enum PaymentStatusCode {
     UNKNOWN(5, "UNKNOWN"),
 
     CHECKOUT_OP(6, "CHECKOUT_CALL_ERROR"),
-    CONFIRM_OP(7, "CONFIRM_CALL_ERROR");
+    CONFIRM_OP(7, "CONFIRM_CALL_ERROR"),
+
+    WAITING_TIMEOUT(8, "WAITING_TIMEOUT");
 
     private final int code;
     private final String value;

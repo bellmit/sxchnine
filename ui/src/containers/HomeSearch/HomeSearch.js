@@ -22,6 +22,14 @@ class HomeSearch extends Component {
         this.props.homeSearchProducts(this.state.gender, this.state.category, this.state.size, this.props.history);
     };
 
+    handleClick = (gender) => {
+        if (gender === 'MEN'){
+            this.props.history.push('/men');
+        } else if (gender === 'WOMEN'){
+            this.props.history.push('/women');
+        }
+    };
+
     render(){
 
         const gender = [
@@ -47,14 +55,19 @@ class HomeSearch extends Component {
 
         return (
           <Aux>
-            <Grid relaxed columns='equal'>
+            <Grid relaxed columns='equal' centered textAlign="center">
                 <Grid.Column>
-                    <Dropdown className="Home-Search-Advanced"
+                   {/* <Dropdown className="Home-Search-Advanced"
                               onChange={this.handleChangeGender}
                               options={gender}
                               placeholder='Gender'
                               selection
-                              value={this.state.gender} />
+                              value={this.state.gender} />*/}
+                    <Button className="Home-Search-Continue-Button"
+                            style={{background: 'yellow'}}
+                            onClick={() => this.handleClick('MEN')}>
+                        <span className="Home-Search-Text-Button">MEN</span>
+                    </Button>
                 </Grid.Column>
                {/* <Grid.Column width={4}>
                     <Dropdown className="Home-Search-Advanced"
@@ -65,18 +78,23 @@ class HomeSearch extends Component {
                               value={this.state.category} />
                 </Grid.Column>*/}
                 <Grid.Column>
-                    <Dropdown className="Home-Search-Advanced"
+                    {/*<Dropdown className="Home-Search-Advanced"
                               onChange={this.handleChangeSize}
                               options={size}
                               placeholder='Size'
                               selection
-                              value={this.state.size} />
+                              value={this.state.size} />*/}
+                    <Button className="Home-Search-Continue-Button"
+                            style={{background: 'yellow'}}
+                            onClick={() => this.handleClick('WOMEN')}>
+                        <span className="Home-Search-Text-Button">WOMEN</span>
+                    </Button>
                 </Grid.Column>
-                <Grid.Column>
+                {/*<Grid.Column>
                     <Button className="Home-Search-Continue-Button" style={{background: 'yellow'}} onClick={this.searchAdvanced}>
                         <span className="Home-Search-Text-Button">GOT IT !</span>
                     </Button>
-                </Grid.Column>
+                </Grid.Column>*/}
             </Grid>
           </Aux>
         );

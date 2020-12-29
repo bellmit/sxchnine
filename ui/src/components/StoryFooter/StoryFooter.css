@@ -51,7 +51,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 105%;
+        top: 105% !important;
     }
 
     .Paragraph-footer {
@@ -96,7 +96,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 190% !important;
+        top: 140% !important;
     }
 
     .Paragraph-footer {
@@ -108,7 +108,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 200%;
+        top: 150%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -119,7 +119,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 200%;
+        top: 150%;
         cursor: pointer;
     }
 
@@ -128,7 +128,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 203%;
+        top: 155%;
         position: absolute;
     }
 }
@@ -141,7 +141,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 330% !important;
+        top: 200% !important;
     }
 
     .Paragraph-footer {
@@ -153,7 +153,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 350%;
+        top: 210%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -164,7 +164,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 350%;
+        top: 210%;
         cursor: pointer;
     }
 
@@ -173,7 +173,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 355%;
+        top: 215%;
         position: absolute;
     }
 }
@@ -186,7 +186,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 325%;
+        top: 200% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -197,7 +197,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 350%;
+        top: 210%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -208,7 +208,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 350%;
+        top: 210%;
         cursor: pointer;
     }
 
@@ -217,7 +217,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 355%;
+        top: 215%;
         position: absolute;
     }
 }
@@ -230,7 +230,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 325% !important;
+        top: 200% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -241,7 +241,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 350%;
+        top: 210%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -252,7 +252,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 350%;
+        top: 210%;
         cursor: pointer;
     }
 
@@ -261,7 +261,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 355%;
+        top: 215%;
         position: absolute;
     }
 }
@@ -274,7 +274,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 430% !important;
+        top: 255% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -285,7 +285,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 450%;
+        top: 275%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -296,7 +296,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 450%;
+        top: 275%;
         cursor: pointer;
     }
 
@@ -305,7 +305,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 455%;
+        top: 280%;
         position: absolute;
     }
 }
@@ -318,7 +318,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 375% !important;
+        top: 230% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -329,7 +329,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 400%;
+        top: 250%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -340,7 +340,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 400%;
+        top: 250%;
         cursor: pointer;
     }
 
@@ -349,7 +349,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 405%;
+        top: 255%;
         position: absolute;
     }
 }
@@ -362,7 +362,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 430% !important;
+        top: 250% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -373,7 +373,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 460%;
+        top: 270%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -384,7 +384,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 460%;
+        top: 270%;
         cursor: pointer;
     }
 
@@ -393,7 +393,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 465%;
+        top: 275%;
         position: absolute;
     }
 }
@@ -401,12 +401,12 @@
 @media only screen and (max-width: 280px) {
     .Container-footer-img {
         height: 300px;
-        width: 131%;
+        width: 131% !important;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 370% !important;
+        top: 220% !important;
     }
     .Paragraph-footer {
         line-height: 0;
@@ -417,7 +417,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 400%;
+        top: 240%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -428,7 +428,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 400%;
+        top: 240%;
         cursor: pointer;
     }
 
@@ -437,7 +437,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 405%;
+        top: 245%;
         position: absolute;
     }
 }

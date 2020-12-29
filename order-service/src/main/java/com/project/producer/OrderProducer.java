@@ -40,11 +40,12 @@ public class OrderProducer {
 
     public Mono<Void> sendOder(Mono<Order> order){
         Mono<SenderRecord<Object, String, Object>> recordMono = order
+                .doOnNext(o -> log.info("order to sent {}", o.toString()))
                 .map(o -> SenderRecord.create(topic, null, null, null, mapOrder(o), null))
                 .subscribeOn(Schedulers.boundedElastic());
 
         return kafkaSender.send(recordMono)
-                .doOnNext(o -> log.info("{} sent to kafka successfully", o.recordMetadata().toString()))
+                .doOnNext(o -> log.info("sent to kafka successfully"))
                 .retryWhen(Retry.backoff(2, Duration.ofSeconds(1)))
                 .doOnError(error -> {
                     backupOrders.add(order);

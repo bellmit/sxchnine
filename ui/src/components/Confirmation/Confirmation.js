@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import { persistor } from './../../index';
+import {persistor} from './../../index';
 import Aux from '../../hoc/Aux/Aux';
 import {Container, Header} from 'semantic-ui-react';
 import * as actions from '../../store/actions/index';
@@ -14,7 +14,7 @@ class Confirmation extends Component {
         console.log(window.localStorage.getItem("persist:root"));
         window.localStorage.removeItem("persist:root");
         persistor.purge();
-        if (this.props.match.params.status === '1' || this.props.match.params.status === '2'){
+        if (this.props.match.params.status === '1' || this.props.match.params.status === '2') {
             this.resetState();
         }
     }
@@ -26,6 +26,11 @@ class Confirmation extends Component {
     render() {
 
         let message = <Aux>
+            <Header as="h2">
+                <span className="Confirmation-Message-Text-h1-div">
+                    You GOT IT !!
+                </span>
+            </Header>
             <p className="Confirmation-Message-Text-p-div">
                 Congrats. Your bag is on the way.
             </p>
@@ -37,6 +42,11 @@ class Confirmation extends Component {
 
         if (this.props.match.params.status === '2') {
             message = <Aux>
+                <Header as="h2">
+                <span className="Confirmation-Message-Text-h1-div">
+                    You GOT IT !!
+                </span>
+                </Header>
                 <p className="Confirmation-Message-Text-p-div">
                     Congrats.
                 </p>
@@ -47,6 +57,11 @@ class Confirmation extends Component {
             </Aux>
         } else if (this.props.match.params.status === '0') {
             message = <Aux>
+                <Header as="h2">
+                <span className="Confirmation-Message-Text-h1-div">
+                    Aight, not this time !!
+                </span>
+                </Header>
                 <p className="Confirmation-Message-Text-p-div">
                     Oops something went wrong with your payment.
                 </p>
@@ -64,11 +79,6 @@ class Confirmation extends Component {
 
                 <div className="Confirmation-Message-div">
                     <Container text className="Confirmation-Container-div">
-                        <Header as="h2">
-                <span className="Confirmation-Message-Text-h1-div">
-                    You GOT IT !!
-                </span>
-                        </Header>
                         {message}
                         <div>
                             <div className="Confirmation-Yellow-second-bar-div">

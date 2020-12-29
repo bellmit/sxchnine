@@ -131,9 +131,31 @@
 @media only screen and (max-width: 360px) {
     .Got-it-logo{
         position: fixed;
-        right: -5% !important;
-
+        right: -5%;
     }
+    .Story-Image-div{
+        height: 75% !important;
+        width: 100% !important;
+        top: 2%;
+        bottom: 0;
+        max-width: 110vw;
+    }
+
+    .Story-Image-bottom{
+        width: 100% !important;
+        bottom: 6.6% !important;
+        display: inherit;
+        position: fixed;
+    }
+
+    .main-div {
+        background-color: rgb(255, 240, 36) !important;
+        width: auto;
+        height: 2000px;
+    }
+
+}
+@media only screen and (max-width: 320px) {
     .Story-Image-div{
         height: 75% !important;
         width: 100% !important;

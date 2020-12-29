@@ -26,7 +26,9 @@ export const order = (productsToOrder, history) => {
                     dispatch(orderSuccess(response.data));
                     dispatch(orderStart(false));
                     window.location.replace(response.data.nextAction);
-                } else if (response.data.status === 'WAITING') {
+                } else if (response.data.status === 'WAITING'
+                    || response.data.status === 'CHECKOUT_CALL_ERROR'
+                    || response.data.status === 'CONFIRM_CALL_ERROR') {
                     dispatch(orderSuccess(response.data));
                     dispatch(orderStart(false));
                     history.replace('/confirmation/2');
