@@ -1,0 +1,137 @@
+.subscription-main {
+    background-color: rgb(255, 240, 36) !important;
+    width: 100%;
+    height: 100%;
+}
+
+.subscription-main-img{
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    position: fixed;
+    background-color: rgb(255, 240, 36);
+}
+
+.subscription-main-video{
+    height: 52%;
+    width: 52%;
+    margin: 13% 20% 20% 24%;
+    position: absolute;
+}
+
+.subscription-main-info{
+    margin-top: 44%;
+    margin-left: 7%;
+}
+
+.subscription-main-info-email{
+    margin-left: 10%;
+}
+
+.subscription-main-info-button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+}
+
+.subscription-main-info-button:focus{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+}
+
+.subscription-main-info-button-text {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    color: black;
+}
+
+.subscription-main-info-added-text {
+    font-family: Anton;
+    font-size: 2vw;
+    text-transform: uppercase;
+    color: rgb(255, 240, 36);
+}
+
+@media only screen and (max-width: 414px) {
+    .subscription-main {
+        background-color: rgb(255, 240, 36) !important;
+        width: 100%;
+        height: 100%;
+    }
+    .subscription-main-img{
+        height: 128%;
+        width: 100%;
+        /*
+        top: 2%;
+        */
+        max-width: 100vw;
+        position: fixed;
+        background-attachment: fixed;
+        overflow: no-content;
+    }
+
+    .subscription-main-video{
+        height: 70%;
+        width: 70%;
+        margin: 50% 20% 20% 15%;
+        position: fixed;
+    }
+
+    .subscription-main-info{
+        margin-top: 95%;
+        margin-left: -2%;
+        position: fixed;
+        width: 100%;
+    }
+
+    .subscription-main-info-email{
+        margin-left: 10%;
+    }
+
+    .subscription-main-info-button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        margin-left: 25% !important;
+    }
+
+    .subscription-main-info-button:focus{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        margin-left: 25% !important;
+    }
+
+    .subscription-main-info-button-text {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .subscription-main-info-added-text {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .subscription-main-grid{
+        width: 300% !important;
+    }
+
+}

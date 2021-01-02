@@ -1,5 +1,6 @@
 package com.project.configuration;
 
+import com.project.model.Subscription;
 import com.project.model.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,19 @@ public class RedisConfig {
         RedisSerializationContext.RedisSerializationContextBuilder<String, User> builder =
                 RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
         RedisSerializationContext<String, User> context =
+                builder.hashKey(new StringRedisSerializer())
+                        .hashValue(valueSerializer).build();
+
+        return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory, context);
+    }
+
+    @Bean
+    public ReactiveRedisTemplate<String, Subscription> subscriptionReactiveRedisTemplate(ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+        Jackson2JsonRedisSerializer<Subscription> valueSerializer = new Jackson2JsonRedisSerializer(Subscription.class);
+
+        RedisSerializationContext.RedisSerializationContextBuilder<String, Subscription> builder =
+                RedisSerializationContext.newSerializationContext(new StringRedisSerializer());
+        RedisSerializationContext<String, Subscription> context =
                 builder.hashKey(new StringRedisSerializer())
                         .hashValue(valueSerializer).build();
 

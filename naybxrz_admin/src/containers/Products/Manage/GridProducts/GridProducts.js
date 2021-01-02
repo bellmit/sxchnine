@@ -32,13 +32,13 @@ class GridProducts extends Component {
         let errors = undefined;
 
         if (this.props.searchProductsError) {
-            errors = <Label color='red'>Search Error: {this.props.searchProductsError.message}</Label>;
+            errors = <Label color='red' style={{marginLeft: '30%'}}>Search Error: {this.props.searchProductsError.message}</Label>;
         }
 
         let productByIdErrorMessage = undefined;
 
         if (this.props.productByIdError) {
-            productByIdErrorMessage = <Label color='red'>Select Product: {this.props.productByIdError.message}</Label>;
+            productByIdErrorMessage = <Label color='red' style={{marginLeft: '30%'}}>Select Product: {this.props.productByIdError.message}</Label>;
         }
 
         let headers = <Table.Header>

@@ -186,6 +186,43 @@ export const signOffUser = (history) => {
     }
 }
 
+const subscribeUserStart = (loading) => {
+    return {
+        type: actionTypes.SUBSCRIBE_USER_START,
+        subscribeUserLoading: loading
+    }
+};
+
+const subscribeUserSuccess = (user) => {
+    return {
+        type: actionTypes.SUBSCRIBE_USER_SUCCESS,
+        subscribeUserSuccess: user
+    }
+};
+
+const subscribeUserError = (error) => {
+    return {
+        type: actionTypes.SUBSCRIBE_USER_ERROR,
+        subscribeUserError: error
+    }
+};
+
+export const subscribeUser = (user) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(subscribeUserStart(true));
+        axios.post('/user/subscription/save', user)
+            .then(response => {
+                dispatch(subscribeUserSuccess(response.data));
+                dispatch(subscribeUserStart(false));
+            })
+            .catch(error => {
+                dispatch(subscribeUserStart(false));
+                dispatch(subscribeUserError(error));
+            })
+    }
+};
+
 
 
 

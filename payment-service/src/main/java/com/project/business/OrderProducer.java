@@ -25,7 +25,7 @@ public class OrderProducer {
         this.kafkaSender = kafkaSender;
     }
 
-    public Mono<Void> sendOrder(Order order) {
+    public Mono<Order> sendOrder(Order order) {
         Mono<SenderRecord<String, Order, Object>> record = Mono.defer(() -> Mono.just(SenderRecord.create(topic, null, null, null, order, null)));
         return kafkaSender.send(record)
                 .doOnNext(o -> log.info("Order sent successfully to kafka"))
@@ -33,7 +33,9 @@ public class OrderProducer {
                     log.error("error during sending catchup order {} to kafka - we will add it to list and send it later. ", order.getOrderKey().getOrderId(), error);
                     catchupOrders.put(order.getOrderKey().getOrderId(), order);
                 })
-                .then();
+                .doOnComplete(() -> log.info("Complete sending order to kafka"))
+                .then(Mono.just(order))
+                .log();
     }
 
 

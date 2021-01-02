@@ -4,7 +4,8 @@ public enum PaymentStatusCode {
     REFUSED(0, "REFUSED"),
     CONFIRMED(1, "CONFIRMED"),
     WAITING(2,"WAITING"),
-    UNKNOWN(3, "UNKNOWN");
+    UNKNOWN(3, "UNKNOWN"),
+    CONTACT(4, "CONTACT");
 
     private int code;
     private String value;

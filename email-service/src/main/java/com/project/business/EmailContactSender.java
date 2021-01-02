@@ -1,6 +1,7 @@
 package com.project.business;
 
 import com.project.model.Contact;
+import com.project.utils.PaymentStatusCode;
 import com.sendgrid.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,38 +10,32 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+import static com.project.utils.PaymentStatusCode.CONTACT;
+
 @Service
 @RefreshScope
 @Slf4j
-public class EmailContactSender {
+public class EmailContactSender extends EmailSender<Contact>{
 
     @Value("${sendGrid.mail.templateContact}")
     private String templateContactId;
 
-    @Value("${sendGrid.mail.from}")
-    private String from;
-
-    private final SendGrid sendGrid;
-
     public EmailContactSender(SendGrid sendGrid) {
-        this.sendGrid = sendGrid;
+        super(sendGrid);
     }
 
-    public void sendEmail(Contact contact) {
-        try {
-            Request request = new Request();
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mailBuilder(contact).build());
-            sendGrid.api(request);
-
-        } catch (IOException e) {
-            log.warn("Can't send email", e);
-        }
-
+    @Override
+    public String getTemplateId() {
+        return templateContactId;
     }
 
-    private Mail mailBuilder(Contact contact) {
+    @Override
+    public String type() {
+        return CONTACT.getValue();
+    }
+
+    @Override
+    public Mail mailBuilder(Contact contact) {
         Email emailFrom = new Email(from);
         Email emailTo = new Email(from);
 

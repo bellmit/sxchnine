@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 import static com.project.utils.OrderProcessingStatus.*;
 import static com.project.utils.PaymentStatusCode.*;
 
@@ -62,16 +64,16 @@ public class CatchupOrder {
                 .body(BodyInserters.fromValue(order))
                 .exchange()
                 .flatMap(clientResponse -> {
+                    log.info("------------------ SAVE ORDER --------- " + clientResponse.statusCode());
                     if (!clientResponse.statusCode().is2xxSuccessful()) {
                         log.info("Error occurred while saving order -> we will sent order to kafka");
                         orderProducer.sendOrder(order);
                     }
                     return Mono.defer(() -> Mono.just(order));
                 })
-                .onErrorResume(error -> {
-                    orderProducer.sendOrder(order);
-                    return Mono.defer(() -> Mono.just(order));
-                });
+                .timeout(Duration.ofSeconds(20))
+                .onErrorResume(error -> orderProducer.sendOrder(order))
+                .log();
     }
 
     private String evaluateProcessingStatus(String status){

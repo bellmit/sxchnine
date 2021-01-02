@@ -41,7 +41,8 @@ export {
     saveUser,
     loginUser,
     changePassword,
-    signOffUser
+    signOffUser,
+    subscribeUser
 } from './users';
 
 export {

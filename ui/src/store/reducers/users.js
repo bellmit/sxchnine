@@ -8,7 +8,10 @@ const initialState = {
     status: '',
     userChangedPassword: false,
     errorChangedPassword: '',
-    addedUser: false
+    addedUser: false,
+    subscribeUserLoading: false,
+    subscribedUser: '',
+    subscribeUserError: undefined,
 };
 
 const reducer = (state = initialState, action) => {
@@ -79,7 +82,21 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 userAuthenticated: action.user
             };
-
+        case actionTypes.SUBSCRIBE_USER_START:
+            return {
+                ...state,
+                subscribeUserLoading: action.subscribeUserLoading
+            };
+        case actionTypes.SUBSCRIBE_USER_SUCCESS:
+            return {
+                ...state,
+                subscribedUser: action.subscribeUserSuccess
+            };
+        case actionTypes.SUBSCRIBE_USER_ERROR:
+            return {
+                ...state,
+                subscribeUserError: action.subscribeUserError
+            }
         default:
             return state;
     }

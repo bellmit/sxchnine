@@ -10,7 +10,8 @@ class Middle extends Component {
         images: [
             { id: 1, name: 'Biggie smalls ', url: 'BiggieSmalls.jpeg' },
             { id: 2, name: 'Paris Week end', url: 'ParisWeekend.jpeg' },
-            { id: 3, name: 'Mike Tyson Wu', url: 'Wu_Tyson.jpeg' }
+            { id: 3, name: 'Mike Tyson Wu', url: 'Wu_Tyson.jpeg' },
+            { id: 4, name: 'Paris Tyson Montreal', url: 'ParisStairs.jpeg' }
         ]
     }
     render() {
@@ -32,7 +33,7 @@ class Middle extends Component {
                     addArrowClickHandler
                     infinite>
                     {this.state.images.map((image, index) => (
-                        <Gallery url={image.url} key={index}/>
+                        <Gallery url={image.url} productId={image.id} key={index} {...this.props} />
                     ))}
                 </Carousel>
             </div>

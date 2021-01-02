@@ -1,8 +1,10 @@
 package com.project.controller;
 
+import com.project.model.Subscription;
 import com.project.model.User;
 import com.project.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -26,7 +28,7 @@ public class UserController {
 
     @DeleteMapping("/deleteByEmail/{email:.+}")
     public Mono<Void> deleteByUserByEmail(@PathVariable String email){
-        return userService.deleteUserByEmail(email);
+        return userService.deleteUserByEmail(email.toLowerCase());
     }
 
     @DeleteMapping("/deleteById/{id}")
@@ -36,12 +38,12 @@ public class UserController {
 
     @PostMapping("/login")
     public Mono<User> login(@RequestParam String email, @RequestParam String password){
-        return userService.login(email, password);
+        return userService.login(email.toLowerCase(), password);
     }
 
     @PostMapping("/loginAdmin")
     public Mono<User> loginAdmin(@RequestParam String email, @RequestParam String password){
-        return userService.loginAdmin(email, password);
+        return userService.loginAdmin(email.toLowerCase(), password);
     }
 
     @PostMapping("/changePassword")
@@ -50,7 +52,7 @@ public class UserController {
                                      @RequestParam String newPassword,
                                      @RequestParam String confirmNewPassword){
 
-        return userService.changePassword(email, oldPassword, newPassword, confirmNewPassword);
-
+        return userService.changePassword(email.toLowerCase(), oldPassword, newPassword, confirmNewPassword);
     }
+
 }

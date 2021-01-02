@@ -29,7 +29,8 @@ public class OrderConsumer {
 
     private final CatchupOrder catchupOrder;
     private final Map<String, Order> nackOrders = new ConcurrentHashMap<>();
-    private final Map<String, Order> dltCheckoutOrders = new ConcurrentHashMap();
+    private final Map<String, Order> nackDLTOrders = new ConcurrentHashMap<>();
+    private final Map<String, Order> dltCheckoutOrders = new ConcurrentHashMap<>();
     private final Map<String, Order> dltConfirmOrders = new ConcurrentHashMap<>();
 
     @KafkaListener(groupId = "${kafka.consumer.groupId}",
@@ -80,24 +81,29 @@ public class OrderConsumer {
         log.info("DLT consume order {} for payment", order.toString());
         log.info("***********************************************");
         log.info("***********************************************");
-
-        if (order.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
-                && order.getTypeProcessing().equals(CHECKOUT_OP.getValue())) {
-
-            catchupCheckout(order, true);
-
-        } else if (order.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
-                && order.getTypeProcessing().equals(CONFIRM_OP.getValue())){
-
-            confirmCheckout(order, true);
-        }
-
-        try {
-            log.info("********* commit DLT offset");
+        if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null){
             acknowledgment.acknowledge();
-        } catch (Throwable throwable) {
-            nackOrders.put(order.getOrderKey().getOrderId(), order);
-            log.error("cannot commit offset for DLT order {}, we will send it to unack topic", order.getOrderKey().getOrderId(), throwable);
+            nackDLTOrders.remove(order.getOrderKey().getOrderId());
+
+        } else {
+
+            if (order.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
+                    && order.getTypeProcessing().equals(CHECKOUT_OP.getValue())) {
+
+                catchupCheckout(order, true);
+
+            } else if (order.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
+                    && order.getTypeProcessing().equals(CONFIRM_OP.getValue())) {
+
+                confirmCheckout(order, true);
+            }
+
+            try {
+                acknowledgment.acknowledge();
+            } catch (Throwable throwable) {
+                nackDLTOrders.put(order.getOrderKey().getOrderId(), order);
+                log.error("cannot commit offset for DLT order {}, we will send it to unack topic", order.getOrderKey().getOrderId(), throwable);
+            }
         }
     }
 
@@ -124,10 +130,8 @@ public class OrderConsumer {
     private void catchupCheckout(Order order, boolean isDLT) {
         log.info("catchup checkout for order {}", order.getOrderKey().getOrderId());
         Order processedOrder = catchupOrder.catchUpCheckout(order)
-                .timeout(Duration.ofSeconds(20), Mono.error(new CatchupOrdersException("time out consuming order " + order.getOrderKey().getOrderId())))
                 .block();
 
-        log.info("processedOrder {}", order.toString());
         if (processedOrder.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
                 && !isDLT) {
             throw new PaymentMethodException("error occurred during consuming order to checkout payment for order:" + order.getOrderKey().getOrderId() + " PaymentIntentId: " + order.getPaymentInfo().getPaymentIntentId());
@@ -144,7 +148,6 @@ public class OrderConsumer {
         log.info("catchup confirm checkout for order {}", order.getOrderKey().getOrderId());
 
         Order orderConfirmed = catchupOrder.confirmCheckout(order)
-                .timeout(Duration.ofSeconds(20), Mono.error(new CatchupOrdersException("time out consuming order " + order.getOrderKey().getOrderId())))
                 .block();
 
         if (orderConfirmed.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
@@ -154,9 +157,12 @@ public class OrderConsumer {
         } else if (orderConfirmed.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
                 && isDlt) {
             dltConfirmOrders.putIfAbsent(order.getOrderKey().getOrderId(), order);
+            return;
         }
-    }
 
+        dltConfirmOrders.remove(order.getOrderKey().getOrderId());
+
+    }
 
 
     private boolean acknowledgeAlreadyProcessedOrders(Order order, Acknowledgment acknowledgment) {
