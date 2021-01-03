@@ -9,8 +9,14 @@ export {
     getUserPopup,
     closeUserModalAndRedirectBack,
     addUserClicked,
-    saveUser
+    saveUser,
+    subscribedUsers
 } from './user';
+
+export {
+    subscriptionUsers,
+    subscriptionUsersSuccess
+} from './email';
 
 export {
     ordersByMonth,

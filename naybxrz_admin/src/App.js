@@ -16,6 +16,7 @@ import Bulk from "./containers/Products/Bulk/Bulk";
 import ManageUsers from "./containers/Users/Manage/ManageUsers";
 import EditUser from "./containers/Users/EditUser/EditUser";
 import AddUser from "./containers/Users/AddUser/AddUser";
+import Subscription from "./containers/Email/Subscription/Subscription";
 
 function App() {
     return (
@@ -34,6 +35,7 @@ function App() {
             <PrivateRoute path='/manageUsers' exact component={ManageUsers} />
             <PrivateRoute path='/user/:email' exact component={EditUser} />
             <PrivateRoute path='/user/new' exact component={AddUser} />
+            <PrivateRoute path='/subscribedUsers' exact component={Subscription} />
 
         </div>
     );

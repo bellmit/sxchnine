@@ -213,3 +213,40 @@ export const saveUser = (user, history) => {
             })
     }
 };
+
+const subscribedUsersLoading = (loading) => {
+    return {
+        type: actions.USER_SUBSCRIPTION_START,
+        subscribedUserLoading: loading
+    }
+};
+
+const subscribedUsersSuccess = (response) => {
+    return {
+        type: actions.USER_SUBSCRIPTION_SUCCESS,
+        subscribedUsersNumber: response
+    }
+};
+
+const subscribedUsersFail = (error) => {
+    return {
+        type: actions.USER_SUBSCRIPTION_FAIL,
+        subscribedUsersFail: error
+    }
+};
+
+export const subscribedUsers = () => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(subscribedUsersLoading(true));
+        axios.get('/user/subscription/subscriptions')
+            .then(response => {
+                dispatch(subscribedUsersSuccess(response.data.length));
+                dispatch(subscribedUsersLoading(false));
+            })
+            .catch(error => {
+                dispatch(subscribedUsersLoading(false));
+                dispatch(subscribedUsersFail(error));
+            })
+    }
+};

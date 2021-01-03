@@ -18,7 +18,12 @@ const initialState = {
 
     saveUserLoading: false,
     saveUserSuccess: '',
-    saveUserError: undefined
+    saveUserError: undefined,
+
+    subscribedUserLoading: false,
+    subscribedUsersNumber: 0,
+    subscribedUsersFail: undefined
+
 
 }
 
@@ -104,6 +109,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 saveUserSuccess: action.saveUserSuccess
+            };
+        case actions.USER_SUBSCRIPTION_START:
+            return {
+                ...state,
+                subscribedUserLoading: action.subscribedUserLoading
+            };
+        case actions.USER_SUBSCRIPTION_SUCCESS:
+            return {
+                ...state,
+                subscribedUsersNumber: action.subscribedUsersNumber
+            };
+        case actions.USER_SUBSCRIPTION_FAIL:
+            return {
+                ...state,
+                subscribedUsersFail: action.subscribedUsersFail
             };
         default:
             return state;

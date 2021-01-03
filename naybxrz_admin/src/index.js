@@ -15,12 +15,14 @@ import authentication from './store/reducers/authentication';
 import user from './store/reducers/user';
 import orders from './store/reducers/orders';
 import products from './store/reducers/products';
+import email from './store/reducers/email';
 
 const reducers = combineReducers({
     authentication: authentication,
     user: user,
     orders: orders,
-    products: products
+    products: products,
+    email: email
 });
 
 const encryptor = encryptTransform({

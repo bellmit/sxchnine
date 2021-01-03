@@ -3,7 +3,7 @@ import axios from 'axios';
 const instance = axios.create({
     //baseURL: 'http://192.168.64.4:30382'
     //baseURL: 'http://localhost:9090'
-    baseURL: 'http://192.168.1.68:9090'
+    baseURL: 'http://192.168.1.67:9090'
 });
 
 instance.CancelToken = axios.CancelToken;
