@@ -11,6 +11,7 @@ import {
 } from './utils';
 import {Dimmer, Label, Loader} from "semantic-ui-react";
 import * as actions from "../../store/actions";
+import uuid from "uuid/v1";
 
 class Card extends PureComponent {
     state = {
@@ -76,11 +77,11 @@ class Card extends PureComponent {
             && this.state.name !== ''
             && this.state.expiry !== ''
             && this.state.cvc !== '') {
-
-            console.log(this.props);
-            console.log('----> products to order');
-            console.log(this.createOrder());
             this.props.processOrder(this.createOrder(), this.props.history);
+
+            if (this.props.keepInfo){
+                this.props.saveUser(this.createUser());
+            }
         }
 
     };
@@ -102,6 +103,8 @@ class Card extends PureComponent {
                 type: 'card'
             },
             userAddress: {
+                firstName: this.props.firstName,
+                lastName: this.props.lastName,
                 address: this.props.num + ' ' + this.props.avenue,
                 postalCode: this.props.postalCode,
                 city: this.props.city,
@@ -112,6 +115,22 @@ class Card extends PureComponent {
             total: this.props.total
         }
     }
+
+    createUser() {
+        return {
+            id: uuid(),
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            email: this.props.email,
+            address: {
+                number: this.props.num,
+                address: this.props.avenue,
+                city: this.props.city,
+                postalCode: this.props.postalCode,
+                country: this.props.country
+            }
+        }
+    };
 
     generateId(){
         return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
@@ -215,7 +234,8 @@ const mapStateToProps = state => {
 
 const dispatchToProps = dispatch => {
     return {
-        processOrder: (productsToOrder, history) => dispatch(actions.order(productsToOrder, history))
+        processOrder: (productsToOrder, history) => dispatch(actions.order(productsToOrder, history)),
+        saveUser: (user) => dispatch(actions.saveUser(user))
     }
 };
 

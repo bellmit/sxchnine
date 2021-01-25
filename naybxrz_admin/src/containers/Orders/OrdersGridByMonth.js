@@ -7,6 +7,10 @@ import './OrdersGridByMonth.css';
 
 class OrdersGridByMonth extends PureComponent {
 
+    componentDidMount() {
+        this.props.callOrdersByMonth();
+    }
+
     handleOrder = (orderId) => this.props.getOrderById(orderId, this.props.history);
 
     render() {
@@ -304,6 +308,7 @@ const mapStateToProps = state => {
 const dispatchToProps = dispatch => {
     return {
         getOrderById: (orderId, history) => dispatch(actions.orderById(orderId, history)),
+        callOrdersByMonth: () => dispatch(actions.ordersByMonth()),
     }
 }
 

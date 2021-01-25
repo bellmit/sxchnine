@@ -2,6 +2,7 @@ package com.project.controller;
 
 import com.project.business.EmailContactSender;
 import com.project.business.SubscriptionService;
+import com.project.business.UpdatesService;
 import com.project.model.Contact;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ public class EmailController {
 
     private final EmailContactSender emailContactSender;
     private final SubscriptionService subscriptionService;
+    private final UpdatesService updatesService;
 
     @PostMapping("/contact")
     public void sendEmail(@RequestBody Contact contact) {
@@ -23,5 +25,10 @@ public class EmailController {
     @PostMapping("/subscriptions")
     public void sendEmailToSubscribers() {
         subscriptionService.sendEmailToSubscribers();
+    }
+
+    @PostMapping("/updateUsers")
+    public void sendUpdateToUsers() {
+        updatesService.sendEmailUpdatesToAllUsers();
     }
 }

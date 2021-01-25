@@ -1,6 +1,14 @@
 import axios from './../../axios/axios';
 import {store} from "../../index";
 import * as actions from './actions';
+import {
+    GET_USERS_FAIL,
+    GET_USERS_START,
+    GET_USERS_SUCCESS,
+    USER_UPDATES_FAIL,
+    USER_UPDATES_START,
+    USER_UPDATES_SUCCESS
+} from "./actions";
 
 const setAxiosToken = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
@@ -247,6 +255,44 @@ export const subscribedUsers = () => {
             .catch(error => {
                 dispatch(subscribedUsersLoading(false));
                 dispatch(subscribedUsersFail(error));
+            })
+    }
+};
+
+const getUsersStart = (loading) => {
+    return {
+        type: GET_USERS_START,
+        getUsersLoading: loading
+    }
+}
+
+const getUsersFail = (error) => {
+    return {
+        type: GET_USERS_FAIL,
+        getUsersFail: error
+    }
+}
+
+const getUsersSuccess = (data) => {
+    return {
+        type: GET_USERS_SUCCESS,
+        getUsersNumber: data
+    }
+};
+
+export const getUsers = () => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(getUsersStart(true));
+        axios.get('/user/users')
+            .then(response => {
+                dispatch(getUsersSuccess(response.data.length));
+                dispatch(getUsersFail(undefined));
+                dispatch(getUsersStart(false));
+            })
+            .catch(error => {
+                dispatch(getUsersStart(false));
+                dispatch(getUsersFail(error));
             })
     }
 };

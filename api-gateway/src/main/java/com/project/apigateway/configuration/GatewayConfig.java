@@ -15,7 +15,8 @@ public class GatewayConfig {
         http
                 .csrf().disable()
                 .authorizeExchange()
-                .pathMatchers("/index", "/oauth2/authorization/**, /authorize/**, /login/**").permitAll()
+                .pathMatchers("/index", "/oauth2/authorization/**", "/authorize/**", "/login/**", "/order/ordersNotification","/auth/**", "/actuator/**", "/status/**" )
+                .permitAll()
                 .anyExchange()
                 .authenticated()
                 .and()

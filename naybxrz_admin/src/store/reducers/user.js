@@ -22,8 +22,11 @@ const initialState = {
 
     subscribedUserLoading: false,
     subscribedUsersNumber: 0,
-    subscribedUsersFail: undefined
+    subscribedUsersFail: undefined,
 
+    getUsersLoading: false,
+    getUsersFail: undefined,
+    getUsersNumber: 0
 
 }
 
@@ -89,6 +92,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 getUserError: action.getUserError
+            };
+        case actions.GET_USERS_START:
+            return {
+                ...state,
+                getUsersLoading: action.getUsersLoading
+            };
+        case actions.GET_USERS_SUCCESS:
+            return {
+                ...state,
+                getUsersNumber: action.getUsersNumber
+            };
+        case actions.GET_USERS_FAIL:
+            return {
+                ...state,
+                getUsersFail: action.getUsersFail
             };
         case actions.GET_USER_POPUP:
             return {

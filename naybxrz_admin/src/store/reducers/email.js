@@ -3,7 +3,11 @@ import * as actions from './../actions/actions';
 const initialState = {
     subscriptionLoading: false,
     subscriptionUsersSuccess: false,
-    subscriptionUsersFail: undefined
+    subscriptionUsersFail: undefined,
+
+    sendUpdatesToUsersLoading: false,
+    sendUpdatesToUsersSuccess: false,
+    sendUpdatesToUsersFail: undefined
 }
 
 const reducer = (state = initialState, action) => {
@@ -22,6 +26,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 subscriptionUsersFail: action.subscriptionUsersFail
+            };
+        case actions.USER_UPDATES_START:
+            return {
+                ...state,
+                sendUpdatesToUsersLoading: action.sendUpdatesToUsersLoading
+            };
+        case actions.USER_UPDATES_SUCCESS:
+            return {
+                ...state,
+                sendUpdatesToUsersSuccess: action.sendUpdatesToUsersSuccess
+            };
+        case actions.USER_UPDATES_FAIL:
+            return {
+                ...state,
+                sendUpdatesToUsersFail: action.sendUpdatesToUsersFail
             };
         default:
             return state;

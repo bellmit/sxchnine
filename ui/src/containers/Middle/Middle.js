@@ -9,9 +9,9 @@ class Middle extends Component {
     state = {
         images: [
             { id: 1, name: 'Biggie smalls ', url: 'BiggieSmalls.jpeg' },
-            { id: 2, name: 'Paris Week end', url: 'ParisWeekend.jpeg' },
-            { id: 3, name: 'Mike Tyson Wu', url: 'Wu_Tyson.jpeg' },
-            { id: 4, name: 'Paris Tyson Montreal', url: 'ParisStairs.jpeg' }
+            { id: 16, name: 'Paris Week end', url: 'ParisWeekend.jpeg' },
+            { id: 22, name: 'Tupac 2Pac Mike Tyson Wu', url: 'Wu_Tyson.jpeg' },
+            { id: 20, name: 'Paris Tyson Montreal', url: 'ParisStairs.jpeg' }
         ]
     }
     render() {

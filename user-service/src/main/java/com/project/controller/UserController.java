@@ -16,6 +16,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/users")
+    public Flux<User> getUsers(){
+        return userService.getUsers();
+    }
+
     @GetMapping("/email/{email:.+}")
     public Mono<User> getUserByEmail(@PathVariable String email){
         return userService.getUserByEmail(email);

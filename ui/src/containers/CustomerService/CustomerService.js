@@ -13,7 +13,7 @@ const customerService = (props) => {
                     <Aux>
                         <p className="Customer-Message-Text-p2-div">
                             <Icon name="phone" />
-                             To call our customer service: +1 438-925-8181
+                             To call our customer service: +1 438-925-8184
                         </p>
                         <p className="Customer-Message-Text-p2-div">
                             We will be glad to answer all your questions.
@@ -23,7 +23,7 @@ const customerService = (props) => {
                     <Aux>
                         <p className="Customer-Message-Text-p2-div">
                             <Icon name="mail" />
-                            To send an urgent email: support@gotit.com
+                            To send an urgent email: contact@naybxrz.com
                         </p>
                         <p className="Customer-Message-Text-p2-div">
                             We will answer you within 24h.

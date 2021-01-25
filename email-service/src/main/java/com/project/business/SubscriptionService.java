@@ -24,7 +24,7 @@ public class SubscriptionService {
 
     private List<Subscription> getSubscribedUsers() {
         return Objects.requireNonNull(webClient.get()
-                .uri("/subscriptions")
+                .uri("/subscription/subscriptions")
                 .retrieve()
                 .toEntityList(Subscription.class)
                 .block())

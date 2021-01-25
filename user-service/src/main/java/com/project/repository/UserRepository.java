@@ -1,6 +1,7 @@
 package com.project.repository;
 
 import com.project.model.User;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface UserRepository {
@@ -12,5 +13,7 @@ public interface UserRepository {
     Mono<Void> deleteUserById(String id);
 
     Mono<Void> deleteUserByEmail(String email);
+
+    Flux<User> findAll();
 
 }

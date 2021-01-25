@@ -5,7 +5,7 @@
         <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>
-                    %d{HH:mm:ss.SSS} | %5p | %logger{25} | %m%n
+                    %d{HH:mm:ss.SSS} | %5p | %t | %logger{25} | %m%n
                 </pattern>
                 <charset>utf8</charset>
             </encoder>
@@ -16,7 +16,6 @@
         </root>
     </springProfile>
 
-    <springProfile name="production">
     <springProperty scope="context" name="application_name" source="spring.application.name"/>
     <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
@@ -61,6 +60,5 @@
     <root level="INFO">
         <appender-ref ref="jsonConsoleAppender"/>
     </root>
-    </springProfile>
 
 </configuration>

@@ -17,6 +17,7 @@
     width: 52%;
     margin: 13% 20% 20% 24%;
     position: absolute;
+    box-shadow: 2px 2px 2px 4px #4c4f52;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
 }
 
 .subscription-main-info{

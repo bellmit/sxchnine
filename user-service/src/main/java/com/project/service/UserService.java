@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -95,5 +96,9 @@ public class UserService {
                     return user;
                 }))
                 .flatMap(userRepository::save);
+    }
+
+    public Flux<User> getUsers(){
+        return userRepository.findAll();
     }
 }

@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {Tabs, Tab, TabPanel, TabList} from 'react-web-tabs';
+import {Tab, TabList, TabPanel, Tabs} from 'react-web-tabs';
 import {Dimmer, Form, Grid, Image, Label, Loader, Modal, Progress} from "semantic-ui-react";
 import Aux from "../../hoc/Aux/Aux";
 import 'react-web-tabs/dist/react-web-tabs.css';
@@ -105,12 +105,17 @@ class TabAccount extends PureComponent {
         }
     }
 
+    trackOrder = (trackingNumber) => {
+        window.open('https://www.canadapost.ca/trackweb/en#/details/'+trackingNumber);
+    }
+
 
     render() {
         const {open} = this.state;
 
         let orderInprogress = <Aux>
-            <Label className="TabAccount-Label-Message" color="red" attached="top right">No order in progress with us for now ... Start picking before is too
+            <Label className="TabAccount-Label-Message" color="red" attached="top right">No order in progress with us
+                for now ... Start picking before is too
                 late -> Go Got it !</Label>
         </Aux>
 
@@ -134,7 +139,8 @@ class TabAccount extends PureComponent {
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <span>
-                                    <Label tag color='red' className="TabAccount-Orders-Grid-Label">${order.total}</Label>
+                                    <Label tag color='red'
+                                           className="TabAccount-Orders-Grid-Label">${order.total}</Label>
                                 </span>
                             </Grid.Column>
                         </Grid.Row>
@@ -145,15 +151,18 @@ class TabAccount extends PureComponent {
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={6} className="TabAccount-Orders-Grid-Row">
-                                {order.orderStatus === 'REFUSED' ? <Progress className="TabAccount-Orders-Message-Progress"
-                                    size='small'
-                                    percent={100}
-                                    error
-                                    indicating> Refused </Progress>: <Progress className="TabAccount-Orders-Message-Progress"
-                                                                               size='small'
-                                                                               percent={this.statusOrder(order.orderStatus)}
-                                                                               indicating>
-                                        <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                {order.orderStatus === 'REFUSED' ?
+                                    <Progress className="TabAccount-Orders-Message-Progress"
+                                              size='small'
+                                              percent={100}
+                                              error
+                                              indicating> Refused </Progress> :
+                                    <Progress className="TabAccount-Orders-Message-Progress"
+                                              size='small'
+                                              percent={this.statusOrder(order.orderStatus)}
+                                              indicating>
+                                        <span
+                                            className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             shipped</span></Progress>}
@@ -191,7 +200,8 @@ class TabAccount extends PureComponent {
         }
 
         let orderConfirmed = <Aux>
-            <Label className="TabAccount-Label-Message" color="red" attached="top right">No history with us for now ... Start picking before is too late ->
+            <Label className="TabAccount-Label-Message" color="red" attached="top right">No history with us for now ...
+                Start picking before is too late ->
                 Go Got it !</Label>
         </Aux>
 
@@ -213,9 +223,10 @@ class TabAccount extends PureComponent {
                                     Order time: {order.orderKey.orderTime}
                                 </span>
                             </Grid.Column>
-                            <Grid.Column width={5} >
+                            <Grid.Column width={5}>
                                 <span>
-                                    <Label tag color='red' className="TabAccount-Orders-Grid-Label">${order.total}</Label>
+                                    <Label tag color='red'
+                                           className="TabAccount-Orders-Grid-Label">${order.total}</Label>
                                 </span>
                             </Grid.Column>
                         </Grid.Row>
@@ -226,18 +237,28 @@ class TabAccount extends PureComponent {
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={6}>
-                                {order.orderStatus === 'REFUSED' ? <Progress className="TabAccount-Orders-Message-Progress"
-                                                                             size='small'
-                                                                             percent={100}
-                                                                             error
-                                                                             indicating> Refused </Progress>: <Progress className="TabAccount-Orders-Message-Progress"
-                                                                                                                        size='small'
-                                                                                                                        percent={this.statusOrder(order.orderStatus)}
-                                                                                                                        indicating>
-                                        <span className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        shipped</span></Progress>}
+                                {order.orderStatus === 'REFUSED' ?
+                                    <Progress className="TabAccount-Orders-Message-Progress"
+                                              size='small'
+                                              percent={100}
+                                              error
+                                              indicating> Refused </Progress> :
+                                    <Progress className="TabAccount-Orders-Message-Progress"
+                                              size='small'
+                                              percent={this.statusOrder(order.orderStatus)}
+                                              indicating>
+                                        <span
+                                            className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            shipped</span></Progress>}
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <span className="TabAccount-Orders-Message">
+                                    Tracking #: <a href='#' onClick={() => this.trackOrder(order.trackingNumber)}>{order.trackingNumber} </a>
+                                </span>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>

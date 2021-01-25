@@ -3,6 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     loading: false,
     error: '',
+    loginFailError: '',
     userAuthenticated: '',
     userAuth: '',
     status: '',
@@ -44,7 +45,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LOGIN_USER_FAIL:
             return {
                 ...state,
-                error: action.error
+                loginFailError: action.loginFailError
             };
         case actionTypes.LOGIN_USER_SUCCESS:
             return {

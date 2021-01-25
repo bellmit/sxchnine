@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import * as actions from './../../store/actions/index';
 import './Gallery.css';
 
 class Gallery extends Component {
 
     redirectToProduct = (id) => {
-        this.props.history.push('/products/'+id);
+        this.props.getProductById(id, this.props.history);
     }
 
     render() {
@@ -14,8 +16,12 @@ class Gallery extends Component {
             </div>
         );
     }
-
-
 }
 
-export default Gallery;
+const dispatchToProps = dispatch => {
+    return {
+        getProductById: (productId, history) => dispatch(actions.loadProduct(productId, history))
+    }
+}
+
+export default connect(null, dispatchToProps)(Gallery);

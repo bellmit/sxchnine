@@ -149,6 +149,24 @@ class EditOrder extends PureComponent {
                                                     className="order-edit-text">{this.props.orderById.paymentInfo.paymentIntentId}</span>
                                         </Grid.Column>
                                     </Grid.Row>
+                                    <Grid.Row>
+                                        <Grid.Column width='3'>
+                                            <span style={{fontWeight: 'bold', fontSize: 'small'}}>First name:</span>
+                                        </Grid.Column>
+                                        <Grid.Column width='3'>
+                                            <span className="order-edit-text">{this.props.orderById.userAddress.firstName}</span>
+                                        </Grid.Column>
+                                        <Grid.Column width='3'>
+                                                <span style={{
+                                                    fontWeight: 'bold',
+                                                    fontSize: 'small'
+                                                }}>Last name:</span>
+                                        </Grid.Column>
+                                        <Grid.Column width='3'>
+                                                <span
+                                                    className="order-edit-text">{this.props.orderById.userAddress.lastName}</span>
+                                        </Grid.Column>
+                                    </Grid.Row>
                                 </Grid>
                             </Segment>
                             <Segment.Group>

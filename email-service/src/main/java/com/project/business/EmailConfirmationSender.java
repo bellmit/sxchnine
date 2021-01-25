@@ -1,7 +1,6 @@
 package com.project.business;
 
 import com.project.model.Order;
-import com.project.utils.PaymentStatusCode;
 import com.sendgrid.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -40,6 +39,7 @@ public class EmailConfirmationSender extends EmailSender<Order> {
         personalization.addDynamicTemplateData("prix", order.getTotal());
         personalization.addDynamicTemplateData("taxe", "11");
         personalization.addTo(emailTo);
+        personalization.addBcc(emailFrom);
 
         Content content = new Content("text/html", "plain");
         Mail mail = new Mail();

@@ -18,7 +18,12 @@ class ShopResume extends Component {
     close = () => this.setState({open: false})
 
     redirectToOrders = () => {
-        this.props.history.push('/checkout');
+        if (this.props.userAuthenticated !== ''){
+            this.props.history.push('/orders');
+        } else {
+            this.props.history.push('/checkout');
+
+        }
     };
 
     removeProduct = (id) => {
@@ -76,7 +81,8 @@ class ShopResume extends Component {
 
 const mapStateToProps = state => {
     return {
-        productsToOrder: state.productsToOrder.productsToOrder
+        productsToOrder: state.productsToOrder.productsToOrder,
+        userAuthenticated: state.users.userAuthenticated
     }
 }
 

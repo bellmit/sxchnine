@@ -21,6 +21,13 @@ const ordersByMonthSuccess = (response) => {
     }
 };
 
+const ordersByMonthCount = (response) => {
+    return {
+        type: actions.ORDERS_BY_MONTH_COUNT,
+        ordersByMonthCount: response
+    }
+};
+
 const ordersByMonthError = (error) => {
     return {
         type: actions.ORDERS_BY_MONTH_FAIL,
@@ -35,6 +42,7 @@ export const ordersByMonth = () => {
         axios.get('/order/lastOrders')
             .then(response => {
                 dispatch(ordersByMonthSuccess(response.data));
+                dispatch(ordersByMonthCount(response.data.length));
                 dispatch(ordersByMonthStart(false));
             })
             .catch(error => {
@@ -42,7 +50,38 @@ export const ordersByMonth = () => {
                 dispatch(ordersByMonthStart(false));
             })
     }
-}
+};
+
+export const ordersNotificationIncrement = () => {
+    return {
+        type: actions.ORDERS_NOTIFICATION_INCREMENT,
+    }
+};
+
+export const ordersNotificationResetSize = () => {
+    return {
+        type: actions.ORDERS_NOTIFICATION_RESET_SIZE,
+    }
+};
+
+export const ordersNotificationData = (data) => {
+    return {
+        type: actions.ORDERS_NOTIFICATION_DATA,
+        ordersNotificationData: data
+    }
+};
+
+
+export const startOrdersNotification = (firstSize) => {
+    return dispatch => {
+        let eventSource = new EventSource('http://localhost:8086/ordersNotification/'+firstSize);
+        eventSource.onmessage = ev => {
+            console.log(JSON.parse(ev.data));
+            dispatch(ordersNotificationData(JSON.parse(ev.data)));
+            dispatch(ordersNotificationIncrement());
+        }
+    }
+};
 
 const ordersNumberSuccess = (response) => {
     return {

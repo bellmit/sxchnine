@@ -10,12 +10,15 @@ export {
     closeUserModalAndRedirectBack,
     addUserClicked,
     saveUser,
-    subscribedUsers
+    subscribedUsers,
+    getUsers
 } from './user';
 
 export {
     subscriptionUsers,
-    subscriptionUsersSuccess
+    subscriptionUsersSuccess,
+    sendUpdatesToUsersSuccess,
+    sendUpdatesToUsers
 } from './email';
 
 export {
@@ -25,7 +28,10 @@ export {
     orderByIdPopup,
     saveOrder,
     searchOrders,
-    closeModalAndRedirectBack
+    closeModalAndRedirectBack,
+    startOrdersNotification,
+    ordersNotificationData,
+    ordersNotificationResetSize
 } from './orders';
 
 export  {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimmer, Form, Grid, Image, Label, Loader} from "semantic-ui-react";
+import {Checkbox, Dimmer, Form, Grid, Image, Label, Loader} from "semantic-ui-react";
 import {connect} from 'react-redux';
 import './Orders.css';
 import OrderPlaceBanner from "../../components/Banner/Banner";
@@ -13,13 +13,16 @@ class Orders extends Component {
     state = {
         open: false,
         total: 0,
+        firstName: '',
+        lastName: '',
         num: '',
         avenue: '',
         city: '',
         postalCode: '',
         country: '',
         email: '',
-        loading: false
+        loading: false,
+        keepInfo: false
 
     };
 
@@ -28,6 +31,8 @@ class Orders extends Component {
         if (this.props.user.email != null) {
             this.props.fetchOrdersHistory(this.props.user.email);
             this.setState({
+                firstName: this.props.user.firstName,
+                lastName: this.props.user.lastName,
                 email: this.props.user.email,
                 num: this.props.user.address.number,
                 avenue: this.props.user.address.address,
@@ -51,8 +56,26 @@ class Orders extends Component {
 
     handleChange = (e, {name, value}) => this.setState({[name]: value})
 
+    toggle = () => this.setState((prevState) => ({ keepInfo: !prevState.keepInfo }))
 
     render() {
+
+        let keepUserInfo = undefined;
+        if (this.props.user === ''){
+            keepUserInfo = <Grid.Row>
+                <Grid.Column>
+                    <Checkbox toggle
+                              checked={this.state.keepInfo}
+                              onChange={this.toggle} />
+                </Grid.Column>
+                <Grid.Column width={5}>
+                    <span className="User-Keep-Info-Text">
+                        Our collections are limited. Our team select only few items.
+                        Agree if we can keep your email and we do our effort to let you know when we bring some new cool stuff.
+                    </span>
+                </Grid.Column>
+            </Grid.Row>
+        }
 
         return (
             <div>
@@ -101,6 +124,22 @@ class Orders extends Component {
                     <Grid centered>
                         <Grid.Row>
                             <Grid.Column width={3}>
+                                <p className="Orders-Email-Text">Personal Info:</p>
+                            </Grid.Column>
+
+                            <Grid.Column width={3}>
+                                <Form.Input inverted placeholder='first name..'
+                                            name='firstName'
+                                            value={this.state.firstName}
+                                            onChange={this.handleChange}/>
+                                <Form.Input inverted placeholder='last name..'
+                                            name='lastName'
+                                            value={this.state.lastName}
+                                            onChange={this.handleChange}/>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={3}>
                                 <p className="Orders-Email-Text">EMAIL ADDRESS:</p>
                             </Grid.Column>
 
@@ -140,18 +179,22 @@ class Orders extends Component {
                                             onChange={this.handleChange}/>
                             </Grid.Column>
                         </Grid.Row>
+                        {keepUserInfo}
                         <Grid.Row>
                             <span className="Orders-Yellow-second-bar-div"/>
                         </Grid.Row>
                     </Grid>
                     <Card {...this.props}
+                          firstName={this.state.firstName}
+                          lastName={this.state.lastName}
                           email={this.state.email}
                           num={this.state.num}
                           avenue={this.state.avenue}
                           city={this.state.city}
                           postalCode={this.state.postalCode}
                           country={this.state.country}
-                          total={this.state.total}/>
+                          total={this.state.total}
+                          keepInfo={this.state.keepInfo}/>
                     <div className="Orders-footer">
                         <Contact/>
                     </div>

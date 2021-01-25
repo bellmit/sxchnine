@@ -42,7 +42,8 @@ export {
     loginUser,
     changePassword,
     signOffUser,
-    subscribeUser
+    subscribeUser,
+    subscribeUserSuccess
 } from './users';
 
 export {

@@ -59,11 +59,11 @@ class Checkout extends Component {
                 <Grid centered className="Checkout-Grid">
                     <Grid.Row floated='left'>
                         <Grid.Column width={6} floated='left'>
-                            <p className="Checkout-Message-Text">New to Got it ?!</p>
+                            <p className="Checkout-Message-Text">New to Naybxrz ?!</p>
                         </Grid.Column>
 
                         <Grid.Column width={6} floated='right'>
-                            <p className="Checkout-Message-Text">Got it Member?!</p>
+                            <p className="Checkout-Message-Text">Naybxrz Member?!</p>
                             <Account />
                         </Grid.Column>
                     </Grid.Row>
@@ -127,7 +127,7 @@ class Checkout extends Component {
                                                onChange={this.handleChange}
                                         />
                                     </Grid.Column>
-                                    {this.props.error !== '' && <Label color="red">{this.props.error}</Label>}
+                                    {this.props.userError !== undefined && <Label color="red">{this.props.userError.message}</Label>}
                                 </Grid.Row>
                                 <Grid.Row centered>
                                     <button className="Checkout-Continue-Button" onClick={this.login}>
@@ -160,7 +160,7 @@ const mapStateToProps = state => {
         userAuth: state.users.userAuth,
         status: state.users.status,
         loading: state.users.loading,
-        error: state.users.error
+        userError: state.users.loginFailError
     }
 };
 

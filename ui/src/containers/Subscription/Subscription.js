@@ -3,11 +3,14 @@ import {connect} from 'react-redux';
 import {Button, Embed, Form, Grid} from "semantic-ui-react";
 import story from './story.png';
 import storyMobile from './story-resize.png';
-import manifesto from './manifesto.png';
+import placeholder1 from './placeholder1.png';
 import './Subscription.css';
-import naybxrzVideo from './Nqybxrz_V1.mp4';
+import naybxrzVideo from './Naybxrz-Teaser1.mp4';
+/*
+import naybxrzVideo from './GOt_IT3.mp4';
+*/
 import * as actions from './../../store/actions/index';
-import {isMobile, isTablet} from 'react-device-detect';
+import {isMobile} from 'react-device-detect';
 
 class Subscription extends Component {
 
@@ -17,13 +20,16 @@ class Subscription extends Component {
     }
 
     componentDidMount() {
+        this.props.subscribeUserSuccess('');
     }
 
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     subscribeUser = () => {
-        this.props.subscribeUser(this.createUser());
-        this.setState({email: '', showMessage: true});
+        if (this.state.email !== ''){
+            this.props.subscribeUser(this.createUser());
+            this.setState({email: '', showMessage: true});
+        }
     }
 
     createUser() {
@@ -35,7 +41,7 @@ class Subscription extends Component {
     render() {
 
         let added = undefined
-        if (this.props.subscribedUser !== '' && this.props.subscribedUser !== '') {
+        if (this.props.subscribedUser !== '') {
             added = <span className="subscription-main-info-added-text" aria-label="{'\u1F64C'}">
                 Aiight ! We let you know <span role="img" aria-label="emoji">{String.fromCodePoint(0x1F64C)}</span>
             </span>
@@ -57,7 +63,7 @@ class Subscription extends Component {
                 <Embed id="9I7IJtgk2xM"
                     //source="youtube"
                        url={naybxrzVideo}
-                       placeholder={manifesto}
+                       placeholder={placeholder1}
                 />
             </div>
             <div className="subscription-main-info">
@@ -101,7 +107,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        subscribeUser: (user) => dispatch(actions.subscribeUser(user))
+        subscribeUser: (user) => dispatch(actions.subscribeUser(user)),
+        subscribeUserSuccess: (user) => dispatch(actions.subscribeUserSuccess(user))
     }
 }
 

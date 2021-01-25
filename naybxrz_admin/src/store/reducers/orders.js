@@ -2,10 +2,14 @@ import * as actions from '../actions/actions';
 
 const initialState = {
     ordersByMonth: [],
+    ordersByMonthCount: 0,
     ordersNumber: '',
     loading: false,
     ordersByMonthError: '',
     ordersNumbersError: '',
+
+    ordersNotificationData: [],
+    ordersNotificationCount: 0,
 
     orderByIdLoading: false,
     orderById: '',
@@ -37,6 +41,28 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ordersByMonthError: action.ordersByMonthError
+            };
+        case actions.ORDERS_BY_MONTH_COUNT:
+            return {
+                ...state,
+                ordersByMonthCount: action.ordersByMonthCount
+            };
+        case actions.ORDERS_NOTIFICATION_DATA:
+            let oldOrders = [...state.ordersNotificationData];
+            let newOrdersList = oldOrders.concat(action.ordersNotificationData);
+            return {
+                ...state,
+                ordersNotificationData: newOrdersList
+            };
+        case actions.ORDERS_NOTIFICATION_INCREMENT:
+            return {
+                ...state,
+                ordersNotificationCount: state.ordersNotificationCount + 1
+            };
+        case actions.ORDERS_NOTIFICATION_RESET_SIZE:
+            return {
+                ...state,
+                ordersNotificationCount: 0
             };
         case actions.ORDERS_NUMBERS_SUCCESS:
             return {

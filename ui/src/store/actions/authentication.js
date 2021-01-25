@@ -3,7 +3,7 @@ import auth from '../../axios/auth';
 
 export const authenticate = () => {
     return dispatch => {
-        auth.get('/authenticate')
+        auth.get('/auth/authenticate')
             .then(response => {
                 dispatch(authenticateSuccess(response.data));
                 //localStorage.setItem("access_token", response.data["access_token"]);

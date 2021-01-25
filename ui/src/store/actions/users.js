@@ -142,7 +142,7 @@ export const loginUserSuccess = (response) => {
 export const loginUserFail = (error) => {
     return {
         type: actionTypes.LOGIN_USER_FAIL,
-        error: error
+        loginFailError: error
     }
 };
 
@@ -193,7 +193,7 @@ const subscribeUserStart = (loading) => {
     }
 };
 
-const subscribeUserSuccess = (user) => {
+export const subscribeUserSuccess = (user) => {
     return {
         type: actionTypes.SUBSCRIBE_USER_SUCCESS,
         subscribeUserSuccess: user

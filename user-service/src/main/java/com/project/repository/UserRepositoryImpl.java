@@ -4,6 +4,7 @@ import com.project.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -42,5 +43,10 @@ public class UserRepositoryImpl implements UserRepository {
     public Mono<Void> deleteUserByEmail(String email) {
         return reactiveRedisTemplate.opsForHash().remove(redisHash, email)
                 .then();
+    }
+
+    @Override
+    public Flux<User> findAll() {
+        return reactiveRedisTemplate.opsForHash().values(redisHash).map(o -> (User)o);
     }
 }

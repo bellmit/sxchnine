@@ -5,7 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,7 +78,6 @@ public class KafkaConfig {
         return getStringOrderConcurrentKafkaListenerContainerFactory(kafkaOperations);
     }
 
-    @NotNull
     private ConcurrentKafkaListenerContainerFactory<String, Order> getStringOrderConcurrentKafkaListenerContainerFactory(KafkaOperations<String, Order> kafkaOperations) {
         ConcurrentKafkaListenerContainerFactory<String, Order> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());

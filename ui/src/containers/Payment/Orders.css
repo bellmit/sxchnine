@@ -39,6 +39,20 @@
     text-transform: uppercase;
 }
 
+.User-Keep-Info-Text{
+    font-family: Anton;
+    font-size: 0.8vw;
+    text-transform: lowercase;
+}
+
+.ui.toggle.checkbox input:focus:checked~label:before {
+    background-color: orangered !important;
+}
+
+.ui.toggle.checkbox input:checked~label:before {
+    background-color: orangered !important;
+}
+
 .Orders-Total-Text{
     font-family: Anton;
     font-size: 1.2vw;

@@ -19,7 +19,7 @@ class AdminMenu extends PureComponent {
             this.setState({activeItem: 'bulkProducts'});
         } else if (this.props.history.location.pathname === '/manageUsers'){
             this.setState({activeItem: 'manageUsers'});
-        } else if (this.props.history.location.pathname === '/subscribedUsers'){
+        } else if (this.props.history.location.pathname === '/emails'){
             this.setState({activeItem: 'newsletter'});
         }
     }
@@ -48,7 +48,7 @@ class AdminMenu extends PureComponent {
         } else if (name === 'manageUsers') {
             this.props.history.push('/manageUsers');
         } else if (name === 'newsletter'){
-            this.props.history.push('/subscribedUsers')
+            this.props.history.push('/emails')
         }
     }
 

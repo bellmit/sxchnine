@@ -8,12 +8,17 @@ import com.project.model.OrderId;
 import com.project.model.PaymentResponse;
 import com.project.model.admin.OrdersNumber;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class OrderController {
 
     private final OrderService orderService;
@@ -22,6 +27,12 @@ public class OrderController {
 
     private final OrderStatusService orderStatusService;
 
+
+    @GetMapping(value = "/ordersNotification/{ordersSize}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Order> getOrdersNotification(@PathVariable int ordersSize,
+                                             @RequestParam(required = false) String date){
+        return orderStatusService.getPeriodicOrders(date, ordersSize);
+    }
 
     @GetMapping("/lastOrders")
     public Flux<Order> getLastOrders(@RequestParam(required = false) String date){

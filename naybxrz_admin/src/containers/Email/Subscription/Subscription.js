@@ -7,26 +7,29 @@ import './Subscription.css';
 class Subscription extends PureComponent {
 
     state = {
-        open: false
+        openSubscription: false
     }
 
     componentDidMount() {
         this.props.subscribedUsers();
+        this.props.getUsers();
         this.props.resetSubscriptionSent(false);
+        this.props.resetSendUpdatesToUsers(false);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.props.subscribedUsers();
+        this.props.getUsers();
     }
 
-    show = () => this.setState({open: true})
+    showSubscription = () => this.setState({openSubscription: true})
 
-    handleConfirm = () => {
+    handleConfirmSubscription = () => {
         this.props.sendEmailToSubscribers();
-        this.setState({open: false})
+        this.setState({openSubscription: false})
     }
 
-    handleCancel = () => this.setState({open: false})
+    handleCancel = () => this.setState({openSubscription: false})
 
     render() {
 
@@ -36,10 +39,11 @@ class Subscription extends PureComponent {
         }
 
         return (
-            <div className="main-subscription-div">
+            <div>
                 <Dimmer active={this.props.subscriptionLoading} page>
                     <Loader content='Sending...'/>
                 </Dimmer>
+
                 <Card>
                     <Card.Content>
                         <Card.Header>
@@ -57,14 +61,14 @@ class Subscription extends PureComponent {
                         </Card.Description>
                         <Card.Content extra>
                             <div className='ui two buttons'>
-                                <Button basic color='green' onClick={this.show}>
+                                <Button basic color='green' onClick={this.showSubscription}>
                                     Send
                                 </Button>
                                 <Confirm
-                                    open={this.state.open}
+                                    open={this.state.openSubscription}
                                     content='Are you sure to send update to all the subscribers?'
                                     onCancel={this.handleCancel}
-                                    onConfirm={this.handleConfirm}
+                                    onConfirm={this.handleConfirmSubscription}
                                 />
                             </div>
                         </Card.Content>
@@ -82,7 +86,11 @@ const mapStateToProps = state => {
     return {
         subscribedUsersNumber: state.user.subscribedUsersNumber,
         subscriptionLoading: state.email.subscriptionLoading,
-        subscriptionUsersSuccess: state.email.subscriptionUsersSuccess
+        subscriptionUsersSuccess: state.email.subscriptionUsersSuccess,
+
+        usersNumber: state.user.getUsersNumber,
+        sendUpdatesToUsersLoading: state.email.sendUpdatesToUsersLoading,
+        sendUpdatesToUsersSuccess: state.email.sendUpdatesToUsersSuccess
     }
 }
 
@@ -90,7 +98,11 @@ const dispatchToProps = dispatch => {
     return {
         subscribedUsers: () => dispatch(actions.subscribedUsers()),
         sendEmailToSubscribers: () => dispatch(actions.subscriptionUsers()),
-        resetSubscriptionSent: (flag) => dispatch(actions.subscriptionUsersSuccess(flag))
+        resetSubscriptionSent: (flag) => dispatch(actions.subscriptionUsersSuccess(flag)),
+
+        getUsers: () => dispatch(actions.getUsers()),
+        sendUpdatesToUsers: () => dispatch(actions.sendUpdatesToUsers()),
+        resetSendUpdatesToUsers: (flag) => dispatch(actions.sendUpdatesToUsersSuccess(flag))
     }
 }
 

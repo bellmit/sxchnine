@@ -36,7 +36,7 @@ class UserAccount extends Component {
                 </span>
 
                 <div className="UserTabAccount-Container">
-                    <TabAccount />
+                    <TabAccount {...this.props} />
 
                     <div className="UserTabAccount-Empty-Div"/>
 
