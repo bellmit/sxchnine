@@ -37,15 +37,15 @@ class Tracking extends Component {
 
         if (this.props.trackOrders.length > 0){
             trackOrders = this.props.trackOrders.map((order, index) => (
-                    <Grid key={index}>
+                    <Grid key={index} className="Tracking-Grid-Result">
                         <Grid.Row>
                             <Grid.Column width={5}>
-                                <span className="Tracking-Order-Message">
+                                <span className="Tracking-Order-Message-Inline">
                                     Order ID: {order.orderKey.orderId}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={6}>
-                                <span className="Tracking-Order-Message">
+                                <span className="Tracking-Order-Message-Inline">
                                     Order time: {order.orderKey.orderTime}
                                 </span>
                             </Grid.Column>

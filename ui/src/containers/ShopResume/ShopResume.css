@@ -43,8 +43,8 @@
     display: block;
     float: right;
     right: 10%;
-    width: 5% !important;
-    height: 5%;
+    width: 3% !important;
+    height: 3%;
     position: absolute;
 }
 
@@ -52,10 +52,18 @@
     display: block;
     float: right;
     right: 10%;
-    width: 6% !important;
-    height: 6%;
+    width: 4% !important;
+    height: 4%;
     position: absolute;
     cursor: pointer;
+}
+
+.Message-No-Items{
+    padding-top: 20%;
+    padding-left: 50%;
+    text-align: center;
+    font-family: "Anton";
+    font-size: 4vw;
 }
 
 

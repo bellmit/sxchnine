@@ -1,31 +1,31 @@
 .Connexion-Button{
-    background: url('./user.png');
     position: fixed;
-    width: 38px;
-    height: 32px;
-    left: 18px;
-    top: 90px;
+    width: 40px;
+    height: 35px;
+    left: 22px;
+    top: 125px;
     border-image: 0;
     border: 0;
+    z-index: 1;
 }
 .Connexion-Button:hover{
     color: rgb(255, 240, 36);
     border-color: rgb(255, 240, 36);
     position: fixed;
-    width: 38px;
-    height: 32px;
-    left: 18px;
-    top: 90px;
+    width: 40px;
+    height: 35px;
+    left: 22px;
+    top: 125px;
     cursor: pointer;
 }
 .Connexion-Button:focus{
     color: rgb(255, 240, 36);
     border-color: rgb(255, 240, 36);
     position: fixed;
-    width: 38px;
-    height: 32px;
-    left: 20px;
-    top: 110px;
+    width: 40px;
+    height: 35px;
+    left: 22px;
+    top: 135px;
 }
 .Connexion-Message-Text{
     font-family: Anton;
@@ -65,8 +65,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         border-image: 0;
         border: 0;
     }
@@ -76,8 +76,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         cursor: pointer;
     }
     .Connexion-Button:focus{
@@ -86,8 +86,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
     }
     .Connexion-Text-Button {
         font-family: Anton;
@@ -107,8 +107,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         border-image: 0;
         border: 0;
     }
@@ -118,8 +118,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         cursor: pointer;
     }
     .Connexion-Button:focus{
@@ -128,8 +128,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
     }
     .Connexion-Text-Button {
         font-family: Anton;
@@ -149,8 +149,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         border-image: 0;
         border: 0;
     }
@@ -160,8 +160,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         cursor: pointer;
     }
     .Connexion-Button:focus{
@@ -170,8 +170,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
     }
     .Connexion-Text-Button {
         font-family: Anton;
@@ -191,8 +191,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         border-image: 0;
         border: 0;
     }
@@ -202,8 +202,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
         cursor: pointer;
     }
     .Connexion-Button:focus{
@@ -212,8 +212,8 @@
         position: fixed;
         width: 30px;
         height: 28px;
-        left: 18px;
-        top: 80px;
+        left: 22px;
+        top: 105px;
     }
     .Connexion-Text-Button {
         font-family: Anton;

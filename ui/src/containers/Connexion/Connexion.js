@@ -1,18 +1,28 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
+import { withRouter } from 'react-router';
 import {Dimmer, Form, Label, Loader, Popup} from "semantic-ui-react";
 import './Connexion.css';
 import Aux from '../../hoc/Aux/Aux';
-import user from './user.png';
+import user from './user2_yellow.png';
+import userBlack from './user2_black.png';
 import * as actions from "../../store/actions";
 
-
-class Connexion extends Component {
+class Connexion extends PureComponent {
 
     state = {
         open: false,
         email: '',
-        password: ''
+        password: '',
+        path: ''
+    }
+
+    componentDidMount() {
+        this.setState({path: this.props.history.location.pathname});
+    }
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        this.setState({path: this.props.history.location.pathname});
     }
 
     show = (size) => () => this.setState({size, open: true});
@@ -30,12 +40,28 @@ class Connexion extends Component {
         if (this.props.userAuthenticated !== ''){
             this.props.fetchOrdersHistory(this.props.userAuthenticated.email);
             this.props.history.push('/userAccount');
-
         }
     }
 
 
     render() {
+
+        let userIcon = <img src={user}
+                            alt="connexion"
+                            onClick={this.checkIfAuthenticatedAndRedirect}
+                            className="Connexion-Button"/>
+        if (this.state.path === '/men'
+            || this.state.path === '/women'
+            || this.state.path.startsWith('/products/')
+            || this.state.path === '/checkout'
+            || this.state.path === '/orders') {
+
+            userIcon = <img src={userBlack}
+                            alt="connexion"
+                            onClick={this.checkIfAuthenticatedAndRedirect}
+                            className="Connexion-Button"/>
+        }
+
         return (
             <Aux>
                 <Dimmer active={this.props.loading} page>
@@ -45,10 +71,7 @@ class Connexion extends Component {
 
                     <Popup pinned on='click'
                            position="bottom center"
-                           trigger={ <img src={user}
-                                          alt="connexion"
-                                          onClick={this.checkIfAuthenticatedAndRedirect}
-                                          className="Connexion-Button"/>}>
+                           trigger={userIcon}>
 
                     <Popup.Content>
                         <Form className="Connexion-div">
@@ -103,5 +126,5 @@ const dispatchProps = dispatch => {
         fetchOrdersHistory: (email) => dispatch(actions.fetchOrdersHistory(email))
     }
 }
-
-export default connect(mapStateToProps, dispatchProps)(Connexion);
+const ConnexionWithRouter = withRouter(Connexion);
+export default connect(mapStateToProps, dispatchProps)(ConnexionWithRouter);

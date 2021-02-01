@@ -18,9 +18,6 @@
 }
 
 @media only screen and (max-width: 414px) {
-    .Got-it-logo{
-        position: fixed;
-    }
     .shipping-img{
         height: auto;
         width: 100% !important;

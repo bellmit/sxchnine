@@ -26,9 +26,6 @@ class Products extends Component {
     }
 
     componentDidMount() {
-        console.log("Products.js did mount");
-        console.log(this.props);
-
         if (this.props.location.pathname === '/men') {
             this.props.clearProducts();
             this.props.loadProducts(0, 9, 'M');
@@ -41,12 +38,8 @@ class Products extends Component {
         this.props.loadSize();
     }
 
-    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
-        console.log('Products.js did update');
-    }
-
     searchProducts = (event) => {
-        if (event.target.value === ''){
+        if (event.target.value === '') {
             if (this.props.location.pathname === '/men') {
                 this.props.loadProducts(0, 9, 'M');
             } else if (this.props.location.pathname === '/women') {
@@ -68,11 +61,12 @@ class Products extends Component {
         }))
     };
 
-    handleChangeGender = (e, { value }) => this.setState({ value,
+    handleChangeGender = (e, {value}) => this.setState({
+        value,
         gender: value
     });
-    handleChangeCategory = (e, { value }) => this.setState({ value, category: value });
-    handleChangeSize = (e, { value }) => this.setState({ value, size: value });
+    handleChangeCategory = (e, {value}) => this.setState({value, category: value});
+    handleChangeSize = (e, {value}) => this.setState({value, size: value});
 
 
     searchAdvanced = () => {
@@ -81,8 +75,6 @@ class Products extends Component {
     };
 
     fetchMore = (index) => {
-        console.log("fetch more");
-        console.log(index);
         if (index + 1 >= 9) {
             if (this.props.products.length < 27) {
                 this.setState((prev) => ({
@@ -169,22 +161,20 @@ class Products extends Component {
                         <Grid.Row centered>
                             {this.props.products.map((product, index) => (
                                 <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true">
-                                    <Aux>
-                                        <Product name={product.name}
-                                                 image={product.images}
-                                                 logo={product.logo}
-                                                 brand={product.brand}
-                                                 price={product.price}
-                                                 size={product.size}
-                                                 id={product.id}
-                                                 height="85%"
-                                                 width="80%"
-                                                 clicked={() => this.selectProductHandler(product.id)}/>
+                                    <Product name={product.name}
+                                             image={product.images}
+                                             logo={product.logo}
+                                             brand={product.brand}
+                                             price={product.price}
+                                             size={product.size}
+                                             id={product.id}
+                                             height="85%"
+                                             width="80%"
+                                             clicked={() => this.selectProductHandler(product.id)}/>
 
-                                        {index === this.props.products.length - 1
-                                        && (<Waypoint onEnter={() => this.fetchMore(index)}/>)}
-                                        <br/>
-                                    </Aux>
+                                    {index === this.props.products.length - 1
+                                    && (<Waypoint onEnter={() => this.fetchMore(index)}/>)}
+                                    <br/>
                                 </Grid.Column>
 
                             ))}

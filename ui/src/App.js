@@ -20,14 +20,17 @@ import Processing from "./containers/Payment/Processing";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import OurStory from "./components/Story/OurStory";
 import Subscription from "./containers/Subscription/Subscription";
+import ShopResume from "./containers/ShopResume/ShopResume";
 
 function App() {
-  return (
+    return (
     <div className="App-Container">
         <Menu />
         <Logo />
+        <Connexion />
+        <ShopResume />
         <Route  path="/" exact component={Home}/>
-        <Route  path="/" exact component={Connexion}/>
+        <Route  path="/checkout" exact component={ShopResume}/>
         <Route  path="/men" exact component={Products}/>
         <Route  path="/women" exact component={Products}/>
         <Route  path="/products/:productId" exact component={ProductSlick}/>

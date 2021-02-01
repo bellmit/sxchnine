@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import auth from '../../axios/auth';
+import {useHistory} from "react-router-dom";
 
 export const authenticate = () => {
     return dispatch => {
