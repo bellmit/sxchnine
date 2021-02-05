@@ -160,7 +160,11 @@ class Products extends Component {
                     <Grid centered columns={3} textAlign="center" padded="vertically">
                         <Grid.Row centered>
                             {this.props.products.map((product, index) => (
-                                <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true">
+                                <Grid.Column key={index}
+                                             mobile={16}
+                                             tablet={8}
+                                             computer={5} centered="true"
+                                             className="Product-Padding">
                                     <Product name={product.name}
                                              image={product.images}
                                              logo={product.logo}

@@ -27,6 +27,7 @@ class ShoppingCart extends Component {
             || this.props.history.location.pathname === '/women'
             || this.props.history.location.pathname === '/checkout'
             || this.props.history.location.pathname === '/orders'
+            || this.props.history.location.pathname === '/userAccount'
             || this.props.history.location.pathname.startsWith('/products/')
         ){
             icon = <img src={blackBasket}
@@ -36,17 +37,6 @@ class ShoppingCart extends Component {
         }
 
         return (
-/*            <Button circular color={color}
-                    className="ShoppingCart-div"
-                    onClick={this.props.show}>
-                <Icon name="shopping cart"
-                      className="ShoppingCart-div-icon"/>
-                {label}
-            </Button>*/
-/*          <Label className="ShoppingCart-div-icon" image>
-                {icon}
-                {label}
-            </Label>*/
             <div>
                 {icon}
                 {label}

@@ -1,12 +1,11 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {Tab, TabList, TabPanel, Tabs} from 'react-web-tabs';
-import {Dimmer, Form, Grid, Image, Label, Loader, Modal, Progress} from "semantic-ui-react";
+import {Dimmer, Form, Grid, Icon, Image, Label, Loader, Modal, Progress} from "semantic-ui-react";
 import Aux from "../../hoc/Aux/Aux";
 import 'react-web-tabs/dist/react-web-tabs.css';
 import './TabAccount.css';
-import grunge from './grunge.png';
-import pencil from './pencil.png';
+import graffiti from './graff_bomber.png';
 import * as actions from "../../store/actions";
 
 class TabAccount extends PureComponent {
@@ -34,6 +33,7 @@ class TabAccount extends PureComponent {
     show = () => this.setState({open: true});
     close = () => this.setState({open: false});
     handleChange = (e, {name, value}) => this.setState({[name]: value});
+    signOff = () => { this.props.signOffUser(this.props.history); }
 
     statusOrder = (status) => {
         if (status === 'ORDERED' || status === 'REQUIRED_ACTION' || status === 'WAITING')
@@ -319,6 +319,9 @@ class TabAccount extends PureComponent {
                         <Tab tabFor="vertical-tab-four">
                             <span className="TabAccount-Menu-Message">Change password</span>
                         </Tab>
+                        <Tab tabFor="vertical-tab-five">
+                            <Icon name='power off' color='red' className="log-off-icon" onClick={this.signOff} />
+                        </Tab>
                     </TabList>
                     <TabPanel tabId="vertical-tab-one">
                         <Grid>
@@ -333,63 +336,63 @@ class TabAccount extends PureComponent {
                     <TabPanel tabId="vertical-tab-three">
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={9} mobile className="TabAccount-Grid">
-                                    <Grid className="TabAccount-User-Grid">
+                                <Grid.Column width={9} mobile className="TabAccount-Grid-User">
+                                    <Grid className="TabAccount-Grid-User">
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
-                                                <span className="TabAccount-Message">
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User">
+                                                <span className="TabAccount-Message-Colorized">
                                                     First name:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5}  mobile className="TabAccount-Grid-User2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.firstName}
                                                 </span>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
-                                                <span className="TabAccount-Message">
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User">
+                                                <span className="TabAccount-Message-Colorized">
                                                     Last name:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.lastName}
                                                 </span>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
-                                                <span className="TabAccount-Message">
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User">
+                                                <span className="TabAccount-Message-Colorized">
                                                     Email:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.email}
                                                 </span>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
-                                                <span className="TabAccount-Message">
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User">
+                                                <span className="TabAccount-Message-Colorized">
                                                     Phone:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={5}>
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.phoneNumber}
                                                 </span>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            <Grid.Column width={5}>
-                                                <span className="TabAccount-Message">
+                                            <Grid.Column width={5} mobile className="TabAccount-Grid-User">
+                                                <span className="TabAccount-Message-Colorized">
                                                     Address:
                                                 </span>
                                             </Grid.Column>
-                                            <Grid.Column width={8}>
+                                            <Grid.Column width={8} mobile className="TabAccount-Grid-User2">
                                                 <span className="TabAccount-Message">
                                                     {this.props.user.address.number} {this.props.user.address.address}
                                                 </span>
@@ -401,9 +404,8 @@ class TabAccount extends PureComponent {
                                     </Grid>
                                 </Grid.Column>
                                 <Grid.Column width={3}>
-                                    <img src={grunge} alt="edit" className="TabAccount-EditUser-Icon"
-                                         onClick={this.show}/>
-                                    <img src={pencil} alt="edit" className="TabAccount-EditUser-Icon"
+                                    <img src={graffiti} alt="edit info"
+                                         className="TabAccount-EditUser-Icon"
                                          onClick={this.show}/>
                                 </Grid.Column>
                             </Grid.Row>
@@ -412,12 +414,12 @@ class TabAccount extends PureComponent {
                     <TabPanel tabId="vertical-tab-four">
                         <Grid>
                             <Grid.Row>
-                                <Grid.Column width={5}>
-                                    <span className="TabAccount-Message">
+                                <Grid.Column width={5} mobile className="TabAccount-Grid">
+                                    <span className="TabAccount-Message-Colorized">
                                         Old password:
                                     </span>
                                 </Grid.Column>
-                                <Grid.Column width={6}>
+                                <Grid.Column width={6} className="TabAccount-Grid-User">
                                     <Form inverted>
                                         <Form.Input className="TabAccount-Grid2"
                                                     placeholder="Old password..."
@@ -431,12 +433,12 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
-                                <Grid.Column width={5}>
-                                    <span className="TabAccount-Message">
+                                <Grid.Column width={5} mobile className="TabAccount-Grid">
+                                    <span className="TabAccount-Message-Colorized">
                                         New password:
                                     </span>
                                 </Grid.Column>
-                                <Grid.Column width={6} className="TabAccount-Grid2">
+                                <Grid.Column width={6} className="TabAccount-Grid-User">
                                     <Form inverted>
                                         <Form.Input className="TabAccount-Grid2"
                                                     placeholder="New password..."
@@ -450,12 +452,12 @@ class TabAccount extends PureComponent {
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
-                                <Grid.Column width={5}>
-                                    <span className="TabAccount-Message">
+                                <Grid.Column width={5} mobile className="TabAccount-Grid">
+                                    <span className="TabAccount-Message-Colorized">
                                         Confirm password:
                                     </span>
                                 </Grid.Column>
-                                <Grid.Column width={6}>
+                                <Grid.Column width={6} className="TabAccount-Grid-User">
                                     <Form inverted>
                                         <Form.Input className="TabAccount-Grid2"
                                                     size="small"
@@ -581,7 +583,8 @@ const mapStateToProps = state => {
 const dispatchToProps = dispatch => {
     return {
         addUser: (userToAdd) => dispatch(actions.saveUser(userToAdd)),
-        changedPassword: (email, oldPassword, newPassword, confirmNewPassword) => dispatch(actions.changePassword(email, oldPassword, newPassword, confirmNewPassword))
+        changedPassword: (email, oldPassword, newPassword, confirmNewPassword) => dispatch(actions.changePassword(email, oldPassword, newPassword, confirmNewPassword)),
+        signOffUser: (history) => dispatch(actions.signOffUser(history))
     }
 }
 

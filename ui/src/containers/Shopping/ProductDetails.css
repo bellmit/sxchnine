@@ -34,6 +34,15 @@
     background-color: rgb(255, 240, 36);
 }
 
+.Product-Taxes-Div{
+    font-family: Anton;
+    font-size: 0.7vw;
+    text-transform: lowercase;
+    color: black;
+    left: 20%;
+    font-weight: lighter;
+}
+
 .Product-Delivery-Div{
     font-family: Anton;
     font-size: 0.7vw;
@@ -43,7 +52,6 @@
     text-decoration: none;
     left: 20%;
     display: block;
-
 }
 .Product-Delivery-Div:hover{
     color: rgb(255, 240, 36);
@@ -110,6 +118,15 @@
         width: 100%;
     }
 
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 1.7vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
     .Product-Delivery-Div{
         display: none;
     }
@@ -158,6 +175,15 @@
         margin: 10% 0 0 0;
         position: absolute;
         width: 100%;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 1.7vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
     }
 
     .Product-Delivery-Div{
@@ -213,6 +239,15 @@
         width: 100%;
     }
 
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
     .Product-Delivery-Div{
         display: none;
     }
@@ -254,6 +289,15 @@
         margin: 10% 0 0 0;
         position: absolute;
         width: 100%;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
     }
 
     .Product-Delivery-Div{
@@ -307,6 +351,15 @@
         width: 100%;
     }
 
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
     .Product-Delivery-Div{
         display: none;
     }
@@ -358,6 +411,15 @@
         width: 100%;
     }
 
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
     .Product-Delivery-Div{
         display: none;
     }
@@ -399,6 +461,15 @@
         margin: 10% 0 0 0;
         position: absolute;
         width: 100%;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
     }
 
     .Product-Delivery-Div{

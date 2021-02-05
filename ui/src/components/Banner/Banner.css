@@ -165,14 +165,14 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .Got-it-logo {
+/*    .Got-it-logo {
         top: -8%;
         right: -6% !important;
         height: 30%;
         position: absolute;
         float: right;
         z-index:1;
-    }
+    }*/
     .Banner-Header-img {
         height: 270px;
         width: 100%;
@@ -416,14 +416,14 @@
 }
 
 @media only screen and (max-width: 360px) {
-    .Got-it-logo {
+/*    .Got-it-logo {
         top: -8%;
         right: -25% !important;
         height: 30%;
         position: absolute;
         float: right;
         z-index:1;
-    }
+    }*/
     .Banner-Header-img {
         height: 270px;
         width: 100%;
@@ -505,14 +505,14 @@
 }
 
 @media only screen and (max-width: 320px) {
-    .Got-it-logo {
+/*    .Got-it-logo {
         top: -8%;
         right: 8% !important;
         height: 30%;
         position: absolute;
         float: right;
         z-index:1;
-    }
+    }*/
     .Banner-Header-img {
         height: 270px;
         width: 100%;
@@ -594,14 +594,14 @@
 }
 
 @media only screen and (max-width: 280px) {
-    .Got-it-logo {
+/*    .Got-it-logo {
         top: -8%;
         right: -40% !important;
         height: 30%;
         position: absolute;
         float: right;
         z-index:1;
-    }
+    }*/
     .Banner-Header-img {
         height: 270px;
         width: 100%;

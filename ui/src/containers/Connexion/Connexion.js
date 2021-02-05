@@ -62,6 +62,11 @@ class Connexion extends PureComponent {
                             className="Connexion-Button"/>
         }
 
+        let errorLabel = undefined;
+        if (this.props.loginFailError !== undefined){
+            errorLabel = <Label color="red">Oops! {this.props.loginFailError}</Label>
+        }
+
         return (
             <Aux>
                 <Dimmer active={this.props.loading} page>
@@ -95,8 +100,7 @@ class Connexion extends PureComponent {
                                             className="Connexion-Email-Text"
                                             value={this.state.password}
                                             onChange={this.handleChange} />
-                                {this.props.error !== '' &&
-                                <Label color="red">{this.props.error}</Label>}
+                                {errorLabel}
                             </Form.Field>
                             <button className="Connexion-Continue-Button" onClick={this.login}>
                                 <span className="Connexion-Text-Button">SIGN IN</span>
@@ -116,7 +120,8 @@ const mapStateToProps = state => {
         userAuthenticated: state.users.userAuthenticated,
         status: state.users.status,
         loading: state.users.loading,
-        error: state.users.error
+        error: state.users.error,
+        loginFailError: state.users.loginFailError
     }
 };
 

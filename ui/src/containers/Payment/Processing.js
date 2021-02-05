@@ -12,7 +12,6 @@ class Processing extends Component {
     }
 
     componentDidMount() {
-        console.log("Processing did mount");
         let params = new URLSearchParams(this.props.location.search);
         console.log(params.get("payment_intent"));
         console.log(params.get("payment_intent_client_secret"));

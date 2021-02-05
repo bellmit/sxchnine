@@ -7,11 +7,6 @@ import Connexion from "./../../containers/Connexion/Connexion";
 
 
 class Head extends Component{
-
-    componentDidMount(): void {
-        console.log(this.props);
-    }
-
     render () {
         return (
             <Aux>

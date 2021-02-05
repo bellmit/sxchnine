@@ -16,7 +16,6 @@ class ProductDetails extends PureComponent {
     };
 
     componentDidMount(): void {
-        console.log('ProductDetails.js did mount');
         this.createColors();
     }
 
@@ -166,10 +165,10 @@ class ProductDetails extends PureComponent {
                             <Label tag color='red'>
                                 ${this.props.product.price}
                             </Label>
+                            <span className="Product-Taxes-Div">&nbsp;&nbsp;&nbsp;Price include taxes</span>
                         </Form.Group>
                         <Form.Group>
-                            <a href="/shipping" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return
-                                info</a>
+                            <a href="/shipping" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return info</a>
                         </Form.Group>
                         <Form.Group>
                             {badge}

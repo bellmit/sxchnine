@@ -8,16 +8,16 @@
 .UserTabAccount-Container {
     width: 60%;
     position: absolute;
-    top: 48%;
+    top: 65%;
     left: 20%;
 }
 
 .UserTabAccount-Empty-Div{
     background: rgb(255, 240, 36);
-    height: 0.5%;
+    height: 1%;
     width: 50%;
     left: 23%;
-    margin-top: 5%;
+    margin-top: 26%;
     position: absolute;
     align-items: center;
 }
@@ -25,7 +25,7 @@
 .UserTabAccount-footer{
     width: 100%;
     position: absolute;
-    margin-top: 10%;
+    margin-top: 30%;
     left: -5%;
 }
 
@@ -87,7 +87,7 @@
         width: 160%;
         position: absolute;
         left: -10%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 
 }
@@ -118,7 +118,7 @@
         width: 160%;
         position: absolute;
         left: -10%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 
 }
@@ -149,7 +149,7 @@
         width: 160%;
         position: absolute;
         left: -10%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 
 }
@@ -180,7 +180,7 @@
         width: 160%;
         position: absolute;
         left: -10%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 
 }
@@ -211,7 +211,7 @@
         width: 160%;
         position: absolute;
         left: -4%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 }
 
@@ -241,7 +241,7 @@
         width: 160%;
         position: absolute;
         left: -4%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 }
 
@@ -271,6 +271,6 @@
         width: 160%;
         position: absolute;
         left: -4%;
-        margin-top: -150%;
+        margin-top: -65%;
     }
 }

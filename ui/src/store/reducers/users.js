@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
     loading: false,
     error: '',
-    loginFailError: '',
+    loginFailError: undefined,
     userAuthenticated: '',
     userAuth: '',
     status: '',

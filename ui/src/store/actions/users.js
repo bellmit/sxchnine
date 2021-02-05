@@ -155,7 +155,7 @@ export const loginUser = (email, password, history, order) => {
                 dispatch(loginUserStart(false));
                 dispatch(loginUserSuccess(response.data))
                 if (response.data !== '') {
-                    dispatch(loginUserFail(''));
+                    dispatch(loginUserFail(undefined));
                     if (order === true) {
                         history.push('/orders');
                     } else {
@@ -166,7 +166,9 @@ export const loginUser = (email, password, history, order) => {
                 }
             })
             .catch(error => {
-                dispatch(loginUserFail(error.data));
+                //TODO: log error
+
+                dispatch(loginUserFail('Cannot log you for now ! Sorry .. Try later'));
                 dispatch(loginUserStart(false));
             });
     }

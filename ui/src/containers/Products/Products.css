@@ -105,7 +105,11 @@
 
 .Product-Card-Size{
     width: 80%;
-    height: 95%;
+    height: 98%;
+}
+
+.Product-Padding{
+    padding-bottom: 5%;
 }
 
 .Product-Image-Size{
@@ -540,7 +544,7 @@
     .Product-Container {
         width: 60%;
         position: absolute;
-        top: 60%;
+        top: 80%;
         left: 25%;
     }
 

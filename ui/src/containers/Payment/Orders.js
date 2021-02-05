@@ -63,12 +63,12 @@ class Orders extends Component {
         let keepUserInfo = undefined;
         if (this.props.user === ''){
             keepUserInfo = <Grid.Row>
-                <Grid.Column>
+                <Grid.Column mobile={3} computer={1}>
                     <Checkbox toggle
                               checked={this.state.keepInfo}
                               onChange={this.toggle} />
                 </Grid.Column>
-                <Grid.Column width={5}>
+                <Grid.Column width={4} mobile={8} computer={4}>
                     <span className="User-Keep-Info-Text">
                         Our collections are limited. Our team select only few items.
                         Agree if we can keep your email and we do our effort to let you know when we bring some new cool stuff.

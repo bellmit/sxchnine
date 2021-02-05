@@ -20,12 +20,14 @@ class Recommendation extends Component {
         return (
             <div>
                 <Carousel
-                    slidesPerPage={3}
+                    slidesPerPage={4}
+                    itemWidth={150}
                     arrowLeft={<Icon name="arrow left" color='yellow' size='large'/>}
                     arrowRight={<Icon name="arrow right" color='yellow' size='large'/>}
                     addArrowClickHandler
-                    infinite>
-                    {this.props.products.slice(0, 3).map((product, index) => (
+                    infinite
+                    centered>
+                    {this.props.products.slice(0, 5).map((product, index) => (
                         <Product key={index}
                                  name={product.name}
                                  image={product.images}

@@ -1,5 +1,5 @@
 .Got-it-logo {
-    top: -6%;
+    top: -8%;
     right: 0;
     height: 30%;
     position: absolute;
@@ -8,9 +8,9 @@
 
 @media only screen and (max-width: 1024px) {
     .Got-it-logo {
-        top: -5% !important;
-        right: -2% !important;
-        height: auto !important;
+        top: -5%;
+        right: -2%;
+        height: auto;
         width: 25%;
         position: absolute;
         float: right;
@@ -20,10 +20,10 @@
 
 @media only screen and (max-width: 768px) {
     .Got-it-logo {
-        top: -6% !important;
-        right: -10% !important;
-        height: auto !important;
-        width: 35% !important;
+        top: -6%;
+        right: -10%;
+        height: auto;
+        width: 35%;
         position: absolute;
         float: right;
         z-index:1;
@@ -32,9 +32,9 @@
 
 @media only screen and (max-width: 414px) {
     .Got-it-logo {
-        top: -5% !important;
-        right: -10% !important;
-        height: auto !important;
+        top: -8%;
+        right: -9%;
+        height: auto;
         width: 45%;
         position: absolute;
         float: right;
@@ -45,9 +45,9 @@
 
 @media only screen and (max-width: 411px) {
     .Got-it-logo {
-        top: -5% !important;
-        right: -10% !important;
-        height: auto !important;
+        top: -5%;
+        right: -10%;
+        height: auto;
         width: 45%;
         position: absolute;
         float: right;
@@ -58,10 +58,10 @@
 
 @media only screen and (max-width: 375px) {
     .Got-it-logo {
-        top: -6% !important;
-        right: -10% !important;
-        height: auto !important;
-        width: 40% !important;
+        top: -6%;
+        right: -10%;
+        height: auto;
+        width: 40%;
         position: absolute;
         float: right;
         z-index:1;
@@ -70,10 +70,10 @@
 
 @media only screen and (max-width: 360px) {
     .Got-it-logo {
-        top: -5% !important;
-        right: -5% !important;
-        height: auto !important;
-        width: 45% !important;
+        top: -5%;
+        right: -5%;
+        height: auto;
+        width: 45%;
         position: absolute;
         float: right;
         z-index:1;
@@ -83,7 +83,7 @@
 @media only screen and (max-width: 320px) {
     .Got-it-logo {
         top: -5%;
-        right: 8% !important;
+        right: 8%;
         height: auto;
         width: 45%;
         position: absolute;
@@ -94,9 +94,9 @@
 
 @media only screen and (max-width: 280px) {
     .Got-it-logo {
-        top: -5% !important;
-        right: -10% !important;
-        height: auto !important;
+        top: -5%;
+        right: -10%;
+        height: auto;
         width: 60%;
         position: absolute;
         float: right;

@@ -11,14 +11,7 @@ import './ProductSlick.css';
 
 class ProductSlick extends Component {
 
-    componentDidMount() {
-        console.log("ProductSlick did mount");
-        console.log(this.props);
-        console.log(this.props.product);
-    }
-
     render() {
-
         return (
             <div>
                 <div className="Yellow-bar-div"/>
@@ -35,14 +28,6 @@ class ProductSlick extends Component {
                                 <div><img alt="" src={image}/></div>
                             </Carousel.Item>
                         ))}
-
-
-                        {/*                <Carousel.Item>
-                    <div><img alt= "" src={this.props.product.images[0]} /></div>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <div><img alt="" src={this.props.product.images[0]} /> </div>
-                </Carousel.Item>*/}
                     </Carousel>
                 </div>
                 <div className="Product-Details-Div">
