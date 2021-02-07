@@ -40,8 +40,13 @@ export const saveUser = (userToAdd) => {
         setAxiosToken();
         axios.post('/user/save', userToAdd)
             .then(response => {
-                dispatch(saveUserAuth(userToAdd));
-                dispatch(addedUser(true));
+                if (response.status === 200){
+                    dispatch(saveUserAuth(userToAdd));
+                    dispatch(addedUser(true));
+                    dispatch(saveUserFail(undefined));
+                } else {
+                    dispatch(saveUserFail("Cannot save user"));
+                }
                 dispatch(saveUserStart(false));
             })
             .catch(error => {
@@ -94,14 +99,10 @@ export const changePassword = (email, oldPassword, newPassword, confirmNewPasswo
             .then(response => {
                 dispatch(changePasswordUserStart(false));
                 if (response.data.id) {
-                    console.log("SUCCESS");
-                    console.log(response.data);
                     dispatch(changePasswordUserSuccess(true));
                     dispatch(changePasswordUserFailInit(undefined));
 
                 } else {
-                    console.log("ERROR");
-                    console.log(response.data);
                     dispatch(changePasswordUserFail(response.data.error));
                     dispatch(changePasswordUserSuccessInit(undefined));
                 }
@@ -153,7 +154,9 @@ export const loginUser = (email, password, history, order) => {
         axios.post('/user/login?email=' + email + "&password=" + password)
             .then(response => {
                 dispatch(loginUserStart(false));
-                dispatch(loginUserSuccess(response.data))
+                dispatch(addedUser(false));
+                dispatch(loginUserSuccess(response.data));
+                dispatch(saveUserFail(undefined));
                 if (response.data !== '') {
                     dispatch(loginUserFail(undefined));
                     if (order === true) {
@@ -162,7 +165,7 @@ export const loginUser = (email, password, history, order) => {
                         history.push('/userAccount');
                     }
                 } else {
-                    dispatch(loginUserFail("Sorry mate ! you are an unknown person :O - please check again :) "));
+                    dispatch(loginUserFail("Sorry mate ! cannot log you - please check email/password again"));
                 }
             })
             .catch(error => {
@@ -184,6 +187,7 @@ const signOffUserSuccess = () => {
 export const signOffUser = (history) => {
     return dispatch => {
         dispatch(signOffUserSuccess());
+        dispatch(addedUser(false));
         history.push('/');
     }
 }

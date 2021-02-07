@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     loading: false,
-    error: '',
+    error: undefined,
     loginFailError: undefined,
     userAuthenticated: '',
     userAuth: '',

@@ -63,7 +63,8 @@ class Orders extends Component {
         let keepUserInfo = undefined;
         if (this.props.user === ''){
             keepUserInfo = <Grid.Row>
-                <Grid.Column mobile={3} computer={1}>
+                <Grid.Column mobile={3}
+                             computer={1}>
                     <Checkbox toggle
                               checked={this.state.keepInfo}
                               onChange={this.toggle} />

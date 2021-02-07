@@ -9,16 +9,17 @@
     background: rgb(255, 240, 36);
     height: 15%;
     width: 50%;
-    margin-top: 10%;
+    margin-top: 18%;
     position: absolute;
+    left: 15%;
 }
 
 .Checkout-Grid {
-    top: 40%;
+    top: 45%;
     left: 16%;
     position: absolute;
-
 }
+
 .Checkout-Message-Text{
     font-family: Anton;
     font-size: 1.5vw;
@@ -30,6 +31,20 @@
     font-size: 1vw;
     text-transform: uppercase;
 }
+
+.Checkout-Email-Text-Input{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    margin-top: -10%;
+}
+
+.Checkout-Error-Text{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
 
 .Checkout-Text-Button {
     font-family: Anton;
@@ -44,6 +59,7 @@
     padding: 10px 20px;
     text-decoration: none;
     outline: none;
+    width: 60%;
 }
 
 .Checkout-Continue-Button:focus{
@@ -53,28 +69,166 @@
     padding: 10px 20px;
     text-decoration: none;
     outline: none;
-}
-
-
-.Checkout-Yellow-second-bar-div {
-    background-color: rgb(255, 240, 36);
-    width: 50%;
-    height: 20%;
-    position: absolute;
+    width: 60%;
 }
 
 .Checkout-footer{
     width: 100%;
     position: absolute;
+    margin-top: 20%;
+    left: -10%;
+}
+
+
+.Choose-Empty-Left-Div{
+    background: black;
+    height: 15%;
+    width: 80%;
+    position: absolute;
+}
+
+.Choose-Empty-Right-Div{
+    background: black;
+    height: 15%;
+    width: 80%;
+    position: absolute;
+}
+
+.Vertical-Empty-Div{
+    background: rgb(255, 240, 36);
+    height: 80%;
+    width: 5%;
+    position: absolute;
+}
+
+.Checkout-Divider-Choose{
+    font-family: "Anton";
+    font-size: 1vw;
+    margin-top: -3%;
+}
+
+.Div-As-Member-Title-Line{
+    left: -10% !important;
+}
+
+.Div-As-Member-Line{
+    left: -5% !important;
+}
+
+.Div-Choose-Line{
+    left: -30% !important;
+}
+
+.Div-Choose-Or-Line{
+    left: -45%;
+}
+
+.New-Member-Note-Message-Label{
+    font-family: "Anton";
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.Modal-Div{
+    height: auto !important;
+    width: 50% !important;
+    position: static !important;
+}
+
+.Member-Text{
+    font-family: "American Typewriter";
+    font-size: 0.2vw;
+    color: black;
+}
+
+.Info-Text{
+    font-family: Anton;
+    font-size: 1.5vw;
+    text-transform: uppercase;
+    width: 70%;
+}
+
+.Account-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    align-content: center;
+}
+
+.Account-Text-Button {
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.Account-Divider{
+    height: 0.5%;
+    width: 5%;
+    color: rgb(255, 240, 36);
+    background-color: rgb(255, 240, 36);
+}
+
+.Account-Empty-Div{
+    background: rgb(255, 240, 36);
+    height: 100%;
+    width: 5%;
+    /*
     margin-top: 10%;
-    left: -5%;
+    */
+    position: absolute;
 }
 
 @media only screen and (max-width: 414px) {
+    .Div-As-Member-Title-Line{
+        left: 1% !important;
+    }
+
+    .Div-Choose-Or-Line{
+        left: 5%;
+    }
+
+    .Div-Choose-Line{
+        left: 5% !important;
+    }
+
+    .Div-As-Member-Line{
+        left: 7% !important;
+    }
+
+    .Choose-Empty-Left-Div{
+        background: black;
+        height: 30%;
+        width: 80%;
+        position: absolute;
+        right: 15%;
+    }
+
+    .Choose-Empty-Right-Div{
+        background: black;
+        height: 30%;
+        width: 80%;
+        position: absolute;
+        right: 5%;
+    }
+
+    .Checkout-Divider-Choose{
+        font-family: "Anton";
+        font-size: 3vw;
+    }
+
+    .Vertical-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 80%;
+        width: 5%;
+        position: absolute;
+        right: 20%;
+    }
+
     .Checkout-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
-        height: 100%;
+        height: 120%;
         position: absolute;
     }
 
@@ -87,15 +241,15 @@
     }
     .Checkout-Inner-Grid {
         top: 2%;
-        left: -1%;
+        left: 10%;
         position: absolute;
-        width: 60%;
+        width: 220%;
         height: 50%;
     }
 
     .Checkout-Message-Text{
         font-family: Anton;
-        font-size: 3.5vw;
+        font-size: 3vw;
         text-transform: uppercase;
     }
 
@@ -105,9 +259,23 @@
         text-transform: uppercase;
     }
 
+    .Checkout-Error-Text{
+        font-family: Anton;
+        font-size: 2vw !important;
+        text-transform: uppercase;
+    }
+
+    .New-Member-Note-Message-Label{
+        font-family: "Anton";
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 2vw !important;
+        width: 60%;
+    }
+
     .Checkout-Text-Button {
         font-family: Anton;
-        font-size: 3vw;
+        font-size: 2.5vw;
         text-transform: uppercase;
     }
 
@@ -118,38 +286,103 @@
         padding: 2px 5px;
     }
 
-    .Checkout-Divider{
-        font-size: 2vw;
-        height: 10%;
-    }
-
     .Checkout-Empty-Div{
         background: rgb(255, 240, 36);
         height: 15%;
         width: 50%;
-        margin-top: 35%;
+        margin-top: 90%;
         position: absolute;
     }
 
     .Checkout-footer{
         width: 100%;
         position: absolute;
-        margin-top: 40%;
+        margin-top: 20%;
         left: -5%;
+    }
+
+    .Modal-Div{
+        height: 35% !important;
+        width: 90% !important;
+        position: static !important;
+    }
+
+    .Info-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Account-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 5px 8px;
+        align-content: center;
+    }
+
+    .Account-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
     }
 
 }
 
 @media only screen and (max-width: 375px) {
+    .Div-As-Member-Title-Line{
+        left: -5% !important;
+    }
+
+    .Div-Choose-Or-Line{
+        left: 12%;
+    }
+
+    .Div-Choose-Line{
+        left: 12% !important;
+    }
+
+    .Div-As-Member-Line{
+        left: 5% !important;
+    }
+
+    .Choose-Empty-Left-Div{
+        background: black;
+        height: 30%;
+        width: 80%;
+        position: absolute;
+        right: 15%;
+    }
+
+    .Choose-Empty-Right-Div{
+        background: black;
+        height: 30%;
+        width: 80%;
+        position: absolute;
+        right: 5%;
+    }
+
+    .Checkout-Divider-Choose{
+        font-family: "Anton";
+        font-size: 3vw;
+    }
+
+    .Vertical-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 80%;
+        width: 5%;
+        position: absolute;
+        right: 50%;
+    }
     .Checkout-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
-        height: 100%;
+        height: 120%;
         position: absolute;
     }
 
     .Checkout-Grid {
-        top: 45%;
+        top: 55%;
         left: 20%;
         position: absolute;
         width: 80%;
@@ -159,13 +392,13 @@
         top: 2%;
         left: -1%;
         position: absolute;
-        width: 60%;
+        width: 200%;
         height: 50%;
     }
 
     .Checkout-Message-Text{
         font-family: Anton;
-        font-size: 3.5vw;
+        font-size: 3vw;
         text-transform: uppercase;
     }
 
@@ -175,9 +408,16 @@
         text-transform: uppercase;
     }
 
+    .Checkout-Email-Text-Input{
+        font-family: Anton;
+        font-size: 1vw;
+        text-transform: uppercase;
+        margin-top: -60%;
+    }
+
     .Checkout-Text-Button {
         font-family: Anton;
-        font-size: 3vw;
+        font-size: 2.5vw;
         text-transform: uppercase;
     }
 
@@ -188,24 +428,45 @@
         padding: 2px 5px;
     }
 
-    .Checkout-Divider{
-        font-size: 2vw;
-        height: 10%;
-    }
-
     .Checkout-Empty-Div{
         background: rgb(255, 240, 36);
         height: 15%;
         width: 50%;
-        margin-top: 35%;
+        margin-top: 80%;
         position: absolute;
     }
 
     .Checkout-footer{
         width: 100%;
         position: absolute;
-        margin-top: 40%;
+        margin-top: 30%;
         left: -5%;
+    }
+
+    .Modal-Div{
+        height: 48% !important;
+        width: 90% !important;
+        position: static !important;
+    }
+
+    .Info-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Account-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 5px 8px;
+        align-content: center;
+    }
+
+    .Account-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
     }
 
 }

@@ -10,8 +10,6 @@ import thank from './thankYou.jpg';
 class Confirmation extends Component {
 
     componentDidMount() {
-        console.log("did mount");
-        console.log(window.localStorage.getItem("persist:root"));
         window.localStorage.removeItem("persist:root");
         persistor.purge();
         if (this.props.match.params.status === '1' || this.props.match.params.status === '2') {
@@ -75,7 +73,7 @@ class Confirmation extends Component {
         return (
 
             <div>
-                <img alt="" src={thank} className="Confirmation-Image-div"/>
+                <img alt="Naybxrz Store Shopping Streetwear Culture" src={thank} className="Confirmation-Image-div"/>
 
                 <div className="Confirmation-Message-div">
                     <Container text className="Confirmation-Container-div">
