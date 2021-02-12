@@ -19,6 +19,7 @@ class FormProduct extends PureComponent {
         price: this.props.productByIdData !== undefined ? this.props.productByIdData.price : '',
         size: this.props.productByIdData !== undefined ? this.props.productByIdData.size : [],
         colors: this.props.productByIdData !== undefined ? this.props.productByIdData.colors : [],
+        tags: this.props.productByIdData !== undefined ? this.props.productByIdData.tags : [],
         images: this.props.productByIdData !== undefined ? this.props.productByIdData.images : [],
         availability: this.props.productByIdData !== undefined ? this.props.productByIdData.availability : [],
         available: this.props.productByIdData !== undefined ? this.props.productByIdData.available : '',
@@ -34,7 +35,9 @@ class FormProduct extends PureComponent {
         showAddColor: false,
         newColor: '',
         newQte: 0,
-        showAddAvailability: false
+        showAddAvailability: false,
+        tagsOption: [],
+        tag: ''
     }
 
     refreshState = () => {
@@ -48,6 +51,7 @@ class FormProduct extends PureComponent {
             price: this.props.productByIdData !== undefined ? this.props.productByIdData.price : '',
             size: this.props.productByIdData !== undefined ? this.props.productByIdData.size : [],
             colors: this.props.productByIdData !== undefined ? this.props.productByIdData.colors : [],
+            tags: this.initializeTag(),
             images: this.props.productByIdData !== undefined ? this.props.productByIdData.images : [],
             availability: this.props.productByIdData !== undefined ? this.props.productByIdData.availability : [],
             available: this.props.productByIdData !== undefined ? this.props.productByIdData.available : '',
@@ -58,6 +62,14 @@ class FormProduct extends PureComponent {
             store: this.props.productByIdData !== undefined ? this.props.productByIdData.store : '',
             dateTime: this.props.productByIdData !== undefined ? this.props.productByIdData.dateTime : '',
         });
+    }
+
+    initializeTag(){
+        if (this.props.productByIdData !== undefined && this.props.productByIdData.tags !== null){
+            return this.props.productByIdData.tags
+        } else {
+            return [];
+        }
     }
 
     handleChange = (e, {name, value}) => this.setState({[name]: value});
@@ -73,6 +85,14 @@ class FormProduct extends PureComponent {
     handleChangeSize = (e, {value}) => this.setState({size: value});
 
     handleChangeColor = (e, {value}) => this.setState({colors: value});
+
+    handleTagAddition = (e, { value }) => {
+        this.setState((prevState) => ({
+            tags: [value, ...prevState.tags]
+        }))
+    };
+    
+    handleTagChange = (e, { value }) => this.setState({ tag: value });
 
     handleChangeNewQte = (e, {value}) => this.setState({newQte: value});
 
@@ -190,6 +210,7 @@ class FormProduct extends PureComponent {
             price: this.state.price,
             size: this.state.size,
             colors: this.state.colors,
+            tags: this.state.tags,
             images: this.state.images,
             availability: this.state.availability,
             available: this.state.available,
@@ -221,6 +242,15 @@ class FormProduct extends PureComponent {
         if (this.state.colors) {
             this.state.colors.forEach(c => {
                 colors.push({
+                    key: c, text: c, value: c
+                })
+            });
+        }
+
+        let tagsOption = [];
+        if (this.state.tags) {
+            this.state.tags.forEach(c => {
+                tagsOption.push({
                     key: c, text: c, value: c
                 })
             });
@@ -495,6 +525,20 @@ class FormProduct extends PureComponent {
                                                     icon='linkify'
                                                     value={this.state.logo}
                                                     onChange={this.handleChange}/>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Dropdown
+                                            options={tagsOption}
+                                            placeholder='Choose Tags:'
+                                            search
+                                            selection
+                                            fluid
+                                            multiple
+                                            allowAdditions
+                                            value={this.state.tag}
+                                            onAddItem={this.handleTagAddition}
+                                            onChange={this.handleTagChange}
+                                        />
                                     </Form.Group>
                                     <Icon name='add'
                                           size='large'

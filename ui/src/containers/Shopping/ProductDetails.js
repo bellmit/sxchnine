@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Form, Button, Icon, Grid, Label, Dropdown} from 'semantic-ui-react';
+import {Button, Dropdown, Form, Grid, Icon, Label} from 'semantic-ui-react';
 import {Badge, CSSReset, ThemeProvider} from "@chakra-ui/core";
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
@@ -113,9 +113,7 @@ class ProductDetails extends PureComponent {
 
         return (
             <div>
-                <div>
-                    <p className="Product-Name-Div">{this.props.product.name}</p>
-                </div>
+                <p className="Product-Name-Div">{this.props.product.name}</p>
                 <div className="Product-Form-Div">
                     <Form unstackable widths='equal' size='large'>
 
@@ -168,7 +166,8 @@ class ProductDetails extends PureComponent {
                             <span className="Product-Taxes-Div">&nbsp;&nbsp;&nbsp;Price include taxes</span>
                         </Form.Group>
                         <Form.Group>
-                            <a href="/shipping" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return info</a>
+                            <a href="/shipping" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return
+                                info</a>
                         </Form.Group>
                         <Form.Group>
                             {badge}

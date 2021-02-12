@@ -29,6 +29,10 @@ class Notification extends Component {
         this.setState({open: false})
     }
 
+    handleClose = () => {
+        this.setState({ open: false })
+    }
+
     render() {
         let ordersPushed = undefined;
         if (this.props.ordersNotificationData !== undefined
@@ -65,6 +69,7 @@ class Notification extends Component {
                        on='click'
                        open={this.state.open}
                        onOpen={this.resetNotificationNumber}
+                       onClose={this.handleClose}
                        trigger={<Icon name="bell outline" size="large">
                            {notificationCountLabel}
                        </Icon>}>

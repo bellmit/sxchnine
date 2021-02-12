@@ -26,6 +26,13 @@
     text-transform: uppercase;
 }
 
+.Checkout-Mandatory-Info-Text{
+    font-family: Anton;
+    font-size: 0.8vw;
+    font-weight: initial;
+    color: red;
+}
+
 .Checkout-Email-Text{
     font-family: Anton;
     font-size: 1vw;
@@ -43,6 +50,7 @@
     font-family: Anton;
     font-size: 1vw;
     text-transform: uppercase;
+    text-align: center;
 }
 
 
@@ -127,6 +135,7 @@
     font-family: "Anton";
     text-align: justify;
     text-justify: inter-word;
+    left: -10%;
 }
 
 .Modal-Div{

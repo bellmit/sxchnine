@@ -31,6 +31,7 @@ public class ProductService {
                 .field("name")
                 .field("brand", 5.0F)
                 .field("category")
+                .field("tags")
                 .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS);
 
         NativeSearchQueryBuilder nativeSearchQuery = new NativeSearchQueryBuilder();

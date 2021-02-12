@@ -10,3 +10,8 @@ i.yellow.icon {
 i.yellow.icon:hover {
     color: black !important;
 }
+
+.BrainhubCarouselItem {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}

@@ -47,6 +47,7 @@
 
 .Grid-div{
     margin-left: 0 !important;
+    margin-top: 5% !important;
 }
 
 .History-Resume-Text{
@@ -56,6 +57,7 @@
     position: relative;
     background-color: rgb(255, 240, 36);
     padding: 1% 0 1% 2%;
+    top: 1%;
 }
 
 .History-Progress-Text {

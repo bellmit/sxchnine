@@ -34,7 +34,7 @@ export const addedUser = (addedUser) => {
     }
 };
 
-export const saveUser = (userToAdd) => {
+export const saveUser = (userToAdd, history) => {
     return dispatch => {
         dispatch(saveUserStart(true));
         setAxiosToken();
@@ -44,6 +44,7 @@ export const saveUser = (userToAdd) => {
                     dispatch(saveUserAuth(userToAdd));
                     dispatch(addedUser(true));
                     dispatch(saveUserFail(undefined));
+                    dispatch(loginUser(userToAdd.email, userToAdd.password, history, true));
                 } else {
                     dispatch(saveUserFail("Cannot save user"));
                 }

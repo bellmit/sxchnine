@@ -6,6 +6,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Document(indexName = "store_products", createIndex = false)
@@ -21,6 +22,7 @@ public class Product implements Serializable {
     private double price;
     private List<String> size;
     private List<String> colors;
+    private Set<String> tags;
     private String logo;
     private List<String> images;
     private Dimension dimension;

@@ -59,7 +59,7 @@ class Checkout extends Component {
             && this.state.avenue !== ''
             && this.state.postalCode !== ''
             && this.state.country !== '') {
-            this.props.addUser(this.constructUser());
+            this.props.addUser(this.constructUser(), this.props.history);
             this.setState({
                 email: this.props.userAuth.email,
                 password: this.props.userAuth.password
@@ -131,7 +131,7 @@ class Checkout extends Component {
                                 <Grid.Row className="Div-Choose-Line">
                                     <Message color="black"
                                              size='mini'
-                                             className="New-Member-Note-Message-Label">
+                                             className="New-Member-Note-Message-Label" >
                                         You want to join Naybxrz Familly? <br/>
                                         Register and make your shopping on Naybxrz easier. <br/>
                                         You will be informed in advance of our special offers and arrivals of new items.
@@ -228,8 +228,11 @@ class Checkout extends Component {
                        closeIcon>
                     <Modal.Header>
                         <span className="Checkout-Message-Text">Enter you personal info:</span>
+                        <br/>
+                        <span className="Checkout-Mandatory-Info-Text">All the fields are mandatory*</span>
                         {this.props.saveError !== undefined &&
-                        <Label color="red" className="Checkout-Error-Text">{this.props.saveError}</Label>}
+                        <Label color="red"
+                               className="Checkout-Error-Text">{this.props.saveError}</Label>}
                     </Modal.Header>
                     <Modal.Content>
                         <Grid centered>
@@ -348,7 +351,7 @@ const mapStateToProps = state => {
 const dispatchToProps = dispatch => {
     return {
         loginUser: (email, password, history, order) => dispatch(actions.loginUser(email, password, history, order)),
-        addUser: (userToAdd) => dispatch(actions.saveUser(userToAdd)),
+        addUser: (userToAdd, history) => dispatch(actions.saveUser(userToAdd, history)),
         saveUserFail: (message) => dispatch(actions.saveUserFail(message))
     }
 };

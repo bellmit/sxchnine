@@ -5,7 +5,7 @@ import {Dimmer, Form, Grid, Icon, Image, Label, Loader, Modal, Progress} from "s
 import Aux from "../../hoc/Aux/Aux";
 import 'react-web-tabs/dist/react-web-tabs.css';
 import './TabAccount.css';
-import graffiti from './graff_bomber.png';
+import graffiti from './pen1.png';
 import * as actions from "../../store/actions";
 
 class TabAccount extends PureComponent {
@@ -106,7 +106,7 @@ class TabAccount extends PureComponent {
     }
 
     trackOrder = (trackingNumber) => {
-        window.open('https://www.canadapost.ca/trackweb/en#/details/'+trackingNumber);
+        window.open('https://www.canadapost.ca/track-reperage/en#/details/'+trackingNumber);
     }
 
 
@@ -403,7 +403,7 @@ class TabAccount extends PureComponent {
                                         </Grid.Row>
                                     </Grid>
                                 </Grid.Column>
-                                <Grid.Column width={3}>
+                                <Grid.Column width={4}>
                                     <img src={graffiti} alt="edit info"
                                          className="TabAccount-EditUser-Icon"
                                          onClick={this.show}/>

@@ -76,6 +76,14 @@
           }
         }
       },
+      "tags": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
       "images": {
         "type": "keyword"
       },

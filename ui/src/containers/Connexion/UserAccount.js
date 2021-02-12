@@ -24,7 +24,9 @@ class UserAccount extends Component {
 
                 <span className="TabAccount-Welcome-Message">
                     Hi {this.props.user.firstName} {this.props.user.lastName}, Welcome back !
+{/*
                     <img src={salute1} alt="salute" className="TabAccount-Welcome-Icon"/>
+*/}
                     {/* <Icon name='power off' color='red' className="log-off-icon" onClick={this.signOff}>
                         <span className="log-off-text">Sign off</span>
                     </Icon>*/}

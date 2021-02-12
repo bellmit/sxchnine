@@ -50,21 +50,6 @@ class User extends Component {
                                                                                 color='red'>${order.total}</Label></span>
                                 </Grid.Column>
                             </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column width={5}>
-                                    <span className="History-Items-Text">Status:</span>
-                                </Grid.Column>
-                                <Grid.Column width={8}>
-                                    {order.orderStatus === 'REFUSED' ?
-                                        <Progress size='small' percent={100} error indicating> Refused </Progress> :
-                                        <Progress size='small' percent={this.statusOrder(order.orderStatus)} indicating>
-                                        <span
-                                            className="TabAccount-Progress-Text">ordered&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            processing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            preparing to ship&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            shipped</span></Progress>}
-                                </Grid.Column>
-                            </Grid.Row>
                         </Grid>
                         <Grid className="Grid-div">
                             {order.products.map((product, index) => (
@@ -91,13 +76,16 @@ class User extends Component {
             <Aux>
                 <UserIcon show={this.show('small')}
                           user={this.props.user}
-                          top={this.props.top} topIcon={this.props.topIcon}/>
+                          top={this.props.top}
+                          topIcon={this.props.topIcon}/>
 
                 <div>
                     <Modal size={size} open={open} onClose={this.close}
                            style={{position: 'static', height: 'auto'}}>
-                        <Modal.Header><Image src={stickers} fluid
-                                             style={{height: '220px', width: '100%'}}/></Modal.Header>
+                        <Modal.Header>
+                            <Image src={stickers} fluid
+                                   style={{height: '220px', width: '100%'}}/>
+                        </Modal.Header>
 
 
                         <span className="History-Resume-Text">You GOT : </span>

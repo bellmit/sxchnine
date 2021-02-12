@@ -20,8 +20,8 @@ class Recommendation extends Component {
         return (
             <div>
                 <Carousel
-                    slidesPerPage={4}
-                    itemWidth={150}
+                    slidesPerPage={3}
+                    itemWidth={160}
                     arrowLeft={<Icon name="arrow left" color='yellow' size='large'/>}
                     arrowRight={<Icon name="arrow right" color='yellow' size='large'/>}
                     addArrowClickHandler
