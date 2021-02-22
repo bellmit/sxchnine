@@ -9,20 +9,18 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -33,7 +31,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = {OrderConsumer.class, KafkaConfig.class})
 @EmbeddedKafka
 @ActiveProfiles("test")
@@ -52,16 +49,16 @@ public class OrderConsumerTestIT {
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true);
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
+    @Autowired
+    public EmbeddedKafkaBroker embeddedKafkaRule;
 
-    @Before
-    public void setup(){
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafkaRule.getEmbeddedKafka().getBrokersAsString());
+    @BeforeEach
+    public void setup() {
+        System.setProperty("spring.embedded.kafka.brokers", embeddedKafkaRule.getBrokersAsString());
     }
 
     @Test
-    public void testConsumeOrder(){
+    public void testConsumeOrder() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
         order.setPaymentStatus(WAITING.getValue());
@@ -75,14 +72,15 @@ public class OrderConsumerTestIT {
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
-        orderConsumer.consumeOrder(order, () -> {});
+        orderConsumer.consumeOrder(order, () -> {
+        });
 
         verify(catchupOrder).catchUpCheckout(orderCaptor.capture());
 
         assertThat(orderCaptor.getValue()).isEqualToComparingFieldByFieldRecursively(order);
     }
 
-    private Producer createProducer(){
+    private Producer createProducer() {
         Map<String, Object> config = KafkaTestUtils.producerProps(System.getProperty("spring.embedded.kafka.brokers"));
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);

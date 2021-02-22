@@ -5,7 +5,6 @@ import com.project.model.Product;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -35,9 +35,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ActiveProfiles("intg")
 @TestPropertySource(properties = {"application-intg.yml", "spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
-@EmbeddedKafka(partitions = 3, topics = "products",
-        brokerProperties = {
-                "listeners=PLAINTEXT://127.0.0.1:51699"})
+@EmbeddedKafka(partitions = 3,
+        topics = "products",
+        brokerProperties = {"listeners=PLAINTEXT://127.0.0.1:51699"})
 @TestInstance(PER_CLASS)
 @DirtiesContext
 public class ProductControllerTestIT {
@@ -51,15 +51,15 @@ public class ProductControllerTestIT {
     @Autowired
     private KafkaProducer kafkaProducer;
 
-    @ClassRule
-    EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "products");
+    @Autowired
+    EmbeddedKafkaBroker embeddedKafka;
 
     @BeforeAll
     public void setup(){
         Product product = TestObjectCreator.createProduct();
         mongoTemplate.save(product).subscribe();
 
-        System.setProperty("spring.embedded.kafka.brokers", embeddedKafka.getEmbeddedKafka().getBrokersAsString());
+        System.setProperty("spring.embedded.kafka.brokers", embeddedKafka.getBrokersAsString());
     }
 
     @Test
@@ -69,8 +69,8 @@ public class ProductControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Product.class)
-                .value(p -> p.getId(), equalTo(1L))
-                .value(p -> p.getName(), equalTo("p1"));
+                .value(Product::getId, equalTo(1L))
+                .value(Product::getName, equalTo("p1"));
     }
 
 
@@ -81,8 +81,8 @@ public class ProductControllerTestIT {
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Product.class)
-                .value(p -> p.getId(), equalTo(1L))
-                .value(p -> p.getName(), equalTo("p1"));
+                .value(Product::getId, equalTo(1L))
+                .value(Product::getName, equalTo("p1"));
     }
 
 
@@ -102,7 +102,7 @@ public class ProductControllerTestIT {
 
     private Consumer createKafkaConsumer() throws Exception {
         Map<String, Object> consumerProperties = KafkaTestUtils.consumerProps("sender",
-                "false", embeddedKafka.getEmbeddedKafka().kafkaPorts(51699));
+                "false", embeddedKafka.kafkaPorts(51699));
 
         consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
@@ -117,7 +117,7 @@ public class ProductControllerTestIT {
         consumerFactory.setKeyDeserializer(new StringDeserializer());
         consumerFactory.setValueDeserializer(jsonDeserializer);
         Consumer<String, Product> consumer = consumerFactory.createConsumer();
-        embeddedKafka.getEmbeddedKafka().consumeFromAllEmbeddedTopics(consumer);
+        embeddedKafka.consumeFromAllEmbeddedTopics(consumer);
         consumer.subscribe(Collections.singleton("products"));
         return consumer;
     }

@@ -12,10 +12,12 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.math.BigDecimal;
 
 import static com.project.utils.OrderHelper.evaluateStatus;
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class OrdersCreator {
     public Mono<Void> saveOrders(Order order) {
         if (order != null) {
             order.setTotal(sumTotal(order));
-            return orderRepository.save(order)
+            return saveOrderWithoutSendToKafka(order)
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
                     .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)));
         }
@@ -41,7 +43,7 @@ public class OrdersCreator {
     public Mono<Order> saveOrdersAndReturnOrder(Order order) {
         if (order != null) {
             order.setTotal(sumTotal(order));
-            return orderRepository.save(order)
+            return saveOrderWithoutSendToKafka(order)
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
                     .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)))
                     .then(Mono.just(order));
@@ -93,5 +95,11 @@ public class OrdersCreator {
                     .reduce(BigDecimal.valueOf(0), BigDecimal::add);
         }
         return BigDecimal.ZERO;
+    }
+
+    private Mono<Void> saveOrderWithoutSendToKafka(Order order){
+        return orderRepository.save(order)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save Order - ID {}", order.getOrderKey().getOrderId())))
+                .then();
     }
 }

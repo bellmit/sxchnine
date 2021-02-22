@@ -13,12 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 
 
 @Service
@@ -33,24 +36,29 @@ public class ProductService {
     public Mono<Product> getProductById(Long id) {
         return productRepository.findProductById(id)
                 .doOnError(error -> log.error("error occurred during getting product by id", error))
-                .onErrorReturn(new Product());
+                .onErrorReturn(new Product())
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product ID: {}", id)));
     }
 
     public Flux<Product> getProductByIds(List<Long> ids) {
-        return productRepository.findProductsByIdIn(ids);
+        return productRepository.findProductsByIdIn(ids)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch list of product IDs: {}", ids.toString())));
+
     }
 
     public Mono<Product> getProductByName(String name) {
         return productRepository.findProductByName(name)
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
-                .timeout(Duration.ofSeconds(2))
+                .timeout(Duration.ofSeconds(8))
                 .doOnError(error -> log.error("error occurred during getting product by name", error))
-                .onErrorReturn(new Product());
+                .onErrorReturn(new Product())
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product by name: {}", name)));
     }
 
     public Flux<Product> getAllProducts() {
         return productRepository.findAll()
-                .doOnError(error -> log.error("error occurred during getting all products", error));
+                .doOnError(error -> log.error("error occurred during getting all products", error))
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch all products")));
 
     }
 
@@ -61,11 +69,12 @@ public class ProductService {
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(500)))
                 .timeout(Duration.ofSeconds(5))
                 .doOnError(error -> log.error("error occurred during getting product by sex", error))
-                .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex));
+                .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex))
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch products for gender: {}", sex)));
     }
 
     public Flux<Product> searchProducts(Long id, String name, String brand, String sex) {
-        if (id != null){
+        if (id != null) {
             return Flux.from(productRepository.findProductById(id));
 
         } else if (StringUtils.hasText(name)
@@ -83,14 +92,14 @@ public class ProductService {
                 && StringUtils.hasText(sex)) {
             return productRepository.findProductsByBrandAndSex(brand, sex);
 
-        } else if (StringUtils.hasText(brand)){
+        } else if (StringUtils.hasText(brand)) {
             return productRepository.findProductsByBrand(brand);
 
         } else if (StringUtils.hasText(name)) {
             return Flux.from(productRepository.findProductByName(name));
         } else {
-             return productRepository.findProductsByIdAndNameAndBrandAndSex(id, name, brand, sex);
-         }
+            return productRepository.findProductsByIdAndNameAndBrandAndSex(id, name, brand, sex);
+        }
     }
 
     public Mono<Product> save(Product product) {
@@ -99,7 +108,8 @@ public class ProductService {
                 .flatMap(p -> kafkaProducer
                         .sendProduct(Mono.just(p))
                         .doOnError(error -> log.info("error happened when sending to Kafka {}", product, error)))
-                .doOnError(error -> log.error("Error during saving", error));
+                .doOnError(error -> log.error("Error during saving", error))
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save product with ID: {}", product.getId())));
     }
 
     private void sumQteAndSetDate(Product product) {
@@ -117,11 +127,13 @@ public class ProductService {
                         .sendProduct(Mono.just(p))
                         .doOnError(error -> log.info("error happened when sending to Kafka {}", p, error)))
                 .doOnError(error -> log.error("Error during saving all products", error))
-                .then();
+                .then()
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save list of products")));
     }
 
     public Mono<Void> deleteProductById(long id) {
-        return productRepository.deleteById(id);
+        return productRepository.deleteById(id)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Delete product with ID: {}", id)));
     }
 
 }

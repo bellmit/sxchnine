@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Button, Embed, Form, Grid} from "semantic-ui-react";
 import story from './story.png';
-import storyMobile from './story-resize.png';
+import storyMobile from './resize4.jpg';
 import placeholder1 from './placeholder1.png';
 import './Subscription.css';
 import naybxrzVideo from './Naybxrz-Teaser1.mp4';

@@ -7,9 +7,13 @@ import com.project.repository.OrderByOrderIdRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
+
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 
 @Service
 @RequiredArgsConstructor
@@ -31,12 +35,12 @@ public class OrderIdService {
 
     public Mono<Void> saveOrderId(OrderId orderId){
         return orderByOrderIdRepository.save(orderId)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save OrderId - ID: {}", orderId)))
                 .then();
     }
 
     public Mono<Order> getMappedOrderByOrderId(String orderId){
-        MDC.put("orderId", orderId);
-        log.info("get order");
-        return getOrderByOrderId(orderId).map(orderMapper::asOrder);
+        return getOrderByOrderId(orderId).map(orderMapper::asOrder)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Get Mapped Order {}", orderId)));
     }
 }

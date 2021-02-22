@@ -26,7 +26,9 @@ public class OrderCatchupConsumer {
         this.orderService = orderService;
     }
 
-    @KafkaListener(groupId = "${kafka.consumer.groupId}", topics = "${kafka.consumer.topic}")
+    @KafkaListener(groupId = "${kafka.consumer.groupId}",
+            topics = "${kafka.consumer.topic}",
+            containerFactory = "kafkaListenerContainerFactory")
     public void consumeCatchupOrder(Order order, Acknowledgment ack) {
         log.info("***************************************");
         log.info("order to catchup {}", order.toString());
@@ -49,7 +51,9 @@ public class OrderCatchupConsumer {
         }
     }
 
-    @KafkaListener(groupId = "${kafka.consumer.groupId}" + DLT, topics = "${kafka.consumer.topic}" + DLT)
+    @KafkaListener(groupId = "${kafka.consumer.groupId}" + DLT,
+            topics = "${kafka.consumer.topic}" + DLT,
+            containerFactory = "dltKafkaListenerContainerFactory")
     public void consumeDLTCatchupOrder(Order order, Acknowledgment ack) {
         log.info("***************************************");
         log.info("DLT - order to catchup {}", order.toString());

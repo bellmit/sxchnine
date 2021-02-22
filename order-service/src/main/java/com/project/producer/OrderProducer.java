@@ -17,10 +17,8 @@ import reactor.kafka.sender.SenderRecord;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RefreshScope
@@ -38,7 +36,7 @@ public class OrderProducer {
         this.objectMapper = objectMapper;
     }
 
-    public Mono<Void> sendOder(Mono<Order> order){
+    public Mono<Void> sendOder(Mono<Order> order) {
         Mono<SenderRecord<Object, String, Object>> recordMono = order
                 .doOnNext(o -> log.info("order to sent {}", o.toString()))
                 .map(o -> SenderRecord.create(topic, null, null, null, mapOrder(o), null))
@@ -54,7 +52,7 @@ public class OrderProducer {
                 .then();
     }
 
-    private String mapOrder(Order order){
+    private String mapOrder(Order order) {
         try {
             return objectMapper.writeValueAsString(order);
         } catch (JsonProcessingException e) {
@@ -63,8 +61,8 @@ public class OrderProducer {
     }
 
     @Scheduled(cron = "0 */30 * ? * *")
-    public void catchupOrders(){
-        if (!CollectionUtils.isEmpty(backupOrders)){
+    public void catchupOrders() {
+        if (!CollectionUtils.isEmpty(backupOrders)) {
             Flux.fromStream(backupOrders.stream())
                     .flatMap(this::sendOder)
                     .subscribe(success -> log.info("send backup orders to kafka"),

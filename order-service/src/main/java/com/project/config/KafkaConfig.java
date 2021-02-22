@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.tinkerpop.shaded.kryo.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -61,6 +62,15 @@ public class KafkaConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Order> kafkaListenerContainerFactory(){
+        return configConcurrentKafkaListenerContainerFactory();
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Order> dltKafkaListenerContainerFactory(){
+        return configConcurrentKafkaListenerContainerFactory();
+    }
+
+    private ConcurrentKafkaListenerContainerFactory<String, Order> configConcurrentKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Order> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);

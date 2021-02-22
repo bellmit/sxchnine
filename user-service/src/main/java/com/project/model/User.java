@@ -1,6 +1,7 @@
 package com.project.model;
 
 import lombok.*;
+import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 
@@ -25,4 +26,6 @@ public class User implements Serializable {
     private Address address;
     private String role;
     private boolean status;
+    @Transient
+    private boolean newUser;
 }

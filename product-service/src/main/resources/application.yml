@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: product-service
+  config:
+    import: configserver:${CONFIG_SERVER:http://config-server:8888}
+  cloud:
+    config:
+      profile: local

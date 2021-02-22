@@ -4,17 +4,21 @@ package com.project.controller;
 import com.project.business.ProductService;
 import com.project.model.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.util.List;
 
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -52,7 +56,8 @@ public class ProductController {
                                         @RequestParam(required = false) String name,
                                         @RequestParam(required = false) String brand,
                                         @RequestParam(required = false) String sex){
-        return productService.searchProducts(id, name, brand, sex);
+        return productService.searchProducts(id, name, brand, sex)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Search products with param: id:{} - name:{} - brand:{} - gender:{}", id, name, brand, sex)));
     }
 
     @PostMapping("/save")

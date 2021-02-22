@@ -4,13 +4,6 @@ spring:
   cloud:
     config:
       uri: ${CONFIG_SERVER:http://config-server:8888}
-  sleuth:
-    sampler:
-      probability: 1.0
-
-opentracing:
-  jaeger:
-    log-spans: false
 
 
 #CREATE KEYSPACE orderkeyspace WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };

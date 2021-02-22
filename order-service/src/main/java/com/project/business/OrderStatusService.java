@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 import static org.springframework.util.StringUtils.hasText;
 
 @Service
@@ -45,17 +47,19 @@ public class OrderStatusService {
         if (!hasText(date)) {
             date = LocalDateTime.now().format(ofPattern("yyyyMM"));
         }
+        String finalDate = date;
         return orderStatusRepository
                 .findOrderStatusesByOrderStatusKeyBucket(date)
-                .map(orderMapper::asOrderByOrderStatus);
+                .map(orderMapper::asOrderByOrderStatus)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Get last orders by {}", finalDate)));
     }
 
     public Flux<Order> getPeriodicOrders(String date, int ordersCount) {
         return Mono.defer(() -> Mono.just(count.getAndSet(ordersCount)))
-                .thenMany(Flux.interval(Duration.ofSeconds(10)).flatMap(c -> getObjectMono(date, count)));
+                .thenMany(Flux.interval(Duration.ofSeconds(10)).flatMap(c -> getLastOrdersByDelta(date, count)));
     }
 
-    private Flux<Order> getObjectMono(String date, AtomicLong count) {
+    private Flux<Order> getLastOrdersByDelta(String date, AtomicLong count) {
         return getOrdersByOrderStatus(date).count()
                 .flatMapMany(secondCount -> {
                     log.info("first count {}", count.get());
@@ -78,6 +82,9 @@ public class OrderStatusService {
     }
 
     public Mono<Void> saveOrderStatus(OrderStatus orderStatus) {
-        return orderStatusRepository.save(orderStatus).then();
+        return orderStatusRepository
+                .save(orderStatus)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save Order Status - ID{}", orderStatus.getOrderStatusKey().getOrderId())))
+                .then();
     }
 }

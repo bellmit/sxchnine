@@ -4,16 +4,9 @@ spring:
   cloud:
     config:
       uri: ${CONFIG_SERVER:http://config-server:8888}
-  zipkin:
-    base-url: ${ZIPKIN_SERVER:http://zipkin:9411}
-    enabled: false
   sleuth:
-    sampler:
-      probability: 1
-    async:
-      enabled: false
     reactor:
-      enabled: false
+      enabled: true
 
 
 

@@ -29,11 +29,13 @@ public class UserService {
     }
 
     public Mono<User> getUserByEmail(String email) {
+        log.info("get user {}", email);
         return userRepository.findByEmail(email)
                 .doOnError(error -> log.error("error occurred during get by email: {}", email, error));
     }
 
     public Mono<Void> save(User user) {
+        log.info("save user {}", user.getEmail());
         return getUserByEmail(user.getEmail().toLowerCase())
                 .switchIfEmpty(Mono.just(user))
                 .flatMap(u -> Mono.fromCallable(() -> {
@@ -52,16 +54,19 @@ public class UserService {
     }
 
     public Mono<Void> deleteUserById(String id) {
+        log.info("delete user with ID: {}", id);
         return userRepository.deleteUserById(id)
                 .doOnError(error -> log.error("error occurred during delete by id {}", id, error));
     }
 
     public Mono<Void> deleteUserByEmail(String email) {
+        log.info("delete user: {}", email);
         return userRepository.deleteUserByEmail(email)
                 .doOnError(error -> log.error("error occurred during delete by email: {}", email, error));
     }
 
     public Mono<User> loginAdmin(String email, String password) {
+        log.info("login admin: {}", email);
         return getUserByEmail(email)
                 .filter(u -> u.getRole().equalsIgnoreCase(ADMIN.getValue()))
                 .flatMap(user -> validateUser(user, password))
@@ -69,12 +74,14 @@ public class UserService {
     }
 
     public Mono<User> login(String email, String password) {
+        log.info("login user: {}", email);
         return getUserByEmail(email)
                 .flatMap(user -> validateUser(user, password))
                 .subscribeOn(Schedulers.boundedElastic());
     }
 
     private Mono<User> validateUser(User user, String password) {
+        log.info("validate user: {}", user.getEmail());
         return Mono.fromCallable(() -> {
             if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
                 return user;
@@ -85,6 +92,7 @@ public class UserService {
     }
 
     public Mono<User> changePassword(String email, String oldPassword, String newPassword, String confirmNewPassword){
+        log.info("change password for user: {}", email);
         if (!newPassword.equals(confirmNewPassword)){
             return Mono.error(new ConfirmPasswordException("Confirm password is not correct !"));
         }

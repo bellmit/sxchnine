@@ -7,6 +7,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators;
 import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -14,6 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
+
+import static reactor.core.publisher.SignalType.ON_COMPLETE;
+import static reactor.core.publisher.SignalType.ON_NEXT;
 
 @Service
 @Slf4j
@@ -26,6 +31,7 @@ public class ProductService {
     }
 
     public Flux<Product> getProductsByQuery(String query) {
+        log.info("Search Products by: {}", query);
         MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders
                 .multiMatchQuery(query)
                 .field("name")
@@ -44,6 +50,7 @@ public class ProductService {
     }
 
     public Flux<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {
+        log.info("Advanced Search by criteria gender: {} - brand: {} - category: {} - size: {}", gender, brand, category, size);
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
         if (StringUtils.hasText(gender)) {
@@ -73,12 +80,14 @@ public class ProductService {
 
 
     public Mono<Void> save(Product product) {
+        log.info("Save product {} to products store", product.getId());
         return reactiveElasticsearchOperations.save(product)
                 .doOnError(error -> log.error("error occurred during saving", error))
                 .then();
     }
 
     public Mono<Void> deleteById(String id){
+        log.info("Delete product {} from products store", id);
         return reactiveElasticsearchOperations.delete(id, Product.class)
                 .doOnError(error -> log.error("error occurred during delete product by id {}", id, error))
                 .then();

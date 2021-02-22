@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: order-service
+  config:
+    import: configserver:${CONFIG_SERVER:http://config-server:8888}
+
+
+#-DCONFIG_SERVER=http://localhost:8888 -DCASSANDRA_SERVER=localhost -DKAFKA_SERVER=localhost:9092 -Dspring.config.use-legacy-processing=true

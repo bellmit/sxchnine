@@ -64,7 +64,7 @@ public class ProductServiceTest {
 
     @Test
     public void testSave(){
-        Product product = Mono.just(TestObjectCreator.createProduct()).block();
+        Product product = TestObjectCreator.createProduct();
 
         when(productRepository.save(product)).thenReturn(Mono.just(product));
         when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(product));

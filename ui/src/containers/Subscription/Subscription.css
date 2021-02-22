@@ -17,7 +17,9 @@
     width: 52%;
     margin: 13% 20% 20% 24%;
     position: absolute;
-    box-shadow: 2px 2px 2px 4px #4c4f52;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    /*
+    box-shadow: 2px 2px 2px 4px #4c4f52;  !* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 *!
+    */
 }
 
 .subscription-main-info{
@@ -68,15 +70,10 @@
         height: 100%;
     }
     .subscription-main-img{
-        height: 128%;
+        height: 100%;
         width: 100%;
-        /*
-        top: 2%;
-        */
-        max-width: 100vw;
+        background-size: 20%;
         position: fixed;
-        background-attachment: fixed;
-        overflow: no-content;
     }
 
     .subscription-main-video{
