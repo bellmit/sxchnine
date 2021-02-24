@@ -2,12 +2,14 @@ package com.project.business;
 
 import com.project.model.User;
 import com.sendgrid.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 @Service
 @RefreshScope
+@Slf4j
 public class EmailUpdatesSender extends EmailSender<User> {
 
     @Value("${sendGrid.mail.templateUpdatesId}")
@@ -29,6 +31,7 @@ public class EmailUpdatesSender extends EmailSender<User> {
 
     @Override
     public Mail mailBuilder(User user) {
+        log.info("Send Updates Email to {}", user.getEmail());
         Email emailFrom = new Email(from);
         Email emailTo = new Email(user.getEmail());
 

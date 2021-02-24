@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+<!--    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{HH:mm:ss.SSS} | %5p | %t | [%X{traceId}/%X{spanId}] %logger{25} | %m%n
+                </pattern>
+                <charset>utf8</charset>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>-->
     <springProperty scope="context" name="application_name" source="spring.application.name"/>
     <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
@@ -18,11 +32,8 @@
                     <omitEmptyFields>true</omitEmptyFields>
                     <pattern>
                         {
-                        "status_code": "%mdc{statusCode}",
-                        "trace_id": "%mdc{X-B3-TraceId}",
-                        "span_id": "%mdc{X-B3-SpanId}",
-                        "parent_span_id": "%mdc{X-B3-ParentSpanId}",
-                        "exportable": "%mdc{X-Span-Export}"
+                        "trace_id": "%X{traceId}",
+                        "span_id": "%X{spanId}"
                         }
                     </pattern>
                 </pattern>

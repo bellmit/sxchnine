@@ -56,7 +56,7 @@ public class OrderProducer {
         try {
             return objectMapper.writeValueAsString(order);
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
+            throw new RuntimeException("Cannot serialize Order for Kafka", e);
         }
     }
 

@@ -34,11 +34,15 @@ export const addedUser = (addedUser) => {
     }
 };
 
-export const saveUser = (userToAdd, history) => {
+export const saveUser = (userToAdd, history, isNew) => {
     return dispatch => {
         dispatch(saveUserStart(true));
         setAxiosToken();
-        axios.post('/user/save', userToAdd)
+        let url = '/user/save';
+        if (isNew){
+            url = '/user/save?isNew=true'
+        }
+        axios.post(url, userToAdd)
             .then(response => {
                 if (response.status === 200){
                     dispatch(saveUserAuth(userToAdd));
@@ -229,6 +233,59 @@ export const subscribeUser = (user) => {
             })
     }
 };
+
+const forgotPasswordStart = (loading) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_START,
+        forgotPasswordLoading: loading
+    }
+};
+
+export const forgotPasswordSuccess = (user) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_START,
+        forgotPasswordSuccess: user
+    }
+};
+
+const forgotPasswordError = (error) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_FAIL,
+        forgotPasswordError: error
+    }
+};
+
+const forgotPasswordNotExistError = (error) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_NOT_EXIST,
+        forgotPasswordNotExistError: error
+    }
+};
+
+export const forgotPassword = (email) => {
+    return dispatch => {
+        setAxiosToken();
+        forgotPasswordStart(true);
+        axios.post('/user/forgotPassword?email='+email, '')
+            .then(response => {
+                dispatch(forgotPasswordStart(false));
+                dispatch(forgotPasswordError(undefined));
+                if (response.data.email !== null){
+                    dispatch(forgotPasswordNotExistError(false));
+                    dispatch(forgotPasswordSuccess(response.data))
+                } else {
+                    dispatch(forgotPasswordNotExistError(true));
+                    dispatch(forgotPasswordSuccess('not found'));
+                }
+            })
+            .catch(error => {
+                dispatch(forgotPasswordStart(false));
+                dispatch(forgotPasswordError(error));
+                dispatch(forgotPasswordSuccess(undefined));
+            })
+    }
+}
+
 
 
 

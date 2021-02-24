@@ -46,6 +46,20 @@
     margin-top: -10%;
 }
 
+.Checkout-forgot-password-text{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.Checkout-forgot-password-text:hover{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: red;
+}
+
 .Checkout-Error-Text{
     font-family: Anton;
     font-size: 1vw;
@@ -268,6 +282,20 @@
         text-transform: uppercase;
     }
 
+    .Checkout-forgot-password-text{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-forgot-password-text:hover{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+        cursor: pointer;
+        color: red;
+    }
+
     .Checkout-Error-Text{
         font-family: Anton;
         font-size: 2vw !important;
@@ -417,11 +445,39 @@
         text-transform: uppercase;
     }
 
+    .Checkout-forgot-password-text{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-forgot-password-text:hover{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+        cursor: pointer;
+        color: red;
+    }
+
     .Checkout-Email-Text-Input{
         font-family: Anton;
         font-size: 1vw;
         text-transform: uppercase;
         margin-top: -60%;
+    }
+
+    .Checkout-forgot-password-text{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+    }
+
+    .Checkout-forgot-password-text:hover{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+        cursor: pointer;
+        color: red;
     }
 
     .Checkout-Text-Button {

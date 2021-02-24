@@ -17,9 +17,7 @@ public class SubscriptionService {
 
 
     public void sendEmailToSubscribers(){
-        getSubscribedUsers()
-                .parallelStream()
-                .forEach(emailSubscription::sendEmail);
+        getSubscribedUsers().forEach(emailSubscription::sendEmail);
     }
 
     private List<Subscription> getSubscribedUsers() {

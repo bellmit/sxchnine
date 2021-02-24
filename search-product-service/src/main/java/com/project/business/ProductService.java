@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 import static reactor.core.publisher.SignalType.ON_COMPLETE;
 import static reactor.core.publisher.SignalType.ON_NEXT;
 
@@ -31,7 +32,6 @@ public class ProductService {
     }
 
     public Flux<Product> getProductsByQuery(String query) {
-        log.info("Search Products by: {}", query);
         MultiMatchQueryBuilder multiMatchQueryBuilder = QueryBuilders
                 .multiMatchQuery(query)
                 .field("name")
@@ -46,11 +46,11 @@ public class ProductService {
         return reactiveElasticsearchOperations
                 .search(nativeSearchQuery.build(), Product.class, Product.class)
                 .map(SearchHit::getContent)
-                .doOnError(error -> log.error("error occurred during search", error));
+                .doOnError(error -> log.error("error occurred during search", error))
+                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Search Products by: {}", query)));
     }
 
     public Flux<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {
-        log.info("Advanced Search by criteria gender: {} - brand: {} - category: {} - size: {}", gender, brand, category, size);
         BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
 
         if (StringUtils.hasText(gender)) {
@@ -75,21 +75,22 @@ public class ProductService {
         return reactiveElasticsearchOperations
                 .search(nativeQuery.build(), Product.class, Product.class)
                 .map(SearchHit::getContent)
-                .doOnError(error -> log.error("error occurred during advanced search", error));
+                .doOnError(error -> log.error("error occurred during advanced search", error))
+                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Advanced Search by criteria gender: {} - brand: {} - category: {} - size: {}", gender, brand, category, size)));
     }
 
 
     public Mono<Void> save(Product product) {
-        log.info("Save product {} to products store", product.getId());
         return reactiveElasticsearchOperations.save(product)
                 .doOnError(error -> log.error("error occurred during saving", error))
+                .doOnEach(withSpanInScope(ON_NEXT, signal -> log.info("Save product {} to products store", product.getId())))
                 .then();
     }
 
     public Mono<Void> deleteById(String id){
-        log.info("Delete product {} from products store", id);
         return reactiveElasticsearchOperations.delete(id, Product.class)
                 .doOnError(error -> log.error("error occurred during delete product by id {}", id, error))
+                .doOnEach(withSpanInScope(ON_NEXT, signal -> log.info("Delete product {} from products store", id)))
                 .then();
     }
 }

@@ -81,17 +81,17 @@ public class OrderService {
     public Mono<PaymentResponse> confirmOrderAndSave(String paymentIntentId, String orderId) {
         PaymentResponseWrapper paymentResponseReceived = new PaymentResponseWrapper();
         return paymentServiceClient.confirmPay(paymentIntentId, paymentResponseReceived)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Confirm order ID: {} with payment intent ID: {}", orderId, paymentIntentId)))
                 .flatMap(paymentResponse -> ordersCreator.getOrderByOrderId(orderId, paymentResponse.getStatus(), paymentIntentId))
                 .flatMap(ordersCreator::saveOrdersAndReturnOrder)
                 .flatMap(order -> orderProducer.sendOder(Mono.just(order)))
-                .then(Mono.defer(() -> Mono.just(paymentResponseReceived.getPaymentResponse())))
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Confirm order ID: {} with payment intent ID: {}", orderId, paymentIntentId)));
+                .then(Mono.defer(() -> Mono.just(paymentResponseReceived.getPaymentResponse())));
     }
 
     public Mono<Void> saveOrder(Order order) {
         return ordersCreator.saveOrders(order)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save Order - ID: {}", order.getOrderKey().getOrderId())))
                 .then(orderProducer.sendOder(Mono.just(order)))
-                .then()
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save Order - ID: {}", order.getOrderKey().getOrderId())));
+                .then();
     }
 }

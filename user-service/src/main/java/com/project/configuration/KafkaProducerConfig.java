@@ -1,4 +1,4 @@
-package com.project.config;
+package com.project.configuration;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${spring.kafka.producer.bootstrap-servers}")
+    @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
     @Bean
@@ -22,10 +22,10 @@ public class KafkaProducerConfig {
         return KafkaSender.create(senderOptions());
     }
 
-    public SenderOptions<Object, String> senderOptions(){
+    private SenderOptions<Object, String> senderOptions(){
         Map<String, Object> configs = new HashMap<>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configs.put(ProducerConfig.CLIENT_ID_CONFIG, "orders");
+        configs.put(ProducerConfig.CLIENT_ID_CONFIG, "users");
         configs.put(ProducerConfig.ACKS_CONFIG, "all");
         configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);

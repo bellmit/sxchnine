@@ -34,7 +34,6 @@ import org.springframework.test.context.support.DirtiesContextTestExecutionListe
 
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
 @EmbeddedKafka

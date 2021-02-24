@@ -10,9 +10,17 @@ const initialState = {
     userChangedPassword: false,
     errorChangedPassword: '',
     addedUser: false,
+
     subscribeUserLoading: false,
     subscribedUser: '',
     subscribeUserError: undefined,
+
+    forgotPasswordLoading: false,
+    forgotPasswordSuccess: '',
+    forgotPasswordNotExistError: false,
+    forgotPasswordError: undefined
+
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -97,7 +105,27 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 subscribeUserError: action.subscribeUserError
-            }
+            };
+        case actionTypes.FORGOT_PASSWORD_START:
+            return {
+                ...state,
+                loading: action.forgotPasswordLoading
+            };
+        case actionTypes.FORGOT_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                forgotPasswordSuccess: action.forgotPasswordSuccess
+            };
+        case actionTypes.FORGOT_PASSWORD_NOT_EXIST:
+            return {
+                ...state,
+                forgotPasswordNotExistError: action.forgotPasswordNotExistError
+            };
+        case actionTypes.FORGOT_PASSWORD_FAIL:
+            return {
+                ...state,
+                forgotPasswordError: action.forgotPasswordError
+            };
         default:
             return state;
     }

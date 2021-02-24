@@ -1,42 +1,42 @@
 package com.project.business;
 
-import com.project.model.Order;
-import com.project.model.Subscription;
+import com.project.model.User;
 import com.sendgrid.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class EmailSubscription extends EmailSender<Subscription> {
+public class EmailForgotPasswordSender extends EmailSender<User>{
 
-    @Value("${sendGrid.mail.templateSubscriptionId}")
-    private String templateSubscriptionId;
+    @Value("${sendGrid.mail.templateForgotPasswordId}")
+    private String templateForgotPasswordId;
 
-    private SendGrid sendGrid;
-
-    public EmailSubscription(SendGrid sendGrid) {
+    public EmailForgotPasswordSender(SendGrid sendGrid) {
         super(sendGrid);
     }
 
     @Override
     public String getTemplateId() {
-        return templateSubscriptionId;
+        return templateForgotPasswordId;
     }
 
     @Override
     public String type() {
-        return "SUBSCRIPTION";
+        return "FORGOT_PASSWORD";
     }
 
     @Override
-    public Mail mailBuilder(Subscription subscription) {
-        log.info("Send Subscription Email to {}", subscription.getEmail());
+    public Mail mailBuilder(User user) {
+        log.info("Send Forgot Password Email to user: {}", user.getEmail());
         Email emailFrom = new Email(from);
-        Email emailTo = new Email(subscription.getEmail());
+        Email emailTo = new Email(user.getEmail());
 
         Personalization personalization = new Personalization();
+        personalization.addDynamicTemplateData("name", user.getLastName());
+        personalization.addDynamicTemplateData("password", user.getPlainPassword());
         personalization.addTo(emailTo);
 
         Content content = new Content("text/html", "plain");

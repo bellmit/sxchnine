@@ -44,7 +44,8 @@ export {
     signOffUser,
     subscribeUser,
     subscribeUserSuccess,
-    saveUserFail
+    saveUserFail,
+    forgotPassword
 } from './users';
 
 export {

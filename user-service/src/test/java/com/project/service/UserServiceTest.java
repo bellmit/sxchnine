@@ -16,8 +16,7 @@ import reactor.core.publisher.Mono;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +28,9 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder bCryptPasswordEncoder;
 
+    @Mock
+    private UserProducer userProducer;
+
     @InjectMocks
     private UserService userService;
 
@@ -36,8 +38,9 @@ public class UserServiceTest {
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
+
     @Test
-    public void testGetUserByEmail(){
+    public void testGetUserByEmail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
@@ -49,9 +52,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testSave(){
+    public void testSaveWithEncode() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
+        user.setPassword("1234");
 
         when(userRepository.save(any(User.class))).thenReturn(Mono.empty());
         when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
@@ -59,7 +63,7 @@ public class UserServiceTest {
 
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
-        userService.save(user).block();
+        userService.save(user, false).block();
 
         verify(userRepository).save(userCaptor.capture());
 
@@ -67,7 +71,42 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testDeleteUser(){
+    public void testSaveWithoutEncode() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+        user.setPassword("12345678909876543212");
+
+        when(userRepository.save(any(User.class))).thenReturn(Mono.empty());
+        when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(user));
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
+        userService.save(user, false).block();
+
+        verify(userRepository).save(userCaptor.capture());
+        verify(bCryptPasswordEncoder, never()).encode(userCaptor.getValue().getPassword());
+    }
+
+    @Test
+    public void testSaveNewWithEncode() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+        user.setPassword("12345678909876543212");
+
+        when(userRepository.save(any(User.class))).thenReturn(Mono.just(user));
+        when(userProducer.pushUserToKafka(any())).thenReturn(Mono.empty());
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
+        userService.save(user, true).block();
+
+        verify(userRepository).save(userCaptor.capture());
+        verify(bCryptPasswordEncoder, never()).encode(userCaptor.getValue().getPassword());
+        verify(userProducer).pushUserToKafka(any());
+    }
+
+    @Test
+    public void testDeleteUser() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
@@ -79,7 +118,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoginOK(){
+    public void testLoginOK() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
@@ -94,7 +133,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testLoginFail(){
+    public void testLoginFail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 

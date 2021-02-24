@@ -22,10 +22,12 @@ public class User implements Serializable {
     private String lastName;
     private String email;
     private String password;
+    private String plainPassword;
     private String phoneNumber;
     private Address address;
     private String role;
     private boolean status;
+
     @Transient
-    private boolean newUser;
+    private boolean forgotPassword;
 }

@@ -60,7 +60,7 @@ public class UserControllerTest {
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
 
-        when(userService.save(any(User.class))).thenReturn(Mono.empty());
+        when(userService.save(any(User.class), any())).thenReturn(Mono.empty());
 
         webTestClient.post().uri("/save")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -69,7 +69,7 @@ public class UserControllerTest {
                 .expectStatus()
                 .is2xxSuccessful();
 
-        verify(userService).save(any());
+        verify(userService).save(any(), any());
 
     }
 
@@ -86,12 +86,12 @@ public class UserControllerTest {
                 .expectStatus()
                 .is2xxSuccessful();
 
-        verify(userService).deleteUserByEmail(user.getEmail());
+        verify(userService).deleteUserByEmail(user.getEmail().toLowerCase());
     }
 
 
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin() {
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
 
@@ -105,6 +105,6 @@ public class UserControllerTest {
                 .expectBody(User.class)
                 .value(result -> assertEquals(user.getId(), result.getId()));
 
-        verify(userService).login(user.getEmail(), user.getPassword());
+        verify(userService).login(user.getEmail().toLowerCase(), user.getPassword());
     }
 }

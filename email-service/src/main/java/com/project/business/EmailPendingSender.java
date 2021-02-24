@@ -2,6 +2,7 @@ package com.project.business;
 
 import com.project.model.Order;
 import com.sendgrid.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import static com.project.utils.PaymentStatusCode.REFUSED;
 import static com.project.utils.PaymentStatusCode.WAITING;
 
 @Service
+@Slf4j
 public class EmailPendingSender extends EmailSender<Order> {
 
     @Value("${sendGrid.mail.templatePendingId}")
@@ -30,6 +32,7 @@ public class EmailPendingSender extends EmailSender<Order> {
 
     @Override
     public Mail mailBuilder(Order order) {
+        log.info("Send Pending Email to {} for Order ID: {}", order.getOrderKey().getUserEmail(), order.getOrderKey().getOrderId());
         Email emailFrom = new Email(from);
         Email emailTo = new Email(order.getOrderKey().getUserEmail());
 

@@ -1,14 +1,12 @@
 package com.project.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class User {
 
     private String id;
@@ -17,7 +15,9 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private String plainPassword;
     private String phoneNumber;
     private Address address;
     private String role;
+    private boolean forgotPassword;
 }

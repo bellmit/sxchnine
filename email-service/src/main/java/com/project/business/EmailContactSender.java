@@ -36,6 +36,7 @@ public class EmailContactSender extends EmailSender<Contact>{
 
     @Override
     public Mail mailBuilder(Contact contact) {
+        log.info("Send Contact Email to Naybxrz Support: {}", from);
         Email emailFrom = new Email(from);
         Email emailTo = new Email(from);
 

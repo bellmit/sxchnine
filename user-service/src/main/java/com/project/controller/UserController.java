@@ -26,8 +26,9 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public Mono<Void> createOrSaveUser(@RequestBody User user) {
-        return userService.save(user);
+    public Mono<Void> createOrSaveUser(@RequestParam(required = false) boolean isNew,
+                                       @RequestBody User user) {
+        return userService.save(user, isNew);
     }
 
     @DeleteMapping("/deleteByEmail/{email:.+}")
@@ -43,6 +44,11 @@ public class UserController {
     @PostMapping("/login")
     public Mono<User> login(@RequestParam String email, @RequestParam String password) {
         return userService.login(email.toLowerCase(), password);
+    }
+
+    @PostMapping("/forgotPassword")
+    public Mono<User> forgotPassword(@RequestParam String email){
+        return userService.forgotPassword(email);
     }
 
     @PostMapping("/loginAdmin")

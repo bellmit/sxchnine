@@ -10,9 +10,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.project.utils.PaymentStatusCode.*;
 
 @Service
 @Slf4j
@@ -24,16 +23,19 @@ public class OrderConsumer {
     private final Map<String, EmailSender> context = new ConcurrentHashMap<>();
 
     @PostConstruct
-    public void init(){
+    public void init() {
         emailSenderList.forEach(emailSender -> context.put(emailSender.type(), emailSender));
     }
 
-    @KafkaListener(groupId = "${kafka.groupId}", topics = "${kafka.topic}")
+    @KafkaListener(groupId = "${kafka.order.groupId}",
+            topics = "${kafka.order.topic}",
+            containerFactory = "ordersKafkaListenerContainerFactory")
     public void consumeOrder(Order order, Acknowledgment acknowledgment) {
         log.info("*************************************");
-        log.info("**** Received: {}", order.toString());
+        log.info("**** Order Received: {}", order.toString());
         log.info("*************************************");
-        context.get(order.getOrderStatus()).sendEmail(order);
+
+        Optional.ofNullable(context.get(order.getOrderStatus())).ifPresent(sender -> sender.sendEmail(order));
         acknowledgment.acknowledge();
     }
 }
