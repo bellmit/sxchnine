@@ -45,7 +45,9 @@ export {
     subscribeUser,
     subscribeUserSuccess,
     saveUserFail,
-    forgotPassword
+    forgotPassword,
+    handleForgotPasswordError,
+    handleForgotPasswordSuccess
 } from './users';
 
 export {

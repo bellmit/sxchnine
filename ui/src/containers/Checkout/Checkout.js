@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimmer, Form, Grid, Input, Label, Loader, Message, Modal} from "semantic-ui-react";
+import {Dimmer, Form, Grid, Input, Label, Loader, Message, Modal, Segment} from "semantic-ui-react";
 import {connect} from 'react-redux';
 import Banner from "../../components/Banner/Banner";
 import './Checkout.css';
@@ -39,14 +39,17 @@ class Checkout extends Component {
         }
     }*/
 
-    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        console.log(this.props.forgotPasswordError.message);
-    }
-
     show = () => this.setState({open: true});
     showForgotPassword = () => this.setState({openForgotPassword: true});
     close = () => this.setState({open: false});
-    closeForgotPassword = () => this.setState({openForgotPassword: false});
+    closeForgotPassword = () => {
+        this.setState({openForgotPassword: false,
+            forgotPasswordValidation: undefined,
+            forgotPasswordEmail: ''
+        });
+        this.props.handleForgotPasswordError(undefined);
+        this.props.handleForgotPasswordSuccess(undefined);
+    }
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
 
@@ -120,21 +123,19 @@ class Checkout extends Component {
         if (this.props.forgotPasswordSuccess === 'not found'){
             forgotPasswordCallError = <Label color="red"
                                              className="Checkout-Error-Text">Sorry ! Cannot find your email</Label>
+        } else if (this.props.forgotPasswordSuccess !== undefined
+            && this.props.forgotPasswordSuccess.email !== undefined){
+            forgotPasswordCallError = <Label color="green"
+                                           className="Checkout-Error-Text">Alright! Check your email to reset the password.</Label>
         }
 
         let forgotPasswordServerError = undefined;
         if (this.props.forgotPasswordError !== undefined
-            && this.props.forgotPasswordError.message !== ''){
+            && this.props.forgotPasswordError.message !== undefined){
             forgotPasswordServerError = <Label color="red"
                                                className="Checkout-Error-Text">Sorry! Cannot process your request.. Please try later.</Label>
         }
 
-        let forgotPasswordSuccess = undefined;
-        if (this.props.forgotPasswordSuccess !== undefined
-            && this.props.forgotPasswordSuccess.email !== ''){
-            forgotPasswordSuccess = <Label color="green"
-                                           className="Checkout-Error-Text">Alright! Check your email to reset the password.</Label>
-        }
 
         return (
             <div>
@@ -386,21 +387,20 @@ class Checkout extends Component {
                        onClose={this.closeForgotPassword}
                        className="Modal-Div"
                        closeIcon>
-
+                    <Dimmer active={this.props.loading} page>
+                        <Loader content='Loading'/>
+                    </Dimmer>
                     <Modal.Header>
-                        <span className="Checkout-Message-Text">Please enteryour email:</span>
+                        <span className="Checkout-Message-Text">Please enter your email:</span>
                     </Modal.Header>
                     <Modal.Content>
-                        <Dimmer active={this.props.forgotPasswordLoading} page>
-                            <Loader content='Loading'/>
-                        </Dimmer>
                         <Grid centered>
                             <Grid.Row>
                                 <Grid.Column width={5}>
                                     <span className="Checkout-Email-Text">EMAIL:</span>
                                 </Grid.Column>
                                 <Grid.Column width={5} >
-                                    <Input inverted
+                                    <Input
                                            name='forgotPasswordEmail'
                                            placeholder='Email'
                                            className="Checkout-Email-Text-Input"
@@ -412,7 +412,6 @@ class Checkout extends Component {
                                 {validationError}
                                 {forgotPasswordCallError}
                                 {forgotPasswordServerError}
-                                {forgotPasswordSuccess}
                             </Grid.Row>
                         </Grid>
                     </Modal.Content>
@@ -447,7 +446,9 @@ const dispatchToProps = dispatch => {
         loginUser: (email, password, history, order) => dispatch(actions.loginUser(email, password, history, order)),
         addUser: (userToAdd, history, isNew) => dispatch(actions.saveUser(userToAdd, history, isNew)),
         saveUserFail: (message) => dispatch(actions.saveUserFail(message)),
-        forgotPassword: (email) => dispatch(actions.forgotPassword(email))
+        forgotPassword: (email) => dispatch(actions.forgotPassword(email)),
+        handleForgotPasswordError: (error) => dispatch(actions.handleForgotPasswordError(error)),
+        handleForgotPasswordSuccess: (user) => dispatch(actions.handleForgotPasswordSuccess(user))
     }
 };
 

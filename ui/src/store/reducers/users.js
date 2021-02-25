@@ -124,7 +124,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FORGOT_PASSWORD_FAIL:
             return {
                 ...state,
-                forgotPasswordError: action.forgotPasswordError
+                forgotPasswordError: action.forgotPasswordSuccess
             };
         default:
             return state;

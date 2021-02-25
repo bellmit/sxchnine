@@ -20,12 +20,8 @@ public class UserConsumer {
             topics = "${kafka.user.topic}",
             containerFactory = "usersKafkaListenerContainerFactory")
     public void consumeOrder(User user, Acknowledgment acknowledgment) {
-        log.info("*************************************");
-        log.info("**** User Received: {}", user.toString());
-        log.info("*************************************");
+        log.info("User Received: {}", user.getEmail());
         if (user.isForgotPassword()) {
-            log.info("------------------ " + user.getPlainPassword());
-            log.info("------------------ " + user.getPassword());
             emailForgotPasswordSender.sendEmail(user);
         } else {
             emailWelcomeSender.sendEmail(user);

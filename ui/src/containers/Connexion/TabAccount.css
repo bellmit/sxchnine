@@ -142,6 +142,13 @@
     left: 40px;
 }
 
+.TabAccount-Orders-Separator-Product{
+    background: rgb(255, 240, 36);;
+    height: 10%;
+    width: 40%;
+    position: absolute;
+
+}
 
 @media only screen and (max-width: 1024px) {
     .TabAccount-Welcome-Message{

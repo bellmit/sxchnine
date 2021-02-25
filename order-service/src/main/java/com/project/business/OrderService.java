@@ -71,7 +71,7 @@ public class OrderService {
                 .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Checkout order ID: {}", order.getOrderKey().getOrderId())))
                 .flatMap(ordersCreator::saveOrders)
                 .onErrorResume(error -> {
-                    log.error("cannot save order to the database, we will send it to kafka as well {}", order.toString(), error);
+                    log.error("cannot save order to the database, we will send it to kafka as well {}", order.getOrderKey().getOrderId(), error);
                     return Mono.empty();
                 })
                 .then(orderProducer.sendOder(Mono.just(order)))

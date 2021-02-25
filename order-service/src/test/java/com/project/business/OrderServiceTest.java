@@ -55,20 +55,16 @@ public class OrderServiceTest {
         when(ordersCreator.saveOrders(any())).thenReturn(Mono.empty());
         when(orderProducer.sendOder(any())).thenReturn(Mono.empty());
 
-        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
-
         PaymentResponse paymentResponse = new PaymentResponse();
         paymentResponse.setStatus(CONFIRMED.getValue());
-
         when(paymentServiceClient.payOrder(any(), any())).thenReturn(Mono.just(paymentResponse));
 
-        orderService.checkoutOrderAndSave(order).block();
+        StepVerifier.create(orderService.checkoutOrderAndSave(order))
+                .expectComplete()
+                .verify();
 
-        verify(ordersCreator).saveOrders(orderCaptor.capture());
+        verify(ordersCreator).saveOrders(any());
         verify(orderProducer).sendOder(any());
-
-        assertThat(orderCaptor.getValue().getPaymentStatus()).isEqualTo("CONFIRMED");
-
     }
 
     @Test

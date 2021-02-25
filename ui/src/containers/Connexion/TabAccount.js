@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 import {Tab, TabList, TabPanel, Tabs} from 'react-web-tabs';
-import {Dimmer, Form, Grid, Icon, Image, Label, Loader, Modal, Progress} from "semantic-ui-react";
+import {Dimmer, Divider, Form, Grid, Icon, Image, Label, Loader, Modal, Progress} from "semantic-ui-react";
 import Aux from "../../hoc/Aux/Aux";
 import 'react-web-tabs/dist/react-web-tabs.css';
 import './TabAccount.css';
@@ -194,6 +194,9 @@ class TabAccount extends PureComponent {
                                     </Grid.Row>
                                 ))}
                             </Grid>
+                        </Grid.Row>
+                        <Grid.Row centered>
+                            <div className="TabAccount-Orders-Separator-Product" />
                         </Grid.Row>
                     </Grid>
                 ))

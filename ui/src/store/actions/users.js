@@ -241,14 +241,14 @@ const forgotPasswordStart = (loading) => {
     }
 };
 
-export const forgotPasswordSuccess = (user) => {
+export const handleForgotPasswordSuccess = (user) => {
     return {
-        type: actionTypes.FORGOT_PASSWORD_START,
+        type: actionTypes.FORGOT_PASSWORD_SUCCESS,
         forgotPasswordSuccess: user
     }
 };
 
-const forgotPasswordError = (error) => {
+export const handleForgotPasswordError = (error) => {
     return {
         type: actionTypes.FORGOT_PASSWORD_FAIL,
         forgotPasswordError: error
@@ -269,19 +269,19 @@ export const forgotPassword = (email) => {
         axios.post('/user/forgotPassword?email='+email, '')
             .then(response => {
                 dispatch(forgotPasswordStart(false));
-                dispatch(forgotPasswordError(undefined));
-                if (response.data.email !== null){
+                if (response.data.email !== undefined){
                     dispatch(forgotPasswordNotExistError(false));
-                    dispatch(forgotPasswordSuccess(response.data))
+                    dispatch(handleForgotPasswordSuccess(response.data))
                 } else {
                     dispatch(forgotPasswordNotExistError(true));
-                    dispatch(forgotPasswordSuccess('not found'));
+                    dispatch(handleForgotPasswordSuccess('not found'));
                 }
+                dispatch(handleForgotPasswordError(undefined));
             })
             .catch(error => {
                 dispatch(forgotPasswordStart(false));
-                dispatch(forgotPasswordError(error));
-                dispatch(forgotPasswordSuccess(undefined));
+                dispatch(handleForgotPasswordError(error));
+                dispatch(handleForgotPasswordSuccess(undefined));
             })
     }
 }
