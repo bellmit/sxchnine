@@ -62,13 +62,13 @@ public class OrderService {
     public Mono<PaymentResponse> checkoutOrderAndSave(Order order) {
         PaymentResponseWrapper paymentResponseReceived = new PaymentResponseWrapper();
         return paymentServiceClient.payOrder(order, paymentResponseReceived)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Checkout order ID: {}", order.getOrderKey().getOrderId())))
                 .map(paymentResponse -> {
                     order.setPaymentStatus(paymentResponse.getStatus());
                     order.setOrderStatus(evaluateStatus(paymentResponse.getStatus()));
                     order.getPaymentInfo().setPaymentIntentId(paymentResponse.getPaymentIntentId());
                     return order;
                 })
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Checkout order ID: {}", order.getOrderKey().getOrderId())))
                 .flatMap(ordersCreator::saveOrders)
                 .onErrorResume(error -> {
                     log.error("cannot save order to the database, we will send it to kafka as well {}", order.getOrderKey().getOrderId(), error);

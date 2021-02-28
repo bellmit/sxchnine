@@ -16,7 +16,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockserver.integration.ClientAndServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.autoconfig.SleuthAnnotationConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.brave.BraveAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.brave.instrument.web.client.BraveWebClientAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.instrument.reactor.TraceReactorAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.instrument.reactor.TraceReactorAutoConfigurationAccessorConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.instrument.web.TraceWebAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.zipkin2.ZipkinAutoConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
@@ -27,20 +41,24 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.config.EnableWebFlux;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
 @EmbeddedKafka
-@TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
-        "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
+@TestPropertySource(properties = {"spring.sleuth.web.client.enabled=false"})
 @TestExecutionListeners(listeners = {
         CassandraUnitDependencyInjectionTestExecutionListener.class,
         CassandraUnitTestExecutionListener.class,
@@ -50,6 +68,12 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @EmbeddedCassandra(timeout = 300000L)
 @CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
 @Import({CassandraTestConfig.class})
+@EnableAutoConfiguration(exclude = { TraceReactorAutoConfiguration.class,
+        TraceWebAutoConfiguration.class,
+        ZipkinAutoConfiguration.class,
+        BraveAutoConfiguration.class,
+        BraveWebClientAutoConfiguration.class
+})
 @DirtiesContext
 public class OrderControllerTestIT {
 
@@ -77,7 +101,7 @@ public class OrderControllerTestIT {
     }
 
     @AfterEach
-    public void teardown(){
+    public void teardown() {
         clientAndServer.stop();
     }
 
@@ -93,45 +117,31 @@ public class OrderControllerTestIT {
         orderToSave.getOrderKey().setOrderTime(LocalDateTime.parse(format));
         orderToSave.setShippingTime(LocalDateTime.parse(format));
 
-        webTestClient.post().uri("/save").body(Mono.just(orderToSave), Order.class);
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        orderRepository.findOrdersByOrderKeyUserEmail(orderToSave.getOrderKey().getUserEmail())
-                .subscribe(savedOrder -> {
-                    assertThat(savedOrder).isEqualToIgnoringGivenFields(orderToSave, "total", "paymentInfo", "address");
-                    assertThat(savedOrder.getPaymentInfo()).isEqualToIgnoringGivenFields(orderToSave.getPaymentInfo());
-                    assertThat(savedOrder.getUserAddress()).isEqualToIgnoringGivenFields(orderToSave.getUserAddress());
-                });
+        webTestClient.post()
+                .uri("/save")
+                .body(Mono.just(orderToSave), Order.class);
 
-        orderByOrderIdRepository.findOrderIdByOrderIdKeyOrderId(orderToSave.getOrderKey().getOrderId())
-                .subscribe(savedOrderId -> {
-                    assertThat(savedOrderId.getOrderIdKey()).isEqualToComparingFieldByField(orderToSave.getOrderKey());
-                    assertThat(savedOrderId.getPaymentInfo()).isEqualToComparingFieldByField(orderToSave.getPaymentInfo());
-                    assertThat(savedOrderId.getUserAddress()).isEqualToComparingFieldByField(orderToSave.getUserAddress());
-                });
+        Order savedOrder = orderRepository.findOrdersByOrderKeyUserEmail(orderToSave.getOrderKey().getUserEmail()).blockFirst();
 
-    }
+        assertThat(savedOrder).usingRecursiveComparison().ignoringFields("total", "paymentInfo", "address").isEqualTo(orderToSave);
+        assertThat(savedOrder.getPaymentInfo()).usingRecursiveComparison().isEqualTo(orderToSave.getPaymentInfo());
+        assertThat(savedOrder.getUserAddress()).usingRecursiveComparison().isEqualTo(orderToSave.getUserAddress());
 
-    @Test
-    public void testGetAllOrders() {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order orderToSave = easyRandom.nextObject(Order.class);
+        OrderId savedOrderId = orderByOrderIdRepository.findOrderIdByOrderIdKeyOrderId(orderToSave.getOrderKey().getOrderId()).block();
+        assertThat(savedOrderId.getOrderIdKey()).usingRecursiveComparison().isEqualTo(orderToSave.getOrderKey());
+        assertThat(savedOrderId.getPaymentInfo()).usingRecursiveComparison().isEqualTo(orderToSave.getPaymentInfo());
+        assertThat(savedOrderId.getUserAddress()).usingRecursiveComparison().isEqualTo(orderToSave.getUserAddress());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
-        String format = LocalDateTime.now().format(formatter);
-
-        orderToSave.setPaymentTime(LocalDateTime.parse(format));
-        orderToSave.getOrderKey().setOrderTime(LocalDateTime.parse(format));
-        orderToSave.setShippingTime(LocalDateTime.parse(format));
-
-        orderRepository.save(orderToSave).block();
-
-        webTestClient.get()
-                .uri("/all")
-                .accept(MediaType.APPLICATION_STREAM_JSON)
-                .exchange()
-                .expectStatus().is2xxSuccessful()
-                .expectBody(Order.class)
-                .value(o -> assertThat(o.getOrderKey().getOrderId()).isEqualTo(orderToSave.getOrderKey().getOrderId()));
     }
 
     @Test
@@ -148,6 +158,16 @@ public class OrderControllerTestIT {
         orderIdToSave.getOrderIdKey().setOrderTime(LocalDateTime.parse(format));
         orderIdToSave.setShippingTime(LocalDateTime.parse(format));
 
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
         orderByOrderIdRepository.save(orderIdToSave).block();
 
         webTestClient.get()
@@ -155,12 +175,12 @@ public class OrderControllerTestIT {
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
-                .expectBody(OrderId.class)
-                .value(o -> assertThat(o.getOrderIdKey().getOrderId()).isEqualTo(orderIdToSave.getOrderIdKey().getOrderId()));
+                .expectBody(Order.class)
+                .value(o -> assertThat(o.getOrderKey().getOrderId()).isEqualTo(orderIdToSave.getOrderIdKey().getOrderId()));
     }
 
     @Test
-    public void testGetOrdersByEmail(){
+    public void testGetOrdersByEmail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order orderToSave = easyRandom.nextObject(Order.class);
 

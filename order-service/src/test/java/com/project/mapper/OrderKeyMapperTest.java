@@ -4,14 +4,14 @@ import com.project.model.OrderIdKey;
 import com.project.model.OrderKey;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderKeyMapperTest {
 
     private OrderKeyMapper mapper = Mappers.getMapper(OrderKeyMapper.class);
@@ -22,7 +22,7 @@ public class OrderKeyMapperTest {
             .scanClasspathForConcreteTypes(true);
 
     @Test
-    public void testAsOrderPrimaryKey(){
+    public void testAsOrderPrimaryKey() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderIdKey orderIdKey = easyRandom.nextObject(OrderIdKey.class);
 
@@ -33,7 +33,7 @@ public class OrderKeyMapperTest {
     }
 
     @Test
-    public void testAsOrderIdPrimaryKey(){
+    public void testAsOrderIdPrimaryKey() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         OrderKey orderKey = easyRandom.nextObject(OrderKey.class);
 
@@ -44,12 +44,12 @@ public class OrderKeyMapperTest {
     }
 
     @Test
-    public void testAsOrderPrimaryKeyNull(){
+    public void testAsOrderPrimaryKeyNull() {
         assertThat(mapper.asOrderPrimaryKey(null)).isNull();
     }
 
     @Test
-    public void testAsOrderIdPrimaryKeyNull(){
+    public void testAsOrderIdPrimaryKeyNull() {
         assertThat(mapper.asOrderIdPrimaryKey(null)).isNull();
     }
 

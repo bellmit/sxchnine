@@ -39,7 +39,7 @@ public class OrderConsumer {
     public void consumeOrder(Order order, Acknowledgment acknowledgment) {
         log.info("***********************************************");
         log.info("***********************************************");
-        log.info("consume order {} for payment", order.toString());
+        log.info("consume order {} for payment", order.getOrderKey().getOrderId());
         log.info("***********************************************");
         log.info("***********************************************");
         /*
@@ -78,7 +78,7 @@ public class OrderConsumer {
     public void consumerOrderDLT(Order order, Acknowledgment acknowledgment) {
         log.info("***********************************************");
         log.info("***********************************************");
-        log.info("DLT consume order {} for payment", order.toString());
+        log.info("DLT consume order {} for payment", order.getOrderKey().getOrderId());
         log.info("***********************************************");
         log.info("***********************************************");
         if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null){

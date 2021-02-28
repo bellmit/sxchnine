@@ -7,21 +7,29 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
+import reactor.util.context.Context;
 import utils.TestObjectCreator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@EmbeddedKafka
 @ActiveProfiles("test")
 @TestInstance(PER_CLASS)
 @DirtiesContext
@@ -37,12 +45,10 @@ public class ProductServiceTestIT {
     private KafkaProducer kafkaProducer;
 
     @AfterEach
-    public void dropCollection(){
-        mongoTemplate.dropCollection("products").block();
-    }
+    public void dropCollection() { mongoTemplate.dropCollection("products").block(); }
 
     @Test
-    public void testGetProductById(){
+    public void testGetProductById() {
         Mono<Product> products = mongoTemplate.createCollection("products")
                 .then(mongoTemplate.save(TestObjectCreator.createProduct()))
                 .then(productService.getProductById(1L));
@@ -55,55 +61,90 @@ public class ProductServiceTestIT {
     }
 
     @Test
-    public void testGetProductByName(){
-        Mono<Product> productMono = mongoTemplate.createCollection("products")
-                .then(mongoTemplate.save(TestObjectCreator.createProduct()))
-                .then(productService.getProductByName("p1"));
+    public void testGetProductByName() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        StepVerifier.create(productMono)
-                .expectSubscription()
-                .expectNextCount(1)
-                .expectComplete()
-                .verify();
+        Product product = mongoTemplate.createCollection("products")
+                .then(mongoTemplate.save(TestObjectCreator.createProduct()))
+                .then(productService.getProductByName("p1"))
+                .contextWrite(ctx -> context)
+                .block();
+
+        assertThat(product).isNotNull();
+        assertThat(product.getId()).isEqualTo(1L);
+
     }
 
     @Test
-    public void testGetAllProducts(){
-        Flux<Product> productFlux = mongoTemplate.save(TestObjectCreator.createProduct())
-                .thenMany(productService.getAllProducts());
+    public void testGetAllProducts() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        StepVerifier.create(productFlux)
-                .expectSubscription()
-                .expectNextCount(1)
-                .expectComplete()
-                .verify();
+        Product productFlux = mongoTemplate.save(TestObjectCreator.createProduct())
+                .thenMany(productService.getAllProducts())
+                .contextWrite(ctx -> context)
+                .blockFirst();
+
+        assertThat(productFlux.getId()).isEqualTo(1L);
     }
 
     @Test
     public void testSaveProduct() {
-        when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(TestObjectCreator.createProduct()));
-        Product product = productService.save(TestObjectCreator.createProduct())
-                .flatMap(p -> productService.getProductById(1L)).block();
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        assertEquals(1, product.getId());
-        assertEquals("p1", product.getName());
-        assertEquals(1.0, product.getPrice().doubleValue());
+        when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(TestObjectCreator.createProduct()));
+
+        productService.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.getProductById(1L))
+                .contextWrite(ctx -> context)
+                .block();
+
         verify(kafkaProducer).sendProduct(any());
 
     }
 
     @Test
-    public void testDeleteProductById(){
-        Mono<Product> product = mongoTemplate.save(TestObjectCreator.createProduct())
-                .flatMap(p -> productService.getProductByName("p1"))
-                .flatMap(p -> productService.deleteProductById(1))
-                .then(productService.getProductById(1L));
+    public void testDeleteProductById() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        StepVerifier.create(product)
-                .expectSubscription()
-                .expectNextCount(0)
-                .expectComplete()
-                .verify();
+        Product product = mongoTemplate.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.deleteProductById(1))
+                .then(productService.getProductById(1L))
+                .contextWrite(ctx -> context)
+                .block();
+
+        assertThat(product).isNull();
 
     }
 }

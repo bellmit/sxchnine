@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
 @WebFluxTest(controllers = ProductController.class)
-@ActiveProfiles("dev")
 public class ProductControllerTest {
 
     @Autowired

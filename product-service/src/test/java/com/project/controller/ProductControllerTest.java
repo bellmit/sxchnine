@@ -4,13 +4,13 @@ import com.project.business.ProductService;
 import com.project.model.Product;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -20,10 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.ALL;
 import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
-@ExtendWith(SpringExtension.class)
 @WebFluxTest(ProductController.class)
+@ActiveProfiles("test")
 @DirtiesContext
 public class ProductControllerTest {
 
@@ -34,12 +35,12 @@ public class ProductControllerTest {
     private ProductService productService;
 
     @Test
-    public void testGetProductById(){
+    public void testGetProductById() {
         when(productService.getProductById(anyLong())).thenReturn(Mono.just(new Product()));
 
         webTestClient.get()
                 .uri("/id/1")
-                .accept(APPLICATION_STREAM_JSON)
+                .accept(MediaType.ALL)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Product.class);
@@ -48,14 +49,14 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testGetProducts(){
+    public void testGetProducts() {
         Product product = TestObjectCreator.createProduct();
 
         when(productService.getAllProducts()).thenReturn(Flux.just(product));
 
         webTestClient.get()
                 .uri("/all?pageNo=0&pageSize=1")
-                .accept(APPLICATION_STREAM_JSON)
+                .accept(ALL)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(Product.class)
@@ -70,7 +71,7 @@ public class ProductControllerTest {
 
         webTestClient.post()
                 .uri("/save")
-                .accept(APPLICATION_STREAM_JSON)
+                .accept(ALL)
                 .body(Mono.just(TestObjectCreator.createProduct()), Product.class)
                 .exchange()
                 .expectStatus().is2xxSuccessful()
@@ -84,7 +85,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testDeleteProductById(){
+    public void testDeleteProductById() {
         webTestClient.delete()
                 .uri("/delete/id/1")
                 .exchange()

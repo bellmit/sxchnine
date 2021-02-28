@@ -18,18 +18,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
+import static com.project.utils.PaymentStatusCode.CHECKOUT_OP;
 import static com.project.utils.PaymentStatusCode.WAITING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = {OrderConsumer.class, KafkaConfig.class})
 @EmbeddedKafka
@@ -61,23 +60,24 @@ public class OrderConsumerTestIT {
     public void testConsumeOrder() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
-        order.setPaymentStatus(WAITING.getValue());
+        order.setPaymentStatus(CHECKOUT_OP.getValue());
+        order.setOrderStatus(WAITING.getValue());
+
 
         ProducerRecord producerRecord = new ProducerRecord(ORDERS_QUEUE, "key", order);
         Producer producer = createProducer();
         producer.send(producerRecord);
         producer.close();
 
-        when(catchupOrder.catchUpCheckout(any(Order.class))).thenReturn(Mono.empty());
+        when(catchupOrder.catchUpCheckout(any(Order.class))).thenReturn(Mono.just(order));
 
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
-        orderConsumer.consumeOrder(order, () -> {
-        });
+        orderConsumer.consumeOrder(order, () -> { });
 
         verify(catchupOrder).catchUpCheckout(orderCaptor.capture());
 
-        assertThat(orderCaptor.getValue()).isEqualToComparingFieldByFieldRecursively(order);
+        assertThat(orderCaptor.getValue()).usingRecursiveComparison().isEqualTo(order);
     }
 
     private Producer createProducer() {

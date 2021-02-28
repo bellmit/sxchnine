@@ -4,21 +4,29 @@ import com.project.model.OrderId;
 import com.project.repository.OrderByOrderIdRepository;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
+import reactor.util.context.Context;
 
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class OrderIdServiceTest {
 
     @Mock
@@ -51,7 +59,21 @@ public class OrderIdServiceTest {
 
         when(orderByOrderIdRepository.save(any())).thenReturn(Mono.just(orderId));
 
-        StepVerifier.create(orderIdService.saveOrderId(orderId))
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions
+                .create()
+                .withInitialContext(context);
+
+        StepVerifier.create(orderIdService.saveOrderId(orderId), stepVerifierOptions)
                 .expectComplete()
                 .verify();
 

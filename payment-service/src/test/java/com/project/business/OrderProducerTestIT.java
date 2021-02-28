@@ -21,6 +21,7 @@ import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -54,14 +55,17 @@ public class OrderProducerTestIT {
     public void testSendOrder() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
+        order.getOrderKey().setOrderTime(LocalDateTime.now().withNano(0));
+        order.setPaymentTime(LocalDateTime.now().withNano(0));
+        order.setShippingTime(LocalDateTime.now().withNano(0));
 
-        orderProducer.sendOrder(order);
+        orderProducer.sendOrder(order).block();
 
         Consumer consumer = createConsumer();
         consumer.subscribe(Collections.singletonList(CATCHUP_QUEUE));
         ConsumerRecord record = KafkaTestUtils.getSingleRecord(consumer, CATCHUP_QUEUE);
 
-        assertThat((Order) record.value()).isEqualToComparingFieldByFieldRecursively(order);
+        assertThat((Order) record.value()).usingRecursiveComparison().isEqualTo(order);
     }
 
     private Consumer createConsumer() {

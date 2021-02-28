@@ -55,7 +55,11 @@ class FormUser extends PureComponent {
     closeModal = () => this.props.closeUserPopup(this.props.history);
 
     saveUser = () => {
-        this.props.saveUser(this.createUser(), this.props.history);
+        if (!this.props.editMode){
+            this.props.saveUser(this.createUser(), this.props.history, true);
+        } else {
+            this.props.saveUser(this.createUser(), this.props.history, false);
+        }
     }
 
     createUser() {
@@ -270,7 +274,7 @@ const mapStateToProps = state => {
 const dispatchToProps = dispatch => {
     return {
         closeUserPopup: (history) => dispatch(actions.closeUserModalAndRedirectBack(history)),
-        saveUser: (user, history) => dispatch(actions.saveUser(user, history))
+        saveUser: (user, history, isNew) => dispatch(actions.saveUser(user, history, isNew))
     }
 }
 

@@ -1,6 +1,8 @@
 spring:
   data:
     mongodb:
+      host: localhost
+      port: 27017
       database: products
   cloud:
     discovery:
@@ -19,9 +21,25 @@ spring:
       client-id: productId
       acks: all
       retries: 3
+  sleuth:
+    reactor:
+      enabled: false
+      instrumentation-type: decorate_on_last
+    enabled: false
+    http:
+      enabled: false
+    web:
+      enabled: false
+      ignore-auto-configured-skip-patterns: true
+      servlet:
+        enabled: false
+      webclient:
+        enabled: false
 security:
   active: false
 kafka:
   topic: products
 
+logging:
+  config: classpath:logback-spring-test.xml
 

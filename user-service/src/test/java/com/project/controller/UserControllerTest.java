@@ -5,20 +5,16 @@ import com.project.service.UserService;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,38 +34,39 @@ public class UserControllerTest {
             .scanClasspathForConcreteTypes(true);
 
     @Test
-    public void testGetUserByEmail() throws Exception {
-        EasyRandom easyRandom = new EasyRandom();
+    public void testGetUserByEmail() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
         when(userService.getUserByEmail(anyString())).thenReturn(Mono.just(user));
 
         webTestClient.get()
                 .uri("/email/toto@gmail.com")
+                .accept(MediaType.ALL)
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
                 .expectBody(User.class)
-                .value(responseUser -> assertThat(responseUser).isEqualToComparingFieldByFieldRecursively(user));
+                .value(responseUser -> assertThat(responseUser).usingRecursiveComparison().isEqualTo(user));
 
         verify(userService).getUserByEmail("toto@gmail.com");
     }
 
     @Test
-    public void testCreateOrSaveUser() throws Exception {
-        EasyRandom easyRandom = new EasyRandom();
+    public void testCreateOrSaveUser() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        when(userService.save(any(User.class), any())).thenReturn(Mono.empty());
+        when(userService.save(any(), anyBoolean())).thenReturn(Mono.empty());
 
-        webTestClient.post().uri("/save")
+        webTestClient.post().uri("/save?isNew=true")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(user), User.class)
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful();
 
-        verify(userService).save(any(), any());
+        verify(userService).save(any(), anyBoolean());
 
     }
 
@@ -81,7 +78,7 @@ public class UserControllerTest {
         when(userService.deleteUserByEmail(anyString())).thenReturn(Mono.empty());
 
         webTestClient.delete()
-                .uri("/deleteByEmail/"+user.getEmail())
+                .uri("/deleteByEmail/" + user.getEmail())
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful();
@@ -98,7 +95,7 @@ public class UserControllerTest {
         when(userService.login(anyString(), anyString())).thenReturn(Mono.just(user));
 
         webTestClient.post()
-                .uri("/login?email="+user.getEmail()+"&password="+user.getPassword())
+                .uri("/login?email=" + user.getEmail() + "&password=" + user.getPassword())
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()

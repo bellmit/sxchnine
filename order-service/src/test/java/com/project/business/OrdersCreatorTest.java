@@ -6,18 +6,24 @@ import com.project.model.OrderId;
 import com.project.repository.OrderRepository;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
+import reactor.util.context.Context;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrdersCreatorTest {
 
     @Mock
@@ -41,7 +47,7 @@ public class OrdersCreatorTest {
             .scanClasspathForConcreteTypes(true);
 
     @Test
-    public void testSaveOrders(){
+    public void testSaveOrders() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
         OrderId orderId = easyRandom.nextObject(OrderId.class);
@@ -53,7 +59,21 @@ public class OrdersCreatorTest {
         when(orderIdService.saveOrderId(orderId)).thenReturn(Mono.just(orderId).then());
         when(orderStatusService.saveOrderStatus(any())).thenReturn(Mono.empty());
 
-        StepVerifier.create(ordersCreator.saveOrders(order))
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions
+                .create()
+                .withInitialContext(context);
+
+        StepVerifier.create(ordersCreator.saveOrders(order), stepVerifierOptions)
                 .expectComplete()
                 .verify();
 
@@ -63,7 +83,7 @@ public class OrdersCreatorTest {
     }
 
     @Test
-    public void testSaveOrderNullOrder(){
+    public void testSaveOrderNullOrder() {
         StepVerifier.create(ordersCreator.saveOrders(null))
                 .expectComplete()
                 .verify();
@@ -72,7 +92,7 @@ public class OrdersCreatorTest {
     }
 
     @Test
-    public void testSaveOrderNullOrderWithoutProducts(){
+    public void testSaveOrderNullOrderWithoutProducts() {
         StepVerifier.create(ordersCreator.saveOrders(null))
                 .expectComplete()
                 .verify();

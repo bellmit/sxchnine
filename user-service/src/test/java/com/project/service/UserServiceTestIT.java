@@ -6,12 +6,14 @@ import com.project.model.User;
 import com.project.repository.UserRepository;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,17 +25,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EmbeddedKafka
 public class UserServiceTestIT {
 
+    private static final String EMAIL_TEST = "toto@gmail.com";
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
+    @BeforeEach
+    public void teardown(){
+        userRepository.deleteUserByEmail(EMAIL_TEST);
+    }
     @Test
     public void testGetUserByEmail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
@@ -61,14 +72,14 @@ public class UserServiceTestIT {
     }
 
     @Test
-    public void testLoginOK() throws InterruptedException {
+    public void testLoginOK() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
-        user.setEmail("toto@gmail.com");
+        user.setEmail(EMAIL_TEST);
         user.setPassword("TOTO");
 
-        User userAuth = userRepository.save(user)
-                .then(userService.login("toto@gmail.com", "TOTO"))
+        User userAuth = userService.save(user, true)
+                .then(userService.login(EMAIL_TEST, "TOTO"))
                 .block();
 
         assertEquals(user.getId(), userAuth.getId());
@@ -76,14 +87,48 @@ public class UserServiceTestIT {
 
 
     @Test
-    public void testLoginFail() {
+    public void testUpdateUserAndLoginFail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
 
-        User userAuth = userRepository.save(user)
+        userService.save(user, true).block();
+
+        User userAuth = userService.save(user, false)
                 .then(userService.login(user.getEmail(), "TOTO"))
                 .block();
 
-        assertThat(userAuth.getId()).isNull();
+        assertThat(userAuth).isNull();
+    }
+
+    @Test
+    public void testForgotPassword() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
+        user.setPassword("TOTO");
+
+        User userAuth = userService.save(user, true)
+                .then(userService.forgotPassword(EMAIL_TEST))
+                .block();
+
+        assertThat(userAuth.getPassword()).isNotEqualTo(user.getPassword());
+    }
+
+    @Test
+    public void testChangePassword() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
+        user.setPassword("TOTO");
+
+        User userAuth = userService.save(user, true)
+                .then(userService.changePassword(EMAIL_TEST, "TOTO",
+                        "TATA",
+                        "TATA"))
+                .block();
+
+        assertThat(userAuth.getPassword()).isNotEqualTo(user.getPassword());
+        assertThat(passwordEncoder.matches("TATA", userAuth.getPassword())).isTrue();
     }
 }

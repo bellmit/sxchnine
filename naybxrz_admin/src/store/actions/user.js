@@ -204,11 +204,15 @@ const saveUserSuccess = (response) => {
     }
 };
 
-export const saveUser = (user, history) => {
+export const saveUser = (user, history, isNew) => {
     return dispatch => {
         setAxiosToken();
         dispatch(saveUserStart(true));
-        axios.post('/user/save', user)
+        let url = '/user/save'
+        if (isNew){
+            url = '/user/save?isNew=true'
+        }
+        axios.post(url, user)
             .then(response => {
                 dispatch(saveUserStart(false));
                 dispatch(saveUserSuccess(response.data));

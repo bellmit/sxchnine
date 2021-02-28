@@ -46,8 +46,8 @@ public class ProductService {
         return reactiveElasticsearchOperations
                 .search(nativeSearchQuery.build(), Product.class, Product.class)
                 .map(SearchHit::getContent)
-                .doOnError(error -> log.error("error occurred during search", error))
-                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Search Products by: {}", query)));
+                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Search Products by: {}", query)))
+                .doOnError(error -> log.error("error occurred during search", error));
     }
 
     public Flux<Product> getProductsByAdvancedFiltering(String gender, String brand, String category, String size) {

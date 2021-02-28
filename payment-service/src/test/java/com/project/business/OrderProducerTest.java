@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Flux;
 import reactor.kafka.sender.KafkaSender;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,7 +39,10 @@ public class OrderProducerTest {
 
         when(kafkaSender.send(any())).thenReturn(Flux.empty());
 
-        orderProducer.sendOrder(order);
+        StepVerifier.create(orderProducer.sendOrder(order))
+                .expectNext(order)
+                .expectComplete()
+                .verify();
 
         verify(kafkaSender).send(any());
     }

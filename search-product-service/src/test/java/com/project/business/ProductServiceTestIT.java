@@ -2,16 +2,18 @@ package com.project.business;
 
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.ClassRule;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -22,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-@EmbeddedKafka(topics = "products")
+@EmbeddedKafka
 @TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
 @DirtiesContext
@@ -33,11 +35,18 @@ public class ProductServiceTestIT {
     @Autowired
     private ProductService productService;
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "orders");
+/*    @Container
+    public GenericContainer container = new GenericContainer("elasticsearch:7.6.2")
+            .withExposedPorts(9200)
+            .withCommand("--name=esTest -e \"discovery.type=single-node\"");
+
+    @BeforeEach
+    public void init(){
+        container.start();
+    }*/
 
     @Test
-    public void testGetProductsByQuery(){
+    public void testGetProductsByQuery() {
         Product product = new Product();
         product.setId("1");
         product.setName("classic bob nike");
@@ -52,7 +61,7 @@ public class ProductServiceTestIT {
     }
 
     @Test
-    public void testGetProductsByAdvancedFilteringSearchBrand(){
+    public void testGetProductsByAdvancedFilteringSearchBrand() {
         Product product = new Product();
         product.setId("2");
         product.setName("retro adidas");
@@ -70,7 +79,7 @@ public class ProductServiceTestIT {
 
 
     @Test
-    public void testGetProductsByAdvancedFilteringSearchCategory(){
+    public void testGetProductsByAdvancedFilteringSearchCategory() {
         Product product = new Product();
         product.setId("3");
         product.setName("classic bob nike");
@@ -87,7 +96,7 @@ public class ProductServiceTestIT {
     }
 
     @Test
-    public void testGetProductsByAdvancedFilteringSearchSize(){
+    public void testGetProductsByAdvancedFilteringSearchSize() {
         Product product = new Product();
         product.setId("4");
         product.setName("classic bob nike");
@@ -113,7 +122,7 @@ public class ProductServiceTestIT {
     }
 
     @Test
-    public void testGetProductsByAdvancedFiltering(){
+    public void testGetProductsByAdvancedFiltering() {
         Product product = new Product();
         product.setId("6");
         product.setName("classic bob nike");
@@ -131,7 +140,7 @@ public class ProductServiceTestIT {
     }
 
     @Test
-    public void testGetProductsByAdvancedFilteringNotFound(){
+    public void testGetProductsByAdvancedFilteringNotFound() {
         Product product = new Product();
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
@@ -149,7 +158,7 @@ public class ProductServiceTestIT {
 
 
     @Test
-    public void testDeleteById(){
+    public void testDeleteById() {
         Product product = new Product();
         product.setId("10");
         product.setName("classic bob nike");

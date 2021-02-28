@@ -35,42 +35,42 @@ public class ProductService {
 
     public Mono<Product> getProductById(Long id) {
         return productRepository.findProductById(id)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product ID: {}", id)))
                 .doOnError(error -> log.error("error occurred during getting product by id", error))
-                .onErrorReturn(new Product())
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product ID: {}", id)));
+                .onErrorReturn(new Product());
     }
 
     public Flux<Product> getProductByIds(List<Long> ids) {
         return productRepository.findProductsByIdIn(ids)
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch list of product IDs: {}", ids.toString())));
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch list of product IDs: {}", ids.toString())));
 
     }
 
     public Mono<Product> getProductByName(String name) {
         return productRepository.findProductByName(name)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product by name: {}", name)))
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
                 .timeout(Duration.ofSeconds(8))
                 .doOnError(error -> log.error("error occurred during getting product by name", error))
-                .onErrorReturn(new Product())
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product by name: {}", name)));
+                .onErrorReturn(new Product());
     }
 
     public Flux<Product> getAllProducts() {
         return productRepository.findAll()
-                .doOnError(error -> log.error("error occurred during getting all products", error))
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch all products")));
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch all products")))
+                .doOnError(error -> log.error("error occurred during getting all products", error));
 
     }
 
     public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return productRepository.findAllBySex(sex, paging)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch products for gender: {}", sex)))
                 .retry()
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(500)))
                 .timeout(Duration.ofSeconds(5))
                 .doOnError(error -> log.error("error occurred during getting product by sex", error))
-                .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex))
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch products for gender: {}", sex)));
+                .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex));
     }
 
     public Flux<Product> searchProducts(Long id, String name, String brand, String sex) {
@@ -105,11 +105,11 @@ public class ProductService {
     public Mono<Product> save(Product product) {
         sumQteAndSetDate(product);
         return productRepository.save(product)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save product with ID: {}", product.getId())))
                 .flatMap(p -> kafkaProducer
                         .sendProduct(Mono.just(p))
                         .doOnError(error -> log.info("error happened when sending to Kafka {}", product, error)))
-                .doOnError(error -> log.error("Error during saving", error))
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save product with ID: {}", product.getId())));
+                .doOnError(error -> log.error("Error during saving", error));
     }
 
     private void sumQteAndSetDate(Product product) {
@@ -133,7 +133,7 @@ public class ProductService {
 
     public Mono<Void> deleteProductById(long id) {
         return productRepository.deleteById(id)
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Delete product with ID: {}", id)));
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Delete product with ID: {}", id)));
     }
 
 }

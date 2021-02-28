@@ -3,7 +3,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %d{HH:mm:ss.SSS} | %5p | %X{traceId} | %logger{25} | %m%n
+                %d{HH:mm:ss.SSS} | %5p | %X{traceId} / %X{spanId}| %thread | %logger{25} | %m%n
             </pattern>
             <charset>utf8</charset>
         </encoder>

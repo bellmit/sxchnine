@@ -11,16 +11,7 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 @EnableConfigurationProperties(FallbackProductsConfiguration.class)
 public class ProductServiceApplication {
-
-    @Value("${test.toto}")
-    public String toto;
-
     public static void main(String[] args) {
         SpringApplication.run(ProductServiceApplication.class, args);
-    }
-
-    @PostConstruct
-    public void init() {
-        System.out.println("-------------------------- Bingo: " + toto);
     }
 }

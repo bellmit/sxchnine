@@ -72,7 +72,7 @@ public class StPaymentOpsImpl implements PaymentOps {
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
                 })
-                .timeout(Duration.ofSeconds(10))
+                .timeout(Duration.ofSeconds(20))
                 .onErrorReturn(buildErrorPaymentResponse());
     }
 

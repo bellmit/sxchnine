@@ -20,6 +20,7 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @EmbeddedKafka(topics = "products")
 @ActiveProfiles("test")
+@Testcontainers
 @DirtiesContext
 @TestInstance(PER_CLASS)
 public class ProductConsumerTestIT {

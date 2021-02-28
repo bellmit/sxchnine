@@ -1,9 +1,6 @@
 package com.project.business;
 
-import com.project.exception.PaymentMethodException;
-import com.project.exception.SaveOrderException;
 import com.project.model.Order;
-import com.project.utils.OrderProcessingStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,7 +10,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-import static com.project.utils.OrderProcessingStatus.*;
+import static com.project.utils.OrderProcessingStatus.ORDER_PAYMENT_PROCESS;
+import static com.project.utils.OrderProcessingStatus.ORDER_PAYMENT_PROCESSED;
 import static com.project.utils.PaymentStatusCode.*;
 
 @Service
@@ -58,13 +56,12 @@ public class CatchupOrder {
                 .flatMap(this::saveOrder);
     }
 
-    public Mono<Order> saveOrder(Order order){
+    public Mono<Order> saveOrder(Order order) {
         return orderClient.post()
                 .uri("/save")
                 .body(BodyInserters.fromValue(order))
                 .exchange()
                 .flatMap(clientResponse -> {
-                    log.info("------------------ SAVE ORDER --------- " + clientResponse.statusCode());
                     if (!clientResponse.statusCode().is2xxSuccessful()) {
                         log.info("Error occurred while saving order -> we will sent order to kafka");
                         orderProducer.sendOrder(order);
@@ -76,7 +73,7 @@ public class CatchupOrder {
                 .log();
     }
 
-    private String evaluateProcessingStatus(String status){
+    private String evaluateProcessingStatus(String status) {
         if (!status.equals(WAITING_TIMEOUT.getValue()))
             return ORDER_PAYMENT_PROCESSED.getValue();
         else

@@ -37,7 +37,7 @@ public class OrdersCreator {
                     .then(orderIdService.saveOrderId(orderMapper.asOrderId(order)))
                     .then(orderStatusService.saveOrderStatus(orderMapper.asOrderStatusByOrder(order)));
         }
-        return Mono.empty().then();
+        return Mono.empty();
     }
 
     public Mono<Order> saveOrdersAndReturnOrder(Order order) {

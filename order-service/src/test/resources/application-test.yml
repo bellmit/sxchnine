@@ -1,4 +1,3 @@
-
 spring:
   data:
     cassandra:
@@ -19,6 +18,15 @@ spring:
   jackson:
     serialization:
       WRITE_DATE_KEYS_AS_TIMESTAMPS: false
+  cloud:
+    config:
+      enabled: false
+      fail-fast: true
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+
 
 kafka:
   bootstrapAddress: ${spring.embedded.kafka.brokers}
