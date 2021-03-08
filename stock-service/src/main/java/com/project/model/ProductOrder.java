@@ -3,7 +3,6 @@ package com.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 
@@ -14,14 +13,15 @@ import java.math.BigDecimal;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProductOrder implements Serializable {
+public class ProductOrder {
 
     private String productName;
     private String productBrand;
     private String productId;
+    private String image;
     private String productSize;
     private String productColor;
-    private int productQte;
+    private Integer productQte;
     private BigDecimal unitPrice;
     private String store;
 

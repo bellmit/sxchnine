@@ -13,15 +13,12 @@ spring:
         accept-empty: false
       encrypt:
         enabled: true
-#      discovery:
-#        enabled: true
- #   bus:
- #     enabled: true
- # rabbitmq:
- #   host: ${RABBITMQ_SERVER:rabbitmq}
- #   port: 5672
- #   username: guest
- #   password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 
 

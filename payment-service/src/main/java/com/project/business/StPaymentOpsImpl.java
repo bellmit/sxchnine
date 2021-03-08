@@ -17,7 +17,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.LinkedHashMap;
 
 import static com.project.utils.PaymentStatusCode.*;
@@ -59,8 +58,7 @@ public class StPaymentOpsImpl implements PaymentOps {
                 .uri("/v1/payment_methods")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(params))
-                .exchange()
-                .flatMap(clientResponse -> {
+                .exchangeToMono(clientResponse -> {
                     if (clientResponse.statusCode().is2xxSuccessful()) {
                         log.info(" payment method {}", clientResponse);
                         return clientResponse.bodyToMono(Object.class)
@@ -72,7 +70,6 @@ public class StPaymentOpsImpl implements PaymentOps {
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
                 })
-                .timeout(Duration.ofSeconds(20))
                 .onErrorReturn(buildErrorPaymentResponse());
     }
 
@@ -95,8 +92,7 @@ public class StPaymentOpsImpl implements PaymentOps {
                     .uri("/v1/payment_intents")
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .body(BodyInserters.fromFormData(params))
-                    .exchange()
-                    .flatMap(clientResponse -> {
+                    .exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
                             log.info("create payment intent{}", clientResponse);
                             return clientResponse.bodyToMono(Object.class)
@@ -117,8 +113,7 @@ public class StPaymentOpsImpl implements PaymentOps {
     private Mono<PaymentResponse> retrievePayment(String paymentIntentId) {
         return webClient.get()
                 .uri("/v1/payment_intents/" + paymentIntentId)
-                .exchange()
-                .flatMap(clientResponse -> {
+                .exchangeToMono(clientResponse -> {
                     if (clientResponse.statusCode().is2xxSuccessful()) {
                         log.info("retrieve payment {}", clientResponse);
                         return clientResponse.bodyToMono(Object.class)
@@ -132,18 +127,18 @@ public class StPaymentOpsImpl implements PaymentOps {
                 })
                 .onErrorReturn(buildErrorPaymentResponse());
     }
+
     private Mono<PaymentResponse> confirmPayment(PaymentResponse paymentResponse) {
-        log.info("confirm payment " + paymentResponse.toString());
+        log.info("confirm payment - paymentIntentId = {}", paymentResponse.getPaymentIntentId());
         if (paymentResponse.getStatus().equals(REQUIRED_CONFIRMATION.getValue())
-                || paymentResponse.getStatus().equals(CONFIRMED.getValue())){
+                || paymentResponse.getStatus().equals(CONFIRMED.getValue())) {
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("payment_method", "pm_card_visa");
             return webClient.post()
                     .uri("/v1/payment_intents/" + paymentResponse.getPaymentIntentId() + "/confirm")
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .body(BodyInserters.fromFormData(params))
-                    .exchange()
-                    .flatMap(clientResponse -> {
+                    .exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
                             log.info("confirm payment {}", clientResponse);
                             return clientResponse.bodyToMono(Object.class)
@@ -161,7 +156,7 @@ public class StPaymentOpsImpl implements PaymentOps {
         }
     }
 
-    private PaymentResponse buildErrorPaymentResponse(){
+    private PaymentResponse buildErrorPaymentResponse() {
         PaymentResponse paymentResponse = new PaymentResponse();
         paymentResponse.setStatus(WAITING_TIMEOUT.getValue());
         return paymentResponse;
@@ -201,9 +196,9 @@ public class StPaymentOpsImpl implements PaymentOps {
                 paymentResponse.setStatus(REQUIRED_ACTION.getValue());
             } else if ((response.get("status")).equals("succeeded")) {
                 paymentResponse.setStatus(CONFIRMED.getValue());
-            } else if (response.get("status").equals("requires_payment_method")){
+            } else if (response.get("status").equals("requires_payment_method")) {
                 paymentResponse.setStatus(REFUSED.getValue());
-            } else if (response.get("status").equals("requires_confirmation")){
+            } else if (response.get("status").equals("requires_confirmation")) {
                 paymentResponse.setStatus(REQUIRED_CONFIRMATION.getValue());
             } else {
                 paymentResponse.setStatus(REFUSED.getValue());

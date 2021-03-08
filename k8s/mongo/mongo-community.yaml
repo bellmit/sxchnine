@@ -1,0 +1,74 @@
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: mongodb
+spec:
+  members: 3
+  type: ReplicaSet
+  version: "4.4.0"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: admin
+      db: admin
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: admin-password
+      roles:
+        - name: clusterAdmin
+          db: admin
+        - name: userAdminAnyDatabase
+          db: admin
+      scramCredentialsSecretName: my-scram    
+    - name: product-user
+      db: products
+      passwordSecretRef: # a reference to the secret that will be used to generate the user's password
+        name: product-password
+      roles:
+        - name: clusterAdmin
+          db: products
+      scramCredentialsSecretName: my-scram
+  statefulSet:
+    spec:
+      template:
+        spec:
+          # resources can be specified by applying an override
+          # per container name.
+          containers:
+            - name: mongod
+              resources:
+                limits:
+                  cpu: "0.2"
+                  memory: 250M
+                requests:
+                  cpu: "0.2"
+                  memory: 200M
+            - name: mongodb-agent
+              resources:
+                limits:
+                  cpu: "0.2"
+                  memory: 250M
+                requests:
+                  cpu: "0.2"
+                  memory: 200M
+  additionalMongodConfig: {}
+# the user credentials will be generated from this secret
+# once the credentials are generated, this secret is no longer required
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-password
+type: Opaque
+stringData:
+  password: Pa55W0rd!!
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: product-password
+type: Opaque
+stringData:
+  password: PR0DUCTPa55W0rd!!

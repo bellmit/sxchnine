@@ -30,10 +30,7 @@ public class OrderCatchupConsumer {
             topics = "${kafka.consumer.topic}",
             containerFactory = "kafkaListenerContainerFactory")
     public void consumeCatchupOrder(Order order, Acknowledgment ack) {
-        log.info("***************************************");
-        log.info("order to catchup {}", order.toString());
-        log.info("***************************************");
-
+        log.info("order to catchup {}", order.getOrderKey().getOrderId());
         if (nackOrders.get(order.getOrderKey().getOrderId()) != null) {
             ack.acknowledge();
             nackOrders.remove(order.getOrderKey().getOrderId());
@@ -55,9 +52,7 @@ public class OrderCatchupConsumer {
             topics = "${kafka.consumer.topic}" + DLT,
             containerFactory = "dltKafkaListenerContainerFactory")
     public void consumeDLTCatchupOrder(Order order, Acknowledgment ack) {
-        log.info("***************************************");
-        log.info("DLT - order to catchup {}", order.toString());
-        log.info("***************************************");
+        log.info("DLT - order to catchup {}", order.getOrderKey().getOrderId());
 
         if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null) {
             ack.acknowledge();
@@ -76,7 +71,7 @@ public class OrderCatchupConsumer {
         }
     }
 
-    @Scheduled(cron = "* 0/10 * * * ?")
+    @Scheduled(fixedDelay = 600000L)
     public void catchFailedOrders() {
         if (!failedOrders.isEmpty()) {
             failedOrders.forEach((orderId, order) -> saveOrder(order, true));

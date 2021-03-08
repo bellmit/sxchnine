@@ -2,12 +2,9 @@ package com.project.business;
 
 import com.project.model.Product;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators;
 import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 import static reactor.core.publisher.SignalType.ON_COMPLETE;
@@ -82,15 +78,15 @@ public class ProductService {
 
     public Mono<Void> save(Product product) {
         return reactiveElasticsearchOperations.save(product)
-                .doOnError(error -> log.error("error occurred during saving", error))
                 .doOnEach(withSpanInScope(ON_NEXT, signal -> log.info("Save product {} to products store", product.getId())))
+                .doOnError(error -> log.error("error occurred during saving", error))
                 .then();
     }
 
-    public Mono<Void> deleteById(String id){
+    public Mono<Void> deleteById(String id) {
         return reactiveElasticsearchOperations.delete(id, Product.class)
-                .doOnError(error -> log.error("error occurred during delete product by id {}", id, error))
                 .doOnEach(withSpanInScope(ON_NEXT, signal -> log.info("Delete product {} from products store", id)))
+                .doOnError(error -> log.error("error occurred during delete product by id {}", id, error))
                 .then();
     }
 }

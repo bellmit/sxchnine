@@ -34,12 +34,11 @@ public class OrderProducer {
                     catchupOrders.put(order.getOrderKey().getOrderId(), order);
                 })
                 .doOnComplete(() -> log.info("Complete sending order to kafka"))
-                .then(Mono.just(order))
-                .log();
+                .then(Mono.just(order));
     }
 
 
-    @Scheduled(cron = "* 0/10 * * * ?")
+    @Scheduled(fixedDelay = 600000L)
     public void sendCatchupOrdersToKafka() {
         if (!catchupOrders.isEmpty()) {
             catchupOrders.forEach((k, v) -> sendOrder(v)

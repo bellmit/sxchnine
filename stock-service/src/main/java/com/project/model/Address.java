@@ -2,7 +2,6 @@ package com.project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import java.io.Serializable;
 
 
 @Getter
@@ -12,8 +11,10 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Address implements Serializable {
+public class Address {
 
+    private String firstName;
+    private String lastName;
     private String address;
     private String postalCode;
     private String city;

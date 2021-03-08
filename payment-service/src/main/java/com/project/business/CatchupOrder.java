@@ -60,8 +60,7 @@ public class CatchupOrder {
         return orderClient.post()
                 .uri("/save")
                 .body(BodyInserters.fromValue(order))
-                .exchange()
-                .flatMap(clientResponse -> {
+                .exchangeToMono(clientResponse -> {
                     if (!clientResponse.statusCode().is2xxSuccessful()) {
                         log.info("Error occurred while saving order -> we will sent order to kafka");
                         orderProducer.sendOrder(order);
@@ -69,8 +68,7 @@ public class CatchupOrder {
                     return Mono.defer(() -> Mono.just(order));
                 })
                 .timeout(Duration.ofSeconds(20))
-                .onErrorResume(error -> orderProducer.sendOrder(order))
-                .log();
+                .onErrorResume(error -> orderProducer.sendOrder(order));
     }
 
     private String evaluateProcessingStatus(String status) {

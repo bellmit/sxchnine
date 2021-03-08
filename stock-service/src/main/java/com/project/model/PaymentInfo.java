@@ -3,8 +3,6 @@ package com.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,7 +10,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PaymentInfo implements Serializable {
+public class PaymentInfo {
 
     private String type;
     private String paymentIntentId;

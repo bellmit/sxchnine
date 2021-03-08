@@ -51,12 +51,13 @@ public class OrderStatusService {
         return orderStatusRepository
                 .findOrderStatusesByOrderStatusKeyBucket(date)
                 .map(orderMapper::asOrderByOrderStatus)
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Get last orders by {}", finalDate)));
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Get last orders by {}", finalDate)));
     }
 
     public Flux<Order> getPeriodicOrders(String date, int ordersCount) {
         return Mono.defer(() -> Mono.just(count.getAndSet(ordersCount)))
-                .thenMany(Flux.interval(Duration.ofSeconds(10)).flatMap(c -> getLastOrdersByDelta(date, count)));
+                .thenMany(Flux.interval(Duration.ofSeconds(10))
+                        .flatMap(c -> getLastOrdersByDelta(date, count)));
     }
 
     private Flux<Order> getLastOrdersByDelta(String date, AtomicLong count) {

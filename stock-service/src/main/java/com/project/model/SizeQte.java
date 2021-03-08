@@ -6,14 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SizeQte implements Serializable {
+public class SizeQte {
 
     private char size;
     private int qte;

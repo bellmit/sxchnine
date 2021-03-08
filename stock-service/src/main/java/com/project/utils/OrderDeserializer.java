@@ -1,9 +1,11 @@
 package com.project.utils;
 
 import com.project.model.Order;
-import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
+import io.quarkus.kafka.client.serialization.JsonbDeserializer;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
-public class OrderDeserializer extends ObjectMapperDeserializer<Order> {
+@RegisterForReflection
+public class OrderDeserializer extends JsonbDeserializer<Order> {
     public OrderDeserializer() {
         super(Order.class);
     }

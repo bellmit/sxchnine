@@ -28,11 +28,11 @@ public class StockConsumer {
     @Incoming("orders")
     @Acknowledgment(MANUAL)
     public Uni<Void> handleStock(Message<Order> order) {
-            log.info("************* order consumed {}", order.getPayload());
             if (order.getPayload().getOrderStatus().equals(CONFIRMED.getValue())) {
+                log.info("Manage stock - Order confirmed {}", order.getPayload().getOrderKey().getOrderId());
                 return Uni.createFrom().item(order)
                         .onItem()
-                        .transformToUni(o -> stockService.manageStock(o.getPayload()))
+                        .transformToUni(o -> stockService.manageStock(order.getPayload()))
                         .flatMap(m -> {
                             if (!m.equals("SUCCESS")) {
                                 log.info("stock managed with {} for order {}", m, order.getPayload());
@@ -42,7 +42,7 @@ public class StockConsumer {
                             return Uni.createFrom().completionStage(order.ack());
                         });
             } else {
-                return Uni.createFrom().nothing();
+                return Uni.createFrom().completionStage(order.ack());
             }
     }
 }

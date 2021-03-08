@@ -50,7 +50,6 @@ public class ProductService {
         return productRepository.findProductByName(name)
                 .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product by name: {}", name)))
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
-                .timeout(Duration.ofSeconds(8))
                 .doOnError(error -> log.error("error occurred during getting product by name", error))
                 .onErrorReturn(new Product());
     }
@@ -68,7 +67,6 @@ public class ProductService {
                 .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch products for gender: {}", sex)))
                 .retry()
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(500)))
-                .timeout(Duration.ofSeconds(5))
                 .doOnError(error -> log.error("error occurred during getting product by sex", error))
                 .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex));
     }
@@ -123,12 +121,12 @@ public class ProductService {
 
     public Mono<Void> saveProducts(List<Product> products) {
         return productRepository.saveAll(products)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Bulk - Save list of products")))
                 .flatMap(p -> kafkaProducer
                         .sendProduct(Mono.just(p))
                         .doOnError(error -> log.info("error happened when sending to Kafka {}", p, error)))
                 .doOnError(error -> log.error("Error during saving all products", error))
-                .then()
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save list of products")));
+                .then();
     }
 
     public Mono<Void> deleteProductById(long id) {

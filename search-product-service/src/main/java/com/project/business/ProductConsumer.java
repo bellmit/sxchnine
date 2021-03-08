@@ -23,9 +23,7 @@ public class ProductConsumer {
 
     @KafkaListener(topics = "${kafka.topic}", groupId = "${kafka.groupId}")
     public void consumeProduct(String product, Acknowledgment ack) throws JsonProcessingException {
-        log.info("*************************************");
-        log.info("**** Received: {}", product);
-        log.info("*************************************");
+        log.info("Product Received: {}", product);
         Product productToSave = objectMapper.readValue(product, Product.class);
         productService.save(productToSave)
                 .doOnSuccess(p -> log.info("product {} consumed", productToSave.getId()))

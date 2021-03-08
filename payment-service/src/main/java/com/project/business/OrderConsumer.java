@@ -1,6 +1,5 @@
 package com.project.business;
 
-import com.project.exception.CatchupOrdersException;
 import com.project.exception.PaymentMethodException;
 import com.project.model.Order;
 import lombok.RequiredArgsConstructor;
@@ -9,15 +8,10 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.project.utils.OrderProcessingStatus.ORDER_SAVE_ERROR;
 import static com.project.utils.PaymentStatusCode.*;
 
 @Service
@@ -81,7 +75,7 @@ public class OrderConsumer {
         log.info("DLT consume order {} for payment", order.getOrderKey().getOrderId());
         log.info("***********************************************");
         log.info("***********************************************");
-        if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null){
+        if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null) {
             acknowledgment.acknowledge();
             nackDLTOrders.remove(order.getOrderKey().getOrderId());
 
@@ -107,21 +101,21 @@ public class OrderConsumer {
         }
     }
 
-    @Scheduled(cron = "0 0/3 * * * ?")
-    public void reprocessFailedDLTOrders(){
-        log.info("scheduler start processing failed orders ..");
-        if (!dltCheckoutOrders.isEmpty()){
+    @Scheduled(fixedDelay = 500000L)
+    public void reprocessFailedDLTOrders() {
+        log.info("scheduler start processing failed orders - total:{} ..", dltCheckoutOrders.size());
+        if (!dltCheckoutOrders.isEmpty()) {
             log.info("checkout failed orders - nbr of elements to process {}", dltCheckoutOrders.size());
-            dltCheckoutOrders.forEach((k,v) -> log.info(v.toString()));
+            dltCheckoutOrders.forEach((k, v) -> log.info(v.toString()));
 
-            dltCheckoutOrders.forEach((orderId,order) -> catchupCheckout(order, true));
+            dltCheckoutOrders.forEach((orderId, order) -> catchupCheckout(order, true));
 
             log.info("finish checkout failed orders - nbr of elements left {}", dltCheckoutOrders.size());
         }
-        if (!dltConfirmOrders.isEmpty()){
+        if (!dltConfirmOrders.isEmpty()) {
             log.info("confirm failed orders - nbr of elements to process {}", dltConfirmOrders.size());
 
-            dltConfirmOrders.forEach((orderId,order) -> confirmCheckout(order, true));
+            dltConfirmOrders.forEach((orderId, order) -> confirmCheckout(order, true));
 
             log.info("finish confirm failed orders - nbr of elements left {}", dltConfirmOrders.size());
         }
@@ -136,7 +130,7 @@ public class OrderConsumer {
                 && !isDLT) {
             throw new PaymentMethodException("error occurred during consuming order to checkout payment for order:" + order.getOrderKey().getOrderId() + " PaymentIntentId: " + order.getPaymentInfo().getPaymentIntentId());
         } else if (processedOrder.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
-                && isDLT){
+                && isDLT) {
             dltCheckoutOrders.putIfAbsent(order.getOrderKey().getOrderId(), order);
             return;
         }

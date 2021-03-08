@@ -32,15 +32,14 @@ public class KafkaProducer {
 
         return kafkaSender.send(recordMono)
                 .doOnNext(p -> log.info("{} sent to kafka successfully", p.toString()))
-                .then(product)
-                .subscribeOn(Schedulers.boundedElastic());
+                .then(product);
     }
 
     private String mapProduct(Product product){
         try {
             return mapper.writeValueAsString(product);
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
+            throw new RuntimeException("cannot serialize Product for Kafka Sender", e);
         }
     }
 }

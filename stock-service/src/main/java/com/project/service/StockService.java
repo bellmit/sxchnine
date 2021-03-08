@@ -55,14 +55,13 @@ public class StockService {
                 if (productsByIds.get(p.getProductId()) != null) {
                     if (productsByIds.get(p.getProductId()).getAvailability().get(p.getProductColor()) != null) {
                         productsByIds.get(p.getProductId()).getAvailability().get(p.getProductColor())
-                                .stream().
-                                filter(sqt -> String.valueOf(sqt.getSize()).equals(p.getProductSize()))
+                                .stream()
+                                .filter(sqt -> String.valueOf(sqt.getSize()).equals(p.getProductSize()))
                                 .forEach(sqt -> sqt.setQte(sqt.getQte() - 1));
                     }
                 }
             });
             log.info("finish matching availability - found 1");
-
         }
         log.info("finish matching availability ...");
         return productsByIds;
