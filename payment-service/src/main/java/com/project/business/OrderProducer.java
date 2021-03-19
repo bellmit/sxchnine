@@ -30,8 +30,8 @@ public class OrderProducer {
         return kafkaSender.send(record)
                 .doOnNext(o -> log.info("Order sent successfully to kafka"))
                 .doOnError(error -> {
-                    log.error("error during sending catchup order {} to kafka - we will add it to list and send it later. ", order.getOrderKey().getOrderId(), error);
-                    catchupOrders.put(order.getOrderKey().getOrderId(), order);
+                    log.error("error during sending catchup order {} to kafka - we will add it to list and send it later. ", order.getOrderId(), error);
+                    catchupOrders.put(order.getOrderId(), order);
                 })
                 .doOnComplete(() -> log.info("Complete sending order to kafka"))
                 .then(Mono.just(order));

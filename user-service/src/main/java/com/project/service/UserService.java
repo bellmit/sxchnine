@@ -70,7 +70,6 @@ public class UserService {
     }
 
     public Mono<User> loginAdmin(String email, String password) {
-        log.info("login admin: {}", email);
         return getUserByEmail(email)
                 .filter(u -> u.getRole().equalsIgnoreCase(ADMIN.getValue()))
                 .flatMap(user -> validateUser(user, password));
@@ -97,7 +96,6 @@ public class UserService {
     }
 
     public Mono<User> getUserByEmail(String email) {
-        log.info("get user {}", email);
         return userRepository.findByEmail(email)
                 .doOnError(error -> log.error("error occurred during get by email: {}", email, error));
     }

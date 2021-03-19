@@ -31,7 +31,7 @@ public class OrderConsumer {
             topics = "${kafka.order.topic}",
             containerFactory = "ordersKafkaListenerContainerFactory")
     public void consumeOrder(Order order, Acknowledgment acknowledgment) {
-        log.info("Order Received: {}", order.getOrderKey().getOrderId());
+        log.info("Order Received: {}", order.getOrderId());
         Optional.ofNullable(context.get(order.getOrderStatus())).ifPresent(sender -> sender.sendEmail(order));
         acknowledgment.acknowledge();
     }

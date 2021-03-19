@@ -152,6 +152,10 @@
                     <target>${java.version}</target>    <!-- same as <java.version> -->
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
 

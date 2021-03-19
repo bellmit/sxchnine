@@ -35,8 +35,7 @@ public class ProductService {
 
     public Mono<Product> getProductById(Long id) {
         return productRepository.findProductById(id)
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product ID: {}", id)))
-                .doOnError(error -> log.error("error occurred during getting product by id", error))
+                .doOnError(error -> log.error("error occurred during fetching product by id", error))
                 .onErrorReturn(new Product());
     }
 
@@ -48,15 +47,13 @@ public class ProductService {
 
     public Mono<Product> getProductByName(String name) {
         return productRepository.findProductByName(name)
-                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Fetch product by name: {}", name)))
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
-                .doOnError(error -> log.error("error occurred during getting product by name", error))
+                .doOnError(error -> log.error("error occurred during fetching product by name", error))
                 .onErrorReturn(new Product());
     }
 
     public Flux<Product> getAllProducts() {
         return productRepository.findAll()
-                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch all products")))
                 .doOnError(error -> log.error("error occurred during getting all products", error));
 
     }
@@ -64,7 +61,6 @@ public class ProductService {
     public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
         return productRepository.findAllBySex(sex, paging)
-                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch products for gender: {}", sex)))
                 .retry()
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(500)))
                 .doOnError(error -> log.error("error occurred during getting product by sex", error))

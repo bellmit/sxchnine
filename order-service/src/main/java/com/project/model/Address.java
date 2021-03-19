@@ -1,11 +1,9 @@
 package com.project.model;
 
 import lombok.*;
-import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 
 import java.io.Serializable;
 
-@UserDefinedType("address")
 @Getter
 @Setter
 @EqualsAndHashCode

@@ -44,9 +44,9 @@ class OrdersGridByMonth extends PureComponent {
                                 <Table.Row>
                                     <Table.Cell selectable>
                                         <span className="orders-id-text"
-                                              onClick={() => this.handleOrder(wo.orderKey.orderId)}>{wo.orderKey.orderId}</span>
+                                              onClick={() => this.handleOrder(wo.orderId)}>{wo.orderId}</span>
                                     </Table.Cell>
-                                    <Table.Cell>{wo.orderKey.userEmail}</Table.Cell>
+                                    <Table.Cell>{wo.userEmail}</Table.Cell>
                                     {wo.products.map((p, idxP) => (
                                         <List key={idxP} size='big'>
                                             <List.Item>
@@ -65,7 +65,7 @@ class OrdersGridByMonth extends PureComponent {
                                     ))}
                                     <Table.Cell>{wo.total}</Table.Cell>
                                     <Table.Cell singleLine>{wo.userAddress.address} {wo.userAddress.city}</Table.Cell>
-                                    <Table.Cell singleLine>{wo.orderKey.orderTime}</Table.Cell>
+                                    <Table.Cell singleLine>{wo.orderTime}</Table.Cell>
                                     <Table.Cell style={{backgroundColor: 'hsl(228, 100%, 85%)'}}>
                                         <span style={{fontWeight: 'bold'}}>{wo.orderStatus}</span>
                                     </Table.Cell>
@@ -95,9 +95,9 @@ class OrdersGridByMonth extends PureComponent {
                                 <Table.Row>
                                     <Table.Cell selectable>
                                         <span className="orders-id-text"
-                                              onClick={() => this.handleOrder(wo.orderKey.orderId)}>{wo.orderKey.orderId}</span>
+                                              onClick={() => this.handleOrder(wo.orderId)}>{wo.orderId}</span>
                                     </Table.Cell>
-                                    <Table.Cell>{wo.orderKey.userEmail}</Table.Cell>
+                                    <Table.Cell>{wo.userEmail}</Table.Cell>
                                     {wo.products.map((p, idxP) => (
                                         <List key={idxP} size='big'>
                                             <List.Item>
@@ -116,7 +116,7 @@ class OrdersGridByMonth extends PureComponent {
                                     ))}
                                     <Table.Cell>{wo.total}</Table.Cell>
                                     <Table.Cell singleLine>{wo.userAddress.address} {wo.userAddress.city}</Table.Cell>
-                                    <Table.Cell singleLine>{wo.orderKey.orderTime}</Table.Cell>
+                                    <Table.Cell singleLine>{wo.orderTime}</Table.Cell>
                                     <Table.Cell style={{backgroundColor: 'hsl(310, 88%, 77%)'}}>
                                         <span style={{fontWeight: 'bold'}}>{wo.orderStatus}</span>
                                     </Table.Cell>
@@ -146,9 +146,9 @@ class OrdersGridByMonth extends PureComponent {
                                 <Table.Row>
                                     <Table.Cell selectable>
                                         <span className="orders-id-text"
-                                              onClick={() => this.handleOrder(wo.orderKey.orderId)}>{wo.orderKey.orderId}</span>
+                                              onClick={() => this.handleOrder(wo.orderId)}>{wo.orderId}</span>
                                     </Table.Cell>
-                                    <Table.Cell>{wo.orderKey.userEmail}</Table.Cell>
+                                    <Table.Cell>{wo.userEmail}</Table.Cell>
                                     {wo.products.map((p, idxP) => (
                                         <List key={idxP} size='big'>
                                             <List.Item>
@@ -167,7 +167,7 @@ class OrdersGridByMonth extends PureComponent {
                                     ))}
                                     <Table.Cell>{wo.total}</Table.Cell>
                                     <Table.Cell singleLine>{wo.userAddress.address} {wo.userAddress.city}</Table.Cell>
-                                    <Table.Cell singleLine>{wo.orderKey.orderTime}</Table.Cell>
+                                    <Table.Cell singleLine>{wo.orderTime}</Table.Cell>
                                     <Table.Cell style={{backgroundColor: 'hsl(209, 88%, 54%)'}}>
                                         <span style={{fontWeight: 'bold'}}>{wo.orderStatus}</span>
                                     </Table.Cell>
@@ -197,9 +197,9 @@ class OrdersGridByMonth extends PureComponent {
                                 <Table.Row>
                                     <Table.Cell selectable>
                                         <span className="orders-id-text"
-                                              onClick={() => this.handleOrder(wo.orderKey.orderId)}>{wo.orderKey.orderId}</span>
+                                              onClick={() => this.handleOrder(wo.orderId)}>{wo.orderId}</span>
                                     </Table.Cell>
-                                    <Table.Cell>{wo.orderKey.userEmail}</Table.Cell>
+                                    <Table.Cell>{wo.userEmail}</Table.Cell>
                                     {wo.products.map((p, idxP) => (
                                         <List key={idxP} size='big'>
                                             <List.Item>
@@ -218,7 +218,7 @@ class OrdersGridByMonth extends PureComponent {
                                     ))}
                                     <Table.Cell>{wo.total}</Table.Cell>
                                     <Table.Cell singleLine>{wo.userAddress.address} {wo.userAddress.city}</Table.Cell>
-                                    <Table.Cell singleLine>{wo.orderKey.orderTime}</Table.Cell>
+                                    <Table.Cell singleLine>{wo.orderTime}</Table.Cell>
                                     <Table.Cell style={{backgroundColor: 'hsl(44, 100%, 50%)'}}>
                                         <span style={{fontWeight: 'bold'}}>{wo.orderStatus}</span>
                                     </Table.Cell>
@@ -248,9 +248,9 @@ class OrdersGridByMonth extends PureComponent {
                                 <Table.Row>
                                     <Table.Cell selectable>
                                         <span className="orders-id-text"
-                                              onClick={() => this.handleOrder(wo.orderKey.orderId)}>{wo.orderKey.orderId}</span>
+                                              onClick={() => this.handleOrder(wo.orderId)}>{wo.orderId}</span>
                                     </Table.Cell>
-                                    <Table.Cell>{wo.orderKey.userEmail}</Table.Cell>
+                                    <Table.Cell>{wo.userEmail}</Table.Cell>
                                     {wo.products.map((p, idxP) => (
                                         <List key={idxP} size='big'>
                                             <List.Item>
@@ -269,7 +269,7 @@ class OrdersGridByMonth extends PureComponent {
                                     ))}
                                     <Table.Cell>{wo.total}</Table.Cell>
                                     <Table.Cell singleLine>{wo.userAddress.address} {wo.userAddress.city}</Table.Cell>
-                                    <Table.Cell singleLine>{wo.orderKey.orderTime}</Table.Cell>
+                                    <Table.Cell singleLine>{wo.orderTime}</Table.Cell>
                                     <Table.Cell style={{backgroundColor: 'hsl(358, 100%, 63%)'}}>
                                         <span style={{fontWeight: 'bold'}}>{wo.orderStatus}</span>
                                     </Table.Cell>

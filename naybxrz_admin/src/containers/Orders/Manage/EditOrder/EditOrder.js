@@ -50,11 +50,9 @@ class EditOrder extends PureComponent {
 
     createOrder(){
         return {
-            orderKey: {
-                orderId: this.props.orderById.orderKey.orderId,
-                userEmail: this.props.orderById.orderKey.userEmail,
-                orderTime: this.props.orderById.orderKey.orderTime
-            },
+            orderId: this.props.orderById.orderId,
+            userEmail: this.props.orderById.userEmail,
+            orderTime: this.props.orderById.orderTime,
             orderStatus: this.state.orderStatus,
             total: this.props.orderById.total,
             paymentStatus: this.props.orderById.paymentStatus,
@@ -122,13 +120,13 @@ class EditOrder extends PureComponent {
                                             <span style={{fontWeight: 'bold', fontSize: 'small'}}>Order ID:</span>
                                         </Grid.Column>
                                         <Grid.Column width='3'>
-                                            <span className="order-edit-text">{this.props.orderById.orderKey.orderId}</span>
+                                            <span className="order-edit-text">{this.props.orderById.orderId}</span>
                                         </Grid.Column>
                                         <Grid.Column width='3'>
                                             <span style={{fontWeight: 'bold', fontSize: 'small'}}>Order Time:</span>
                                         </Grid.Column>
                                         <Grid.Column width='3'>
-                                            <span className="order-edit-text">{this.props.orderById.orderKey.orderTime}</span>
+                                            <span className="order-edit-text">{this.props.orderById.orderTime}</span>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row>
@@ -136,7 +134,7 @@ class EditOrder extends PureComponent {
                                             <span style={{fontWeight: 'bold', fontSize: 'small'}}>User:</span>
                                         </Grid.Column>
                                         <Grid.Column width='3'>
-                                            <span className="order-edit-text">{this.props.orderById.orderKey.userEmail}</span>
+                                            <span className="order-edit-text">{this.props.orderById.userEmail}</span>
                                         </Grid.Column>
                                         <Grid.Column width='3'>
                                                 <span style={{

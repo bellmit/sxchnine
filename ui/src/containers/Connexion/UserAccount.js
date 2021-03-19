@@ -5,7 +5,6 @@ import Banner from "../../components/Banner/Banner";
 import './UserAccount.css';
 import Contact from "../Contact/Contact";
 import TabAccount from "./TabAccount";
-import salute1 from "./salute1.png";
 import * as actions from "../../store/actions";
 
 
@@ -24,7 +23,7 @@ class UserAccount extends Component {
 
                 <span className="TabAccount-Welcome-Message">
                     Hi {this.props.user.firstName} {this.props.user.lastName}, Welcome back !
-{/*
+                    {/*
                     <img src={salute1} alt="salute" className="TabAccount-Welcome-Icon"/>
 */}
                     {/* <Icon name='power off' color='red' className="log-off-icon" onClick={this.signOff}>

@@ -1,10 +1,8 @@
 package com.project.business;
 
-import brave.Tracing;
-import brave.propagation.StrictCurrentTraceContext;
-import brave.sampler.Sampler;
 import com.project.client.PaymentServiceClient;
 import com.project.model.Order;
+import com.project.model.OrderId;
 import com.project.model.PaymentResponse;
 import com.project.producer.OrderProducer;
 import com.project.repository.OrderRepository;
@@ -20,19 +18,18 @@ import org.springframework.cloud.sleuth.CurrentTraceContext;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.cloud.sleuth.brave.bridge.BraveCurrentTraceContext;
-import org.springframework.cloud.sleuth.brave.bridge.CompositeSpanHandler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
-import reactor.util.context.ContextView;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
-import static com.project.utils.PaymentStatusCode.CONFIRMED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -43,9 +40,6 @@ public class OrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
-
-    @Mock
-    private OrdersCreator ordersCreator;
 
     @Mock
     private PaymentServiceClient paymentServiceClient;
@@ -75,7 +69,7 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(ordersCreator.saveOrders(any())).thenReturn(Mono.empty());
+        when(orderRepository.save(any())).thenReturn(Mono.empty());
         when(orderProducer.sendOder(any())).thenReturn(Mono.empty());
 
         PaymentResponse paymentResponse = easyRandom.nextObject(PaymentResponse.class);
@@ -99,7 +93,7 @@ public class OrderServiceTest {
 
         assertThat(response.getOrderId()).isNull();
 
-        verify(ordersCreator).saveOrders(any());
+        verify(orderRepository).save(any());
         verify(orderProducer).sendOder(any());
     }
 
@@ -108,14 +102,14 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(ordersCreator.saveOrders(any())).thenReturn(Mono.empty());
+        when(orderRepository.save(any())).thenReturn(Mono.empty());
         when(orderProducer.sendOder(any())).thenReturn(Mono.empty());
 
-        StepVerifier.create(orderService.saveOrder(order))
+        StepVerifier.create(orderService.saveOrderAndSendToKafka(order))
                 .expectComplete()
                 .verify();
 
-        verify(ordersCreator).saveOrders(order);
+        verify(orderRepository).save(order);
         verify(orderProducer).sendOder(any());
     }
 
@@ -124,14 +118,13 @@ public class OrderServiceTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(orderRepository.findOrdersByOrderKeyUserEmail(anyString())).thenReturn(Flux.just(order));
+        when(orderRepository.findOrdersByUserEmail(anyString())).thenReturn(Flux.just(order));
 
-        Order order1 = orderService.getOrderByUserEmail("toto@gmail.com")
-                .blockFirst();
-
-        assertThat(order1.getOrderKey().getOrderId()).isEqualTo(order.getOrderKey().getOrderId());
+        StepVerifier.create(orderService.getOrderByUserEmail("toto@gmail.com"))
+                .expectNextMatches(o -> o.getUserEmail().equals(order.getUserEmail()))
+                .expectComplete()
+                .verify();
     }
-
 
 
     @Test
@@ -142,7 +135,22 @@ public class OrderServiceTest {
         when(orderRepository.findAll()).thenReturn(Flux.just(order));
 
         StepVerifier.create(orderService.getAllOrders())
-                .expectNextMatches(o -> o.getOrderKey().getUserEmail().equals(order.getOrderKey().getUserEmail()))
+                .expectNextMatches(o -> o.getUserEmail().equals(order.getUserEmail()))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void testGetOrderByOrderId() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        Order order = easyRandom.nextObject(Order.class);
+
+        System.out.println(ZonedDateTime.now());
+        System.out.println(LocalDateTime.now());
+        when(orderRepository.findOrderByOrderId(any())).thenReturn(Mono.just(order));
+
+        StepVerifier.create(orderService.getOrderByOrderId(UUID.randomUUID().toString()))
+                .expectNext(order)
                 .expectComplete()
                 .verify();
     }

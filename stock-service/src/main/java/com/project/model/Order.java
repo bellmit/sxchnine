@@ -22,7 +22,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
-    private OrderKey orderKey;
+    private String orderId;
+    private String userEmail;
+    @JsonbDateFormat(value = "yyyy-MM-dd HH:mm:ss")
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime orderTime;
     private String orderStatus;
     @JsonbProperty(value ="products")
     private List<ProductOrder> productOrders;

@@ -15,7 +15,7 @@ class Notification extends Component {
     componentDidMount() {
         console.log("call event source");
         this.props.startOrdersNotification(this.props.ordersByMonthCount);
-        console.log(this.props.ordersNotificationData.sort((o1, o2)=> new Date(o2.orderKey.orderTime) - new Date(o1.orderKey.orderTime)));
+        console.log(this.props.ordersNotificationData.sort((o1, o2)=> new Date(o2.orderTime) - new Date(o1.orderTime)));
         console.log(this.props.ordersNotificationCount);
     }
 
@@ -38,14 +38,14 @@ class Notification extends Component {
         if (this.props.ordersNotificationData !== undefined
             && this.props.ordersNotificationData.length > 0) {
             ordersPushed = <Aux>
-                {Object.values(this.props.ordersNotificationData).sort((o1, o2)=> new Date(o2.orderKey.orderTime) - new Date(o1.orderKey.orderTime)).slice(0, 10).map((order, index) => (
+                {Object.values(this.props.ordersNotificationData).sort((o1, o2)=> new Date(o2.orderTime) - new Date(o1.orderTime)).slice(0, 10).map((order, index) => (
                     <Feed.Event key={index}>
                         <Feed.Label>
                             <Icon name="alarm" size="tiny" inverted />
                         </Feed.Label>
                         <Feed.Content>
                             <Feed.Summary>
-                                New order <Feed.User><span onClick={() => this.redirectToOrder(order.orderKey.orderId)}>{order.orderKey.orderId}</span></Feed.User> added at <Feed.Date>{order.orderKey.orderTime}</Feed.Date>
+                                New order <Feed.User><span onClick={() => this.redirectToOrder(order.orderId)}>{order.orderId}</span></Feed.User> added at <Feed.Date>{order.orderTime}</Feed.Date>
                             </Feed.Summary>
                         </Feed.Content>
                     </Feed.Event>

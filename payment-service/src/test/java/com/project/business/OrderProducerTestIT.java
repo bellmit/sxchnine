@@ -55,7 +55,7 @@ public class OrderProducerTestIT {
     public void testSendOrder() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
-        order.getOrderKey().setOrderTime(LocalDateTime.now().withNano(0));
+        order.setOrderTime(LocalDateTime.now().withNano(0));
         order.setPaymentTime(LocalDateTime.now().withNano(0));
         order.setShippingTime(LocalDateTime.now().withNano(0));
 

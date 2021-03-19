@@ -33,12 +33,12 @@ public class EmailRefusedSender extends EmailSender<Order>{
 
     @Override
     public Mail mailBuilder(Order order) {
-        log.info("Send Refused Email to {} for Order ID: {}", order.getOrderKey().getUserEmail(), order.getOrderKey().getOrderId());
+        log.info("Send Refused Email to {} for Order ID: {}", order.getUserEmail(), order.getOrderId());
         Email emailFrom = new Email(from);
-        Email emailTo = new Email(order.getOrderKey().getUserEmail());
+        Email emailTo = new Email(order.getUserEmail());
 
         Personalization personalization = new Personalization();
-        personalization.addDynamicTemplateData("commandId", order.getOrderKey().getOrderId());
+        personalization.addDynamicTemplateData("commandId", order.getOrderId());
         personalization.addDynamicTemplateData("total", order.getTotal());
         personalization.addDynamicTemplateData("currency", "$");
         personalization.addDynamicTemplateData("prix", order.getTotal());

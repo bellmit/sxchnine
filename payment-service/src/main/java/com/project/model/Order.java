@@ -15,13 +15,17 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
-    private OrderKey orderKey;
+    private String orderId;
+    private String userEmail;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime orderTime;
     private String orderStatus;
     private List<Product> products;
     private String productBrand;

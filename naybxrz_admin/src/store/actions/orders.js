@@ -1,4 +1,5 @@
 import axios from '../../axios/axios';
+import * as url from '../../axios/';
 import moment from 'moment';
 import {store} from "../../index";
 import * as actions from './actions';
@@ -74,7 +75,7 @@ export const ordersNotificationData = (data) => {
 
 export const startOrdersNotification = (firstSize) => {
     return dispatch => {
-        let eventSource = new EventSource('http://localhost:8086/ordersNotification/'+firstSize);
+        let eventSource = new EventSource(url.ordersUrl + 'ordersNotification/'+firstSize);
         eventSource.onmessage = ev => {
             console.log(JSON.parse(ev.data));
             dispatch(ordersNotificationData(JSON.parse(ev.data)));

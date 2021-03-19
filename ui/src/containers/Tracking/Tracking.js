@@ -41,12 +41,12 @@ class Tracking extends Component {
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <span className="Tracking-Order-Message-Inline">
-                                    Order ID: {order.orderKey.orderId}
+                                    Order ID: {order.orderId}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={6}>
                                 <span className="Tracking-Order-Message-Inline">
-                                    Order time: {order.orderKey.orderTime}
+                                    Order time: {order.orderTime}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>

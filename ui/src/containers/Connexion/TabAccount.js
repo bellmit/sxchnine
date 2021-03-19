@@ -129,12 +129,12 @@ class TabAccount extends PureComponent {
                         <Grid.Row className="TabAccount-Orders-Grid-Row">
                             <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
                                 <span className="TabAccount-Orders-Message">
-                                    Order ID: {order.orderKey.orderId}
+                                    Order ID: {order.orderId}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
                                 <span className="TabAccount-Orders-Message">
-                                    Order time: {order.orderKey.orderTime}
+                                    Order time: {order.orderTime}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>
@@ -218,12 +218,12 @@ class TabAccount extends PureComponent {
                         <Grid.Row className="TabAccount-Orders-Grid-Row">
                             <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
                                 <span className="TabAccount-Orders-Message">
-                                    Order ID: {order.orderKey.orderId}
+                                    Order ID: {order.orderId}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5} className="TabAccount-Orders-Grid-Row">
                                 <span className="TabAccount-Orders-Message">
-                                    Order time: {order.orderKey.orderTime}
+                                    Order time: {order.orderTime}
                                 </span>
                             </Grid.Column>
                             <Grid.Column width={5}>

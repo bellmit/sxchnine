@@ -47,16 +47,18 @@ public class ProductServiceTest {
         Product product = TestObjectCreator.createProduct();
         when(productRepository.findProductById(1L)).thenReturn(Mono.just(product));
         // Mocking Sleuth vs Reactor Context
-        Context context = mock(Context.class);
+        // Disable if you want to log the action related to the function
+
+        /*Context context = mock(Context.class);
         TraceContext traceContext = mock(TraceContext.class);
         CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
         Tracer tracer = mock(Tracer.class);
         Span span = mock(Span.class);
         when(span.context()).thenReturn(traceContext);
         when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
-        when(tracer.nextSpan()).thenReturn(span);
+        when(tracer.nextSpan()).thenReturn(span);*/
 
-        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create().withInitialContext(context);
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
 
         StepVerifier.create(productService.getProductById(1L), stepVerifierOptions)
                 .expectNext(product)
@@ -70,16 +72,17 @@ public class ProductServiceTest {
     public void testGetAllProducts(){
         when(productRepository.findAll()).thenReturn(Flux.empty());
         // Mocking Sleuth vs Reactor Context
-        Context context = mock(Context.class);
+        // Disable if you want to log the action related to the function
+/*        Context context = mock(Context.class);
         TraceContext traceContext = mock(TraceContext.class);
         CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
         Tracer tracer = mock(Tracer.class);
         Span span = mock(Span.class);
         when(span.context()).thenReturn(traceContext);
         when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
-        when(tracer.nextSpan()).thenReturn(span);
+        when(tracer.nextSpan()).thenReturn(span);*/
 
-        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create().withInitialContext(context);
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
 
         StepVerifier.create(productService.getAllProducts(), stepVerifierOptions)
                 .expectComplete()

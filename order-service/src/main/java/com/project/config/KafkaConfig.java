@@ -5,7 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.tinkerpop.shaded.kryo.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,6 @@ import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import org.springframework.util.backoff.BackOff;
 import org.springframework.util.backoff.FixedBackOff;
 
 import java.time.Duration;
@@ -37,7 +35,7 @@ public class KafkaConfig {
 
 
     @Bean
-    public ConsumerFactory<String, Order> consumerFactory(){
+    public ConsumerFactory<String, Order> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
@@ -52,7 +50,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    public KafkaOperations<String, Order> kafkaOperations(){
+    public KafkaOperations<String, Order> kafkaOperations() {
         Map<String, Object> props = new HashMap<>();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -61,12 +59,12 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Order> kafkaListenerContainerFactory(){
+    public ConcurrentKafkaListenerContainerFactory<String, Order> kafkaListenerContainerFactory() {
         return configConcurrentKafkaListenerContainerFactory();
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Order> dltKafkaListenerContainerFactory(){
+    public ConcurrentKafkaListenerContainerFactory<String, Order> dltKafkaListenerContainerFactory() {
         return configConcurrentKafkaListenerContainerFactory();
     }
 

@@ -40,10 +40,10 @@ class User extends Component {
                         <Grid className="Grid-div">
                             <Grid.Row floated='right'>
                                 <Grid.Column width={4}>
-                                    <span className="History-Items-Text">Order ID: {order.orderKey.orderId}</span>
+                                    <span className="History-Items-Text">Order ID: {order.orderId}</span>
                                 </Grid.Column>
                                 <Grid.Column width={5}>
-                                    <span className="History-Items-Text">Order time: {order.orderKey.orderTime}</span>
+                                    <span className="History-Items-Text">Order time: {order.orderTime}</span>
                                 </Grid.Column>
                                 <Grid.Column floated='left' width={4}>
                                     <span className="History-Items-Text"><Label tag

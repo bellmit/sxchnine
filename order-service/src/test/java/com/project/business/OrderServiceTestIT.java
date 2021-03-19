@@ -1,20 +1,17 @@
 package com.project.business;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.config.CassandraTestConfig;
 import com.project.model.Order;
 import com.project.model.PaymentResponse;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.cassandraunit.spring.CassandraDataSet;
-import org.cassandraunit.spring.CassandraUnitDependencyInjectionTestExecutionListener;
-import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
-import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
@@ -24,7 +21,7 @@ import org.springframework.cloud.sleuth.CurrentTraceContext;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -32,10 +29,6 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
 import reactor.util.context.Context;
 
 import java.time.LocalDateTime;
@@ -51,25 +44,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-/*@TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
-        "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"
-        + "org.springframework.cloud.sleuth.autoconfig.brave.BraveAutoConfiguration"
-        + "org.springframework.cloud.sleuth.autoconfig.zipkin2.ZipkinAutoConfiguration"
-        + "org.springframework.cloud.sleuth.autoconfig.instrument.reactor.TraceReactorAutoConfiguration"
-        + "org.springframework.cloud.sleuth.autoconfig.instrument.reactor.TraceReactorAutoConfiguration.TraceReactorAutoConfigurationAccessorConfiguration"
-        + "org.springframework.cloud.sleuth.autoconfig.instrument.web.TraceWebFluxConfiguration"
-        + "org.springframework.cloud.sleuth.autoconfig.zipkin2.ZipkinRestTemplateSenderConfiguration"
-})*/
-@TestExecutionListeners(listeners = {
-        CassandraUnitDependencyInjectionTestExecutionListener.class,
-        CassandraUnitTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class
-})
-@EmbeddedCassandra(timeout = 300000L)
-@CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
 @EmbeddedKafka
-@Import({CassandraTestConfig.class})
 @ActiveProfiles("test")
 @DirtiesContext
 public class OrderServiceTestIT {
@@ -77,6 +52,9 @@ public class OrderServiceTestIT {
     private static final String ORDERS_QUEUE = "orders";
 
     private ClientAndServer clientAndServer;
+
+    @Autowired
+    private ReactiveMongoTemplate mongoTemplate;
 
     @Autowired
     private OrderService orderService;
@@ -95,7 +73,9 @@ public class OrderServiceTestIT {
     }
 
     @AfterEach
-    public void teardown() { clientAndServer.stop();
+    public void teardown() {
+        clientAndServer.stop();
+        mongoTemplate.dropCollection("orders").block();
     }
 
     @Test
@@ -116,7 +96,7 @@ public class OrderServiceTestIT {
         String format = LocalDateTime.now().format(formatter);
 
         order.setPaymentTime(LocalDateTime.parse(format));
-        order.getOrderKey().setOrderTime(LocalDateTime.parse(format));
+        order.setOrderTime(LocalDateTime.parse(format));
         order.setShippingTime(LocalDateTime.parse(format));
 
         PaymentResponse paymentResponse = new PaymentResponse();
@@ -135,7 +115,7 @@ public class OrderServiceTestIT {
                 .block();
 
 
-        Order orderByEmail = orderService.getOrderByUserEmail(order.getOrderKey().getUserEmail())
+        Order orderByEmail = orderService.getOrderByUserEmail(order.getUserEmail())
                 .blockFirst();
 
         assertThat(orderByEmail).usingRecursiveComparison().ignoringFields("paymentInfo.paymentIntentId", "paymentInfo.type").isEqualTo(order);
@@ -147,7 +127,7 @@ public class OrderServiceTestIT {
         ConsumerRecord singleRecord = KafkaTestUtils.getSingleRecord(kafkaConsumer, ORDERS_QUEUE);
         kafkaConsumer.close();
 
-        assertThat(((Order) singleRecord.value()).getOrderKey().getOrderId()).isEqualTo(order.getOrderKey().getOrderId());
+        assertThat(((Order) singleRecord.value()).getOrderId()).isEqualTo(order.getOrderId());
 
     }
 

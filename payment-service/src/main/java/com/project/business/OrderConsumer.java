@@ -31,11 +31,7 @@ public class OrderConsumer {
             topics = "${kafka.consumer.topic}",
             containerFactory = "kafkaListenerContainerFactory")
     public void consumeOrder(Order order, Acknowledgment acknowledgment) {
-        log.info("***********************************************");
-        log.info("***********************************************");
-        log.info("consume order {} for payment", order.getOrderKey().getOrderId());
-        log.info("***********************************************");
-        log.info("***********************************************");
+        log.info("consume order {} with status {} for payment", order.getOrderId(), order.getOrderStatus());
         /*
             Rebalance consumer:
             max.poll.interval.ms = 5min
@@ -45,12 +41,14 @@ public class OrderConsumer {
         if (acknowledgeAlreadyProcessedOrders(order, acknowledgment)) return;
 
         if (order.getOrderStatus().equalsIgnoreCase(WAITING.getValue())
-                && order.getPaymentStatus().equalsIgnoreCase(CHECKOUT_OP.getValue())) {
+                && (order.getPaymentStatus().equalsIgnoreCase(CHECKOUT_OP.getValue())
+                    || order.getPaymentStatus().equalsIgnoreCase(CALL_PAYMENT_METHOD_TIMEOUT.getValue()))) {
 
             catchupCheckout(order, false);
 
         } else if (order.getOrderStatus().equalsIgnoreCase(WAITING.getValue())
-                && order.getPaymentStatus().equalsIgnoreCase(CONFIRM_OP.getValue())) {
+                && (order.getPaymentStatus().equalsIgnoreCase(CONFIRM_OP.getValue())
+                    || order.getPaymentStatus().equalsIgnoreCase(RETRIEVE_PAYMENT_INTENT_TIMEOUT.getValue()))) {
 
             confirmCheckout(order, false);
 
@@ -59,8 +57,8 @@ public class OrderConsumer {
         try {
             acknowledgment.acknowledge();
         } catch (Throwable throwable) {
-            nackOrders.put(order.getOrderKey().getOrderId(), order);
-            log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderKey().getOrderId(), throwable);
+            nackOrders.put(order.getOrderId(), order);
+            log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderId(), throwable);
         }
 
 
@@ -70,14 +68,10 @@ public class OrderConsumer {
             topics = "${kafka.consumer.topic}" + DLT,
             containerFactory = "kafkaDLTListenerContainerFactory")
     public void consumerOrderDLT(Order order, Acknowledgment acknowledgment) {
-        log.info("***********************************************");
-        log.info("***********************************************");
-        log.info("DLT consume order {} for payment", order.getOrderKey().getOrderId());
-        log.info("***********************************************");
-        log.info("***********************************************");
-        if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null) {
+        log.info("DLT consume order {} with status {} for payment", order.getOrderId(), order.getOrderStatus());
+        if (nackDLTOrders.get(order.getOrderId()) != null) {
             acknowledgment.acknowledge();
-            nackDLTOrders.remove(order.getOrderKey().getOrderId());
+            nackDLTOrders.remove(order.getOrderId());
 
         } else {
 
@@ -95,17 +89,16 @@ public class OrderConsumer {
             try {
                 acknowledgment.acknowledge();
             } catch (Throwable throwable) {
-                nackDLTOrders.put(order.getOrderKey().getOrderId(), order);
-                log.error("cannot commit offset for DLT order {}, we will send it to unack topic", order.getOrderKey().getOrderId(), throwable);
+                nackDLTOrders.put(order.getOrderId(), order);
+                log.error("cannot commit offset for DLT order {}, we will send it to unack topic", order.getOrderId(), throwable);
             }
         }
     }
 
     @Scheduled(fixedDelay = 500000L)
     public void reprocessFailedDLTOrders() {
-        log.info("scheduler start processing failed orders - total:{} ..", dltCheckoutOrders.size());
         if (!dltCheckoutOrders.isEmpty()) {
-            log.info("checkout failed orders - nbr of elements to process {}", dltCheckoutOrders.size());
+            log.info("scheduler - checkout failed orders - nbr of elements to process {}", dltCheckoutOrders.size());
             dltCheckoutOrders.forEach((k, v) -> log.info(v.toString()));
 
             dltCheckoutOrders.forEach((orderId, order) -> catchupCheckout(order, true));
@@ -113,7 +106,7 @@ public class OrderConsumer {
             log.info("finish checkout failed orders - nbr of elements left {}", dltCheckoutOrders.size());
         }
         if (!dltConfirmOrders.isEmpty()) {
-            log.info("confirm failed orders - nbr of elements to process {}", dltConfirmOrders.size());
+            log.info("scheduler - confirm failed orders - nbr of elements to process {}", dltConfirmOrders.size());
 
             dltConfirmOrders.forEach((orderId, order) -> confirmCheckout(order, true));
 
@@ -122,53 +115,53 @@ public class OrderConsumer {
     }
 
     private void catchupCheckout(Order order, boolean isDLT) {
-        log.info("catchup checkout for order {}", order.getOrderKey().getOrderId());
+        log.info("catchup checkout for order {}", order.getOrderId());
         Order processedOrder = catchupOrder.catchUpCheckout(order)
                 .block();
 
         if (processedOrder.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
                 && !isDLT) {
-            throw new PaymentMethodException("error occurred during consuming order to checkout payment for order:" + order.getOrderKey().getOrderId() + " PaymentIntentId: " + order.getPaymentInfo().getPaymentIntentId());
+            throw new PaymentMethodException("error occurred during consuming order to checkout payment for order:" + order.getOrderId() + " PaymentIntentId: " + order.getPaymentInfo().getPaymentIntentId());
         } else if (processedOrder.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
                 && isDLT) {
-            dltCheckoutOrders.putIfAbsent(order.getOrderKey().getOrderId(), order);
+            dltCheckoutOrders.putIfAbsent(order.getOrderId(), order);
             return;
         }
 
-        dltCheckoutOrders.remove(order.getOrderKey().getOrderId());
+        dltCheckoutOrders.remove(order.getOrderId());
     }
 
     private void confirmCheckout(Order order, boolean isDlt) {
-        log.info("catchup confirm checkout for order {}", order.getOrderKey().getOrderId());
+        log.info("catchup confirm checkout for order {}", order.getOrderId());
 
         Order orderConfirmed = catchupOrder.confirmCheckout(order)
                 .block();
 
         if (orderConfirmed.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
                 && !isDlt) {
-            throw new PaymentMethodException("error occurred during consuming order to confirm payment for order:" + order.getOrderKey().getOrderId() + " PaymentIntentId: " + order.getPaymentInfo().getPaymentIntentId());
+            throw new PaymentMethodException("error occurred during consuming order to confirm payment for order:" + order.getOrderId() + " PaymentIntentId: " + order.getPaymentInfo().getPaymentIntentId());
 
         } else if (orderConfirmed.getProcessingStatus().equals(WAITING_TIMEOUT.getValue())
                 && isDlt) {
-            dltConfirmOrders.putIfAbsent(order.getOrderKey().getOrderId(), order);
+            dltConfirmOrders.putIfAbsent(order.getOrderId(), order);
             return;
         }
 
-        dltConfirmOrders.remove(order.getOrderKey().getOrderId());
+        dltConfirmOrders.remove(order.getOrderId());
 
     }
 
 
     private boolean acknowledgeAlreadyProcessedOrders(Order order, Acknowledgment acknowledgment) {
-        if (nackOrders.get(order.getOrderKey().getOrderId()) != null) {
+        if (nackOrders.get(order.getOrderId()) != null) {
             try {
                 acknowledgment.acknowledge();
-                log.info("ack order {} and remove it from the nack orders", order.getOrderKey().getOrderId());
-                nackOrders.remove(order.getOrderKey().getOrderId());
+                log.info("ack order {} and remove it from the nack orders", order.getOrderId());
+                nackOrders.remove(order.getOrderId());
                 return true;
             } catch (Throwable throwable) {
-                nackOrders.put(order.getOrderKey().getOrderId(), order);
-                log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderKey().getOrderId(), throwable);
+                nackOrders.put(order.getOrderId(), order);
+                log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderId(), throwable);
             }
         }
         return false;

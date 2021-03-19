@@ -4,13 +4,11 @@ import com.project.model.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,42 +32,42 @@ public class OrderService {
                                     String orderTimeFrom,
                                     String orderTimeTo,
                                     String shippingTimeFrom,
-                                    String shippingTimeTo){
+                                    String shippingTimeTo) {
 
         BoolQueryBuilder query = QueryBuilders.boolQuery();
 
-        if (hasText(user)){
+        if (hasText(user)) {
             query.must(QueryBuilders.matchQuery("orderKey.userEmail", user));
         }
 
-        if (hasText(orderStatus)){
+        if (hasText(orderStatus)) {
             //query.must(QueryBuilders.termQuery("orderStatus", orderStatus));
             query.filter(QueryBuilders.termQuery("orderStatus", orderStatus));
         }
 
-        if (hasText(orderTimeFrom) && !hasText(orderTimeTo)){
+        if (hasText(orderTimeFrom) && !hasText(orderTimeTo)) {
             query.filter(QueryBuilders.rangeQuery("orderKey.orderTime").gte(orderTimeFrom));
         }
 
-        if (!hasText(orderTimeFrom) && hasText(orderTimeTo)){
+        if (!hasText(orderTimeFrom) && hasText(orderTimeTo)) {
             query.filter(QueryBuilders.rangeQuery("orderKey.orderTime").lte(orderTimeTo));
         }
 
-        if (hasText(orderTimeFrom) && hasText(orderTimeTo)){
+        if (hasText(orderTimeFrom) && hasText(orderTimeTo)) {
             query.filter(QueryBuilders.rangeQuery("orderKey.orderTime")
                     .gte(orderTimeFrom)
                     .lte(orderTimeTo));
         }
 
-        if (hasText(shippingTimeFrom) && !hasText(shippingTimeTo)){
+        if (hasText(shippingTimeFrom) && !hasText(shippingTimeTo)) {
             query.filter(QueryBuilders.rangeQuery("shippingTime").gte(shippingTimeFrom));
         }
 
-        if (!hasText(shippingTimeFrom) && hasText(shippingTimeTo)){
+        if (!hasText(shippingTimeFrom) && hasText(shippingTimeTo)) {
             query.filter(QueryBuilders.rangeQuery("shippingTime").lte(shippingTimeTo));
         }
 
-        if (hasText(shippingTimeFrom) && hasText(shippingTimeTo)){
+        if (hasText(shippingTimeFrom) && hasText(shippingTimeTo)) {
             query.filter(QueryBuilders.rangeQuery("shippingTime")
                     .gte(shippingTimeFrom)
                     .lte(shippingTimeTo));

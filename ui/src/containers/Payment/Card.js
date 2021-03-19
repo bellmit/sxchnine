@@ -88,11 +88,9 @@ class Card extends PureComponent {
 
     createOrder() {
         return {
-            orderKey: {
-                orderId: this.generateId(),
-                userEmail: this.props.email,
-                orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            },
+            orderId: this.generateId(),
+            userEmail: this.props.email,
+            orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
             orderStatus: 'ORDERED',
             products: this.props.productsToOrder,
             paymentInfo: {

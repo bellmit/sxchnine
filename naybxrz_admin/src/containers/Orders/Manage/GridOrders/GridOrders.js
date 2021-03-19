@@ -66,9 +66,9 @@ class GridOrders extends Component {
                             <Table.Row>
                                 <Table.Cell selectable>
                                         <span className="search-orders-id-text"
-                                              onClick={() => this.handleOrder(wo.orderKey.orderId)}>{wo.orderKey.orderId}</span>
+                                              onClick={() => this.handleOrder(wo.orderId)}>{wo.orderId}</span>
                                 </Table.Cell>
-                                <Table.Cell>{wo.orderKey.userEmail}</Table.Cell>
+                                <Table.Cell>{wo.userEmail}</Table.Cell>
                                 {wo.products.map((p, idxP) => (
                                     <List key={idxP} size='big'>
                                         <List.Item>
@@ -87,7 +87,7 @@ class GridOrders extends Component {
                                 ))}
                                 <Table.Cell>{wo.total}</Table.Cell>
                                 <Table.Cell singleLine>{wo.userAddress.address} {wo.userAddress.city}</Table.Cell>
-                                <Table.Cell singleLine>{wo.orderKey.orderTime}</Table.Cell>
+                                <Table.Cell singleLine>{wo.orderTime}</Table.Cell>
                                 <Table.Cell style={{backgroundColor: this.getColor(wo.orderStatus)}}>
                                     <span style={{fontWeight: 'bold'}}>{wo.orderStatus}</span>
                                 </Table.Cell>

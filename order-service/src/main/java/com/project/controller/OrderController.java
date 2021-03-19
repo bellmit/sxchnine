@@ -1,6 +1,5 @@
 package com.project.controller;
 
-import com.project.business.OrderIdService;
 import com.project.business.OrderService;
 import com.project.business.OrderStatusService;
 import com.project.model.Order;
@@ -12,6 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
+
+import java.time.Duration;
+
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,11 +24,7 @@ import reactor.core.publisher.Mono;
 public class OrderController {
 
     private final OrderService orderService;
-
-    private final OrderIdService orderIdService;
-
     private final OrderStatusService orderStatusService;
-
 
     @GetMapping(value = "/ordersNotification/{ordersSize}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Order> getOrdersNotification(@PathVariable int ordersSize,
@@ -34,17 +34,19 @@ public class OrderController {
 
     @GetMapping("/lastOrders")
     public Flux<Order> getLastOrders(@RequestParam(required = false) String date) {
-        return orderStatusService.getOrdersByOrderStatus(date);
+        return orderStatusService.getLastOrdersForCurrentMonth(date);
     }
 
     @GetMapping("/orderId/{orderId}")
     public Mono<Order> getOrdersByOrderId(@PathVariable String orderId) {
-        return orderIdService.getMappedOrderByOrderId(orderId);
+        return orderService.getOrderByOrderId(orderId)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Retrieve Order by orderId: {}", orderId)));
     }
 
     @GetMapping("/userEmail/{userEmail:.+}")
-    public Flux<Order> getOrdersByEmail(@PathVariable String userEmail) {
-        return orderService.getOrderByUserEmail(userEmail);
+    public Flux<Order> getOrdersByEmail(@PathVariable String email) {
+        return orderService.getOrderByUserEmail(email)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Get orders for this user: {}", email)));
     }
 
     @GetMapping("/trackOrder")
@@ -59,7 +61,7 @@ public class OrderController {
 
     @PostMapping("/save")
     public Mono<Void> saveOrder(@RequestBody Order order) {
-        return orderService.saveOrder(order);
+        return orderService.saveOrderAndSendToKafka(order);
     }
 
     @PostMapping("/confirmOrder")

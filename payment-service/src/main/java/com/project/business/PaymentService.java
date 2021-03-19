@@ -19,7 +19,7 @@ public class PaymentService {
 
     public Mono<PaymentResponse> checkout(Order order) {
         return paymentOps.checkout(order)
-                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Checkout payment for order id {}", order.getOrderKey().getOrderId())));
+                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Checkout payment for order id {}", order.getOrderId())));
     }
 
     public Mono<PaymentResponse> checkout3DSecure(String paymentIntentId) {

@@ -1,7 +1,7 @@
 spring:
   data:
-    cassandra:
-      local-datacenter: datacenter1
+    mongodb:
+      database: orders
   kafka:
     producer:
       bootstrap-servers: ${spring.embedded.kafka.brokers}

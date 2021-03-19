@@ -70,7 +70,7 @@ public class StPaymentOpsImpl implements PaymentOps {
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
                 })
-                .onErrorReturn(buildErrorPaymentResponse());
+                .onErrorReturn(buildErrorPaymentResponse(CALL_PAYMENT_METHOD_TIMEOUT.getValue()));
     }
 
 
@@ -86,7 +86,7 @@ public class StPaymentOpsImpl implements PaymentOps {
             //params.add("confirmation_method", paymentIntent.getConfirmationMethod().getValue());
             params.add("confirmation_method", PaymentIntentCreateParams.ConfirmationMethod.MANUAL.getValue());
             params.add("return_url", orderConfigurationProperties.getRedirect());
-            params.add("metadata[orderId]", order.getOrderKey().getOrderId());
+            params.add("metadata[orderId]", order.getOrderId());
 
             return webClient.post()
                     .uri("/v1/payment_intents")
@@ -104,7 +104,7 @@ public class StPaymentOpsImpl implements PaymentOps {
                                     .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                         }
                     })
-                    .onErrorReturn(buildErrorPaymentResponse());
+                    .onErrorReturn(buildErrorPaymentResponse(CREATE_PAYMENT_INTENT_TIMEOUT.getValue()));
         } else {
             return Mono.just(paymentResponse);
         }
@@ -125,7 +125,7 @@ public class StPaymentOpsImpl implements PaymentOps {
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
                 })
-                .onErrorReturn(buildErrorPaymentResponse());
+                .onErrorReturn(buildErrorPaymentResponse(RETRIEVE_PAYMENT_INTENT_TIMEOUT.getValue()));
     }
 
     private Mono<PaymentResponse> confirmPayment(PaymentResponse paymentResponse) {
@@ -150,15 +150,15 @@ public class StPaymentOpsImpl implements PaymentOps {
                                     .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                         }
                     })
-                    .onErrorReturn(buildErrorPaymentResponse());
+                    .onErrorReturn(buildErrorPaymentResponse(CONFIRM_PAYMENT_TIMEOUT.getValue()));
         } else {
             return Mono.just(paymentResponse);
         }
     }
 
-    private PaymentResponse buildErrorPaymentResponse() {
+    private PaymentResponse buildErrorPaymentResponse(String errorStatus) {
         PaymentResponse paymentResponse = new PaymentResponse();
-        paymentResponse.setStatus(WAITING_TIMEOUT.getValue());
+        paymentResponse.setStatus(errorStatus);
         return paymentResponse;
     }
 

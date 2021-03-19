@@ -34,13 +34,13 @@ public class EmailShippedSender extends EmailSender<Order> {
 
     @Override
     public Mail mailBuilder(Order order) {
-        log.info("Send Shipped Email to {} for Order ID: {}", order.getOrderKey().getUserEmail(), order.getOrderKey().getOrderId());
+        log.info("Send Shipped Email to {} for Order ID: {}", order.getUserEmail(), order.getOrderId());
         Email emailFrom = new Email(from);
-        Email emailTo = new Email(order.getOrderKey().getUserEmail());
+        Email emailTo = new Email(order.getUserEmail());
 
         Personalization personalization = new Personalization();
         personalization.addDynamicTemplateData("name", order.getUserAddress().getFirstName());
-        personalization.addDynamicTemplateData("orderID", order.getOrderKey().getOrderId());
+        personalization.addDynamicTemplateData("orderID", order.getOrderId());
         personalization.addTo(emailTo);
 
         Content content = new Content("text/html", "plain");

@@ -1,6 +1,6 @@
 package com.project.consumer;
 
-import com.project.business.OrdersCreator;
+import com.project.business.OrderService;
 import com.project.model.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -17,12 +17,12 @@ public class OrderCatchupConsumer {
 
     private static final String DLT = ".DLT";
 
-    private final OrdersCreator orderService;
+    private final OrderService orderService;
     private final Map<String, Order> nackOrders = new ConcurrentHashMap<>();
     private final Map<String, Order> nackDLTOrders = new ConcurrentHashMap<>();
     private final Map<String, Order> failedOrders = new ConcurrentHashMap<>();
 
-    public OrderCatchupConsumer(OrdersCreator orderService) {
+    public OrderCatchupConsumer(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -30,10 +30,10 @@ public class OrderCatchupConsumer {
             topics = "${kafka.consumer.topic}",
             containerFactory = "kafkaListenerContainerFactory")
     public void consumeCatchupOrder(Order order, Acknowledgment ack) {
-        log.info("order to catchup {}", order.getOrderKey().getOrderId());
-        if (nackOrders.get(order.getOrderKey().getOrderId()) != null) {
+        log.info("order to catchup {}", order.getOrderId());
+        if (nackOrders.get(order.getOrderId()) != null) {
             ack.acknowledge();
-            nackOrders.remove(order.getOrderKey().getOrderId());
+            nackOrders.remove(order.getOrderId());
 
         } else {
 
@@ -42,8 +42,8 @@ public class OrderCatchupConsumer {
             try {
                 ack.acknowledge();
             } catch (Throwable throwable) {
-                nackOrders.put(order.getOrderKey().getOrderId(), order);
-                log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderKey().getOrderId(), throwable);
+                nackOrders.put(order.getOrderId(), order);
+                log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderId(), throwable);
             }
         }
     }
@@ -52,11 +52,11 @@ public class OrderCatchupConsumer {
             topics = "${kafka.consumer.topic}" + DLT,
             containerFactory = "dltKafkaListenerContainerFactory")
     public void consumeDLTCatchupOrder(Order order, Acknowledgment ack) {
-        log.info("DLT - order to catchup {}", order.getOrderKey().getOrderId());
+        log.info("DLT - order to catchup {}", order.getOrderId());
 
-        if (nackDLTOrders.get(order.getOrderKey().getOrderId()) != null) {
+        if (nackDLTOrders.get(order.getOrderId()) != null) {
             ack.acknowledge();
-            nackDLTOrders.remove(order.getOrderKey().getOrderId());
+            nackDLTOrders.remove(order.getOrderId());
         } else {
 
             saveOrder(order, true);
@@ -64,8 +64,8 @@ public class OrderCatchupConsumer {
             try {
                 ack.acknowledge();
             } catch (Throwable throwable) {
-                nackDLTOrders.put(order.getOrderKey().getOrderId(), order);
-                log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderKey().getOrderId(), throwable);
+                nackDLTOrders.put(order.getOrderId(), order);
+                log.error("cannot commit offset for order {}, we will add it to nack orders", order.getOrderId(), throwable);
             }
 
         }
@@ -80,17 +80,17 @@ public class OrderCatchupConsumer {
 
     private void saveOrder(Order order, boolean isDLT) {
         try {
-            orderService.saveOrders(order).block();
+            orderService.saveOrderAndSendToKafka(order).block();
 
-            failedOrders.remove(order.getOrderKey().getOrderId());
+            failedOrders.remove(order.getOrderId());
 
         } catch (Throwable throwable) {
             if (isDLT) {
-                failedOrders.putIfAbsent(order.getOrderKey().getOrderId(), order);
-                log.error("Error occurred during saving order {} from DLT. We will add it to failedOrders for processing later", order.getOrderKey().getOrderId(), throwable);
+                failedOrders.putIfAbsent(order.getOrderId(), order);
+                log.error("Error occurred during saving order {} from DLT. We will add it to failedOrders for processing later", order.getOrderId(), throwable);
 
             } else {
-                throw new RuntimeException("Error occurred during saving to DB order: " + order.getOrderKey().getOrderId(), throwable);
+                throw new RuntimeException("Error occurred during saving to DB order: " + order.getOrderId(), throwable);
             }
         }
     }

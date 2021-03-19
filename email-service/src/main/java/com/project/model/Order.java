@@ -15,7 +15,10 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order implements Serializable {
 
-    private OrderKey orderKey;
+    private String orderId;
+    private String userEmail;
+    @JsonIgnore
+    private String orderTime;
     private String productBrand;
     private String productName;
     private BigDecimal total;

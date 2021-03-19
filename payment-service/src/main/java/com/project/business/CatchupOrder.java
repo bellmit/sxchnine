@@ -72,9 +72,9 @@ public class CatchupOrder {
     }
 
     private String evaluateProcessingStatus(String status) {
-        if (!status.equals(WAITING_TIMEOUT.getValue()))
+        if (!status.contains("TIMEOUT"))
             return ORDER_PAYMENT_PROCESSED.getValue();
         else
-            return WAITING_TIMEOUT.getValue();
+            return status;
     }
 }

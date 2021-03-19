@@ -10,7 +10,7 @@ export const order = (productsToOrder, history) => {
     return dispatch => {
         dispatch(orderStart(true));
         history.push('/processing');
-        window.localStorage.setItem("orderId", productsToOrder.orderKey.orderId);
+        window.localStorage.setItem("orderId", productsToOrder.orderId);
         axios.post('/order/checkoutOrder', productsToOrder, {
             headers: {
                 'Authorization': 'Bearer ' + store.getState().authentication.data.access_token

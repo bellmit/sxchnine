@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    name: keycloak
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      name: keycloak
+      labels:
+        app: keycloak
+        name: keycloak
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: keycloak
+        image: jboss/keycloak
+        imagePullPolicy: IfNotPresent
+        resources:
+           limits:
+             memory: 600Mi
+             cpu: 400m
+           requests:
+             memory: 300Mi
+             cpu: 200m
+        ports:
+          - name: http
+            containerPort: 8080
+          - name: https
+            containerPort: 8443
+        env:
+          - name: KEYCLOAK_LOGLEVEL
+            value: "DEBUG"
+          - name: PROXY_ADDRESS_FORWARDING
+            value: "true"
+          - name: KEYCLOAK_USER
+            value: "admin"
+          - name: KEYCLOAK_PASSWORD
+            value: "admin"
+          - name: DB_VENDOR
+            value: "mysql"
+          - name: DB_USER
+            value: "keycloak"
+          - name: DB_PASSWORD
+            value: "P4SS0RD"
+          - name: MYSQL_PORT_3306_TCP_ADDR
+            value: "mysql"
+          - name: MYSQL_PORT_3306_TCP_PORT
+            value: "3306"
+          - name: DB_DATABASE
+            value: "keycloak-db"

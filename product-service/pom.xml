@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.project</groupId>
     <artifactId>product-service</artifactId>
-    <version>1.0.1-SNAPSHOT-REACTIVE</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <java.version>11</java.version>
@@ -143,6 +143,10 @@
                     <target>${java.version}</target>
                     <source>${java.version}</source>    <!-- same as <java.version> -->
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
