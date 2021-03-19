@@ -3,11 +3,3 @@ spring:
     name: search-product-service
   config:
     import: optional:configserver:${CONFIG_SERVER:http://localhost:8888}
-logging:
-  level:
-    org:
-      springframework:
-        data:
-          elasticsearch:
-            client:
-              WIRE: INFO
