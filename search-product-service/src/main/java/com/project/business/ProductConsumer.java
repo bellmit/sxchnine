@@ -28,7 +28,6 @@ public class ProductConsumer {
         productService.save(productToSave)
                 .doOnSuccess(p -> log.info("product {} consumed", productToSave.getId()))
                 .doOnError(error -> log.error("error happened during consuming product " + productToSave.getId(), error))
-                .subscribeOn(Schedulers.parallel())
                 .subscribe();
         ack.acknowledge();
     }
