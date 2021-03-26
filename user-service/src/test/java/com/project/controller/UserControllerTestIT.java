@@ -1,138 +1,203 @@
 package com.project.controller;
 
-import com.project.config.ResourceServerConfig;
+import com.project.config.TestRedisConfiguration;
 import com.project.model.User;
 import com.project.repository.UserRepository;
 import com.project.service.UserService;
-import org.assertj.core.api.Assertions;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import redis.embedded.RedisServer;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
+import reactor.kafka.receiver.KafkaReceiver;
+import reactor.kafka.receiver.ReceiverOptions;
+import reactor.kafka.receiver.ReceiverRecord;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
+@Import(TestRedisConfiguration.class)
 @ActiveProfiles("test")
-@Import(ResourceServerConfig.class)
+@EmbeddedKafka
+@Slf4j
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserControllerTestIT {
-    
+
+    private static final String EMAIL_TEST = "toto@gmail.com";
+    private static final String EMAIL_TEST_2 = "toto2@gmail.com";
+
     @Autowired
-    private TestRestTemplate testRestTemplate;
-    
+    private WebTestClient webTestClient;
+
     @Autowired
     private UserService userService;
-    
-    public static RedisServer redisServer = new RedisServer();
-    
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    EmbeddedKafkaBroker embeddedKafkaBroker;
+
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .scanClasspathForConcreteTypes(true)
             .ignoreRandomizationErrors(true);
-    
-    @BeforeClass
-    public static void setup(){
-        redisServer.start();
+
+
+    @AfterEach
+    public void teardown() throws Exception {
+        userRepository.deleteUserByEmail(EMAIL_TEST).block();
+        userRepository.deleteUserByEmail(EMAIL_TEST_2).block();
     }
-    
-    @AfterClass
-    public static void teardown(){
-        redisServer.stop();
-    }
-    
+
+    @Order(1)
     @Test
-    public void testGetUsers(){
+    public void testCreateUser(){
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
 
-        userService.save(user);
+        webTestClient.post()
+                .uri("/save?isNew=true")
+                .body(Mono.just(user), User.class)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
 
-        ResponseEntity<List<User>> response = testRestTemplate.exchange("/all",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<User>>() {});
+        User savedUser = userService.getUserByEmail(user.getEmail().toLowerCase()).block();
 
-        assertThat(response.getBody()).contains(user);
+        ReceiverOptions<Object, Object> kafkaConsumer = createKafkaConsumer().subscription(Collections.singleton("users"));
+
+        ReceiverRecord<Object, Object> record = KafkaReceiver.create(kafkaConsumer).receive().blockFirst();
+
+        assertNotNull(record.value());
+        assertThat((String)record.value()).contains(user.getEmail().toLowerCase());
+
+        assertThat(savedUser.getEmail().toLowerCase()).isEqualTo(user.getEmail().toLowerCase());
+
+        userRepository.deleteUserByEmail(EMAIL_TEST).block();
     }
 
+    @Order(2)
     @Test
-    public void testGetUserByEmail(){
+    public void testUpdateUser() {
+        String test = "toto3@gmail.com";
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
+        user.setEmail("Toto3@gmail.com");
 
-        userService.save(user);
+        userService.save(user, true).block();
 
-        User savedUser = testRestTemplate.getForObject("/email/"+user.getEmail(), User.class);
+        webTestClient.post()
+                .uri("/save")
+                .body(Mono.just(user), User.class)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
 
-        assertThat(savedUser).isEqualToComparingFieldByFieldRecursively(user);
-    }
-
-    @Test
-    public void testCreateOrSaveUser(){
-        EasyRandom easyRandom = new EasyRandom();
-        User user = easyRandom.nextObject(User.class);
-
-        testRestTemplate.postForObject("/save", user, User.class);
-
-        User savedUser = userService.getUserByEmail(user.getEmail());
+        User savedUser = userService.getUserByEmail(test).block();
 
         assertThat(savedUser).isEqualToIgnoringGivenFields(user, "password");
+
+        ReceiverOptions<Object, Object> kafkaConsumer = createKafkaConsumer().subscription(Collections.singleton("users"));
+
+        ReceiverRecord<Object, Object> record = KafkaReceiver.create(kafkaConsumer).receive().blockFirst();
+        assertNotNull(record.value());
+
+        userRepository.deleteUserByEmail(test);
     }
 
+    @Order(3)
     @Test
-    public void testDeleteByUser(){
+    public void testDeleteByUser() {
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
-        user.setEmail("toto@gmail.com");
+        user.setEmail(EMAIL_TEST);
 
-        userService.save(user);
+        userRepository.save(user).block();
 
-        HttpEntity<User> httpEntity = new ResponseEntity<>(user, HttpStatus.CREATED);
+        webTestClient.delete()
+                .uri("/deleteByEmail/"+EMAIL_TEST)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
 
-        testRestTemplate.exchange("/deleteByUser", HttpMethod.DELETE,
-                httpEntity,
-                Object.class,
-                user);
-
-        User savedUser = userService.getUserByEmail("toto@gmail.com");
+        User savedUser = userService.getUserByEmail(EMAIL_TEST).block();
 
         assertThat(savedUser).isNull();
     }
 
+    @Order(4)
     @Test
-    public void testLogin(){
+    public void testLogin() {
         EasyRandom easyRandom = new EasyRandom();
         User user = easyRandom.nextObject(User.class);
-        user.setEmail("toto@gmail.com");
-        user.setPassword("toto");
+        user.setEmail(EMAIL_TEST);
+        user.setPassword("toto1");
 
-        userService.save(user);
+        userService.save(user, true).block();
 
-        User userToRequest = new User();
-        userToRequest.setEmail("toto@gmail.com");
-        userToRequest.setPassword("toto");
+        webTestClient.post()
+                .uri("/login?email=" + user.getEmail() + "&password=toto1")
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(User.class)
+                .value(response -> assertThat(response.getId()).isEqualTo(user.getId()));
 
-        Boolean response = testRestTemplate.postForObject("/login?email="+user.getEmail()+"&password="+user.getPassword(), userToRequest, Boolean.class);
+        ReceiverOptions<Object, Object> kafkaConsumer = createKafkaConsumer().subscription(Collections.singleton("users"));
 
-        assertThat(response).isTrue();
+        ReceiverRecord<Object, Object> record = KafkaReceiver.create(kafkaConsumer).receive().blockFirst();
+        assertNotNull(record.value());
+
+        userRepository.deleteUserByEmail(EMAIL_TEST).block();
+    }
+
+    @Order(5)
+    @Test
+    public void testGetUserByEmail() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+
+        userRepository.save(user).block();
+
+        webTestClient.get()
+                .uri("/email/" + user.getEmail())
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(User.class)
+                .value(savedUser -> assertThat(savedUser).usingRecursiveComparison().isEqualTo(user));
+
+        userRepository.deleteUserByEmail(user.getEmail()).block();
+    }
+
+    private ReceiverOptions<Object, Object> createKafkaConsumer() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, System.getProperty("spring.embedded.kafka.brokers"));
+        props.put(ConsumerConfig.CLIENT_ID_CONFIG, "user-consumer");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "user-group");
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        return ReceiverOptions.create(props);
     }
 }

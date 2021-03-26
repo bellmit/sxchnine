@@ -6,8 +6,9 @@
 
 .Home-Search-Text-Button {
     font-family: Anton;
-    font-size: 1vw;
+    font-size: 1.2vw;
     text-transform: uppercase;
+    color: black;
 }
 
 .Home-Search-Continue-Button{
@@ -26,4 +27,109 @@
     padding: 10px 20px;
     text-decoration: none;
     outline: none;
+}
+
+@media only screen and (max-width: 1024px) {
+    .Home-Search-Advanced {
+        font-family: Anton;
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+    .Home-Search-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Home-Search-Advanced {
+        font-family: Anton;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .Home-Search-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+}
+
+@media only screen and (max-width: 414px) {
+    .Home-Search-Advanced {
+        font-family: Anton;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .Home-Search-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+}
+
+@media only screen and (max-width: 375px) {
+    .Home-Search-Advanced {
+        font-family: Anton;
+        font-size: 9px;
+        text-transform: uppercase;
+    }
+    .Home-Search-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .Home-Search-Advanced {
+        font-family: Anton;
+        font-size: 8px;
+        text-transform: uppercase;
+    }
+    .Home-Search-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 280px) {
+    .Home-Search-Advanced {
+        font-family: Anton;
+        font-size: 7px;
+        text-transform: uppercase;
+    }
+    .Home-Search-Text-Button {
+        font-family: Anton;
+        font-size: 3.5vw;
+        text-transform: uppercase;
+        color: black;
+    }
+    .Home-Search-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        width: 120%;
+    }
+
+    .Home-Search-Continue-Button:focus{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        width: 120%;
+    }
 }

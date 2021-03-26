@@ -1,0 +1,31 @@
+.Got-it-logo {
+    top: -10%;
+    right: 0;
+    height: 30%;
+    position: absolute;
+    z-index:1;
+}
+
+@media only screen and (max-width: 414px) {
+    .Got-it-logo {
+        top: -8%;
+        right: -12%;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+
+}
+
+@media only screen and (max-width: 375px) {
+    .Got-it-logo {
+        top: -8%;
+        right: -12%;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }
+
+}

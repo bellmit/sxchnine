@@ -114,6 +114,15 @@
     text-decoration: none;
 }
 
+@media screen and (min-width: 768px) {
+    .Cards-h4 {
+        margin: 10px 0 30px 420px;
+        font-family: Anton;
+        font-size: 1.5vw;
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Card-App-Pay {
         font-family: Anton;
@@ -149,3 +158,4 @@
         margin-left: 18px;
     }
 }
+

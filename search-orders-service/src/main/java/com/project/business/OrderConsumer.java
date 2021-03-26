@@ -1,6 +1,5 @@
 package com.project.business;
 
-import com.project.mapper.OrderMapper;
 import com.project.model.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,21 +10,22 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrderConsumer {
 
-    private OrderMapper orderMapper;
+    private final OrderService orderService;
 
-    private OrderService orderService;
-
-    public OrderConsumer(OrderMapper orderMapper, OrderService orderService) {
-        this.orderMapper = orderMapper;
+    public OrderConsumer(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @KafkaListener(groupId = "${kafka.groupId}", topics = "${kafka.topic}")
-    public void consumeOrder(Order order, Acknowledgment acknowledgment){
-        log.info("*******************");
+    public void consumeOrder(Order order, Acknowledgment acknowledgment) {
+        log.info("***************************************");
         log.info("consume order {} ", order.toString());
-        log.info("*******************");
-        orderService.indexOrder(orderMapper.asIndexedOrders(order));
+        log.info("***************************************");
+        order.setOrderId(order.getOrderKey().getOrderId());
+        orderService.indexOrder(order)
+                .subscribe(
+                        o -> log.info("order is indexed into ES successfully"),
+                        error -> log.error("order cannot get indexed into ES {}", order.toString(), error));
         acknowledgment.acknowledge();
     }
 }

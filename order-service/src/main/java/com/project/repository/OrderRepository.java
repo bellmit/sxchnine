@@ -1,20 +1,27 @@
 package com.project.repository;
 
 import com.project.model.Order;
-import com.project.model.OrderPrimaryKey;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.Tailable;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Order, OrderPrimaryKey> {
+public interface OrderRepository extends ReactiveCrudRepository<Order, String> {
 
-    List<Order> findAll();
+    Flux<Order> findAll();
 
-    List<Order> findOrdersByOrderPrimaryKeyUserEmail(String userEmail);
+    Flux<Order> findOrdersByUserEmail(String userEmail);
 
-    List<Order> findOrdersByOrderPrimaryKeyUserEmailAndOrderPrimaryKeyOrderId(String email, UUID orderId);
+    Mono<Order> findOrderByOrderId(String orderId);
 
+    Mono<Order> findOrderByOrderIdAndUserEmail(String orderId, String email);
+
+    Flux<Order> findOrdersByOrderTimeGreaterThanEqual(LocalDateTime month);
 }

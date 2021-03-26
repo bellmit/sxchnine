@@ -1,13 +1,13 @@
 import React from 'react';
 import './Logo.css';
-import gotit from '../../images/logo_gotit.png';
+import naybxrz from '../../images/naybxrz3.png';
 
 
 const logo = () => {
 
     return (
         <div>
-            <img alt ="" className="Got-it-logo" src={gotit}/>
+            <img alt ="" className="Got-it-logo" src={naybxrz}/>
         </div>
     );
 }

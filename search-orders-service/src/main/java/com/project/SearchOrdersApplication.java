@@ -1,13 +1,12 @@
 package com.project;
 
+import com.project.configuration.ElasticsearchProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-@EnableSwagger2
+@EnableConfigurationProperties(ElasticsearchProperties.class)
 public class SearchOrdersApplication {
 
     public static void main(String[] args) {

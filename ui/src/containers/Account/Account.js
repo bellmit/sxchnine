@@ -2,10 +2,9 @@ import React, {Component} from 'react';
 import Aux from '../../hoc/Aux/Aux';
 import './Account.css';
 import {Form, Modal, Grid, Label, Dimmer, Loader} from "semantic-ui-react";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import uuid from 'uuid/v1';
 import * as actions from "../../store/actions";
-
 
 
 class Account extends Component {
@@ -43,7 +42,8 @@ class Account extends Component {
             email: this.state.email,
             password: this.state.password,
             address: {
-                address: this.state.num + ' ' + this.state.avenue,
+                number: this.state.num,
+                address: this.state.avenue,
                 city: this.state.city,
                 postalCode: this.state.postalCode,
                 country: this.state.country
@@ -80,10 +80,6 @@ class Account extends Component {
                                 <Grid.Row>
                                     <Grid.Column width={5}>
                                         <Grid.Row>
-                                            {/*                                    <Grid.Column width={3}>
-                                        <p className="Info-Text">FIRST NAME:</p>
-                                    </Grid.Column>*/}
-
                                             <Grid.Column width={3}>
                                                 <Form.Input inverted required
                                                             placeholder='First Name...'
@@ -94,10 +90,6 @@ class Account extends Component {
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            {/*                                    <Grid.Column width={3}>
-                                        <p className="Info-Text">LAST NAME:</p>
-                                    </Grid.Column>*/}
-
                                             <Grid.Column width={3}>
                                                 <Form.Input inverted
                                                             placeholder='Last Name...'
@@ -109,10 +101,6 @@ class Account extends Component {
                                         </Grid.Row>
 
                                         <Grid.Row>
-                                            {/*                                    <Grid.Column width={3}>
-                                        <p className="Info-Text">EMAIL ADDRESS:</p>
-                                    </Grid.Column>*/}
-
                                             <Grid.Column width={3}>
                                                 <Form.Input inverted
                                                             placeholder='Email Address...'
@@ -124,10 +112,6 @@ class Account extends Component {
                                         </Grid.Row>
 
                                         <Grid.Row>
-                                            {/*                                    <Grid.Column width={3}>
-                                        <p className="Info-Text">PASSWORD:</p>
-                                    </Grid.Column>*/}
-
                                             <Grid.Column width={3}>
                                                 <Form.Input inverted
                                                             placeholder='Password'
@@ -146,10 +130,6 @@ class Account extends Component {
 
                                     <Grid.Column width={5}>
                                         <Grid.Row>
-                                            {/*                                    <Grid.Column width={3}>
-                                        <p className="Info-Text">DELIVERY ADDRESS:</p>
-                                    </Grid.Column>*/}
-
                                             <Grid.Column width={3}>
                                                 <Form.Input inverted placeholder='N°'
                                                             name='num'

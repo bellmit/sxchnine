@@ -1,3 +1,4 @@
+/*
 package com.project.configuration;
 
 import com.hazelcast.config.Config;
@@ -34,3 +35,4 @@ public class HazelcastConfig {
 
 
 }
+*/

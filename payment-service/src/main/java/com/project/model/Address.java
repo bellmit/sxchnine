@@ -8,7 +8,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
-@AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address implements Serializable {

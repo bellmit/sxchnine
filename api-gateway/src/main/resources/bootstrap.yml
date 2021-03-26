@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://config-server:8888}
+      enabled: true
+      fail-fast: true
+opentracing:
+  jaeger:
+    enable-b3-propagation: true
+
+
+
+#docker run --name keycloak --net got-it-net -p 8080:8080  -e DB_VENDOR=mysql -e DB_USER=root -e DB_PASSWORD=passw00rd -e DB_DATABASE=keycloak -e JDBC_PARAMS="useSSL=false" -d jboss/keycloak
+#docker run --name mysql -v /Users/soufianeifraden/mysql:/var/lib/mysql --network got-it-net -e MYSQL_USER=keycloack -e MYSQL_PASSWORD=passw0rd -e MYSQL_ROOT_PASSWORD=passw00rd -e MYSQL_DATABASE=keycloak -d mysql:latest
+
+
+#-- pull s2i image if not exist
+#
+#oc project openshift
+#oc import-image openjdk/openjdk-11-rhel7 --from=registry.access.redhat.com/openjdk/openjdk-11-rhel7 --confirm
+
+
+#-- create build
+#
+#  oc new-build openshift/openjdk-11-rhel7 --binary --name=api-gateway -l app=api-gateway --allow-missing-images
+#
+#-- start build
+#
+#  oc start-build api-gateway --from-file target/api-gateway-0.0.1-SNAPSHOT.jar --follow
+
+#-- deploy app
+#
+#oc new-app api-gateway --name=api-gateway -e JAVA_OPTS_APPEND='-Dspring.profiles.active=openshift'
+
+# build based on docker image
+#oc new-build . --name order-service --docker-image="sifraden/order-service:1.0.0-SNAPSHOT" --strategy=docker
+
+
+# kubernetes
+# brew install helm
+# optional: kubectl -n kube-system create serviceaccount tiller
+# optional: kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller
+# helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+# kubectl create namespace keycloak
+# helm install mysql --set mysqlRootPassword=password,mysqlUser=user,mysqlPassword=password,mysqlDatabase=keycloak-db stable/mysql -n keycloak
+# kubectl apply -f ./keycloak.yaml -n keycloak
+# kubectl apply -f ./keycloakService.yaml -n keycloak
+# minikube service keycloak -n keycloak --url

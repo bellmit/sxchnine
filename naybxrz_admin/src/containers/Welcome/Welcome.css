@@ -1,0 +1,15 @@
+.Welcome-Main-Div{
+    top: 2%;
+    position: fixed;
+}
+
+.Welcome-Message-Div{
+    font-family: Anton;
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.img-props {
+    height: 5%;
+    width: 5%;
+}

@@ -1,5 +1,4 @@
 spring:
-  port: 0
   cloud:
     config:
       enabled: false
@@ -25,19 +24,13 @@ kafka:
   producer:
     topic: catchup-orders
 
-consumer:
-  feign:
-    username:
-    password:
-    url:
-    clientId:
-    secret:
-    grant:
-    scope:
+stripe:
+  url: https://api.stripe.com
+  public-key: sk_test_51HYJubArLuFLaKsZh7FrusGK6heQuk5nXZMBUQTjKvOX1X2eQWmBa2r3b2Y1DoW1gZ1gySQqmhulgEPKL8iS4b0900FjjO3TLL
 
-ribbon:
-  port: 9090
+order:
+  url: http://localhost:8086
+  redirect: http://localhost:3000/processing
 
-order-service:
-  ribbon:
-    listOfServers: localhost:${ribbon.port}
+logging:
+  config: classpath:logback-spring-test.xml

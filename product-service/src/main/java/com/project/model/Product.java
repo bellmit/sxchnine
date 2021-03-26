@@ -19,7 +19,7 @@ import java.util.Set;
 public class Product implements Serializable {
 
     @Id
-    private String id;
+    private Long id;
     private String reference;
     private String name;
     private char sex;
@@ -30,6 +30,7 @@ public class Product implements Serializable {
     private Set<String> size;
     private Set<String> colors;
     private Set<String> images;
+    private Set<String> tags;
     private Map<String, Set<SizeQte>> availability;
     private boolean available;
     private int quantity;

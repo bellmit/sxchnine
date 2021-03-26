@@ -30,6 +30,13 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 error: action.error
             };
+        case actionTypes.CLEAR_PRODUCTS:
+            let oldProducts = [...state.products];
+            oldProducts = []
+            return {
+                ...state,
+                products: oldProducts
+            };
         case actionTypes.LOAD_GENDER:
             return {
                 ...state,

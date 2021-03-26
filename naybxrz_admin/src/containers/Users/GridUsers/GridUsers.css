@@ -1,0 +1,24 @@
+.search-users-email-text {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.search-users-email-text:hover {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.table-search-users {
+    width: 40%;
+    height: 30%;
+    margin: 15% 0 0 18%;
+    font-size: 75%;
+    position: absolute;
+}
+
+.button-add-user {
+    width: 40%;
+    margin: -5% 0 0 -8%;
+    position: absolute;
+}

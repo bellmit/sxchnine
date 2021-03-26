@@ -1,38 +1,42 @@
 package com.project.business;
 
-import com.project.ProductServiceApplication;
-import com.project.exception.ProductNotFoundException;
 import com.project.model.Product;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
+import reactor.util.context.Context;
 import utils.TestObjectCreator;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = ProductServiceApplication.class)
-@TestPropertySource(properties = {"application-intg.yml"})
-@ActiveProfiles("intg")
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest
 @EmbeddedKafka
+@ActiveProfiles("test")
+@TestInstance(PER_CLASS)
 @DirtiesContext
 public class ProductServiceTestIT {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private ReactiveMongoTemplate mongoTemplate;
 
     @Autowired
     private ProductService productService;
@@ -40,68 +44,107 @@ public class ProductServiceTestIT {
     @MockBean
     private KafkaProducer kafkaProducer;
 
-    @BeforeAll
-    public void setup(){
-        mongoTemplate.createCollection("products");
-        mongoTemplate.save(TestObjectCreator.createProduct());
-    }
+    @AfterEach
+    public void dropCollection() { mongoTemplate.dropCollection("products").block(); }
 
-    @AfterAll
-    public void tearDown(){
-        mongoTemplate.dropCollection("products");
+    @Test
+    public void testGetProductById() {
+        Mono<Product> products = mongoTemplate.createCollection("products")
+                .then(mongoTemplate.save(TestObjectCreator.createProduct()))
+                .then(productService.getProductById(1L));
+
+        StepVerifier.create(products)
+                .expectSubscription()
+                .expectNextCount(1)
+                .expectComplete()
+                .verify();
     }
 
     @Test
-    public void testGetProductById(){
-        Mono<Product> productById = productService.getProductById("1");
-        assertEquals("1", productById.block().getId());
-        assertEquals("p1", productById.block().getName());
+    public void testGetProductByName() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
+        Product product = mongoTemplate.createCollection("products")
+                .then(mongoTemplate.save(TestObjectCreator.createProduct()))
+                .then(productService.getProductByName("p1"))
+                .contextWrite(ctx -> context)
+                .block();
+
+        assertThat(product).isNotNull();
+        assertThat(product.getId()).isEqualTo(1L);
+
     }
 
     @Test
-    public void testGetProductByName(){
-        Mono<Product> product = productService.getProductByName("p1");
-        assertEquals("1", product.block().getId());
-        assertEquals("p1", product.block().getName());
+    public void testGetAllProducts() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
+        Product productFlux = mongoTemplate.save(TestObjectCreator.createProduct())
+                .thenMany(productService.getAllProducts())
+                .contextWrite(ctx -> context)
+                .blockFirst();
+
+        assertThat(productFlux.getId()).isEqualTo(1L);
     }
 
     @Test
-    public void testGetAllProducts(){
-        Flux<Product> allProducts = productService.getAllProducts(0, 2);
-        assertEquals(2, allProducts.toStream().count());
+    public void testSaveProduct() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
+        when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(TestObjectCreator.createProduct()));
+
+        productService.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.getProductById(1L))
+                .contextWrite(ctx -> context)
+                .block();
+
+        verify(kafkaProducer).sendProduct(any());
+
     }
 
     @Test
-    public void testSaveProduct(){
-        Product productToSave = new Product();
-        productToSave.setId("2");
-        productToSave.setName("p2");
-        productToSave.setStore("s2");
+    public void testDeleteProductById() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        Mono<Product> savedProduct = productService.save(productToSave);
+        Product product = mongoTemplate.save(TestObjectCreator.createProduct())
+                .flatMap(p -> productService.deleteProductById(1))
+                .then(productService.getProductById(1L))
+                .contextWrite(ctx -> context)
+                .block();
 
-        assertEquals("2", savedProduct.block().getId());
-        assertEquals("p2", savedProduct.block().getName());
-        assertEquals("s2", savedProduct.block().getStore());
+        assertThat(product).isNull();
 
-        verify(kafkaProducer).sendProduct(savedProduct.block());
-    }
-
-    @Test
-    public void testDeleteProductById(){
-        Product productToDelete = new Product();
-        productToDelete.setId("3");
-        productToDelete.setName("p3");
-        productToDelete.setStore("s3");
-
-        Mono<Product> savedProduct = productService.save(productToDelete);
-
-        assertEquals("3", savedProduct.block().getId());
-        assertEquals("p3", savedProduct.block().getName());
-        assertEquals("s3", savedProduct.block().getStore());
-
-        productService.deleteProductById("3");
-
-        assertThrows(ProductNotFoundException.class, () -> productService.getProductById("3"));
     }
 }

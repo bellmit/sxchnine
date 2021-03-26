@@ -1,8 +1,6 @@
 .Header-Body {
     color: white;
     background-color: rgb(255, 240, 36);
-/*    height: 1000px;
-    width: 1440px;*/
     width: 100%;
     margin: 0 0 30px 0;
 }
@@ -30,15 +28,9 @@
 }
 
 .Container-img {
-    /*
-    width: 1360px;
-    */
     max-width: 100%;
     width: 100%;
-    height: 730px;
-/*    left: 80px;
-    top: 20px;
-    bottom: 30px;*/
+    height: 700px;
     object-fit: cover;
     margin: 10px 0 30px 0;
 
@@ -51,7 +43,7 @@
     text-transform: uppercase;
     color: rgb(255, 255, 255);
     position: absolute;
-    bottom: 30%;
+    top: 60%;
     left: 5%;
     width: 50%;
 }
@@ -61,13 +53,13 @@
     height: 1%;
     position: absolute;
     left: 5%;
-    bottom: 23%;
+    top: 66%;
     width: 50%;
 }
 
 .Home-Search-Div {
     left: 5%;
-    bottom: 10%;
+    top: 70%;
     position: absolute;
 }
 
@@ -78,6 +70,126 @@
 }
 
 
+@media only screen and (max-width: 1024px) {
+    .Header-Body {
+        color: white;
+        background-color: rgb(255, 240, 36);
+        width: 100%;
+        margin: 0 0 30px 0;
+    }
+    .Container-img {
+        width: 100%;
+        height: 710px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+
+    }
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        top: 35%;
+        left: 5%;
+        width: 50%;
+    }
+    .Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        position: absolute;
+        left: 5%;
+        top: 40%;
+        width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        top: 45%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Header-Body {
+        color: white;
+        background-color: rgb(255, 240, 36);
+        width: 100%;
+        margin: 0 0 30px 0;
+    }
+    .Container-img {
+        width: 100%;
+        height: 710px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+
+    }
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        width: 50%;
+    }
+    .Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        position: absolute;
+        left: 5%;
+        top: 55%;
+        width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        top: 60%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .Header-Body {
+        color: white;
+        background-color: rgb(255, 240, 36);
+        width: 100%;
+        margin: 0 0 30px 0;
+    }
+    .Container-img {
+        width: 100%;
+        height: 710px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+
+    }
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        top: 50%;
+        left: 5%;
+        width: 50%;
+    }
+    .Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        position: absolute;
+        left: 5%;
+        top: 55%;
+        width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        top: 60%;
+        position: absolute;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Paragraph {
         line-height: 0;
@@ -86,9 +198,83 @@
         text-transform: uppercase;
         color: rgb(255, 255, 255);
         position: absolute;
-        bottom: 17%;
+        bottom: 28%;
         left: 5%;
         width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        bottom: 13%;
+        position: absolute;
+    }
+    .Container-img {
+        max-width: 100%;
+        width: 100%;
+        height: 690px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Header-Body {
+        color: white;
+        background-color: rgb(255, 240, 36);
+        width: 100% !important;
+        margin: 0 0 30px 0;
+    }
+    .Container-img {
+        width: 100% !important;
+        height: 710px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+    }
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        bottom: 28%;
+        left: 5%;
+        width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        bottom: 13%;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .Header-Body {
+        color: white;
+        background-color: rgb(255, 240, 36);
+        width: 120% !important;
+        margin: 0 0 30px 0;
+    }
+    .Container-img {
+        width: 118% !important;
+        height: 710px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+    }
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        bottom: 27%;
+        left: 5%;
+        width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        bottom: 13%;
+        position: absolute;
     }
 
 }
@@ -101,9 +287,47 @@
         text-transform: uppercase;
         color: rgb(255, 255, 255);
         position: absolute;
-        bottom: 17%;
+        bottom: 27%;
         left: 5%;
         width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        bottom: 13%;
+        position: absolute;
+    }
+
+}
+
+@media only screen and (max-width: 280px) {
+    .Header-Body {
+        color: white;
+        background-color: rgb(255, 240, 36);
+        width: 115%;
+        margin: 0 0 30px 0;
+    }
+    .Container-img {
+        width: 100%;
+        height: 710px;
+        object-fit: cover;
+        margin: 10px 0 30px 0;
+
+    }
+    .Paragraph {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        bottom: 27%;
+        left: 5%;
+        width: 50%;
+    }
+    .Home-Search-Div {
+        left: 5%;
+        bottom: 13%;
+        position: absolute;
     }
 
 }

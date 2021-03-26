@@ -1,16 +1,15 @@
 import React from 'react';
 import Contact from '../../containers/Contact/Contact';
 import StoryFooter from '../StoryFooter/StoryFooter';
+import Aux from '../../hoc/Aux/Aux';
 import './Footer.css';
 
-const footer = () => {
+const footer = (props) => {
     return (
-        <div>
-            <StoryFooter/>
-            <footer className="Footer-Container-Div">
+        <Aux>
+            <StoryFooter {...props}/>
             <Contact />
-            </footer>
-        </div>
+        </Aux>
     );
 }
 

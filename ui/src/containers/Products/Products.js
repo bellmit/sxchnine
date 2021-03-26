@@ -26,12 +26,11 @@ class Products extends Component {
     }
 
     componentDidMount() {
-        console.log("Products.js did mount");
-        console.log(this.props);
-
         if (this.props.location.pathname === '/men') {
+            this.props.clearProducts();
             this.props.loadProducts(0, 9, 'M');
         } else if (this.props.location.pathname === '/women') {
+            this.props.clearProducts();
             this.props.loadProducts(0, 9, 'W');
         }
         this.props.loadGender();
@@ -39,18 +38,15 @@ class Products extends Component {
         this.props.loadSize();
     }
 
-    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
-        console.log('Products.js did update');
-    }
-
     searchProducts = (event) => {
-        if (event.target.value === ''){
+        if (event.target.value === '') {
             if (this.props.location.pathname === '/men') {
                 this.props.loadProducts(0, 9, 'M');
             } else if (this.props.location.pathname === '/women') {
                 this.props.loadProducts(0, 9, 'W');
             }
-        } else {
+        } else if (event.target.value.length >= 3) {
+            this.props.clearProducts();
             this.props.searchProducts(event.target.value);
         }
     };
@@ -65,19 +61,21 @@ class Products extends Component {
         }))
     };
 
-    handleChangeGender = (e, { value }) => this.setState({ value,
+    handleChangeGender = (e, {value}) => this.setState({
+        value,
         gender: value
     });
-    handleChangeCategory = (e, { value }) => this.setState({ value, category: value });
-    handleChangeSize = (e, { value }) => this.setState({ value, size: value });
+    handleChangeCategory = (e, {value}) => this.setState({value, category: value});
+    handleChangeSize = (e, {value}) => this.setState({value, size: value});
 
 
     searchAdvanced = () => {
+        this.props.clearProducts();
         this.props.searchAdvancedProducts(this.state.gender, this.state.category, this.state.size);
     };
 
     fetchMore = (index) => {
-        if (index >= 9) {
+        if (index + 1 >= 9) {
             if (this.props.products.length < 27) {
                 this.setState((prev) => ({
                     count: prev.count + 1
@@ -119,7 +117,7 @@ class Products extends Component {
                         <Input inverted icon={<Icon name='search' inverted circular link/>}
                                placeholder='Search...'
                                onChange={this.searchProducts}
-                               style={{marginBottom: '10px', fontFamily: 'Anton', fontSize: '10px'}}/>
+                               className="Product-Search-Text-Input"/>
 
                         <img alt="" src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
                         <Collapse isOpen={this.state.show}>
@@ -141,7 +139,7 @@ class Products extends Component {
                                         width={6}
                                         options={this.props.types}
                                         value={this.state.category}
-                                        placeholder='Genre'
+                                        placeholder='Category'
                                         className="Product-Search-Advanced"/>
                                     <Dropdown
                                         onChange={this.handleChangeSize}
@@ -161,25 +159,26 @@ class Products extends Component {
                 <div className="Product-Container">
                     <Grid centered columns={3} textAlign="center" padded="vertically">
                         <Grid.Row centered>
-
                             {this.props.products.map((product, index) => (
-                                <Grid.Column key={index} mobile={16} tablet={8} computer={5} centered="true">
-                                    <Aux>
-                                        <Product name={product.name}
-                                                 image={product.images}
-                                                 logo={product.logo}
-                                                 brand={product.brand}
-                                                 price={product.price}
-                                                 size={product.size}
-                                                 id={product.id}
-                                                 height="80%"
-                                                 width="80%"
-                                                 clicked={() => this.selectProductHandler(product.id)}/>
+                                <Grid.Column key={index}
+                                             mobile={16}
+                                             tablet={8}
+                                             computer={5} centered="true"
+                                             className="Product-Padding">
+                                    <Product name={product.name}
+                                             image={product.images}
+                                             logo={product.logo}
+                                             brand={product.brand}
+                                             price={product.price}
+                                             size={product.size}
+                                             id={product.id}
+                                             height="85%"
+                                             width="80%"
+                                             clicked={() => this.selectProductHandler(product.id)}/>
 
-                                        {index === this.props.products.length - 1
-                                        && (<Waypoint onEnter={() => this.fetchMore(index)}/>)}
-                                        <br/>
-                                    </Aux>
+                                    {index === this.props.products.length - 1
+                                    && (<Waypoint onEnter={() => this.fetchMore(index)}/>)}
+                                    <br/>
                                 </Grid.Column>
 
                             ))}
@@ -211,6 +210,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        clearProducts: () => dispatch(actions.clearProducts()),
         loadProducts: (pageNo, pageSize, sex) => dispatch(actions.fetchProduct(pageNo, pageSize, sex)),
         loadGender: () => dispatch(actions.loadGenders()),
         loadTypes: () => dispatch(actions.loadTypes()),

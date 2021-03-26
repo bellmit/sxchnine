@@ -1,135 +1,132 @@
 package com.project.business;
 
 import com.project.model.Product;
-import com.project.repository.ProductRepository;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.jeasy.random.EasyRandom;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.data.elasticsearch.core.ReactiveElasticsearchOperations;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
+import reactor.util.context.Context;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
 
     @Mock
-    private ProductRepository productRepository;
+    private ReactiveElasticsearchOperations reactiveElasticsearchOperations;
 
     @InjectMocks
     private ProductService productService;
 
     @Test
-    public void testGetProductsByQuery(){
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
+    public void testGetProductsByQuery() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        when(productRepository.search(any(QueryBuilder.class))).thenReturn(Collections.singletonList(product));
+        when(reactiveElasticsearchOperations.search(any(), eq(Product.class), eq(Product.class)))
+                .thenReturn(Flux.empty());
 
-        Iterable<Product> products = productService.getProductsByQuery("test");
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create().withInitialContext(context);
+        StepVerifier.create(productService.getProductsByQuery("test"), stepVerifierOptions)
+                .expectComplete()
+                .verify();
 
-        assertThat(products).contains(product);
+        verify(reactiveElasticsearchOperations).search(any(), eq(Product.class), eq(Product.class));
     }
 
     @Test
-    public void testGetProductsByAdvancedFiltering(){
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
+    public void testGetProductsByAdvancedFiltering() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        when(productRepository.search(any(QueryBuilder.class))).thenReturn(Collections.singletonList(product));
+        when(reactiveElasticsearchOperations.search(any(), eq(Product.class), eq(Product.class))).thenReturn(Flux.empty());
 
-        Iterable<Product> products = productService.getProductsByAdvancedFiltering("", "brand", "category", "size");
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create().withInitialContext(context);
 
-        assertThat(products).contains(product);
-    }
+        StepVerifier.create(productService
+                .getProductsByAdvancedFiltering("",
+                        "brand",
+                        "category",
+                        "size"), stepVerifierOptions)
+                .expectComplete()
+                .verify();
 
-    @Test
-    public void testGetAllProducts(){
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
-
-        when(productRepository.findAll()).thenReturn(Collections.singletonList(product));
-
-        Iterable<Product> allProducts = productService.getAllProducts();
-
-        assertThat(allProducts).contains(product);
+        verify(reactiveElasticsearchOperations).search(any(), eq(Product.class), eq(Product.class));
     }
 
     @Test
     public void testSave() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+
         EasyRandom easyRandom = new EasyRandom();
         Product product = easyRandom.nextObject(Product.class);
 
-        when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(reactiveElasticsearchOperations.save(any(Product.class))).thenReturn(Mono.empty());
 
         ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
 
-        productService.save(product);
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create().withInitialContext(context);
 
-        verify(productRepository).save(productCaptor.capture());
+       StepVerifier.create(productService.save(product), stepVerifierOptions)
+               .expectComplete()
+               .verify();
 
-        assertThat(productCaptor.getValue()).isEqualToComparingFieldByFieldRecursively(product);
+        verify(reactiveElasticsearchOperations).save(productCaptor.capture());
+
+        assertThat(productCaptor.getValue()).usingRecursiveComparison().isEqualTo(product);
     }
 
     @Test
-    public void testSaveProducts() {
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
+    public void testDeleteById() {
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
 
-        ArgumentCaptor<List> productCaptor = ArgumentCaptor.forClass(List.class);
+        when(reactiveElasticsearchOperations.delete(anyString(), eq(Product.class))).thenReturn(Mono.empty());
 
-        when(productRepository.saveAll(anyList())).thenReturn(Collections.singletonList(product));
+        StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create().withInitialContext(context);
 
-        productService.saveProducts(Collections.singletonList(product));
+        StepVerifier.create(productService.deleteById("id"), stepVerifierOptions)
+                .expectComplete()
+                .verify();
 
-        verify(productRepository).saveAll(productCaptor.capture());
-
-        assertThat(productCaptor.getValue()).contains(product);
-
-    }
-
-    @Test
-    public void testDelete(){
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
-
-        ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
-
-        doNothing().when(productRepository).delete(any(Product.class));
-
-        productService.delete(product);
-
-        verify(productRepository).delete(productCaptor.capture());
-
-        assertThat(productCaptor.getValue()).isEqualToComparingFieldByFieldRecursively(product);
-    }
-
-    @Test
-    public void testDeleteById(){
-        doNothing().when(productRepository).deleteById(anyString());
-
-        productService.deleteById("1");
-
-        verify(productRepository).deleteById("1");
-    }
-
-    @Test
-    public void testDeleteProducts(){
-        doNothing().when(productRepository).deleteAll(anyList());
-
-        productService.deleteProducts(new ArrayList<>());
-
-        verify(productRepository).deleteAll(new ArrayList<>());
+        verify(reactiveElasticsearchOperations).delete(eq("id"), eq(Product.class));
     }
 
 }

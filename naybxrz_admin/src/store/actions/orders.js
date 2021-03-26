@@ -1,0 +1,262 @@
+import axios from '../../axios/axios';
+import * as url from '../../axios/';
+import moment from 'moment';
+import {store} from "../../index";
+import * as actions from './actions';
+
+const setAxiosToken = () => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+};
+
+const ordersByMonthStart = (loading) => {
+    return {
+        type: actions.ORDERS_BY_MONTH_START,
+        action: loading
+    }
+};
+
+const ordersByMonthSuccess = (response) => {
+    return {
+        type: actions.ORDERS_BY_MONTH_SUCCESS,
+        ordersByMonth: response
+    }
+};
+
+const ordersByMonthCount = (response) => {
+    return {
+        type: actions.ORDERS_BY_MONTH_COUNT,
+        ordersByMonthCount: response
+    }
+};
+
+const ordersByMonthError = (error) => {
+    return {
+        type: actions.ORDERS_BY_MONTH_FAIL,
+        ordersByMonthError: error
+    }
+};
+
+export const ordersByMonth = () => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(ordersByMonthStart(true));
+        axios.get('/order/lastOrders')
+            .then(response => {
+                dispatch(ordersByMonthSuccess(response.data));
+                dispatch(ordersByMonthCount(response.data.length));
+                dispatch(ordersByMonthStart(false));
+            })
+            .catch(error => {
+                dispatch(ordersByMonthError(error));
+                dispatch(ordersByMonthStart(false));
+            })
+    }
+};
+
+export const ordersNotificationIncrement = () => {
+    return {
+        type: actions.ORDERS_NOTIFICATION_INCREMENT,
+    }
+};
+
+export const ordersNotificationResetSize = () => {
+    return {
+        type: actions.ORDERS_NOTIFICATION_RESET_SIZE,
+    }
+};
+
+export const ordersNotificationData = (data) => {
+    return {
+        type: actions.ORDERS_NOTIFICATION_DATA,
+        ordersNotificationData: data
+    }
+};
+
+
+export const startOrdersNotification = (firstSize) => {
+    return dispatch => {
+        let eventSource = new EventSource(url.ordersUrl + 'ordersNotification/'+firstSize);
+        eventSource.onmessage = ev => {
+            console.log(JSON.parse(ev.data));
+            dispatch(ordersNotificationData(JSON.parse(ev.data)));
+            dispatch(ordersNotificationIncrement());
+        }
+    }
+};
+
+const ordersNumberSuccess = (response) => {
+    return {
+        type: actions.ORDERS_NUMBERS_SUCCESS,
+        ordersNumber: response
+    }
+};
+
+const ordersNumberFail = (error) => {
+    return {
+        type: actions.ORDERS_NUMBERS_FAIL,
+        ordersNumbersError: error
+    }
+};
+
+export const getOrdersNumber = () => {
+    return dispatch => {
+        setAxiosToken();
+        axios.get('/order/admin/ordersNumber')
+            .then(response => {
+                dispatch(ordersNumberSuccess(response.data));
+            })
+            .catch(error => {
+                dispatch(ordersNumberFail(error));
+            })
+    }
+};
+
+export const closeModalAndRedirectBack = (open, history) => {
+    return dispatch => {
+        dispatch(orderByIdPopup(open));
+        history.goBack();
+    }
+};
+
+export const orderByIdPopup = (open) => {
+    return {
+        type: actions.ORDER_BY_ID_POPUP,
+        orderByIdPopup: open
+    }
+};
+
+const orderByIdStart = (orderByIdLoading) => {
+    return {
+        type: actions.ORDER_BY_ID_START,
+        orderByIdLoading: orderByIdLoading
+    }
+};
+
+const orderByIdFail = (error) => {
+    return {
+        type: actions.ORDER_BY_ID_FAIL,
+        orderByIdError: error
+    }
+};
+
+const orderByIdSuccess = (response) => {
+    return {
+        type: actions.ORDER_BY_ID_SUCCESS,
+        orderById: response
+    }
+};
+
+export const orderById = (orderId, history) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(orderByIdStart(true));
+        axios.get('/order/orderId/' + orderId)
+            .then(response => {
+                let order = response.data;
+                if (order !== '') {
+                    let shippingTime = order.shippingTime;
+                    if (shippingTime !== null) {
+                        order.shippingTime = moment(shippingTime).format("YYYY-MM-DD");
+                    }
+                    dispatch(orderByIdSuccess(order));
+                    dispatch(orderByIdStart(false));
+                    dispatch(orderByIdPopup(true));
+                    dispatch(orderByIdFail(undefined));
+                    history.push('/order/' + orderId);
+                    console.log(history);
+
+                }
+            })
+            .catch(error => {
+                dispatch(orderByIdFail(error));
+                dispatch(orderByIdStart(false));
+            })
+    }
+}
+
+const saveOrderStart = (loading) => {
+    return {
+        type: actions.SAVE_ORDER_START,
+        saveOrderLoading: loading
+    }
+};
+
+const saveOrderSuccess = (response) => {
+    return {
+        type: actions.SAVE_ORDER_SUCCESS,
+        saveOrderResponse: response
+    }
+};
+
+const saveOrderFail = (error) => {
+    return {
+        type: actions.SAVE_ORDER_FAIL,
+        saveOrderError: error
+    }
+};
+
+export const saveOrder = (order, history) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(saveOrderStart(true));
+        axios.post('/order/save', order)
+            .then(response => {
+                dispatch(saveOrderSuccess(response.data));
+                dispatch(ordersByMonth());
+                dispatch(getOrdersNumber());
+                dispatch(orderByIdPopup(false));
+                dispatch(saveOrderStart(false));
+                history.goBack();
+            })
+            .catch(error => {
+                dispatch(saveOrderFail(error));
+                dispatch(saveOrderStart(false));
+            });
+    }
+}
+
+const searchOrdersStart = (loading) => {
+    return {
+        type: actions.SEARCH_ORDERS_START,
+        searchOrdersLoading: loading
+    }
+};
+
+const searchOrdersSuccess = (searchOrdersData) => {
+    return {
+        type: actions.SEARCH_ORDERS_SUCCESS,
+        searchOrdersData: searchOrdersData
+    }
+};
+
+const searchOrdersFail = (error) => {
+    return {
+        type: actions.SEARCH_ORDERS_FAIL,
+        searchOrdersFail: error
+    }
+};
+
+export const searchOrders = (orderId, email) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(searchOrdersStart(true));
+        axios.get('/order/trackOrder?orderId=' + orderId + '&email=' + email)
+            .then(response => {
+                    let order = response.data;
+                    if (order !== '') {
+                        let shippingTime = order.shippingTime;
+                        if (shippingTime !== null) {
+                            order.shippingTime = moment(shippingTime).format("YYYY-MM-DD");
+                        }
+                        dispatch(searchOrdersSuccess(order));
+                        dispatch(searchOrdersStart(false));
+                        dispatch(searchOrdersFail(undefined));
+                    }
+                }
+            )
+            .catch(error => {
+                dispatch(searchOrdersFail(error));
+                dispatch(searchOrdersStart(false));
+            });
+    }
+}

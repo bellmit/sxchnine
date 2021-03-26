@@ -1,5 +1,6 @@
 import React, {PureComponent} from 'react';
 import {Icon, Grid} from 'semantic-ui-react';
+import Aux from '../../hoc/Aux/Aux';
 import './Contact.css';
 
 
@@ -8,15 +9,14 @@ class Contact extends PureComponent {
     render() {
 
         return (
-            <div>
+            <Aux>
                 <div className="Contact-footer">
-
                     <Grid centered>
                         <Grid.Row columns={3} centered>
                             <Grid.Column>
                                 <div>
-                                    <a href="/contact-us" className="Contact-Link">
-                                        <span>Contact_US</span>
+                                    <a href="/tracking" className="Contact-Link">
+                                        <span>Tracking</span>
                                     </a>
                                     <a href="/shipping" className="Contact-Link">
                                         <span>Shipping_Delivery_Returns</span>
@@ -36,14 +36,14 @@ class Contact extends PureComponent {
 
                             <Grid.Column>
                                 <div>
-                                    <a href="/green" className="Contact-Link">
-                                        <span>Green_Brand</span>
-                                    </a>
-                                    <a href="/newsletter" className="Contact-Link">
-                                        <span>Newsletter</span>
+                                    <a href="/contactUs" className="Contact-Link">
+                                        <span>Contact_US</span>
                                     </a>
                                     <a href="/faq" className="Contact-Link">
                                         <span>FAQ</span>
+                                    </a>
+                                    <a href="/green" className="Contact-Link">
+                                        <span>Green_Brand</span>
                                     </a>
                                 </div>
                             </Grid.Column>
@@ -55,7 +55,7 @@ class Contact extends PureComponent {
 
                             <Grid.Column width={8}>
                                 <div>
-                                    <p className="Reserved-right">© 2019 got_it. All rights reserved</p>
+                                    <p className="Reserved-right">© 2020 Naybxrz. All rights reserved</p>
                                 </div>
                             </Grid.Column>
 
@@ -66,7 +66,7 @@ class Contact extends PureComponent {
                     </Grid>
                 </div>
 
-            </div>
+            </Aux>
         );
     }
 }

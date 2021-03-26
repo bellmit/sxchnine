@@ -3,7 +3,18 @@
     width: 38px;
     height: 32px;
     left: 20px;
-    top: 110px;
+    top: 172px;
+    z-index: 1;
+}
+
+.User-button-icon:hover{
+    position: fixed;
+    width: 38px;
+    height: 32px;
+    left: 20px;
+    top: 172px;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .User-div-button-icon{
@@ -36,17 +47,192 @@
 
 .Grid-div{
     margin-left: 0 !important;
+    margin-top: 5% !important;
 }
 
 .History-Resume-Text{
     font-family: Anton;
     font-size: 2vw;
     text-transform: uppercase;
+    position: relative;
+    background-color: rgb(255, 240, 36);
+    padding: 1% 0 1% 2%;
+    top: 1%;
 }
 
-.History-Resume-Text:hover{
-    font-family: Anton;
-    font-size: 2vw;
-    text-transform: uppercase;
-    color: rgb(255, 240, 36);
+.History-Progress-Text {
+    font-size: 75%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .User-button-icon{
+        position: fixed;
+        width: 38px;
+        height: 32px;
+        left: 20px;
+        top: 172px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 38px;
+        height: 32px;
+        left: 20px;
+        top: 172px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .User-button-icon{
+        position: fixed;
+        width: 38px;
+        height: 32px;
+        left: 20px;
+        top: 172px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 38px;
+        height: 32px;
+        left: 20px;
+        top: 172px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 520px) {
+    .User-button-icon{
+        position: fixed;
+        width: 38px;
+        height: 32px;
+        left: 20px;
+        top: 172px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 38px;
+        height: 32px;
+        left: 20px;
+        top: 172px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 414px) {
+    .User-button-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .User-button-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .User-button-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .User-button-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .User-button-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 280px) {
+    .User-button-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        z-index: 1;
+    }
+
+    .User-button-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 22px;
+        top: 140px;
+        z-index: 1;
+        cursor: pointer;
+    }
 }

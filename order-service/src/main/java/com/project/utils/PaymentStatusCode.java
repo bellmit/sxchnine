@@ -4,10 +4,17 @@ public enum PaymentStatusCode {
     REFUSED(0, "REFUSED"),
     CONFIRMED(1, "CONFIRMED"),
     WAITING(2,"WAITING"),
-    UNKNOWN(3, "UNKNOWN");
+    REQUIRED_ACTION(3,"REQUIRED_ACTION"),
+    CANNOT_CONFIRMED(4,"CANNOT_CONFIRMED"),
+    UNKNOWN(5, "UNKNOWN"),
 
-    private int code;
-    private String value;
+    CHECKOUT_OP(6, "CHECKOUT_CALL_ERROR"),
+    CONFIRM_OP(7, "CONFIRM_CALL_ERROR"),
+
+    WAITING_TIMEOUT(8, "WAITING_TIMEOUT");
+
+    private final int code;
+    private final String value;
 
     PaymentStatusCode(int code, String value) {
         this.code = code;
@@ -26,7 +33,15 @@ public enum PaymentStatusCode {
                 return paymentStatusCode.getValue();
             }
         }
-
         return UNKNOWN.getValue();
+    }
+
+    public static int getStatusByValue(String value){
+        for (PaymentStatusCode paymentStatusCode : PaymentStatusCode.values()){
+            if (paymentStatusCode.getValue().equals(value)){
+                return paymentStatusCode.getCode();
+            }
+        }
+        return UNKNOWN.getCode();
     }
 }

@@ -4,10 +4,14 @@ kafka:
   topic: products
 
 elasticsearch:
-  name: elasticsearch
-  server: 127.0.0.1
-  port: 9300
+  index: store_products
+  server: ${embedded.elasticsearch.host}:${embedded.elasticsearch.httpPort}
 
+embedded:
+  elasticsearch:
+    dockerImage: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    indices: store_products
+    enabled: true
 
 spring:
   cloud:
@@ -19,3 +23,6 @@ spring:
   zipkin:
     sender:
       type: web
+
+logging:
+  config: classpath:logback-spring-test.xml

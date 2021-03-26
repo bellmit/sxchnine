@@ -1,8 +1,18 @@
 .Gallery-Div {
     height: 520px;
-    width: 300px;
+    width: 350px;
     object-fit: cover;
     border-style: solid;
-    border-width: 20px;
+    border-width: 10px;
     border-color: rgb(255, 240, 36);
+}
+
+.Gallery-Div:hover {
+    height: 520px;
+    width: 350px;
+    object-fit: cover;
+    border-style: solid;
+    border-width: 10px;
+    border-color: rgb(255, 240, 36);
+    cursor: pointer;
 }

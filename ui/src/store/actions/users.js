@@ -1,5 +1,10 @@
 import axios from '../../axios/axios';
-import  * as actionTypes from './actionTypes';
+import * as actionTypes from './actionTypes';
+import {store} from "../../index";
+
+const setAxiosToken = () => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+};
 
 export const saveUserStart = (loading) => {
     return {
@@ -22,17 +27,105 @@ export const saveUserAuth = (userToAdd) => {
     }
 };
 
-export const saveUser = (userToAdd) => {
+export const addedUser = (addedUser) => {
+    return {
+        type: actionTypes.ADDED_USER,
+        addedUser: addedUser
+    }
+};
+
+export const saveUser = (userToAdd, history, isNew) => {
     return dispatch => {
         dispatch(saveUserStart(true));
-        axios.post('/user/save', userToAdd)
+        setAxiosToken();
+        let url = '/user/save';
+        if (isNew){
+            url = '/user/save?isNew=true'
+        }
+        axios.post(url, userToAdd)
             .then(response => {
-                dispatch(saveUserAuth(userToAdd));
+                if (response.status === 200){
+                    dispatch(saveUserAuth(userToAdd));
+                    dispatch(addedUser(true));
+                    dispatch(saveUserFail(undefined));
+                    dispatch(loginUser(userToAdd.email, userToAdd.password, history, true));
+                } else {
+                    dispatch(saveUserFail("Cannot save user"));
+                }
                 dispatch(saveUserStart(false));
             })
             .catch(error => {
                 dispatch(saveUserStart(false));
                 dispatch(saveUserFail(error));
+            });
+    }
+};
+
+export const changePasswordUserStart = (loading) => {
+    return {
+        type: actionTypes.CHANGE_PASSWORD_USER_START,
+        loading: loading
+    }
+};
+
+export const changePasswordUserSuccessInit = (response) => {
+    return {
+        type: actionTypes.CHANGE_PASSWORD_SUCCESS_INIT,
+        userChangedPassword: response
+    }
+};
+
+export const changePasswordUserSuccess = (response) => {
+    return {
+        type: actionTypes.CHANGE_PASSWORD_USER_SUCCESS,
+        userChangedPassword: response
+    }
+};
+
+export const changePasswordUserFailInit = (error) => {
+    return {
+        type: actionTypes.CHANGE_PASSWORD_FAIL_INIT,
+        errorChangedPassword: error
+    }
+};
+
+export const changePasswordUserFail = (error) => {
+    return {
+        type: actionTypes.CHANGE_PASSWORD_USER_FAIL,
+        errorChangedPassword: error
+    }
+};
+
+export const changePassword = (email, oldPassword, newPassword, confirmNewPassword) => {
+    return dispatch => {
+        dispatch(changePasswordUserStart(true));
+        setAxiosToken();
+        axios.post('/user/changePassword?email=' + email + '&oldPassword=' + oldPassword + '&newPassword=' + newPassword + '&confirmNewPassword=' + confirmNewPassword)
+            .then(response => {
+                dispatch(changePasswordUserStart(false));
+                if (response.data.id) {
+                    dispatch(changePasswordUserSuccess(true));
+                    dispatch(changePasswordUserFailInit(undefined));
+
+                } else {
+                    dispatch(changePasswordUserFail(response.data.error));
+                    dispatch(changePasswordUserSuccessInit(undefined));
+                }
+
+                /* if (!response.data.error){
+                     console.log("ERROR");
+                     console.log(response.data);
+                     dispatch(changePasswordUserFail(response.data.error));
+                 } else {
+                     console.log("SUCCESS");
+                     console.log(response.data);
+                     dispatch(changePasswordUserSuccess(true));
+                 }*/
+            })
+            .catch(error => {
+                dispatch(changePasswordUserStart(false));
+                dispatch(changePasswordUserSuccess(false))
+                dispatch(changePasswordUserFail(error));
             });
     }
 };
@@ -55,25 +148,145 @@ export const loginUserSuccess = (response) => {
 export const loginUserFail = (error) => {
     return {
         type: actionTypes.LOGIN_USER_FAIL,
-        error: error
+        loginFailError: error
     }
 };
 
-export const loginUser = (email, password, history) => {
+export const loginUser = (email, password, history, order) => {
     return dispatch => {
         dispatch(loginUserStart(true));
-        axios.post('/user/login?email='+email+"&password="+password)
+        setAxiosToken();
+        axios.post('/user/login?email=' + email + "&password=" + password)
             .then(response => {
                 dispatch(loginUserStart(false));
-                dispatch(loginUserSuccess(response.data))
-                if (response.data.email != null){
-                    history.push('/orders')
+                dispatch(addedUser(false));
+                dispatch(loginUserSuccess(response.data));
+                dispatch(saveUserFail(undefined));
+                if (response.data !== '') {
+                    dispatch(loginUserFail(undefined));
+                    if (order === true) {
+                        history.push('/orders');
+                    } else {
+                        history.push('/userAccount');
+                    }
+                } else {
+                    dispatch(loginUserFail("Sorry mate ! cannot log you - please check email/password again"));
                 }
             })
             .catch(error => {
-                dispatch(loginUserFail(error));
+                //TODO: log error
+
+                dispatch(loginUserFail('Cannot log you for now ! Sorry .. Try later'));
                 dispatch(loginUserStart(false));
             });
     }
 };
+
+const signOffUserSuccess = () => {
+    return {
+        type: actionTypes.SIGNOFF_USER_SUCESS,
+        user: ''
+    }
+};
+
+export const signOffUser = (history) => {
+    return dispatch => {
+        dispatch(signOffUserSuccess());
+        dispatch(addedUser(false));
+        history.push('/');
+    }
+}
+
+const subscribeUserStart = (loading) => {
+    return {
+        type: actionTypes.SUBSCRIBE_USER_START,
+        subscribeUserLoading: loading
+    }
+};
+
+export const subscribeUserSuccess = (user) => {
+    return {
+        type: actionTypes.SUBSCRIBE_USER_SUCCESS,
+        subscribeUserSuccess: user
+    }
+};
+
+const subscribeUserError = (error) => {
+    return {
+        type: actionTypes.SUBSCRIBE_USER_ERROR,
+        subscribeUserError: error
+    }
+};
+
+export const subscribeUser = (user) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(subscribeUserStart(true));
+        axios.post('/user/subscription/save', user)
+            .then(response => {
+                dispatch(subscribeUserSuccess(response.data));
+                dispatch(subscribeUserStart(false));
+            })
+            .catch(error => {
+                dispatch(subscribeUserStart(false));
+                dispatch(subscribeUserError(error));
+            })
+    }
+};
+
+const forgotPasswordStart = (loading) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_START,
+        forgotPasswordLoading: loading
+    }
+};
+
+export const handleForgotPasswordSuccess = (user) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_SUCCESS,
+        forgotPasswordSuccess: user
+    }
+};
+
+export const handleForgotPasswordError = (error) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_FAIL,
+        forgotPasswordError: error
+    }
+};
+
+const forgotPasswordNotExistError = (error) => {
+    return {
+        type: actionTypes.FORGOT_PASSWORD_NOT_EXIST,
+        forgotPasswordNotExistError: error
+    }
+};
+
+export const forgotPassword = (email) => {
+    return dispatch => {
+        setAxiosToken();
+        forgotPasswordStart(true);
+        axios.post('/user/forgotPassword?email='+email, '')
+            .then(response => {
+                dispatch(forgotPasswordStart(false));
+                if (response.data.email !== undefined){
+                    dispatch(forgotPasswordNotExistError(false));
+                    dispatch(handleForgotPasswordSuccess(response.data))
+                } else {
+                    dispatch(forgotPasswordNotExistError(true));
+                    dispatch(handleForgotPasswordSuccess('not found'));
+                }
+                dispatch(handleForgotPasswordError(undefined));
+            })
+            .catch(error => {
+                dispatch(forgotPasswordStart(false));
+                dispatch(handleForgotPasswordError(error));
+                dispatch(handleForgotPasswordSuccess(undefined));
+            })
+    }
+}
+
+
+
+
 

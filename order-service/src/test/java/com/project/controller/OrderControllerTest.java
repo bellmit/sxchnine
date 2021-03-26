@@ -1,156 +1,162 @@
 package com.project.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.business.OrderIdService;
 import com.project.business.OrderService;
-import com.project.config.ResourceServerConfigTest;
+import com.project.business.OrderStatusService;
 import com.project.model.Order;
-import com.project.model.OrderId;
+import com.project.model.PaymentResponse;
+import org.assertj.core.api.Assertions;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 
+import static com.project.utils.PaymentStatusCode.CONFIRMED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest
-@Import(ResourceServerConfigTest.class)
+@WebFluxTest(controllers = OrderController.class,
+        excludeAutoConfiguration = {ValidationAutoConfiguration.class})
 public class OrderControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private WebTestClient webTestClient;
 
     @MockBean
     private OrderService orderService;
 
     @MockBean
-    private OrderIdService orderIdService;
+    private OrderStatusService orderStatusService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
+    @Disabled
     @Test
-    public void testGetAllOrders() throws Exception {
+    public void testGetOrdersByOrderId() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        Order order = easyRandom.nextObject(Order.class);
+        order.setOrderTime(LocalDateTime.now().withNano(0));
+        order.setPaymentTime(LocalDateTime.now().withNano(0));
+        order.setShippingTime(LocalDateTime.now().withNano(0));
+
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
+
+        when(orderService.getOrderByOrderId(anyString())).thenReturn(Mono.just(order));
+
+        webTestClient.get()
+                .uri("/orderId/1")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Order.class)
+                .value(o -> Assertions.assertThat(o).usingRecursiveComparison().isEqualTo(order));
+
+        verify(orderService).getOrderByOrderId("1");
+    }
+
+    @Disabled
+    @Test
+    public void testGetOrdersByEmail() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        Order order = easyRandom.nextObject(Order.class);
+        order.setOrderTime(LocalDateTime.now().withNano(0));
+        order.setPaymentTime(LocalDateTime.now().withNano(0));
+        order.setShippingTime(LocalDateTime.now().withNano(0));
+
+        when(orderService.getOrderByUserEmail(anyString())).thenReturn(Flux.just(order));
+
+        webTestClient.get()
+                .uri("/userEmail/toto@gmail.com")
+                .accept(MediaType.ALL)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Order.class)
+                .value(o -> Assertions.assertThat(o).usingRecursiveComparison().isEqualTo(order));
+
+        verify(orderService).getOrderByUserEmail("toto@gmail.com");
+    }
+
+
+    @Test
+    public void testCheckoutOrderAndSave() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order order = easyRandom.nextObject(Order.class);
 
-        when(orderService.getAllOrders()).thenReturn(Collections.singletonList(order));
+        PaymentResponse paymentResponse = new PaymentResponse();
+        paymentResponse.setStatus(CONFIRMED.getValue());
 
-        MockHttpServletResponse response = mockMvc.perform(get("/all").
-                contentType(MediaType.APPLICATION_JSON))
-                .andReturn()
-                .getResponse();
+        when(orderService.checkoutOrderAndSave(any())).thenReturn(Mono.just(paymentResponse));
 
-        assertThat(response.getContentAsString()).contains(order.getOrderPrimaryKey().getOrderId().toString());
-        assertThat(response.getContentAsString()).contains(order.getOrderPrimaryKey().getUserEmail());
-    }
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
 
-    @Test
-    public void testGetOrdersByOrderId() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        OrderId orderId = easyRandom.nextObject(OrderId.class);
-
-        when(orderIdService.getOrderByOrderId(anyString())).thenReturn(orderId);
-
-        MockHttpServletResponse response = mockMvc.perform(get("/orderId/1").
-                contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getContentAsString()).contains(orderId.getOrderIdPrimaryKey().getOrderId().toString());
-        assertThat(response.getContentAsString()).contains(orderId.getOrderIdPrimaryKey().getUserEmail());
-    }
-
-    @Test
-    public void testGetOrdersByEmail() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order order = easyRandom.nextObject(Order.class);
-
-        when(orderService.getOrderByUserEmail(anyString())).thenReturn(Collections.singletonList(order));
-
-        MockHttpServletResponse response = mockMvc.perform(get("/userEmail/toto@gmail.com").
-                contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getContentAsString()).contains(order.getOrderPrimaryKey().getOrderId().toString());
-        assertThat(response.getContentAsString()).contains(order.getOrderPrimaryKey().getUserEmail());
-    }
-
-
-    @Test
-    public void testCheckoutOrderAndSave() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order order = easyRandom.nextObject(Order.class);
-
-        when(orderService.checkoutOrderAndSave(any(Order.class))).thenReturn(1);
-
-        MockHttpServletResponse response = mockMvc.perform(post("/checkoutOrder").
-                contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(order)))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-
-        assertThat(response.getContentAsString()).contains("1");
-    }
-
-
-    @Test
-    public void testSave() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order order = easyRandom.nextObject(Order.class);
-
-        mockMvc.perform(post("/save").
-                contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(order)))
-                .andExpect(status().isOk());
-
-    }
-
-    @Test
-    public void testNotFound() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order order = easyRandom.nextObject(Order.class);
-
-        mockMvc.perform(post("/saved").
-                contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(order)))
-                .andExpect(status().isNotFound());
-
-    }
-
-
-    @Test
-    public void testBadRequest() throws Exception {
-        mockMvc.perform(post("/save")
+        webTestClient.post()
+                .uri("/checkoutOrder")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(""))
-                .andExpect(status().isBadRequest());
+                .body(Mono.just(order), Order.class)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(PaymentResponse.class)
+                .value(pr -> assertThat(pr).usingRecursiveComparison().isEqualTo(paymentResponse));
 
+        verify(orderService).checkoutOrderAndSave(orderCaptor.capture());
+    }
+
+    @Test
+    public void testSave() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        Order order = easyRandom.nextObject(Order.class);
+
+        when(orderService.saveOrderAndSendToKafka(any())).thenReturn(Mono.just(order).then());
+
+        ArgumentCaptor<Order> captorOrder = ArgumentCaptor.forClass(Order.class);
+
+        webTestClient.post()
+                .uri("/save")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(order), Order.class)
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+        verify(orderService).saveOrderAndSendToKafka(captorOrder.capture());
+    }
+
+    @Test
+    public void testNotFound() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        Order order = easyRandom.nextObject(Order.class);
+
+        webTestClient.post().uri("/saved")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(order), Order.class)
+                .exchange()
+                .expectStatus().is4xxClientError();
     }
 }

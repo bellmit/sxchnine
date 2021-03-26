@@ -1,112 +1,76 @@
 package com.project.controller;
 
-import com.project.business.OrderIdService;
 import com.project.business.OrderService;
-import com.project.model.*;
+import com.project.business.OrderStatusService;
+import com.project.model.Order;
+import com.project.model.PaymentResponse;
+import com.project.model.admin.OrdersNumber;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.time.Duration;
+
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 
 @RestController
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 @Slf4j
 public class OrderController {
 
     private final OrderService orderService;
+    private final OrderStatusService orderStatusService;
 
-    private final OrderIdService orderIdService;
-
-    public OrderController(OrderService orderService, OrderIdService orderIdService) {
-        this.orderService = orderService;
-        this.orderIdService = orderIdService;
+    @GetMapping(value = "/ordersNotification/{ordersSize}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Order> getOrdersNotification(@PathVariable int ordersSize,
+                                             @RequestParam(required = false) String date) {
+        return orderStatusService.getPeriodicOrders(date, ordersSize);
     }
 
-    @GetMapping("/all")
-    public List<Order> getAllOrders(){
-        return orderService.getAllOrders();
+    @GetMapping("/lastOrders")
+    public Flux<Order> getLastOrders(@RequestParam(required = false) String date) {
+        return orderStatusService.getLastOrdersForCurrentMonth(date);
     }
 
     @GetMapping("/orderId/{orderId}")
-    public OrderId getOrdersByOrderId(@PathVariable String orderId){
-        return orderIdService.getOrderByOrderId(orderId);
+    public Mono<Order> getOrdersByOrderId(@PathVariable String orderId) {
+        return orderService.getOrderByOrderId(orderId)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Retrieve Order by orderId: {}", orderId)));
     }
 
     @GetMapping("/userEmail/{userEmail:.+}")
-    public List<Order> getOrdersByEmail(@PathVariable String userEmail){
-        return orderService.getOrderByUserEmail(userEmail);
+    public Flux<Order> getOrdersByEmail(@PathVariable String email) {
+        return orderService.getOrderByUserEmail(email)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Get orders for this user: {}", email)));
+    }
+
+    @GetMapping("/trackOrder")
+    public Flux<Order> trackOrder(@RequestParam(required = false) String orderId, @RequestParam(required = false) String email) {
+        return orderService.trackOrder(orderId, email);
     }
 
     @PostMapping("/checkoutOrder")
-    public int checkoutOrderAndSave(@RequestBody Order order){
+    public Mono<PaymentResponse> checkoutOrderAndSave(@RequestBody Order order) {
         return orderService.checkoutOrderAndSave(order);
     }
 
     @PostMapping("/save")
-    public void saveOrder(@RequestBody Order order){
-        //TODO: delete simulationOrder
-        orderService.saveOrder(order);
+    public Mono<Void> saveOrder(@RequestBody Order order) {
+        return orderService.saveOrderAndSendToKafka(order);
     }
 
-    public Order simulationOrder(){
-        Order order = new Order();
-        OrderPrimaryKey primaryKey = new OrderPrimaryKey();
-        primaryKey.setOrderId(UUID.randomUUID());
-        primaryKey.setUserEmail("blindrider400@gmail.com");
-        primaryKey.setOrderTime(LocalDateTime.now().withNano(0));
-        primaryKey.setShippingTime(LocalDateTime.now().withNano(0));
-        order.setOrderPrimaryKey(primaryKey);
+    @PostMapping("/confirmOrder")
+    public Mono<PaymentResponse> confirmOrder(@RequestParam String paymentIntentId, @RequestParam(required = false) String orderId) {
+        return orderService.confirmOrderAndSave(paymentIntentId, orderId);
+    }
 
-        Product product1 = new Product();
-        product1.setProductId("Product1");
-        product1.setProductName("Classic Retro Nike Jacket");
-        product1.setProductBrand("Nike");
-        product1.setProductColor("black");
-        product1.setProductSize("M");
-        product1.setProductQte(1);
-        product1.setUnitPrice(new BigDecimal(100));
-        product1.setStore("CA");
-
-        Product product2 = new Product();
-        product2.setProductId("Product2");
-        product2.setProductName("Classic Reebok");
-        product2.setProductBrand("Reebok");
-        product2.setProductColor("white");
-        product2.setProductSize("45");
-        product2.setProductQte(1);
-        product2.setUnitPrice(new BigDecimal(100));
-        product2.setStore("CA");
-
-        List<Product> products = Arrays.asList(product1, product2);
-        order.setProducts(products);
-        order.setProductBrand(products.stream().map(Product::getProductBrand).collect(Collectors.joining(",")));
-        order.setProductName(products.stream().map(Product::getProductName).collect(Collectors.joining(",")));
-
-        order.setOrderStatus("PENDING");
-        order.setPaymentStatus("WAITING");
-
-        order.setPaymentTime(LocalDateTime.now().withNano(0));
-        order.setShippingStatus("PENDING");
-        Address address = new Address();
-        address.setAddress("Av POP EST");
-        address.setCity("Montréal");
-        address.setPostalCode("H2FP2P");
-        address.setProvince("QC");
-        address.setCountry("CA");
-        order.setUserAddress(address);
-
-        PaymentInfo paymentInfo = new PaymentInfo();
-        paymentInfo.setNoCreditCard("123456789");
-        paymentInfo.setExpDate("O5/22");
-        paymentInfo.setSecurityCode(123);
-        paymentInfo.setLastName("TOTO");
-        paymentInfo.setFirstName("TATA");
-        order.setPaymentInfo(paymentInfo);
-
-        return order;
+    @GetMapping("/admin/ordersNumber")
+    public Mono<OrdersNumber> getOrdersNumber(@RequestParam(required = false) String date) {
+        return orderStatusService.getOrdersNumber(date);
     }
 }

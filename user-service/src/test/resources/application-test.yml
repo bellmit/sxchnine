@@ -2,3 +2,10 @@ spring:
   redis:
     host: localhost
     port: 6379
+
+kafka:
+  bootstrapAddress: ${spring.embedded.kafka.brokers}
+  producer:
+    topic: users
+
+

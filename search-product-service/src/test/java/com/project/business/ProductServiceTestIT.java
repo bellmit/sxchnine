@@ -1,212 +1,178 @@
 package com.project.business;
 
 import com.project.model.Product;
-import org.jeasy.random.EasyRandom;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-import pl.allegro.tech.embeddedelasticsearch.EmbeddedElastic;
-import pl.allegro.tech.embeddedelasticsearch.PopularProperties;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.URL;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@EmbeddedKafka(topics = "products")
+@EmbeddedKafka
 @TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
         "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
 @DirtiesContext
+@Testcontainers
+@Slf4j
 public class ProductServiceTestIT {
 
     @Autowired
     private ProductService productService;
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, "orders");
+/*    @Container
+    public GenericContainer container = new GenericContainer("elasticsearch:7.6.2")
+            .withExposedPorts(9200)
+            .withCommand("--name=esTest -e \"discovery.type=single-node\"");
 
-
-    private static EmbeddedElastic embeddedElastic;
-
-    @BeforeClass
-    public static void setup() throws IOException, InterruptedException {
-        int port = findRandomPort();
-        int transportPort = findRandomPort();
-        System.setProperty("elasticsearch.port", String.valueOf(transportPort));
-        embeddedElastic = EmbeddedElastic.builder()
-                .withElasticVersion("6.2.2")
-                .withSetting(PopularProperties.TRANSPORT_TCP_PORT, transportPort)
-                .withSetting(PopularProperties.HTTP_PORT, port)
-                .withSetting(PopularProperties.CLUSTER_NAME, "elasticsearch")
-                .withDownloadUrl(new URL("https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.2.2.zip"))
-                .build()
-                .start();
-    }
+    @BeforeEach
+    public void init(){
+        container.start();
+    }*/
 
     @Test
-    public void testGetProductsByQuery(){
+    public void testGetProductsByQuery() {
         Product product = new Product();
+        product.setId("1");
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
 
-        productService.save(product);
+        Product searchedProduct = productService.save(product)
+                .thenMany(productService.getProductsByQuery("nike")).blockFirst();
 
-        Iterable<Product> result = productService.getProductsByQuery("nike");
+        assertThat(searchedProduct.getName()).isEqualTo(product.getName());
 
-        assertThat(result).contains(product);
     }
 
     @Test
-    public void testGetProductsByAdvancedFilteringSearchBrand(){
+    public void testGetProductsByAdvancedFilteringSearchBrand() {
         Product product = new Product();
-        product.setName("classic bob nike");
+        product.setId("2");
+        product.setName("retro adidas");
         product.setCategory("t-shirt");
+        product.setBrand("carhartt");
+
+        Flux<Product> searchedProduct = productService.save(product)
+                .thenMany(productService.getProductsByAdvancedFiltering("", "carhartt", "", ""));
+
+        StepVerifier.create(searchedProduct)
+                .expectNextMatches(p -> p.getName().equals(product.getName()))
+                .expectComplete()
+                .verify();
+    }
+
+
+    @Test
+    public void testGetProductsByAdvancedFilteringSearchCategory() {
+        Product product = new Product();
+        product.setId("3");
+        product.setName("classic bob nike");
+        product.setCategory("jacket");
         product.setBrand("nike");
 
-        Product product2 = new Product();
-        product2.setName("retro adidas");
-        product2.setCategory("t-shirt");
-        product2.setBrand("adidas");
+        Flux<Product> searchedProduct = productService.save(product)
+                .thenMany(productService.getProductsByAdvancedFiltering("", "", "jacket", ""));
 
-        productService.save(product);
-        productService.save(product2);
-
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("M","nike", "", "");
-
-        assertThat(result).contains(product);
-    }
-
-
-    @Test
-    public void testGetProductsByAdvancedFilteringSearchCategory(){
-        Product product = new Product();
-        product.setName("classic bob nike");
-        product.setCategory("t-shirt");
-        product.setBrand("nike");
-
-        Product product2 = new Product();
-        product2.setName("retro adidas");
-        product2.setCategory("t-shirt");
-        product2.setBrand("adidas");
-
-        productService.save(product);
-        productService.save(product2);
-
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("","", "t-shirt", "");
-
-        assertThat(result).contains(product);
-        assertThat(result).contains(product2);
+        StepVerifier.create(searchedProduct)
+                .expectNextMatches(p -> p.getName().equals(product.getName()))
+                .expectComplete()
+                .verify();
     }
 
     @Test
-    public void testGetProductsByAdvancedFilteringSearchSize(){
+    public void testGetProductsByAdvancedFilteringSearchSize() {
         Product product = new Product();
+        product.setId("4");
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
         product.setSize(Collections.singletonList("M"));
 
         Product product2 = new Product();
+        product2.setId("5");
         product2.setName("retro adidas");
         product2.setCategory("t-shirt");
         product2.setBrand("adidas");
         product2.setSize(Collections.singletonList("L"));
 
-        productService.save(product);
-        productService.save(product2);
+        productService.save(product).subscribe();
+        Flux<Product> searchedProducts = productService.save(product2)
+                .thenMany(productService.getProductsByAdvancedFiltering("", "", "", "L"));
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("","", "", "L");
-
-        assertThat(result).contains(product2);
+        StepVerifier.create(searchedProducts)
+                .expectNextMatches(p -> p.getName().equals(product2.getName()))
+                .expectComplete()
+                .verify();
     }
 
     @Test
-    public void testGetProductsByAdvancedFiltering(){
+    public void testGetProductsByAdvancedFiltering() {
+        Product product = new Product();
+        product.setId("6");
+        product.setName("classic bob nike");
+        product.setCategory("t-shirt");
+        product.setBrand("reebok");
+        product.setSize(Collections.singletonList("M"));
+
+        Flux<Product> productFlux = productService.save(product)
+                .thenMany(productService.getProductsByAdvancedFiltering("", "reebok", "t-shirt", "M"));
+
+        StepVerifier.create(productFlux)
+                .expectNextMatches(p -> p.getName().equals(product.getName()))
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void testGetProductsByAdvancedFilteringNotFound() {
         Product product = new Product();
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
         product.setSize(Collections.singletonList("M"));
 
-        Product product2 = new Product();
-        product2.setName("retro adidas");
-        product2.setCategory("t-shirt");
-        product2.setBrand("adidas");
-        product2.setSize(Collections.singletonList("L"));
+        Flux<Product> productFlux = productService.save(product)
+                .thenMany(productService.getProductsByAdvancedFiltering("", "nike", "cap", "M"));
 
-        productService.save(product);
-        productService.save(product2);
-
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("", "nike", "t-shirt", "M");
-
-        assertThat(result).contains(product);
+        StepVerifier.create(productFlux)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
     }
 
+
     @Test
-    public void testGetProductsByAdvancedFilteringNotFound(){
+    public void testDeleteById() {
         Product product = new Product();
+        product.setId("10");
         product.setName("classic bob nike");
         product.setCategory("t-shirt");
         product.setBrand("nike");
         product.setSize(Collections.singletonList("M"));
 
-        productService.save(product);
+        Mono<Void> voidMono = productService.save(product)
+                .thenMany(productService.getProductsByAdvancedFiltering("", "nike", "cap", "M"))
+                .then(productService.deleteById("10"));
 
-        Iterable<Product> result = productService.getProductsByAdvancedFiltering("", "nike", "cap", "M");
-
-        assertThat(result).doesNotContain(product);
-    }
-
-    @Test
-    public void testSave(){
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
-
-        productService.save(product);
-
-        Iterable<Product> savedProduct = productService.getProductsByAdvancedFiltering(product.getSex(), product.getBrand(), product.getCategory(), product.getSize().get(0));
-
-        assertThat(savedProduct).contains(product);
-    }
-
-    @Test
-    public void testDeleteProductById(){
-        EasyRandom easyRandom = new EasyRandom();
-        Product product = easyRandom.nextObject(Product.class);
-
-        productService.save(product);
-
-        productService.deleteById(product.getId());
-
-        Iterable<Product> savedProduct = productService.getProductsByAdvancedFiltering(product.getSex(), product.getBrand(), product.getCategory(), product.getSize().get(0));
-
-        assertThat(savedProduct).isEmpty();
-    }
-
-    @AfterClass
-    public static void teardown(){
-        embeddedElastic.stop();
-    }
-
-    private static Integer findRandomPort() throws IOException {
-        try (ServerSocket socket = new ServerSocket(0)) {
-            return socket.getLocalPort();
-        }
+        StepVerifier.create(voidMono)
+                .expectNextCount(0)
+                .expectComplete()
+                .verify();
     }
 }

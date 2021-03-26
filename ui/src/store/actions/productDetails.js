@@ -1,5 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios/axios';
+import {store} from "../../index";
 
 export const handleProductSuccess = (product) => {
     return {
@@ -26,12 +27,17 @@ export const startLoadingProduct = (loading) => {
 export const loadProduct = (id, history) => {
     return dispatch => {
         dispatch(startLoadingProduct(true));
-        axios.get('/product/id/'+id).then(response => {
+        axios.get('/product/id/'+id, {
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
+            .then(response => {
             dispatch(handleProductSuccess(response.data));
-            console.log('i got the response from the server man');
             dispatch(startLoadingProduct(false));
             history.push('/products/' + id);
-        }).catch(error => {
+        })
+            .catch(error => {
             dispatch(handleProductError(error));
             dispatch(startLoadingProduct(false));
 

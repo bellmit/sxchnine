@@ -1,0 +1,15 @@
+.Menu-Form-Div{
+    position: fixed !important;
+    margin: 5% 0 0 2% !important;
+    z-index:100 !important;
+    float: top !important;
+    ;
+}
+
+.Menu-Text {
+    color: black;
+}
+
+.ui.inverted.menu .yellow.active.item, .ui.inverted.yellow.menu {
+    background-color: rgb(255, 240, 36);
+}

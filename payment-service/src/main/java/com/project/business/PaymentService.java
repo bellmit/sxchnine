@@ -1,41 +1,29 @@
 package com.project.business;
 
 import com.project.model.Order;
+import com.project.model.PaymentResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
-import static com.project.utils.PaymentStatusCode.*;
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
+import static reactor.core.publisher.SignalType.ON_COMPLETE;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class PaymentService {
 
-    private OrderClient orderClient;
+    private final PaymentOps paymentOps;
 
-    public PaymentService(OrderClient orderClient) {
-        this.orderClient = orderClient;
+    public Mono<PaymentResponse> checkout(Order order) {
+        return paymentOps.checkout(order)
+                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Checkout payment for order id {}", order.getOrderId())));
     }
 
-    public int checkout(Order order){
-        log.info("checkout order {}", order.getOrderPrimaryKey().getOrderId().toString());
-        //TODO: call external payment API
-        return 0;
-    }
-
-    public void recheckout(Order order){
-        int checkoutStatus = checkout(order);
-        if (checkoutStatus == CONFIRMED.getCode()){
-            order.setPaymentStatus(CONFIRMED.getValue());
-        } else if (checkoutStatus == REFUSED.getCode()){
-            order.setPaymentStatus(REFUSED.getValue());
-        } else if (checkoutStatus == WAITING.getCode()){
-            try {
-                Thread.sleep(1000L);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            recheckout(order);
-        }
-        orderClient.saveOrder(order);
+    public Mono<PaymentResponse> checkout3DSecure(String paymentIntentId) {
+        return paymentOps.checkout3DSecure(paymentIntentId)
+                .doOnEach(withSpanInScope(ON_COMPLETE, signal -> log.info("Checkout 3D Secure - Confirm payment id {}", paymentIntentId)));
     }
 }

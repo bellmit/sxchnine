@@ -1,179 +1,170 @@
 package com.project.controller;
 
-import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
-import com.project.config.CassandraTestConfig;
-import com.project.config.ResourceServerConfigTest;
 import com.project.model.Order;
-import com.project.model.OrderId;
-import com.project.repository.OrderByOrderIdRepository;
 import com.project.repository.OrderRepository;
-import org.cassandraunit.spring.CassandraDataSet;
-import org.cassandraunit.spring.CassandraUnitDependencyInjectionTestExecutionListener;
-import org.cassandraunit.spring.CassandraUnitTestExecutionListener;
-import org.cassandraunit.spring.EmbeddedCassandra;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockserver.integration.ClientAndServer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.cloud.sleuth.CurrentTraceContext;
+import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.autoconfig.brave.BraveAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.brave.instrument.web.client.BraveWebClientAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.instrument.reactor.TraceReactorAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.instrument.web.TraceWebAutoConfiguration;
+import org.springframework.cloud.sleuth.autoconfig.zipkin2.ZipkinAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.web.ServletTestExecutionListener;
-import org.springframework.util.SocketUtils;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
 @EmbeddedKafka
-@TestPropertySource(properties = {"spring.autoconfigure.exclude=" +
-        "org.springframework.cloud.stream.test.binder.TestSupportBinderAutoConfiguration"})
-@TestExecutionListeners(listeners = {
-        CassandraUnitDependencyInjectionTestExecutionListener.class,
-        CassandraUnitTestExecutionListener.class,
-        ServletTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class
+@TestPropertySource(properties = {"spring.sleuth.web.client.enabled=false"})
+@EnableAutoConfiguration(exclude = {TraceReactorAutoConfiguration.class,
+        TraceWebAutoConfiguration.class,
+        ZipkinAutoConfiguration.class,
+        BraveAutoConfiguration.class,
+        BraveWebClientAutoConfiguration.class
 })
-@EmbeddedCassandra(timeout = 300000L)
-@CassandraDataSet(value = {"schema.cql"}, keyspace = "test2")
-@Import({ResourceServerConfigTest.class, CassandraTestConfig.class})
 @DirtiesContext
 public class OrderControllerTestIT {
 
     private static final String ORDERS_QUEUE = "orders";
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private WebTestClient webTestClient;
 
     @Autowired
     private OrderRepository orderRepository;
 
-    @Autowired
-    private OrderByOrderIdRepository orderByOrderIdRepository;
-
-    private static int port = SocketUtils.findAvailableTcpPort();
+    private ClientAndServer clientAndServer;
 
     private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .scanClasspathForConcreteTypes(true)
             .ignoreRandomizationErrors(true);
 
-    @ClassRule
-    public static EmbeddedKafkaRule embeddedKafkaRule = new EmbeddedKafkaRule(1, true, ORDERS_QUEUE);
+    @BeforeEach
+    public void setup() {
+        clientAndServer = ClientAndServer.startClientAndServer(9000);
+    }
 
-    @ClassRule
-    public static WireMockClassRule wireMockClassRule = new WireMockClassRule(port);
-
-    @BeforeClass
-    public static void setup(){
-        System.setProperty("wiremock.server.port", String.valueOf(port));
+    @AfterEach
+    public void teardown() {
+        clientAndServer.stop();
     }
 
     @Test
-    public void testSaveOrder() throws InterruptedException {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Order orderToSave = easyRandom.nextObject(Order.class);
-        Thread.sleep(1000L);
-
-        testRestTemplate.postForEntity("/save", orderToSave, Order.class);
-
-        List<Order> savedOrders = orderRepository
-                .findOrdersByOrderPrimaryKeyUserEmail(orderToSave.getOrderPrimaryKey().getUserEmail());
-        OrderId savedOrderId = orderByOrderIdRepository
-                .findOrderIdByOrderIdPrimaryKeyOrderId(orderToSave.getOrderPrimaryKey().getOrderId());
-
-        assertThat(savedOrders.get(0)).isEqualToIgnoringGivenFields(orderToSave, "total", "paymentInfo", "address");
-        assertThat(savedOrders.get(0).getPaymentInfo()).isEqualToIgnoringGivenFields(orderToSave.getPaymentInfo());
-        assertThat(savedOrders.get(0).getUserAddress()).isEqualToIgnoringGivenFields(orderToSave.getUserAddress());
-        assertThat(savedOrderId.getOrderIdPrimaryKey()).isEqualToComparingFieldByField(orderToSave.getOrderPrimaryKey());
-        assertThat(savedOrderId.getPaymentInfo()).isEqualToComparingFieldByField(orderToSave.getPaymentInfo());
-        assertThat(savedOrderId.getUserAddress()).isEqualToComparingFieldByField(orderToSave.getUserAddress());
-    }
-
-    @Test
-    public void testGetAllOrders() throws InterruptedException {
+    public void testSaveOrder() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order orderToSave = easyRandom.nextObject(Order.class);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+        String format = LocalDateTime.now().format(formatter);
 
-        orderRepository.save(orderToSave);
+        orderToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderToSave.setOrderTime(LocalDateTime.parse(format));
+        orderToSave.setShippingTime(LocalDateTime.parse(format));
 
-        ResponseEntity<List<Order>> response = testRestTemplate
-                .exchange("/all",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<Order>>() {});
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        assertThat(response.getBody().get(0)).isNotNull();
+        webTestClient.post()
+                .uri("/save")
+                .body(Mono.just(orderToSave), Order.class);
+
+        Order savedOrder = orderRepository.findOrdersByUserEmail(orderToSave.getUserEmail()).blockFirst();
+
+        assertThat(savedOrder).usingRecursiveComparison().ignoringFields("total", "paymentInfo", "address").isEqualTo(orderToSave);
+        assertThat(savedOrder.getPaymentInfo()).usingRecursiveComparison().isEqualTo(orderToSave.getPaymentInfo());
+        assertThat(savedOrder.getUserAddress()).usingRecursiveComparison().isEqualTo(orderToSave.getUserAddress());
     }
 
     @Test
-    public void testGetOrdersByOrderId() throws InterruptedException {
+    public void testGetOrdersByOrderId() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        OrderId orderIdToSave = easyRandom.nextObject(OrderId.class);
+        Order orderToSave = easyRandom.nextObject(Order.class);
         String uuid = randomUUID().toString();
-        orderIdToSave.getOrderIdPrimaryKey().setOrderId(UUID.fromString(uuid));
+        orderToSave.setOrderId(uuid);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
+        String format = LocalDateTime.now().format(formatter);
 
-        orderByOrderIdRepository.save(orderIdToSave);
+        orderToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderToSave.setOrderTime(LocalDateTime.parse(format));
+        orderToSave.setShippingTime(LocalDateTime.parse(format));
 
-        OrderId orderId = testRestTemplate.getForObject("/orderId/" + uuid, OrderId.class);
+        // Mocking Sleuth vs Reactor Context
+        Context context = mock(Context.class);
+        TraceContext traceContext = mock(TraceContext.class);
+        CurrentTraceContext currentTraceContext = mock(CurrentTraceContext.class);
+        Tracer tracer = mock(Tracer.class);
+        Span span = mock(Span.class);
+        when(span.context()).thenReturn(traceContext);
+        when(context.get(any())).thenReturn(currentTraceContext).thenReturn(tracer);
+        when(tracer.nextSpan()).thenReturn(span);
 
-        assertThat(orderId).isEqualToComparingFieldByFieldRecursively(orderIdToSave);
+        orderRepository.save(orderToSave).block();
+
+        webTestClient.get()
+                .uri("/orderId/" + uuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Order.class)
+                .value(o -> assertThat(o.getOrderId()).isEqualTo(orderToSave.getOrderId()));
     }
 
     @Test
-    public void testGetOrdersByEmail() throws InterruptedException, IOException {
+    public void testGetOrdersByEmail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Order orderToSave = easyRandom.nextObject(Order.class);
 
-        Thread.sleep(1000L);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss");
+        String format = LocalDateTime.now().format(formatter);
 
-        orderRepository.save(orderToSave);
+        orderToSave.setPaymentTime(LocalDateTime.parse(format));
+        orderToSave.setOrderTime(LocalDateTime.parse(format));
+        orderToSave.setShippingTime(LocalDateTime.parse(format));
 
-        ResponseEntity<List<Order>> response = testRestTemplate
-                .exchange("/userEmail/" + orderToSave.getOrderPrimaryKey().getUserEmail(),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Order>>() {});
+        orderRepository.save(orderToSave).block();
 
-        assertThat(response.getBody().get(0)).isEqualToComparingFieldByFieldRecursively(orderToSave);
-
-    }
-
-    public static int findRandomPort(){
-        try {
-            ServerSocket serverSocket = new ServerSocket(0);
-            return serverSocket.getLocalPort();
-
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
+        webTestClient.get()
+                .uri("/userEmail/" + orderToSave.getUserEmail())
+                .accept(MediaType.ALL)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Order.class)
+                .value(o -> assertThat(o.getOrderId()).isEqualTo(orderToSave.getOrderId()));
     }
 }

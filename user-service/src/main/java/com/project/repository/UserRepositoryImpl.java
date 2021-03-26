@@ -1,51 +1,52 @@
 package com.project.repository;
 
 import com.project.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import javax.annotation.PostConstruct;
-import java.util.Map;
-
-@Repository
-@Transactional
+@Component
+@Slf4j
 public class UserRepositoryImpl implements UserRepository {
-    private static final String KEY = "USER";
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-    private HashOperations<String, String, User> hashOperations;
+    private static final String redisHash = "users";
 
-    @PostConstruct
-    private void init(){
-        hashOperations = redisTemplate.opsForHash();
+    private final ReactiveRedisTemplate<String, User> reactiveRedisTemplate;
+
+    public UserRepositoryImpl(ReactiveRedisTemplate<String, User> reactiveRedisTemplate) {
+        this.reactiveRedisTemplate = reactiveRedisTemplate;
     }
 
     @Override
-    public User findByEmail(String email) {
-        return hashOperations.get(KEY, email);
+    public Mono<User> findByEmail(String email) {
+        return reactiveRedisTemplate
+                .opsForHash()
+                .get(redisHash, email)
+                .cast(User.class);
     }
 
     @Override
-    public Map<String, User> findAll() {
-        return hashOperations.entries(KEY);
+    public Mono<User> save(User user) {
+        return reactiveRedisTemplate.opsForHash().put(redisHash, user.getEmail(), user)
+                .thenReturn(user);
     }
 
     @Override
-    public void save(User user) {
-        hashOperations.put(KEY, user.getEmail(), user);
+    public Mono<Void> deleteUserById(String id) {
+        return reactiveRedisTemplate.opsForHash().remove(redisHash, id)
+                .then();
     }
 
     @Override
-    public void deleteUserById(String id) {
-        hashOperations.delete(KEY, id);
+    public Mono<Void> deleteUserByEmail(String email) {
+        return reactiveRedisTemplate.opsForHash().remove(redisHash, email)
+                .then();
     }
 
     @Override
-    public void deleteUser(User user) {
-        hashOperations.delete(KEY, user.getEmail());
+    public Flux<User> findAll() {
+        return reactiveRedisTemplate.opsForHash().values(redisHash).map(o -> (User)o);
     }
 }

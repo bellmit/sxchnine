@@ -1,14 +1,20 @@
 import * as actionTypes from '../actions/actionTypes';
 import axios from '../../axios/axios';
+import {store} from "../../index";
 
 export const searchAdvancedProducts = (gender, category, size) => {
     return dispatch => {
         dispatch(searchAdvancedStart(true));
-        axios.get('/elastic/advancedSearch?gender='+ gender + '&category='+ category +'&size='+ size)
+        axios.get('/elastic/advancedSearch?gender='+ gender + '&category='+ category +'&size='+ size,{
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 dispatch(searchAdvancedSuccess(response.data));
                 dispatch(searchAdvancedStart(false));
-            }).catch(error => {
+            })
+            .catch(error => {
             dispatch(searchAdvancedStart(false));
             dispatch(searchAdvancedFail(error));
         })
@@ -40,7 +46,11 @@ export const searchAdvancedFail = (error) => {
 export const homeSearchProducts = (gender, category, size, history) => {
     return dispatch => {
         dispatch(homeSearchStart(true));
-        axios.get('/elastic/advancedSearch?gender='+ gender + '&category='+ category +'&size='+ size)
+        axios.get('/elastic/advancedSearch?gender='+ gender + '&category='+ category +'&size='+ size,{
+            headers: {
+                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+            }
+        })
             .then(response => {
                 dispatch(homeSearchSuccess(response.data));
                 dispatch(homeSearchStart(false));
@@ -48,7 +58,8 @@ export const homeSearchProducts = (gender, category, size, history) => {
                     history.push('/women');
                 else if (gender === 'M')
                     history.push('/men');
-            }).catch(error => {
+            })
+            .catch(error => {
             dispatch(homeSearchStart(false));
             dispatch(homeSearchFail(error));
         })

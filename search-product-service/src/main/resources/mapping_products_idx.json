@@ -1,0 +1,126 @@
+{  "settings": {
+  "analysis": {
+    "analyzer": {
+      "ngram_analyzer": {
+        "tokenizer": "ngram_tokenizer"
+      }
+    },
+    "tokenizer": {
+      "ngram_tokenizer": {
+        "type": "ngram",
+        "min_gram": 3,
+        "max_gram": 3,
+        "token_chars": [
+          "letter",
+          "digit"
+        ]
+      }
+    }
+  }
+},
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "text"
+      },
+      "reference": {
+        "type": "text"
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
+      "brand": {
+        "type": "text",
+        "analyzer": "ngram_analyzer",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
+      "sex": {
+        "type": "text"
+      },
+      "category": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
+      "logo": {
+        "type": "keyword"
+      },
+      "price": {
+        "type": "float"
+      },
+      "size": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
+      "colors": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
+      "tags": {
+        "type": "text",
+        "fields": {
+          "raw": {
+            "type":  "keyword"
+          }
+        }
+      },
+      "images": {
+        "type": "keyword"
+      },
+      "dimension": {
+        "properties": {
+          "height": {
+            "type": "float"
+          },
+          "width": {
+            "type" : "float"
+          },
+          "length": {
+            "type" : "float"
+          }
+        }
+      },
+      "originalPrice": {
+        "type": "float"
+      },
+      "promotion": {
+        "type": "long"
+      },
+      "store": {
+        "type": "keyword"
+      },
+      "dateTime": {
+        "type": "date",
+        "format": "yyyy-MM-dd HH:mm:ss",
+        "ignore_malformed": true
+      }
+    }
+  }
+}
+
+
+{
+  "actions" : [
+    { "add" : { "index" : "products", "alias" : "store_products" } }
+  ]
+}

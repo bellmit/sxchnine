@@ -2,47 +2,67 @@ package com.project.controller;
 
 import com.project.model.User;
 import com.project.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("all")
-    public List<User> getUsers(){
-        return userService.getAllUsers();
+    @GetMapping("/users")
+    public Flux<User> getUsers() {
+        return userService.getUsers();
     }
 
-    @GetMapping("email/{email:.+}")
-    public User getUserByEmail(@PathVariable String email){
+    @GetMapping("/email/{email:.+}")
+    public Mono<User> getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);
     }
 
-    @PostMapping("save")
-    public void createOrSaveUser(@RequestBody User user){
-        userService.save(user);
+    @PostMapping("/save")
+    public Mono<Void> createOrSaveUser(@RequestParam(required = false) boolean isNew,
+                                       @RequestBody User user) {
+        return userService.save(user, isNew);
     }
 
-    @DeleteMapping("deleteByUser")
-    public void deleteByUser(@RequestBody User user){
-        userService.deleteUser(user);
+    @DeleteMapping("/deleteByEmail/{email:.+}")
+    public Mono<Void> deleteByUserByEmail(@PathVariable String email) {
+        return userService.deleteUserByEmail(email.toLowerCase());
     }
 
-    @DeleteMapping("deleteById/{id}")
-    public void deleteUserById(@PathVariable String id){
-        userService.deleteUserById(id);
+    @DeleteMapping("/deleteById/{id}")
+    public Mono<Void> deleteUserById(@PathVariable String id) {
+        return userService.deleteUserById(id);
     }
 
-    @PostMapping("login")
-    public User login(@RequestParam String email, @RequestParam String password){
-        return userService.login(email, password);
+    @PostMapping("/login")
+    public Mono<User> login(@RequestParam String email, @RequestParam String password) {
+        return userService.login(email.toLowerCase(), password);
     }
+
+    @PostMapping("/forgotPassword")
+    public Mono<User> forgotPassword(@RequestParam String email){
+        return userService.forgotPassword(email);
+    }
+
+    @PostMapping("/loginAdmin")
+    public Mono<User> loginAdmin(@RequestParam String email, @RequestParam String password) {
+        return userService.loginAdmin(email.toLowerCase(), password);
+    }
+
+    @PostMapping("/changePassword")
+    public Mono<User> changePassword(@RequestParam String email,
+                                     @RequestParam String oldPassword,
+                                     @RequestParam String newPassword,
+                                     @RequestParam String confirmNewPassword) {
+
+        return userService.changePassword(email.toLowerCase(), oldPassword, newPassword, confirmNewPassword);
+    }
+
 }

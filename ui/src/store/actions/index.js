@@ -1,9 +1,14 @@
 export {
+    authenticate
+} from './authentication';
+
+export {
     loadProducts,
     loadGenders,
     loadTypes,
     loadSize,
-    fetchProduct
+    fetchProduct,
+    clearProducts
 } from './products';
 
 export {
@@ -12,7 +17,8 @@ export {
 
 export {
     addProductToOrder,
-    removeProductToOrder
+    removeProductToOrder,
+    resetProductToOrder
 } from './productsToOrder';
 
 export {
@@ -26,10 +32,24 @@ export {
 
 export {
     order,
-    fetchOrdersHistory
+    fetchOrdersHistory,
+    confirmOrder,
+    trackOrder
 } from './order';
 
 export {
     saveUser,
-    loginUser
+    loginUser,
+    changePassword,
+    signOffUser,
+    subscribeUser,
+    subscribeUserSuccess,
+    saveUserFail,
+    forgotPassword,
+    handleForgotPasswordError,
+    handleForgotPasswordSuccess
 } from './users';
+
+export {
+    contact
+} from './contact';

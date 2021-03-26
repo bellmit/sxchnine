@@ -1,83 +1,49 @@
 package com.project.repository;
 
+import com.project.config.TestRedisConfiguration;
 import com.project.model.User;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Arrays;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.*;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import redis.embedded.RedisServer;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestRedisConfiguration.class)
 @ActiveProfiles("test")
+@EmbeddedKafka
 public class UserRepositoryTestIT {
+
+    private static final String EMAIL_TEST = "toto@gmail.com";
 
     @Autowired
     private UserRepository userRepository;
 
-    private static RedisServer redisServer = new RedisServer();
-
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
-    @BeforeClass
-    public static void setup(){
-        redisServer.start();
+    @BeforeEach
+    public void teardown(){
+        userRepository.deleteUserByEmail(EMAIL_TEST);
     }
-
-    @AfterClass
-    public static void tearDown(){
-        redisServer.stop();
-    }
-
     @Test
     public void testFindByEmail(){
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user)
+                .then(userRepository.findByEmail(user.getEmail()))
+                .block();
 
-        User savedUser = userRepository.findByEmail(user.getEmail());
-
-        assertThat(savedUser).isEqualToComparingFieldByFieldRecursively(user);
-    }
-
-    @Test
-    public void testFindAll(){
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        User user = easyRandom.nextObject(User.class);
-
-        userRepository.save(user);
-
-        Map<String, User> users = userRepository.findAll();
-
-        assertThat(users).containsValue(user);
-    }
-
-    @Test
-    public void testSave(){
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        User user = easyRandom.nextObject(User.class);
-
-        userRepository.save(user);
-
-        User savedUser = userRepository.findByEmail(user.getEmail());
-
-        assertThat(savedUser).isEqualToComparingFieldByFieldRecursively(user);
+        assertThat(savedUser).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
@@ -85,15 +51,14 @@ public class UserRepositoryTestIT {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
         user.setId("TOTO");
-        user.setEmail("toto@gmail.com");
+        user.setEmail(EMAIL_TEST);
 
-        userRepository.save(user);
+        User deletedUser = userRepository.save(user)
+                .then(userRepository.deleteUserByEmail(EMAIL_TEST))
+                .then(userRepository.findByEmail("toto@gmail.com"))
+                .block();
 
-        userRepository.deleteUser(user);
-
-        User savedUser = userRepository.findByEmail("toto@gmail.com");
-
-        assertThat(savedUser).isNull();
+        assertThat(deletedUser).isNull();
     }
 
 

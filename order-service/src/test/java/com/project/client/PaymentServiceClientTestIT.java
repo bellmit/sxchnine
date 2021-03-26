@@ -1,74 +1,54 @@
 package com.project.client;
 
-import au.com.dius.pact.consumer.Pact;
-import au.com.dius.pact.consumer.PactProviderRuleMk2;
-import au.com.dius.pact.consumer.PactVerification;
+
+import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
-import au.com.dius.pact.model.RequestResponsePact;
+import au.com.dius.pact.consumer.junit5.PactConsumerTestExt;
+import au.com.dius.pact.consumer.junit5.PactTestFor;
+import au.com.dius.pact.core.model.RequestResponsePact;
+import au.com.dius.pact.core.model.annotations.Pact;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.config.FeignClientInterceptor;
-import com.project.config.FeignConfiguration;
-import com.project.config.LocalRibbonClientConfigurationTest;
 import com.project.model.Order;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.fluent.Request;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.cloud.netflix.ribbon.RibbonAutoConfiguration;
-import org.springframework.cloud.openfeign.FeignAutoConfiguration;
-import org.springframework.cloud.openfeign.ribbon.FeignRibbonClientAutoConfiguration;
+import org.springframework.cloud.autoconfigure.RefreshAutoConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.SocketUtils;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.http.entity.ContentType.APPLICATION_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {PaymentServiceClient.class, PaymentServiceFallback.class,
-        ObjectMapper.class, FeignClientInterceptor.class, FeignConfiguration.class, LocalRibbonClientConfigurationTest.class})
+@ExtendWith(PactConsumerTestExt.class)
+@PactTestFor(providerName = "payment-service", port = "9000")
+@SpringBootTest(classes = {PaymentServiceClient.class,
+        ObjectMapper.class, WebClientConfig.class, WebClient.class, RefreshAutoConfiguration.class})
 @ActiveProfiles("test")
-@ImportAutoConfiguration({RibbonAutoConfiguration.class, FeignRibbonClientAutoConfiguration.class,
-        FeignAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
 @DirtiesContext
 public class PaymentServiceClientTestIT {
 
     @Autowired
-    private PaymentServiceClient paymentServiceClient;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
-    private static int port = SocketUtils.findAvailableTcpPort();
-
-    @Rule
-    public PactProviderRuleMk2 pactProviderRuleMk2 = new PactProviderRuleMk2("payment-service", "localhost", port, this);
-
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0,2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
-    private EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-    private Order order = easyRandom.nextObject(Order.class);
+    private final EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+    private final Order order = easyRandom.nextObject(Order.class);
 
-    @BeforeClass
-    public static void setup() {
-        System.setProperty("port.ribbon", String.valueOf(port));
-    }
 
     @Pact(provider = "payment-service", consumer = "order-service")
     public RequestResponsePact pactForPayment(PactDslWithProvider builder) throws JsonProcessingException {
@@ -88,22 +68,15 @@ public class PaymentServiceClientTestIT {
                 .toPact();
     }
 
-    @PactVerification(fragment = "pactForPayment")
     @Test
-    public void testPayOrder() {
-        int paymentStatus = paymentServiceClient.payOrder(order);
+    @PactTestFor(pactMethod = "pactForPayment")
+    public void testPayOrder(MockServer mockServer) throws IOException {
+        HttpResponse httpResponse = Request.Post(mockServer.getUrl() + "/pay")
+                .bodyString(objectMapper.writeValueAsString(order), APPLICATION_JSON)
+                .execute()
+                .returnResponse();
 
-        assertThat(paymentStatus).isEqualTo(1);
-    }
-
-    public static int findRandomPort(){
-        try {
-            ServerSocket serverSocket = new ServerSocket(0);
-            return serverSocket.getLocalPort();
-
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
+        assertThat(IOUtils.toString(httpResponse.getEntity().getContent())).contains("1");
     }
 
 }

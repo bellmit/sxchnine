@@ -1,6 +1,7 @@
-server:
-  port: ${wiremock.server.port}
 spring:
+  data:
+    mongodb:
+      database: orders
   kafka:
     producer:
       bootstrap-servers: ${spring.embedded.kafka.brokers}
@@ -17,6 +18,15 @@ spring:
   jackson:
     serialization:
       WRITE_DATE_KEYS_AS_TIMESTAMPS: false
+  cloud:
+    config:
+      enabled: false
+      fail-fast: true
+  sleuth:
+    enabled: false
+  zipkin:
+    enabled: false
+
 
 kafka:
   bootstrapAddress: ${spring.embedded.kafka.brokers}
@@ -26,13 +36,5 @@ kafka:
   producer:
     topic: orders
 
-eureka:
-  client:
-    enabled: false
-
-port:
-  ribbon: 9090
-
-payment-service:
-  ribbon:
-    listOfServers: localhost:${wiremock.server.port}
+consumer:
+  payment-service: http://localhost:9000

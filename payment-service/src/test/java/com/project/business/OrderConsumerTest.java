@@ -1,54 +1,60 @@
 package com.project.business;
 
+import com.project.exception.PaymentMethodException;
 import com.project.model.Order;
 import org.jeasy.random.EasyRandom;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
+import reactor.core.publisher.Mono;
 
-import static com.project.utils.PaymentStatusCode.REFUSED;
-import static com.project.utils.PaymentStatusCode.WAITING;
+import static com.project.utils.PaymentStatusCode.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderConsumerTest {
 
     @Mock
-    private PaymentService paymentService;
+    private CatchupOrder catchupOrder;
 
     @InjectMocks
     private OrderConsumer orderConsumer;
 
     @Test
-    public void testConsumeOrderWaitingPayment(){
+    public void testConsumeOrderWaitingPayment() {
         EasyRandom easyRandom = new EasyRandom();
         Order order = easyRandom.nextObject(Order.class);
-        order.setPaymentStatus(WAITING.getValue());
+        order.setPaymentStatus(CHECKOUT_OP.getValue());
+        order.setOrderStatus(WAITING.getValue());
 
-        doNothing().when(paymentService).recheckout(any(Order.class));
+        Order orderProcessing = easyRandom.nextObject(Order.class);
+        orderProcessing.setProcessingStatus(WAITING_TIMEOUT.getValue());
 
-        orderConsumer.consumeOrder(order, () -> {});
+        when(catchupOrder.catchUpCheckout(any(Order.class))).thenReturn(Mono.just(orderProcessing));
 
-        verify(paymentService).recheckout(order);
+        assertThrows(PaymentMethodException.class, () -> orderConsumer.consumeOrder(order, () -> { }));
+
+        verify(catchupOrder).catchUpCheckout(order);
     }
 
 
     @Test
-    public void testConsumeOrderRefusePayment(){
+    public void testConsumeOrderRefusePayment() {
         EasyRandom easyRandom = new EasyRandom();
         Order order = easyRandom.nextObject(Order.class);
         order.setPaymentStatus(REFUSED.getValue());
 
         orderConsumer.consumeOrder(order, () -> {});
 
-        verify(paymentService, times(0)).recheckout(order);
+        verify(catchupOrder, times(0)).catchUpCheckout(order);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testConsumeOrderException(){
-        orderConsumer.consumeOrder(null, ()->{});
+    @Test
+    public void testConsumeOrderException() {
+        assertThrows(NullPointerException.class, () -> orderConsumer.consumeOrder(null, () -> {}));
     }
 }

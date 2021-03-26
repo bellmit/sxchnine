@@ -8,8 +8,117 @@
 
 .ShoppingCart-div-icon{
     position: fixed;
-    width: 36px;
-    height: 30px;
-    left: 35px;
+    width: 40px;
+    height: 35px;
+    left: 18px;
     top: 78px;
+    z-index: 1;
+}
+
+.ShoppingCart-div-icon:hover{
+    position: fixed;
+    width: 40px;
+    height: 35px;
+    left: 18px;
+    top: 78px;
+    cursor: pointer;
+}
+
+.ShoppingCart-div-label{
+    position: fixed;
+    width: 18px;
+    height: 18px;
+    left: 45px;
+    top: 70px;
+    z-index: 1;
+}
+
+@media only screen and (max-width: 414px) {
+    .ShoppingCart-div-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-label{
+        position: fixed;
+        width: 18px;
+        height: 18px;
+        left: 45px;
+        top: 60px;
+        z-index: 1;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .ShoppingCart-div-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-label{
+        position: fixed;
+        width: 18px;
+        height: 18px;
+        left: 45px;
+        top: 60px;
+        z-index: 1;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .ShoppingCart-div-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-label{
+        position: fixed;
+        width: 18px;
+        height: 18px;
+        left: 45px;
+        top: 60px;
+        z-index: 1;
+    }
 }

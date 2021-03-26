@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import {connect} from 'react-redux';
-import uuid from 'uuid/v1';
 import date from 'date-and-time';
 import './Card.css';
 import {
@@ -10,10 +9,11 @@ import {
     formatCVC,
     formatExpirationDate,
 } from './utils';
-import {Dimmer, Loader} from "semantic-ui-react";
+import {Dimmer, Label, Loader} from "semantic-ui-react";
 import * as actions from "../../store/actions";
+import uuid from "uuid/v1";
 
-class Card extends Component {
+class Card extends PureComponent {
     state = {
         number: '',
         name: '',
@@ -22,7 +22,17 @@ class Card extends Component {
         issuer: '',
         focused: '',
         formData: null,
+        errorName: ''
     };
+
+    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
+        console.log("Card updated");
+        console.log(this.props.error);
+        if (this.props.handledErrors !== undefined &&
+             this.props.handledErrors.errorReason !== undefined){
+            this.setState({errorName: this.props.handledErrors.errorReason.message});
+        }
+    }
 
 
     handleCallback = ({issuer}, isValid) => {
@@ -63,76 +73,76 @@ class Card extends Component {
     };
 
     handleOrder = () => {
-        //this.setState({loading: true});
         if (this.state.number !== ''
             && this.state.name !== ''
             && this.state.expiry !== ''
             && this.state.cvc !== '') {
+            this.props.processOrder(this.createOrder(), this.props.history);
 
-            console.log(this.props);
-            console.log('----> products to order');
-            console.log(this.createOrder());
-            this.props.processOrder(this.createOrder());
-            this.props.history.replace('/confirmation/' + this.props.paymentStatus);
+            if (this.props.keepInfo){
+                this.props.saveUser(this.createUser());
+            }
         }
 
     };
 
     createOrder() {
         return {
-            orderPrimaryKey: {
-                userEmail: this.props.email,
-                orderId: uuid(),
-                orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-                shippingTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss')
-            },
+            orderId: this.generateId(),
+            userEmail: this.props.email,
+            orderTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
+            orderStatus: 'ORDERED',
             products: this.props.productsToOrder,
             paymentInfo: {
                 noCreditCard: this.state.number.trim(),
                 expDate: this.state.expiry,
                 securityCode: this.state.cvc,
-                lastName: this.state.name
+                lastName: this.state.name,
+                type: 'card'
             },
             userAddress: {
+                firstName: this.props.firstName,
+                lastName: this.props.lastName,
                 address: this.props.num + ' ' + this.props.avenue,
                 postalCode: this.props.postalCode,
                 city: this.props.city,
                 country: this.props.country
             },
-            orderStatus: this.evaluateStatus(this.props.paymentStatus),
-            paymentStatus: this.evaluateStatus(this.props.paymentStatus),
+            paymentStatus: this.props.paymentStatus,
             paymentTime: date.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-            shippingStatus: this.evaluateStatus(this.props.paymentStatus)
+            total: this.props.total
         }
     }
 
-    evaluateStatus(paymentStatus) {
-        if (paymentStatus === 0) {
-            return 'REFUSED';
-        } else if (paymentStatus === 1) {
-            return 'CONFIRMED';
-        } else if (paymentStatus === 2) {
-            return 'WAITING';
-        } else {
-            return 'UNKNOWN';
+    createUser() {
+        return {
+            id: uuid(),
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            email: this.props.email,
+            address: {
+                number: this.props.num,
+                address: this.props.avenue,
+                city: this.props.city,
+                postalCode: this.props.postalCode,
+                country: this.props.country
+            }
         }
-    }
+    };
 
-    componentWillUnmount(): void {
-        console.log(this.props)
+    generateId(){
+        return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
     }
-
 
     render() {
-        const {name, number, expiry, cvc} = this.state;
-
         return (
             <div key="Payment">
                 <Dimmer active={this.props.loading} page>
                     <Loader content='Loading'/>
                 </Dimmer>
                 <div className="App-payment">
-                    <h4 className="Cards-h4">PAYMENT:</h4>
+                    <h4 className="Cards-h4">
+                        {this.state.errorName !== '' && <Label color='red'>{this.state.errorName}</Label>}</h4>
                     <Cards
                         number={this.state.number}
                         name={this.state.name}
@@ -200,16 +210,9 @@ class Card extends Component {
                             </button>
                         </div>
                         <div className="form-actions">
-                            <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Got_IT, which may be used to make future shopping experiences better for you.</span>
+                            <span className="Card-App-AcceptCondition">By placing your order you agree to our Terms & Conditions, privacy and returns policies . You also consent to some of your data being stored by Naybxrz, which may be used to make future shopping experiences better for you.</span>
 
                         </div>
-                        {/*                        <div>
-                            <p>number: {number}</p>
-                            <p>name: {name}</p>
-                            <p>expiry: {expiry}</p>
-                            <p>cvc: {cvc}</p>
-
-                        </div>*/}
                     </form>
                 </div>
             </div>
@@ -222,13 +225,15 @@ const mapStateToProps = state => {
     return {
         productsToOrder: state.productsToOrder.productsToOrder,
         paymentStatus: state.order.paymentStatus,
+        handledErrors: state.order.handledErrors,
         loading: state.order.loading,
     }
 };
 
 const dispatchToProps = dispatch => {
     return {
-        processOrder: (productsToOrder) => dispatch(actions.order(productsToOrder))
+        processOrder: (productsToOrder, history) => dispatch(actions.order(productsToOrder, history)),
+        saveUser: (user) => dispatch(actions.saveUser(user))
     }
 };
 

@@ -1,24 +1,21 @@
 package com.project.utils;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum PaymentStatusCode {
     REFUSED(0, "REFUSED"),
     CONFIRMED(1, "CONFIRMED"),
     WAITING(2,"WAITING"),
-    UNKNOWN(3, "UNKNOWN");
+    UNKNOWN(3, "UNKNOWN"),
+    SHIPPED(4, "SHIPPED"),
+    CONTACT(5, "CONTACT");
 
-    private int code;
-    private String value;
+    private final int code;
+    private final String value;
 
-    PaymentStatusCode(int code, String value) {
-        this.code = code;
-        this.value = value;
-    }
-
-    public int getCode() { return code; }
-
-    public String getValue() {
-        return value;
-    }
 
     public static String getStatusByCode(int code){
         for (PaymentStatusCode paymentStatusCode : PaymentStatusCode.values()){

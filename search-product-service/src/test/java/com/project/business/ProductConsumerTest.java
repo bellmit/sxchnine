@@ -1,25 +1,34 @@
 package com.project.business;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.model.Product;
-import com.project.repository.ProductRepository;
 import org.jeasy.random.EasyRandom;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.support.Acknowledgment;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ProductConsumerTest {
 
     @Mock
-    private ProductRepository productRepository;
+    private ProductService productService;
+
+    @Spy
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Mock
     private Acknowledgment acknowledgment;
@@ -28,18 +37,18 @@ public class ProductConsumerTest {
     private ProductConsumer productConsumer;
 
     @Test
-    public void testConsumeProduct(){
+    public void testConsumeProduct() throws JsonProcessingException {
         EasyRandom easyRandom = new EasyRandom();
         Product product = easyRandom.nextObject(Product.class);
 
-        when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(productService.save(any(Product.class))).thenReturn(Mono.empty());
 
         ArgumentCaptor<Product> productCaptor = ArgumentCaptor.forClass(Product.class);
 
-        productConsumer.consumeProduct(product, acknowledgment);
+        productConsumer.consumeProduct(objectMapper.writeValueAsString(product), acknowledgment);
 
-        verify(productRepository, timeout(1)).save(productCaptor.capture());
+        verify(productService).save(productCaptor.capture());
 
-        assertThat(product).isEqualToComparingFieldByFieldRecursively(productCaptor.getValue());
+        assertThat(product).usingRecursiveComparison().isEqualTo(productCaptor.getValue());
     }
 }

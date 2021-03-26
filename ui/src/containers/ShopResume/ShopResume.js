@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import {Button, Header, Icon, Image, Modal} from "semantic-ui-react";
+import {Button, Header, Icon, Image, Label, Modal} from "semantic-ui-react";
+import { withRouter } from 'react-router';
 import ShoppingCart from '../../components/ShoppingCart/ShoppingCart';
 import { connect } from 'react-redux';
 import * as actions from '../../store/actions/index';
 import './ShopResume.css';
-import panierPic from './image80s.jpeg';
+import gameon from './gameon.jpg';
 import trash from './trash-10-48.png';
 
 class ShopResume extends Component {
@@ -18,7 +19,12 @@ class ShopResume extends Component {
     close = () => this.setState({open: false})
 
     redirectToOrders = () => {
-        this.props.history.push('/checkout');
+        if (this.props.userAuthenticated !== ''){
+            this.props.history.push('/orders');
+        } else {
+            this.props.history.push('/checkout');
+        }
+        this.setState({open: false});
     };
 
     removeProduct = (id) => {
@@ -29,19 +35,23 @@ class ShopResume extends Component {
     render() {
         const {open, size} = this.state;
 
+        let messageNoItems = undefined;
+        if (this.props.productsToOrder.length === 0){
+            messageNoItems = <Label color="red"
+                                    attached="center"
+                                    className="Message-No-Items">No items ... Go get it !</Label>
+        }
+
         return (
             <div>
                 <div>
-                    <ShoppingCart show={this.show('small')}/>
+                    <ShoppingCart {...this.props} show={this.show('small')}/>
                 </div>
 
                 <div className="Modal-Content-div">
                     <Modal size={size} open={open} onClose={this.close}
                            style={{position: 'static', height: 'auto'}}>
-                        <Modal.Header><Image src={panierPic} fluid style={{height: '220px'}}/></Modal.Header>
-                        {/*
-                    <span className="Panier-Resume-Text"> You GOT : </span>
-*/}
+                        <Modal.Header><Image src={gameon} fluid style={{height: '250px', objectFit: 'cover'}}/></Modal.Header>
 
                         {this.props.productsToOrder.map((product, index) => (
                             <Modal.Content image key={index}>
@@ -60,7 +70,7 @@ class ShopResume extends Component {
                                 </Modal.Description>
                             </Modal.Content>
                         ))}
-
+                        {messageNoItems}
                         <Modal.Actions>
                             <Button color='black' onClick={this.redirectToOrders} disabled={this.props.productsToOrder.length === 0}>
                                 <span className="Pay-Text">CHECKOUT</span><Icon name='right chevron' color='yellow'/>
@@ -76,7 +86,8 @@ class ShopResume extends Component {
 
 const mapStateToProps = state => {
     return {
-        productsToOrder: state.productsToOrder.productsToOrder
+        productsToOrder: state.productsToOrder.productsToOrder,
+        userAuthenticated: state.users.userAuthenticated
     }
 }
 
@@ -86,4 +97,5 @@ const dispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, dispatchToProps)(ShopResume);
+const ShopResumeWithRouter = withRouter(ShopResume);
+export default connect(mapStateToProps, dispatchToProps)(ShopResumeWithRouter);

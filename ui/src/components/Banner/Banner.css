@@ -37,8 +37,32 @@
     left: 6%;
 }
 
+.BannerUserAccount-Header-img {
+    height: 270px;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    display: inherit;
+    align-items: center;
+    object-position: 0 55%;
+    transform: scaleX(1);
+    left: 6%;
+}
+
 
 .Banner-Container-Men {
+    line-height: 0;
+    font-family: Anton;
+    font-size: 5vw;
+    text-transform: uppercase;
+    color: rgb(255, 255, 255);
+    position: absolute;
+    width: 50%;
+    left: 15%;
+    top: 10%;
+}
+
+.Banner-Container-User {
     line-height: 0;
     font-family: Anton;
     font-size: 5vw;
@@ -57,6 +81,257 @@
     left: 15%;
     top: 22%;
     position: absolute;
+}
+
+@media only screen and (max-width: 1024px) {
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 6%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 5%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 15%;
+        position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 5%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
+/*    .Got-it-logo {
+        top: -8%;
+        right: -6% !important;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }*/
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 6%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 7%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 16%;
+        position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 7%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+}
+
+@media only screen and (max-width: 540px) {
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 106%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 6%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 18%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 27%;
+        position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
 }
 
 @media only screen and (max-width: 414px) {
@@ -115,6 +390,298 @@
         top: 27%;
         position: absolute;
     }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+}
+
+@media only screen and (max-width: 360px) {
+/*    .Got-it-logo {
+        top: -8%;
+        right: -25% !important;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }*/
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 110% !important;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 18%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 27%;
+        position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+}
+
+@media only screen and (max-width: 320px) {
+/*    .Got-it-logo {
+        top: -8%;
+        right: 8% !important;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }*/
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 16%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 110% !important;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 18%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 27%;
+        position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+}
+
+@media only screen and (max-width: 280px) {
+/*    .Got-it-logo {
+        top: -8%;
+        right: -40% !important;
+        height: 30%;
+        position: absolute;
+        float: right;
+        z-index:1;
+    }*/
+    .Banner-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+    .BannerOrder-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 33%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+    .BannerCheckout-Header-img {
+        height: 270px;
+        width: 120% !important;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 69%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+    .Banner-Container-Men {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 20%;
+        top: 19%;
+    }
+
+    .Banner-Empty-Div {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 60%;
+        left: 20%;
+        top: 27%;
+        position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
+    }
+
+
 }
 
 @media only screen and (max-width: 375px) {
@@ -172,6 +739,29 @@
         left: 20%;
         top: 27%;
         position: absolute;
+    }
+    .Banner-Container-User {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 10vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 60%;
+        left: 20%;
+        top: 19%;
+    }
+
+    .BannerUserAccount-Header-img {
+        height: 270px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        object-position: 0 40%;
+        transform: scaleX(1);
+        left: 17%;
     }
 
 }

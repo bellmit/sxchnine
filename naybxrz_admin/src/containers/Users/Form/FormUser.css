@@ -1,0 +1,9 @@
+.user-save-button-text{
+    color: rgb(255, 240, 36);
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.user-save-button{
+    padding-bottom: 10%;
+}

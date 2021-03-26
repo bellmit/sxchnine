@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: naybxrz-certificate
+spec:
+  domains:
+    - naybxrz.com
+    - auth.naybxrz.com
+    - admin.naybxrz.com
+    - api.naybxrz.com

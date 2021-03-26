@@ -1,31 +1,60 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter} from "react-router-dom";
-import { Provider } from 'react-redux';
-import { createStore, combineReducers, applyMiddleware, compose } from "redux";
-import  thunk from 'redux-thunk';
+import {BrowserRouter} from "react-router-dom";
+import {Provider} from 'react-redux';
+import {persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import {PersistGate} from 'redux-persist/integration/react';
+import {encryptTransform} from 'redux-persist-transform-encrypt';
+import {createStore, combineReducers, applyMiddleware, compose} from "redux";
+import thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
+import authenticationReducer from '../src/store/reducers/authentication';
 import productsReducer from '../src/store/reducers/products';
 import productDetails from '../src/store/reducers/productDetails';
 import productsToOrder from '../src/store/reducers/productToOrder';
 import order from '../src/store/reducers/order';
 import users from '../src/store/reducers/users';
+import contact from '../src/store/reducers/contact';
 import * as serviceWorker from './serviceWorker';
 
-const reducers = combineReducers ({
+const reducers = combineReducers({
+    authentication: authenticationReducer,
     products: productsReducer,
     product: productDetails,
     productsToOrder: productsToOrder,
     order: order,
-    users: users
+    users: users,
+    contact: contact
 });
+
+const encryptor = encryptTransform({
+    secretKey: '$props.sk',
+    onError: function (error) {
+        // Handle the error.
+    }
+});
+
+const persistConfig = { // configuration object for redux-persist
+    key: 'root',
+    storage: storage, // define which storage to use
+    transforms: [encryptor]
+};
+
+const persistedReducer = persistReducer(persistConfig, reducers);// create a persisted reducer
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
+export const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk)));
 
-const app = <Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>;
+export const persistor = persistStore(store);
+
+
+const app = <Provider store={store}><BrowserRouter><PersistGate
+    persistor={persistor}><App/></PersistGate></BrowserRouter></Provider>;
+
 
 ReactDOM.render(app, document.getElementById('root'));
 

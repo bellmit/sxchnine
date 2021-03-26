@@ -1,0 +1,62 @@
+.table-orders-per-month {
+    width: 40%;
+    height: 30%;
+    margin: 30% 0 0 18%;
+    position: absolute;
+    font-size: 75%;
+}
+
+.orders-id-text {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.orders-id-text:hover {
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.order-edit-text {
+    font-weight: bold;
+    font-size: smaller;
+    background-color: rgb(255, 240, 36);
+}
+
+.order-products-show {
+    font-weight: bold;
+    font-size: smaller;
+}
+
+.order-products-show:hover {
+    font-weight: bold;
+    font-size: smaller;
+    cursor: pointer;
+}
+
+.trash-icon {
+    float: right;
+    right: 10%;
+    width: 55% !important;
+    height: 20%;
+    position: absolute;
+}
+
+.trash-icon:hover {
+    float: right;
+    right: 10%;
+    width: 55% !important;
+    height: 20%;
+    position: absolute;
+    cursor: pointer;
+}
+
+.order-save-button-text{
+    color: rgb(255, 240, 36);
+    font-size: 1vw;
+    text-transform: uppercase;
+}
+
+.order-save-button{
+    padding-bottom: 10%;
+}

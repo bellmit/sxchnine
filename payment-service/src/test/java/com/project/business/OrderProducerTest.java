@@ -2,48 +2,54 @@ package com.project.business;
 
 import com.project.model.Order;
 import org.jeasy.random.EasyRandom;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.kafka.core.KafkaTemplate;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Flux;
+import reactor.kafka.sender.KafkaSender;
+import reactor.test.StepVerifier;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class OrderProducerTest {
 
     @Mock
-    private KafkaTemplate kafkaTemplate;
+    private KafkaSender kafkaSender;
 
     @InjectMocks
     private OrderProducer orderProducer;
 
-    @Before
-    public void setup(){
+    @BeforeEach
+    public void setup() {
         ReflectionTestUtils.setField(orderProducer, "topic", "topic");
     }
 
     @Test
-    public void testSendOrder(){
+    public void testSendOrder() {
         EasyRandom easyRandom = new EasyRandom();
         Order order = easyRandom.nextObject(Order.class);
 
-        when(kafkaTemplate.send(anyString(), any(Order.class))).thenReturn(null);
+        when(kafkaSender.send(any())).thenReturn(Flux.empty());
 
-        orderProducer.sendOrder(order);
+        StepVerifier.create(orderProducer.sendOrder(order))
+                .expectNext(order)
+                .expectComplete()
+                .verify();
 
-        verify(kafkaTemplate).send("topic", order);
+        verify(kafkaSender).send(any());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testSendOrderException(){
-        orderProducer.sendOrder(new Order());
+    @Test
+    public void testSendOrderException() {
+
+        assertThrows(NullPointerException.class, () -> orderProducer.sendOrder(new Order()));
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.project;
 
 
@@ -18,3 +19,4 @@ public class ObjectMapperTest {
         Assert.assertEquals("pop@pp.com", orderMapper.getOrderPrimaryKey().getUserEmail());
     }
 }
+*/

@@ -1,0 +1,53 @@
+.shipping-img{
+    height: 100%;
+    width: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+    .shipping-img{
+        height: auto;
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .shipping-img{
+        height: auto;
+        width: 105% !important;
+    }
+}
+
+@media only screen and (max-width: 414px) {
+    .shipping-img{
+        height: auto;
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .shipping-img{
+        height: auto;
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .shipping-img{
+        height: auto;
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .shipping-img{
+        height: auto;
+        width: 120% !important;
+    }
+}
+
+@media only screen and (max-width: 360px) {
+    .shipping-img{
+        height: auto;
+        width: 125% !important;
+    }
+}

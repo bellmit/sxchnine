@@ -12,8 +12,8 @@
 
 .Slick-Container-div {
     text-align: center;
-    width: 35%;
-    margin: 0 0 0 15%;
+    width: 33%;
+    margin: 6% 0 0 15%;
 }
 
 .Yellow-bar-div {
@@ -26,15 +26,15 @@
 .Product-Details-Div {
     float: right;
     position: absolute;
-    top: 10%;
-    right: 20%;
+    top: 25%;
+    right: 22%;
 }
 
 .Product-Details-Empty-Div{
     background: rgb(255, 240, 36);
     height: 1%;
     width: 50%;
-    top: 90%;
+    top: 110%;
     left: 22%;
     position: absolute;
     align-items: center;
@@ -49,15 +49,150 @@
     margin: 5% 0 0 17%;
     position: absolute;
     width: 60%;
-    top: 85%;
+    height: 110%;
+    top: 110%;
     align-content: center;
 }
 
 .Product-Details-footer{
     width: 100%;
     position: absolute;
-    top: 170%;
+    top: 210%;
     left: -5%;
+}
+
+@media only screen and (max-width: 1024px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 50%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 150%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        float: right;
+        position: absolute;
+        top: 50%;
+        left: 25%;
+    }
+
+    .Reco-Container-div {
+        margin: 30% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 160%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 160%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+
+    .Reco-Container-div {
+        margin: 40% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 170%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 170%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 80%;
+    }
+
+    .Reco-Container-div {
+        margin: 50% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 180%;
+        left: 0;
+    }
 }
 
 @media only screen and (max-width: 414px) {
@@ -78,7 +213,7 @@
         background: rgb(255, 240, 36);
         height: 1%;
         width: 50%;
-        top: 120%;
+        top: 165%;
         left: 22%;
         position: absolute;
         align-items: center;
@@ -94,6 +229,7 @@
         position: absolute;
         width: 100%;
         align-content: center;
+        top: 70%;
     }
 
     .Product-Details-footer{
@@ -122,7 +258,7 @@
         background: rgb(255, 240, 36);
         height: 1%;
         width: 50%;
-        top: 120%;
+        top: 165%;
         left: 22%;
         position: absolute;
         align-items: center;
@@ -134,7 +270,97 @@
     }
 
     .Reco-Container-div {
-        margin: 70% 0 0 0;
+        margin: 100% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 190%;
+        left: 0;
+    }
+
+}
+
+@media only screen and (max-width: 360px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 18%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 165%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+
+    .Reco-Container-div {
+        margin: 60% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 170%;
+        left: 0;
+    }
+
+}
+
+@media only screen and (max-width: 320px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 80%;
+        margin: 0 0 0 22%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 15%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 165%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        position: absolute;
+        top: 65%;
+    }
+
+    .Reco-Container-div {
+        margin: 60% 0 0 0;
         position: absolute;
         width: 100%;
         align-content: center;

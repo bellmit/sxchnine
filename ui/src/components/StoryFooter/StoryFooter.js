@@ -1,17 +1,16 @@
 import React from 'react';
 import './StoryFooter.css';
+import Aux from '../../hoc/Aux/Aux';
 import foot from './foot.png';
 
 
-const storyFooter = () => {
+const storyFooter = (props) => {
     return (
-        <div >
-            <img alt = "" className="Container-footer-img" src={foot}/>
-            <div className="Paragraph-footer">
-                <p>OUR STORY </p>
-            </div>
-            <div className="Empty-Div-footer" />
-        </div>
+        <Aux>
+            <img alt="" className="Container-footer-img" src={foot}/>
+            <p className="Paragraph-footer" onClick={() => props.history.push('/ourStory')}>OUR STORY </p>
+            <div className="Empty-Div-footer"/>
+        </Aux>
     );
 }
 

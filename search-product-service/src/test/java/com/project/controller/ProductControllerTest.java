@@ -1,85 +1,56 @@
 package com.project.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.business.ProductService;
-import com.project.config.ResourceServerConfigTest;
 import com.project.model.Product;
+import org.hamcrest.Matchers;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_STREAM_JSON;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest
-@Import(ResourceServerConfigTest.class)
+@WebFluxTest(controllers = ProductController.class)
 public class ProductControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private WebTestClient webTestClient;
 
     @MockBean
     private ProductService productService;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
     @Test
-    public void testSearchAllProduct() throws Exception {
+    public void testSearchProduct() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Product product = easyRandom.nextObject(Product.class);
 
-        when(productService.getAllProducts()).thenReturn(Collections.singletonList(product));
+        when(productService.getProductsByQuery(anyString())).thenReturn(Flux.just(product));
 
-        MvcResult result = mockMvc.perform(get("/search/all"))
-                .andExpect(status().isOk())
-                .andReturn();
+        webTestClient.get()
+                .uri("/search/nike")
+                .accept(APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Product.class)
+                .value(Product::getId, Matchers.equalTo(product.getId()))
+                .value(Product::getName, Matchers.equalTo(product.getName()));
 
-        List<Product> savedProducts = objectMapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Product>>() {});
-
-        assertThat(savedProducts).contains(product);
-
-    }
-
-    @Test
-    public void testSearchProduct() throws Exception {
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        Product product = easyRandom.nextObject(Product.class);
-
-        when(productService.getProductsByQuery(anyString())).thenReturn(Collections.singletonList(product));
-
-        MvcResult result = mockMvc.perform(get("/search/nike"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        List<Product> savedProducts = objectMapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Product>>(){});
-
-        assertThat(savedProducts).contains(product);
+        verify(productService).getProductsByQuery(anyString());
     }
 
     @Test
@@ -87,53 +58,54 @@ public class ProductControllerTest {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Product product = easyRandom.nextObject(Product.class);
 
-        when(productService.getProductsByAdvancedFiltering(any(), any(), any(), any())).thenReturn(Collections.singletonList(product));
+        when(productService.getProductsByAdvancedFiltering(any(), any(), any(), any())).thenReturn(Flux.just(product));
 
-        MvcResult result = mockMvc.perform(get("/advancedSearch?brand=nike&category=tshirt&size=M"))
-                .andExpect(status().isOk())
-                .andReturn();
+        webTestClient.get()
+                .uri("/advancedSearch?brand=nike&category=tshirt&size=M")
+                .accept(APPLICATION_STREAM_JSON)
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectBody(Product.class)
+                .value(Product::getId, Matchers.equalTo(product.getId()))
+                .value(Product::getName, Matchers.equalTo(product.getName()));
 
-        List<Product> savedProducts = objectMapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<Product>>(){});
-
-        assertThat(savedProducts).contains(product);
+        verify(productService).getProductsByAdvancedFiltering(null, "nike", "tshirt", "M");
     }
 
     @Test
-    public void testSave() throws Exception {
+    public void testSave() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         Product product = easyRandom.nextObject(Product.class);
 
-        doNothing().when(productService).save(any(Product.class));
+        when(productService.save(any(Product.class))).thenReturn(Mono.empty());
 
-        mockMvc.perform(post("/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(product)))
-                .andExpect(status().isOk());
+        webTestClient.post()
+                .uri("/save")
+                .body(Mono.just(product), Product.class)
+                .exchange()
+                .expectStatus().is2xxSuccessful();
 
         verify(productService).save(product);
     }
 
     @Test
     public void testDeleteProduct() throws Exception {
-        doNothing().when(productService).deleteById(anyString());
+        when(productService.deleteById(anyString())).thenReturn(Mono.empty());
 
-        mockMvc.perform(delete("/delete/1"))
-                .andExpect(status().isOk());
+        webTestClient.delete()
+                .uri("/delete/1")
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful();
 
         verify(productService).deleteById("1");
     }
 
     @Test
-    public void testSearch404() throws Exception {
-        mockMvc.perform(get("/search/product/1")).andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void testSaveBadRequest() throws Exception {
-        mockMvc.perform(post("/save")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(""))
-                .andExpect(status().isBadRequest());
+    public void testSearch404() {
+        webTestClient.get()
+                .uri("/search/product/1")
+                .exchange()
+                .expectStatus().isNotFound();
     }
 }

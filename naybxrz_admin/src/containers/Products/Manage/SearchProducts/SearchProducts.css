@@ -1,0 +1,30 @@
+.products-segment-div{
+    width: 55%;
+}
+.products-dropdown-sex{
+    font-size: 75%;
+    width: 20%;
+}
+
+.products-search-loop{
+    height: 5%;
+    width: 5%;
+}
+
+.products-search-loop:hover{
+    height: 5%;
+    width: 5%;
+    cursor: pointer;
+}
+
+.products-manage-div{
+    margin: 5% 0 0 18%;
+    position: absolute;
+    z-index: 1;
+}
+
+.ui.inverted.yellow.segment {
+    background-color: rgb(255, 240, 36) !important;
+}
+
+

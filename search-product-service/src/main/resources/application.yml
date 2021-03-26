@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: search-product-service
+  config:
+    import: optional:configserver:${CONFIG_SERVER:http://config-server:8888}

@@ -3,13 +3,10 @@ import jordan from './jordan2.png';
 import './Head.css';
 import HomeSearch from '../../containers/HomeSearch/HomeSearch';
 import Aux from '../../hoc/Aux/Aux';
+import Connexion from "./../../containers/Connexion/Connexion";
+
 
 class Head extends Component{
-
-    componentDidMount(): void {
-        console.log(this.props);
-    }
-
     render () {
         return (
             <Aux>
@@ -22,7 +19,7 @@ class Head extends Component{
                     </div>
                     <div className="Empty-Div"/>
                 </div>
-
+                <Connexion />
                 <div className="Home-Search-Div">
                     <HomeSearch {...this.props}/>
                 </div>

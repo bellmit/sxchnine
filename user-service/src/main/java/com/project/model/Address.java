@@ -13,6 +13,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class Address implements Serializable {
 
+    private String number;
     private String address;
     private String postalCode;
     private String city;

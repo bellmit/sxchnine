@@ -1,104 +1,134 @@
 package com.project.service;
 
+
+import com.project.config.TestRedisConfiguration;
 import com.project.model.User;
-import org.assertj.core.api.Assertions;
+import com.project.repository.UserRepository;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
-import redis.embedded.RedisServer;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.assertj.core.api.Assertions.*;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestRedisConfiguration.class)
 @ActiveProfiles("test")
+@EmbeddedKafka
 public class UserServiceTestIT {
+
+    private static final String EMAIL_TEST = "toto@gmail.com";
 
     @Autowired
     private UserService userService;
 
-    private static RedisServer redisServer = new RedisServer();
+    @Autowired
+    private UserRepository userRepository;
 
-    private EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    private final EasyRandomParameters easyRandomParameters = new EasyRandomParameters()
             .collectionSizeRange(0, 2)
             .ignoreRandomizationErrors(true)
             .scanClasspathForConcreteTypes(true);
 
-    @BeforeClass
-    public static void setup(){
-        redisServer.start();
+    @BeforeEach
+    public void teardown(){
+        userRepository.deleteUserByEmail(EMAIL_TEST);
     }
-
-    @AfterClass
-    public static void tearDown(){
-        redisServer.stop();
-    }
-
     @Test
-    public void testGetUserByEmail(){
+    public void testGetUserByEmail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        userService.save(user);
+        User savedUser = userRepository.save(user)
+                .then(userService.getUserByEmail(user.getEmail()))
+                .log()
+                .block();
 
-        User savedUser = userService.getUserByEmail(user.getEmail());
-
-        assertThat(savedUser).isEqualToComparingFieldByFieldRecursively(user);
+        assertThat(savedUser).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
-    public void testGetAllUsers(){
+    public void testDeleteUser() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
 
-        userService.save(user);
-
-        List<User> allUsers = userService.getAllUsers();
-
-        assertThat(allUsers).contains(user);
-    }
-
-    @Test
-    public void testDeleteUser(){
-        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
-        User user = easyRandom.nextObject(User.class);
-
-        userService.save(user);
-
-        userService.deleteUser(user);
-
-        User savedUser = userService.getUserByEmail(user.getEmail());
+        User savedUser = userRepository.save(user)
+                .then(userService.deleteUserByEmail(user.getEmail()))
+                .then(userService.getUserByEmail(user.getEmail()))
+                .block();
 
         assertThat(savedUser).isNull();
     }
 
     @Test
-    public void testLoginOK(){
+    public void testLoginOK() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
-        user.setEmail("toto@gmail.com");
+        user.setEmail(EMAIL_TEST);
         user.setPassword("TOTO");
 
-        userService.save(user);
+        User userAuth = userService.save(user, true)
+                .then(userService.login(EMAIL_TEST, "TOTO"))
+                .block();
 
-        assertThat(userService.login("toto@gmail.com", "TOTO")).isEqualToComparingFieldByFieldRecursively(user);
+        assertEquals(user.getId(), userAuth.getId());
     }
 
 
     @Test
-    public void testLoginFail(){
+    public void testUpdateUserAndLoginFail() {
         EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
         User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
 
-        assertThat(userService.login(user.getEmail(), user.getPassword())).isNull();
+        userService.save(user, true).block();
+
+        User userAuth = userService.save(user, false)
+                .then(userService.login(user.getEmail(), "TOTO"))
+                .block();
+
+        assertThat(userAuth).isNull();
+    }
+
+    @Test
+    public void testForgotPassword() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
+        user.setPassword("TOTO");
+
+        User userAuth = userService.save(user, true)
+                .then(userService.forgotPassword(EMAIL_TEST))
+                .block();
+
+        assertThat(userAuth.getPassword()).isNotEqualTo(user.getPassword());
+    }
+
+    @Test
+    public void testChangePassword() {
+        EasyRandom easyRandom = new EasyRandom(easyRandomParameters);
+        User user = easyRandom.nextObject(User.class);
+        user.setEmail(EMAIL_TEST);
+        user.setPassword("TOTO");
+
+        User userAuth = userService.save(user, true)
+                .then(userService.changePassword(EMAIL_TEST, "TOTO",
+                        "TATA",
+                        "TATA"))
+                .block();
+
+        assertThat(userAuth.getPassword()).isNotEqualTo(user.getPassword());
+        assertThat(passwordEncoder.matches("TATA", userAuth.getPassword())).isTrue();
     }
 }

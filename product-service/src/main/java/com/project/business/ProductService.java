@@ -1,137 +1,133 @@
 package com.project.business;
 
 
-import com.hazelcast.core.HazelcastInstance;
 import com.project.model.Product;
 import com.project.model.SizeQte;
 import com.project.repository.ProductRepository;
+import com.project.util.FallbackProductsSource;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import reactor.cache.CacheMono;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
+import reactor.core.publisher.SignalType;
+import reactor.util.retry.Retry;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    private KafkaProducer kafkaProducer;
+    private final KafkaProducer kafkaProducer;
 
-    private HazelcastInstance hazelcastInstance;
-
-    public ProductService(ProductRepository productRepository, KafkaProducer kafkaProducer, HazelcastInstance hazelcastInstance) {
-        this.productRepository = productRepository;
-        this.kafkaProducer = kafkaProducer;
-        this.hazelcastInstance = hazelcastInstance;
+    public Mono<Product> getProductById(Long id) {
+        return productRepository.findProductById(id)
+                .doOnError(error -> log.error("error occurred during fetching product by id", error))
+                .onErrorReturn(new Product());
     }
 
-    //@Cacheable(value = "productsCache", key = "#id", unless = "#result==null")
-    public Mono<Product> getProductById(String id){
-        CacheMono
-                .lookup(k -> productRepository.findById(id).map(Signal::next), id)
-                .onCacheMissResume(Mono.just(new Product()))
-                .andWriteWith((k, sig) -> {
-                    hazelcastInstance.getMap("productsCache").computeIfAbsent(id, v -> sig.get());
-                    return Mono.empty();
-                });
-        return productRepository.findById(id).onErrorReturn(new Product());
+    public Flux<Product> getProductByIds(List<Long> ids) {
+        return productRepository.findProductsByIdIn(ids)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Fetch list of product IDs: {}", ids.toString())));
+
     }
 
-    public Flux<Product> getProductByIds(List<String> ids){
-        return productRepository.findProductsByIdIn(ids);
+    public Mono<Product> getProductByName(String name) {
+        return productRepository.findProductByName(name)
+                .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
+                .doOnError(error -> log.error("error occurred during fetching product by name", error))
+                .onErrorReturn(new Product());
     }
 
-    //@Cacheable(value = "productsCache", key = "#name", unless = "#result==null")
-    public Mono<Product> getProductByName(String name){
-        return productRepository.findProductByName(name).onErrorReturn(new Product());
+    public Flux<Product> getAllProducts() {
+        return productRepository.findAll()
+                .doOnError(error -> log.error("error occurred during getting all products", error));
+
     }
 
-    //@Cacheable("productsCache")
-    public Flux<Product> getAllProducts(int pageNo, int pageSize){
-        log.info("Get all products");
+    public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex) {
         Pageable paging = PageRequest.of(pageNo, pageSize);
-        return productRepository.findAll();
-
+        return productRepository.findAllBySex(sex, paging)
+                .retry()
+                .retryWhen(Retry.backoff(2, Duration.ofMillis(500)))
+                .doOnError(error -> log.error("error occurred during getting product by sex", error))
+                .onErrorResume(p -> FallbackProductsSource.fallbackProducts(sex));
     }
 
-    //@Cacheable("productsCache")
-    public Flux<Product> getAllProductsBySex(int pageNo, int pageSize, char sex){
-        log.info("Get all products by sex");
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        return productRepository.findAllBySex(sex, paging);
+    public Flux<Product> searchProducts(Long id, String name, String brand, String sex) {
+        if (id != null) {
+            return Flux.from(productRepository.findProductById(id));
+
+        } else if (StringUtils.hasText(name)
+                && StringUtils.hasText(brand)
+                && StringUtils.hasText(sex)) {
+
+            return productRepository.findProductsByNameAndBrandAndSex(name, brand, sex);
+
+        } else if (StringUtils.hasText(name)
+                && StringUtils.hasText(brand)) {
+
+            return productRepository.findProductsByNameAndBrand(name, brand);
+
+        } else if (StringUtils.hasText(brand)
+                && StringUtils.hasText(sex)) {
+            return productRepository.findProductsByBrandAndSex(brand, sex);
+
+        } else if (StringUtils.hasText(brand)) {
+            return productRepository.findProductsByBrand(brand);
+
+        } else if (StringUtils.hasText(name)) {
+            return Flux.from(productRepository.findProductByName(name));
+        } else {
+            return productRepository.findProductsByIdAndNameAndBrandAndSex(id, name, brand, sex);
+        }
     }
 
-    public Mono<Boolean> isProductExistById(String id){
-        return productRepository.existsById(id);
+    public Mono<Product> save(Product product) {
+        sumQteAndSetDate(product);
+        return productRepository.save(product)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Save product with ID: {}", product.getId())))
+                .flatMap(p -> kafkaProducer
+                        .sendProduct(Mono.just(p))
+                        .doOnError(error -> log.info("error happened when sending to Kafka {}", product, error)))
+                .doOnError(error -> log.error("Error during saving", error));
     }
 
-    //@CachePut(value = "productsCache", key = "#product.id")
-    public Mono<Product> save(Product product){
-        Mono<Product> savedProduct = productRepository.save(product);
-        savedProduct.subscribe(p -> kafkaProducer.sendProduct(p));
-        return savedProduct;
+    private void sumQteAndSetDate(Product product) {
+        Integer totalQte = product.getAvailability().values()
+                .stream()
+                .flatMap(v -> v.stream().map(SizeQte::getQte))
+                .reduce(0, Integer::sum);
+        product.setQuantity(totalQte);
+        product.setDateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss")));
     }
 
-    public void saveProducts(List<Product> products){
-        Flux<Product> savedProducts = productRepository.saveAll(products);
-        savedProducts.subscribe(p -> kafkaProducer.sendProduct(p));
+    public Mono<Void> saveProducts(List<Product> products) {
+        return productRepository.saveAll(products)
+                .doOnEach(withSpanInScope(SignalType.ON_NEXT, signal -> log.info("Bulk - Save list of products")))
+                .flatMap(p -> kafkaProducer
+                        .sendProduct(Mono.just(p))
+                        .doOnError(error -> log.info("error happened when sending to Kafka {}", p, error)))
+                .doOnError(error -> log.error("Error during saving all products", error))
+                .then();
     }
 
-    //@CacheEvict(value = "productsCache", key = "#id")
-    public Mono<Void> deleteProductById(String id){
-        log.debug("Product {}  delete ", id);
-        return productRepository.deleteById(id);
+    public Mono<Void> deleteProductById(long id) {
+        return productRepository.deleteById(id)
+                .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Delete product with ID: {}", id)));
     }
 
-    private Product createMockProduct(){
-        Set<String> size = new HashSet<>();
-        size.add("S");
-        size.add("M");
-        size.add("L");
-
-        Set<String> colors = new HashSet<>();
-        colors.add("Black");
-        colors.add("White");
-
-        SizeQte sizeQteS = new SizeQte();
-        sizeQteS.setSize('S');
-        sizeQteS.setQte(2);
-
-        SizeQte sizeQteM = new SizeQte();
-        sizeQteM.setSize('M');
-        sizeQteM.setQte(3);
-
-        Set<SizeQte> sizeQtesBlack = new HashSet<>();
-        sizeQtesBlack.add(sizeQteS);
-        sizeQtesBlack.add(sizeQteM);
-
-        Map<String, Set<SizeQte>> availablities = new HashMap<>();
-        availablities.put("Black", sizeQtesBlack);
-        availablities.put("White", sizeQtesBlack);
-
-
-        return Product.builder()
-                .id(String.valueOf(Math.random()))
-                .name("Sweat - Crew")
-                .brand("Nike")
-                .logo("https://www.festisite.com/static/partylogo/img/logos/nike.png")
-                .sex('W')
-                .category("Sweat")
-                .price(BigDecimal.valueOf(80))
-                .images(Collections.singleton("https://images.asos-media.com/products/nike-logo-crew-sweat-in-white-804340-100/7134528-3?$XXL$&wid=513&fit=constrain"))
-                .size(size)
-                .colors(colors)
-                .availability(availablities)
-                .build();
-
-    }
 }

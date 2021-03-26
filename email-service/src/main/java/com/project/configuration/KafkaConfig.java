@@ -1,6 +1,7 @@
 package com.project.configuration;
 
 import com.project.model.Order;
+import com.project.model.User;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,28 +24,48 @@ public class KafkaConfig {
     @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
-    @Value("${kafka.groupId}")
-    private String groupId;
+    @Value("${kafka.order.groupId}")
+    private String ordersGroupId;
+
+    @Value("${kafka.user.groupId}")
+    private String usersGroupId;
 
 
     @Bean
-    public ConsumerFactory<String, Order> consumerFactory(){
+    public ConsumerFactory<String, Order> ordersConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfig(ordersGroupId), new StringDeserializer(), new JsonDeserializer<>(Order.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Order> ordersKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Order> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(ordersConsumerFactory());
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, User> usersConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfig(usersGroupId), new StringDeserializer(), new JsonDeserializer<>(User.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, User> usersKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, User> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(usersConsumerFactory());
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+        return factory;
+    }
+
+    private Map<String, Object> consumerConfig(String consumerGroup) {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Order.class));
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Order> kafkaListenerContainerFactory(){
-        ConcurrentKafkaListenerContainerFactory<String, Order> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-        return factory;
+        return props;
     }
 }

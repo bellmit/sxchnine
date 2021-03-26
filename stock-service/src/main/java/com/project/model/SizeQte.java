@@ -15,9 +15,4 @@ public class SizeQte {
 
     private char size;
     private int qte;
-
-
-/*    public SizeQte() {
-        super(SizeQte.class);
-    }*/
 }

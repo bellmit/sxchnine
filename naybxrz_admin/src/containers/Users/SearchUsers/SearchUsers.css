@@ -1,0 +1,36 @@
+.users-manage-div{
+    margin: 5% 0 0 18%;
+    position: absolute;
+    z-index: 1;
+}
+
+.users-segment-div{
+    width: 55%;
+}
+.users-dropdown-sex{
+    font-size: 75%;
+    width: 20%;
+}
+
+.users-search-loop{
+    height: 5%;
+    width: 5%;
+}
+
+.users-search-loop:hover{
+    height: 5%;
+    width: 5%;
+    cursor: pointer;
+}
+
+.users-manage-div{
+    margin: 5% 0 0 18%;
+    position: absolute;
+    z-index: 1;
+}
+
+.ui.inverted.yellow.segment {
+    background-color: rgb(255, 240, 36) !important;
+}
+
+

@@ -1,7 +1,7 @@
 package utils;
 
 import com.project.model.Product;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
@@ -38,11 +38,11 @@ public class TestPrepare {
         System.out.println("b " + b);
 
         Product p1 = new Product();
-        p1.setId("1");
+        p1.setId(1L);
 
         Product p2 = p1;
 
-        p2.setId("2");
+        p2.setId(2L);
 
         System.out.println("p1: " + p1);
         System.out.println("p2: " + p2);

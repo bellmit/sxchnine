@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: naybxrz-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+    networking.gke.io/managed-certificates: naybxrz-certificate
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+  - host: "auth.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: keycloak
+          servicePort: 80
