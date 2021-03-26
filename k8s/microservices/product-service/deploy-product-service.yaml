@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+spec:
+  selector:
+    matchLabels:
+      app: product-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: product-service
+        collect_logs: "true"
+    spec:
+      containers:
+        - name: product-service
+          image: gcr.io/complete-tube-306819/product-service:1.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8080
+              path: /actuator/health/liveness
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8080
+              path: /actuator/health/readiness
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  labels:
+    collect_logs: "true"
+spec:
+  type: ClusterIP
+  selector:
+    app: product-service
+  ports:
+    - port: 8080
+      targetPort: 8080

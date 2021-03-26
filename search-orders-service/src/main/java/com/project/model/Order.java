@@ -29,7 +29,12 @@ public class Order {
 
     @Id
     private String orderId;
-    private OrderKey orderKey;
+    private String userEmail;
+    @Field(type = FieldType.Date_Nanos, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime orderTime;
     private String orderStatus;
     private List<Product> products;
     private String productBrand;

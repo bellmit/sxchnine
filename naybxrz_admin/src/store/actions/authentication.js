@@ -3,7 +3,7 @@ import * as actionTypes from './actions';
 
 export const authenticate = () => {
     return dispatch => {
-        auth.get('/authenticate')
+        auth.get('/auth/authenticate')
             .then(response => {
                 dispatch(authenticateSuccess(response.data));
             })

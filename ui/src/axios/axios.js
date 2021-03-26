@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    //baseURL: 'http://192.168.64.4:30382'
-    baseURL: 'http://localhost:9090'
+    baseURL: 'https://api.naybxrz.com'
+    //baseURL: 'http://localhost:9090'
     //baseURL: 'http://192.168.1.66:9090'
 });
 

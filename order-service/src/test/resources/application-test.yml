@@ -2,6 +2,8 @@ spring:
   data:
     mongodb:
       database: orders
+      host: localhost
+      port: 27017
   kafka:
     producer:
       bootstrap-servers: ${spring.embedded.kafka.brokers}

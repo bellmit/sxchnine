@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import Aux from '../../hoc/Aux/Aux';
 import UserIcon from './UserIcon';
-import {Grid, Image, Label, Modal, Progress} from "semantic-ui-react";
+import {Grid, Image, Label, Modal} from "semantic-ui-react";
 import stickers from "./stickers.jpg";
 
 

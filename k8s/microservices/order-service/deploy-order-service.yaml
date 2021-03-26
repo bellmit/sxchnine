@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: order-service
+        collect_logs: "true"
+    spec:
+      containers:
+        - name: order-service
+          image: gcr.io/complete-tube-306819/order-service:1.0.2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8080
+              path: /actuator/health/liveness
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8080
+              path: /actuator/health/readiness
+          resources:
+            limits:
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  labels:
+    collect_logs: "true"
+spec:
+  type: ClusterIP
+  selector:
+    app: order-service
+  ports:
+    - port: 8080
+      targetPort: 8080

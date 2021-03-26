@@ -19,8 +19,6 @@ import static com.project.utils.PaymentStatusCode.*;
 @Slf4j
 public class OrderConsumer {
 
-    private static final String DLT = ".DLT";
-
     private final CatchupOrder catchupOrder;
     private final Map<String, Order> nackOrders = new ConcurrentHashMap<>();
     private final Map<String, Order> nackDLTOrders = new ConcurrentHashMap<>();
@@ -64,8 +62,8 @@ public class OrderConsumer {
 
     }
 
-    @KafkaListener(groupId = "${kafka.consumer.groupId}" + DLT,
-            topics = "${kafka.consumer.topic}" + DLT,
+    @KafkaListener(groupId = "${kafka.consumer.dlt.groupId}",
+            topics = "${kafka.consumer.dlt.topic}",
             containerFactory = "kafkaDLTListenerContainerFactory")
     public void consumerOrderDLT(Order order, Acknowledgment acknowledgment) {
         log.info("DLT consume order {} with status {} for payment", order.getOrderId(), order.getOrderStatus());

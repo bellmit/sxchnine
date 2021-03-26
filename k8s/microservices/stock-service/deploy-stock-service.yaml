@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-service
+spec:
+  selector:
+    matchLabels:
+      app: stock-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stock-service
+        collect_logs: "true"
+    spec:
+      containers:
+        - name: stock-service
+          image: gcr.io/complete-tube-306819/stock-service:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8080
+              path: /health/live
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8080
+              path: /health/ready
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stock-service
+  labels:
+    collect_logs: "true"
+spec:
+  type: ClusterIP
+  selector:
+    app: stock-service
+  ports:
+    - port: 8080
+      targetPort: 8080

@@ -2,7 +2,9 @@ package com.project.configuration;
 
 import com.project.model.Order;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +25,15 @@ import reactor.kafka.sender.SenderOptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 @Configuration
 @EnableKafka
 public class KafkaConfig {
+
+    private static final BiFunction<ConsumerRecord<?, ?>, Exception, TopicPartition> CUSTOM_DESTINATION_RESOLVER = (cr, e) -> {
+        return new TopicPartition(cr.topic() + "-dlt", cr.partition());
+    };
 
     @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
@@ -82,7 +89,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Order> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-        factory.setErrorHandler(new SeekToCurrentErrorHandler(new DeadLetterPublishingRecoverer(kafkaOperations), new FixedBackOff(0, 0)));
+        factory.setErrorHandler(new SeekToCurrentErrorHandler(new DeadLetterPublishingRecoverer(kafkaOperations, CUSTOM_DESTINATION_RESOLVER), new FixedBackOff(0, 0)));
         return factory;
     }
 

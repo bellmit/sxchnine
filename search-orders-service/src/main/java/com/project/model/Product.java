@@ -15,10 +15,10 @@ import java.math.BigDecimal;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
 
+    private String productId;
     private String productName;
     private String productBrand;
     private String image;
-    private String productId;
     private String productSize;
     private String productColor;
     private Integer productQte;

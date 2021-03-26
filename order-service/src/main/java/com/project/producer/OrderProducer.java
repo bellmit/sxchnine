@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.kafka.sender.KafkaSender;
 import reactor.kafka.sender.SenderRecord;
 import reactor.util.retry.Retry;
@@ -39,8 +38,7 @@ public class OrderProducer {
     public Mono<Void> sendOder(Mono<Order> order) {
         Mono<SenderRecord<Object, String, Object>> recordMono = order
                 .doOnNext(o -> log.info("order to sent {}", o.toString()))
-                .map(o -> SenderRecord.create(topic, null, null, null, mapOrder(o), null))
-                .subscribeOn(Schedulers.boundedElastic());
+                .map(o -> SenderRecord.create(topic, null, null, null, mapOrder(o), null));
 
         return kafkaSender.send(recordMono)
                 .doOnNext(o -> log.info("sent to kafka successfully"))

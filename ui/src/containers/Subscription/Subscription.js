@@ -5,10 +5,6 @@ import story from './story.png';
 import storyMobile from './resize4.jpg';
 import placeholder1 from './placeholder1.png';
 import './Subscription.css';
-import naybxrzVideo from './Naybxrz-Teaser1.mp4';
-/*
-import naybxrzVideo from './GOt_IT3.mp4';
-*/
 import * as actions from './../../store/actions/index';
 import {isMobile} from 'react-device-detect';
 
@@ -60,16 +56,15 @@ class Subscription extends Component {
             <img src={image} alt="Naybxrz Story Street life Street wear Culture"
                  className="subscription-main-img"/>
             <div className="subscription-main-video">
-                <Embed id="9I7IJtgk2xM"
-                    //source="youtube"
-                       url={naybxrzVideo}
+                <Embed id="wggsKTthQrE"
+                        source="youtube"
                        placeholder={placeholder1}
                 />
             </div>
             <div className="subscription-main-info">
                 <Grid centered>
                     <Grid.Row>
-                        <Grid.Column width={columnWidthText} mobile>
+                        <Grid.Column width={columnWidthText}>
                             <Form.Input required inverted loading={this.props.subscribeUserLoading}
                                         placeholder='Email...'
                                         name='email'
@@ -79,7 +74,7 @@ class Subscription extends Component {
                                         onChange={this.handleChange}/>
 
                         </Grid.Column>
-                        <Grid.Column width={columnWidthButton} mobile>
+                        <Grid.Column width={columnWidthButton}>
                             <Button className="subscription-main-info-button"
                                     style={{background: 'yellow'}}
                                     onClick={() => this.subscribeUser()}>

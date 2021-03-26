@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class OrderCatchupConsumer {
 
-    private static final String DLT = ".DLT";
+    private static final String DLT = "-dlt";
 
     private final OrderService orderService;
     private final Map<String, Order> nackOrders = new ConcurrentHashMap<>();
@@ -48,8 +48,8 @@ public class OrderCatchupConsumer {
         }
     }
 
-    @KafkaListener(groupId = "${kafka.consumer.groupId}" + DLT,
-            topics = "${kafka.consumer.topic}" + DLT,
+    @KafkaListener(groupId = "${kafka.consumer.dlt.groupId}" + DLT,
+            topics = "${kafka.consumer.dlt.topic}" + DLT,
             containerFactory = "dltKafkaListenerContainerFactory")
     public void consumeDLTCatchupOrder(Order order, Acknowledgment ack) {
         log.info("DLT - order to catchup {}", order.getOrderId());

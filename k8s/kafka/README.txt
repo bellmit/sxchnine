@@ -6,3 +6,5 @@
 6- kubectl apply -f topic-orders.yaml
 7 - kubectl apply -f topic-products.yaml
 8 - kubectl apply -f topic-users.yaml
+9- kubectl apply -f topic-catchup-orders-dlt.yaml
+10- kubectl apply -f topic-orders-dlt.yaml

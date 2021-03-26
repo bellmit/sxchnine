@@ -13,6 +13,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address implements Serializable {
 
+    private String firstName;
+    private String lastName;
     private String address;
     private String postalCode;
     private String city;

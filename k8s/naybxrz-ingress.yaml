@@ -15,3 +15,31 @@ spec:
         backend:
           serviceName: keycloak
           servicePort: 80
+  - host: "admin.naybxrz.com"
+    http:
+      paths:
+      - path: /tracing
+        backend:
+          serviceName: jaeger-query
+          servicePort: 80
+  - host: "admin.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: naybxrz-admin
+          servicePort: 80
+  - host: "api.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: api-gateway
+          servicePort: 80
+  - host: "naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: naybxrz-ui
+          servicePort: 443

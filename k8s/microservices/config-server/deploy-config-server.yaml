@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+spec:
+  selector:
+    matchLabels:
+      app: config-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: config-server
+        collect_logs: "true"
+    spec:
+      containers:
+        - name: config-server
+          image: gcr.io/complete-tube-306819/config-server:1.2.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8888
+          livenessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              port: 8888
+              path: /actuator/health/liveness
+          readinessProbe:
+            initialDelaySeconds: 15
+            httpGet:
+              port: 8888
+              path: /actuator/health/readiness
+          resources:
+            limits:
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+  labels:
+    collect_logs: "true"
+spec:
+  type: ClusterIP
+  selector:
+    app: config-server
+  ports:
+    - port: 8888
+      targetPort: 8888

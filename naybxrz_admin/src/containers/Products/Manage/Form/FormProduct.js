@@ -9,7 +9,7 @@ import trash from './trash.png';
 class FormProduct extends PureComponent {
 
     state = {
-        id: this.props.productByIdData !== undefined ? this.props.productByIdData.id : '',
+        id: this.props.productByIdData !== undefined ? this.props.productByIdData.id : this.generateId(),
         ref: this.props.productByIdData !== undefined ? this.props.productByIdData.ref : '',
         name: this.props.productByIdData !== undefined ? this.props.productByIdData.name : '',
         sex: this.props.productByIdData !== undefined ? this.props.productByIdData.sex : '',
@@ -221,6 +221,10 @@ class FormProduct extends PureComponent {
             store: this.state.store,
             dateTime: this.state.dateTime
         }
+    }
+
+    generateId(){
+        return (Date.now().toString(36) + Math.random());
     }
 
 

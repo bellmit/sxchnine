@@ -20,6 +20,10 @@ spec:
           db: admin
         - name: userAdminAnyDatabase
           db: admin
+        - name: dbAdmin
+          db: admin,orders,products
+        - name: root
+          db: admin,orders,products
       scramCredentialsSecretName: my-scram    
     - name: products-user
       db: products
@@ -27,6 +31,12 @@ spec:
         name: products-password
       roles:
         - name: clusterAdmin
+          db: products
+        - name: readWrite
+          db: products
+        - name: dbAdmin
+          db: products
+        - name: root
           db: products
       scramCredentialsSecretName: my-scram
     - name: orders-user
@@ -36,6 +46,12 @@ spec:
       roles:
         - name: clusterAdmin
           db: orders
+        - name: readWrite
+          db: orders  
+        - name: dbAdmin
+          db: orders
+        - name: root
+          db: orders      
       scramCredentialsSecretName: my-scram
   additionalMongodConfig:
     storage.wiredTiger.engineConfig.journalCompressor: zlib

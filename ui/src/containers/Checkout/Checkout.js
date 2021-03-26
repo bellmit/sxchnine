@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimmer, Form, Grid, Input, Label, Loader, Message, Modal, Segment} from "semantic-ui-react";
+import {Dimmer, Form, Grid, Input, Label, Loader, Message, Modal} from "semantic-ui-react";
 import {connect} from 'react-redux';
 import Banner from "../../components/Banner/Banner";
 import './Checkout.css';
