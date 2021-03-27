@@ -42,4 +42,11 @@ spec:
       - path: /*
         backend:
           serviceName: naybxrz-ui
-          servicePort: 443
+          servicePort: 80
+  - host: "www.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: naybxrz-ui
+          servicePort: 80
