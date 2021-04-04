@@ -4,7 +4,7 @@ import * as actions from './actions';
 import {USER_UPDATES_FAIL, USER_UPDATES_START, USER_UPDATES_SUCCESS} from "./actions";
 
 const setAxiosToken = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
 };
 
 

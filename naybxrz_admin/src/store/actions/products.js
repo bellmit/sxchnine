@@ -3,7 +3,7 @@ import * as actions from './actions';
 import {store} from "../../index";
 
 const setAxiosToken = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
 };
 
 const searchProductsStart = (loading) => {

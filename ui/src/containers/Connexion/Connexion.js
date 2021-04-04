@@ -47,7 +47,7 @@ class Connexion extends PureComponent {
     render() {
 
         let userIcon = <img src={user}
-                            alt="connexion"
+                            alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
                             onClick={this.checkIfAuthenticatedAndRedirect}
                             className="Connexion-Button"/>
         if (this.state.path === '/men'

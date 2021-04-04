@@ -3,7 +3,7 @@ import * as actionTypes from './actionTypes';
 import {store} from "../../index";
 
 const setAxiosToken = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
 };
 
 export const saveUserStart = (loading) => {
@@ -113,12 +113,8 @@ export const changePassword = (email, oldPassword, newPassword, confirmNewPasswo
                 }
 
                 /* if (!response.data.error){
-                     console.log("ERROR");
-                     console.log(response.data);
                      dispatch(changePasswordUserFail(response.data.error));
                  } else {
-                     console.log("SUCCESS");
-                     console.log(response.data);
                      dispatch(changePasswordUserSuccess(true));
                  }*/
             })

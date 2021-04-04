@@ -12,7 +12,7 @@ class Gallery extends Component {
     render() {
         return (
             <div>
-                <img alt="" className="Gallery-Div" src={this.props.url} onClick={() => this.redirectToProduct(this.props.productId)}/>
+                <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob" className="Gallery-Div" src={this.props.url} onClick={() => this.redirectToProduct(this.props.productId)}/>
             </div>
         );
     }

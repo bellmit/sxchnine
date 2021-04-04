@@ -3,11 +3,15 @@ import auth from '../../axios/auth';
 
 export const authenticate = () => {
     return dispatch => {
-        auth.get('/auth/authenticate')
+        auth.get('/auth/authenticate', {
+            headers: {
+                'X-DOMAIN': process.env.REACT_APP_DOMAIN,
+                'X-AUTHORITY': Math.round(new Date().getTime()/1000) + process.env.REACT_APP_AUTHORITY
+            }
+        })
             .then(response => {
-                dispatch(authenticateSuccess(response.data));
-                //localStorage.setItem("access_token", response.data["access_token"]);
-                //localStorage.setItem("refresh_token", response.data["refresh_token"]);
+                dispatch(authenticateSuccess(response.data.slice(0, response.data.length - process.env.REACT_APP_RATE)));
+                console.clear();
             })
             .catch(error => {
                 dispatch(authenticateError(error));

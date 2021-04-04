@@ -4,6 +4,8 @@ import io.quarkus.arc.config.ConfigProperties;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ConfigProperties(prefix = "authentication")
@@ -17,7 +19,7 @@ public class AuthenticationProperties {
     private String secret;
     private String scope;
     private String user;
-    private String password;
+    private String pwd;
 
 
 }

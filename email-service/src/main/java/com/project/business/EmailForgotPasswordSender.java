@@ -14,6 +14,9 @@ public class EmailForgotPasswordSender extends EmailSender<User>{
     @Value("${sendGrid.mail.templateForgotPasswordId}")
     private String templateForgotPasswordId;
 
+    @Value("${sendGrid.mail.name}")
+    private String senderName;
+
     public EmailForgotPasswordSender(SendGrid sendGrid) {
         super(sendGrid);
     }
@@ -31,7 +34,7 @@ public class EmailForgotPasswordSender extends EmailSender<User>{
     @Override
     public Mail mailBuilder(User user) {
         log.info("Send Forgot Password Email to user: {}", user.getEmail());
-        Email emailFrom = new Email(from);
+        Email emailFrom = new Email(from, senderName);
         Email emailTo = new Email(user.getEmail());
 
         Personalization personalization = new Personalization();

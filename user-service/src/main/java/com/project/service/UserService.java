@@ -21,6 +21,8 @@ import static com.project.util.UserCode.ADMIN;
 @Slf4j
 public class UserService {
 
+    private static final Random RANDOM = new Random();
+
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final UserProducer userProducer;
@@ -40,8 +42,10 @@ public class UserService {
                         if (StringUtils.hasText(user.getPassword()) && user.getPassword().length() < 20) {
                             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
                             user.setEmail(user.getEmail().toLowerCase());
+                            user.setForgotPassword(false);
                         } else {
                             user.setPassword(u.getPassword());
+                            user.setForgotPassword(false);
                         }
                         return user;
                     }))
@@ -115,9 +119,8 @@ public class UserService {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 10;
-        Random random = new Random();
 
-        return random.ints(leftLimit, rightLimit + 1)
+        return RANDOM.ints(leftLimit, rightLimit + 1)
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString()

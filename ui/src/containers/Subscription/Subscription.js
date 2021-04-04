@@ -7,6 +7,7 @@ import placeholder1 from './placeholder1.png';
 import './Subscription.css';
 import * as actions from './../../store/actions/index';
 import {isMobile} from 'react-device-detect';
+import * as actionTypes from "../../store/actions/authentication";
 
 class Subscription extends Component {
 
@@ -16,6 +17,7 @@ class Subscription extends Component {
     }
 
     componentDidMount() {
+        this.props.authenticate();
         this.props.subscribeUserSuccess('');
     }
 
@@ -53,7 +55,7 @@ class Subscription extends Component {
         }
 
         return <div className="subscription-main">
-            <img src={image} alt="Naybxrz Story Street life Street wear Culture"
+            <img src={image} alt="Naybxrz Store Street life Street Wear Hip Hop Culture Lifestyle - Sneakers Hoodies Tshirts"
                  className="subscription-main-img"/>
             <div className="subscription-main-video">
                 <Embed id="wggsKTthQrE"
@@ -103,7 +105,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         subscribeUser: (user) => dispatch(actions.subscribeUser(user)),
-        subscribeUserSuccess: (user) => dispatch(actions.subscribeUserSuccess(user))
+        subscribeUserSuccess: (user) => dispatch(actions.subscribeUserSuccess(user)),
+        authenticate: () => dispatch(actionTypes.authenticate())
     }
 }
 

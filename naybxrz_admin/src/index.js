@@ -26,7 +26,7 @@ const reducers = combineReducers({
 });
 
 const encryptor = encryptTransform({
-    secretKey: '$props.sk',
+    secretKey: process.env.REACT_APP_REDUX,
     onError: function (error) {
         // Handle the error.
     }

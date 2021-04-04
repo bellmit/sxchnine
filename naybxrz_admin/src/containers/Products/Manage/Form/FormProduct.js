@@ -224,7 +224,7 @@ class FormProduct extends PureComponent {
     }
 
     generateId(){
-        return (Date.now().toString(36) + Math.random());
+        return 'P-' + (Date.now().toString(36) + Math.random().toFixed(0));
     }
 
 

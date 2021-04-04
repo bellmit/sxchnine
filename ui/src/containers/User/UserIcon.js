@@ -11,7 +11,7 @@ class UserIcon extends Component {
         if (this.props.user.email != null){
             userButton = <img src={orders_box}
                               className="User-button-icon"
-                              alt="Orders History Naybxrz"
+                              alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
                               onClick={this.props.show}/>
         }
 

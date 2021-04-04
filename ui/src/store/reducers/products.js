@@ -20,7 +20,6 @@ const reducer = (state = initialState, action) => {
         case actionTypes.LOAD_PRODUCTS_SUCCESS:
             let products = [...state.products];
             products = products.concat(action.products);
-            console.log(products);
             return {
                 ...state,
                 products: products

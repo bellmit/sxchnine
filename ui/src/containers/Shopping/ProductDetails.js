@@ -32,17 +32,6 @@ class ProductDetails extends PureComponent {
 
     handleChangeColor = (e, {value}) => {
         this.setState({value, color: value});
-        /*        let availableSize = this.props.product.availability[value].map(size => size.size).map(s => {
-                    console.log(this.state.value)
-                    return <Form.Radio
-                        key={s}
-                        label={s}
-                        value={s}
-                        checked={this.state.value === s}
-                        onChange={this.handleChangeSize}/>
-                });*/
-
-        //this.setState({availableSize: availableSize});
         this.setState({availableSize: this.props.product.availability[value].filter(size => size.qte !== 0).map(size => size.size)});
     };
 
@@ -59,13 +48,6 @@ class ProductDetails extends PureComponent {
 
 
     handleAddToOrder = () => {
-        console.log('Product to order');
-        console.log(this.props.product.id);
-        console.log(this.props.product.name);
-        console.log(this.props.product.brand);
-        console.log(this.props.product.price);
-        console.log(this.state.size);
-        console.log(this.state.color);
         const productToOrder = {
             productId: this.props.product.id,
             productName: this.props.product.name,

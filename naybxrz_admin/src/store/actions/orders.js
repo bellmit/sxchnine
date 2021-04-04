@@ -5,7 +5,7 @@ import {store} from "../../index";
 import * as actions from './actions';
 
 const setAxiosToken = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
 };
 
 const ordersByMonthStart = (loading) => {

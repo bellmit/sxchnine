@@ -60,7 +60,8 @@ class ShopResume extends Component {
                                 <Modal.Description>
                                     <Header>
                                         <span className="Panier-Items-Text-Header">{product.productName}</span>
-                                        <img alt="" src={trash}
+                                        <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                                             src={trash}
                                              className="Trash-Icon"
                                              onClick={() => this.removeProduct(index)}/>
                                     </Header>

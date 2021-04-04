@@ -29,7 +29,6 @@ class Account extends Component {
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     addUser = () => {
-        console.log(this.constructUser());
         this.props.addUser(this.constructUser());
         this.close();
     };

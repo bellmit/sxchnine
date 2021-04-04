@@ -15,16 +15,10 @@ class Banner extends Component {
         return this.props.location.pathname !== nextProps.location.pathname;
     }
 
-
-    componentDidUpdate() {
-        console.log('Banner did Update ');
-        console.log(this.props);
-
-    }
-
     render() {
         let banner = <Aux>
-                        <img alt="" src={bannerMen} className="Banner-Header-img"/>
+                        <img alt="naybxrz econcept store man vintage clothes hoodies shirts street wear street life carhartt adidas nike deadora northface"
+                             src={bannerMen} className="Banner-Header-img"/>
                         <div className="Banner-Container-Men">
                             <p>MEN </p>
                         </div>
@@ -33,7 +27,7 @@ class Banner extends Component {
 
         if (this.props.location.pathname === '/women'){
             banner = <Aux>
-                <img alt="" src={bannerWomen} className="Banner-Header-img"/>
+                <img alt="naybxrz econcept store woman girls vintage clothes hoodies shirts adidas nike carhartt northface patagonia rains" src={bannerWomen} className="Banner-Header-img"/>
                 <div className="Banner-Container-Men">
                     <p> WOMEN </p>
                 </div>
@@ -43,7 +37,9 @@ class Banner extends Component {
 
         if (this.props.location.pathname === '/orders'){
             banner = <Aux>
-                <img alt="" src={orderPlace} className="BannerOrder-Header-img"/>
+                <img alt="naybxrz econcept store vintage clothes nike nocta adidas supreme northface reebok carhartt obey wutang wear bad boy clothes street culture lifestyle"
+                     src={orderPlace}
+                     className="BannerOrder-Header-img"/>
                 <div className="Banner-Container-Men">
                     <p> ORDER PLACE </p>
                 </div>
@@ -53,7 +49,7 @@ class Banner extends Component {
 
         if (this.props.location.pathname === '/checkout'){
             banner = <Aux>
-                <img alt="" src={checkout} className="BannerCheckout-Header-img"/>
+                <img alt="naybxrz econcept store vintage clothes carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle" src={checkout} className="BannerCheckout-Header-img"/>
                 <div className="Banner-Container-Men">
                     <p> CHECKOUT </p>
                 </div>
@@ -63,7 +59,7 @@ class Banner extends Component {
 
         if (this.props.location.pathname === '/userAccount'){
             banner = <Aux>
-                <img alt="" src={open} className="BannerUserAccount-Header-img"/>
+                <img alt="naybxrz econcept store vintage checkout carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle" src={open} className="BannerUserAccount-Header-img"/>
                 <div className="Banner-Container-User">
                     <p> What you Got  </p>
                 </div>

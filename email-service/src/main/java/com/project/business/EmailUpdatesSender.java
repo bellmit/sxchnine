@@ -15,6 +15,9 @@ public class EmailUpdatesSender extends EmailSender<User> {
     @Value("${sendGrid.mail.templateUpdatesId}")
     private String templateId;
 
+    @Value("${sendGrid.mail.name}")
+    private String senderName;
+
     public EmailUpdatesSender(SendGrid sendGrid) {
         super(sendGrid);
     }
@@ -32,7 +35,7 @@ public class EmailUpdatesSender extends EmailSender<User> {
     @Override
     public Mail mailBuilder(User user) {
         log.info("Send Updates Email to {}", user.getEmail());
-        Email emailFrom = new Email(from);
+        Email emailFrom = new Email(from, senderName);
         Email emailTo = new Email(user.getEmail());
 
         Personalization personalization = new Personalization();

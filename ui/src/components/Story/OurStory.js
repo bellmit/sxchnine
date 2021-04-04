@@ -14,7 +14,7 @@ class OurStory extends Component {
         }
 
         return <div className="main-div">
-            <img src={image} alt="story" className="Story-Image-div"/>
+            <img src={image} alt="naybxrz econcept store our story vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob" className="Story-Image-div"/>
         </div>
     }
 }

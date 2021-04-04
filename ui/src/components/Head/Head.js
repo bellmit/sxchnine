@@ -12,7 +12,8 @@ class Head extends Component{
             <Aux>
                 <div className="Header-Body">
                     <div>
-                        <img alt="" className="Container-img" src={jordan}/>
+                        <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob you know my stylo"
+                             className="Container-img" src={jordan}/>
                     </div>
                     <div>
                         <p className="Paragraph">YOU KNOW MY _STEELO !</p>

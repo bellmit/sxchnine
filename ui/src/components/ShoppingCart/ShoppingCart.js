@@ -19,7 +19,7 @@ class ShoppingCart extends Component {
 
 
         let icon = <img src={yellowBasket}
-                        alt="naybxrz shopping cart"
+                        alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
                         onClick={this.props.show}
                         className="ShoppingCart-div-icon"/>
 
@@ -31,7 +31,7 @@ class ShoppingCart extends Component {
             || this.props.history.location.pathname.startsWith('/products/')
         ){
             icon = <img src={blackBasket}
-                        alt="naybxrz shopping cart"
+                        alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
                         onClick={this.props.show}
                         className="ShoppingCart-div-icon"/>
         }

@@ -8,7 +8,8 @@ const contactUsSent = (props) => {
 
     return (
         <div>
-            <img alt="" src={skate_back} className="ContactUsSent-Image-div"/>
+            <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                 src={skate_back} className="ContactUsSent-Image-div"/>
 
             <div className="ContactUsSent-Form-Div">
                 <Container text className="ContactUsSent-Container-div">

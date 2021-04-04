@@ -17,6 +17,9 @@ public class EmailShippedSender extends EmailSender<Order> {
     @Value("${sendGrid.mail.templateShippedId}")
     private String templateShippedId;
 
+    @Value("${sendGrid.mail.name}")
+    private String senderName;
+
     public EmailShippedSender(SendGrid sendGrid) {
         super(sendGrid);
     }
@@ -35,7 +38,7 @@ public class EmailShippedSender extends EmailSender<Order> {
     @Override
     public Mail mailBuilder(Order order) {
         log.info("Send Shipped Email to {} for Order ID: {}", order.getUserEmail(), order.getOrderId());
-        Email emailFrom = new Email(from);
+        Email emailFrom = new Email(from, senderName);
         Email emailTo = new Email(order.getUserEmail());
 
         Personalization personalization = new Personalization();

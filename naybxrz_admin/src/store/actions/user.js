@@ -11,7 +11,7 @@ import {
 } from "./actions";
 
 const setAxiosToken = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
 };
 
 export const authenticatedUserStart = (loading) => {

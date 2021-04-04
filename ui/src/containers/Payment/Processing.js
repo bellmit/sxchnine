@@ -13,9 +13,6 @@ class Processing extends Component {
 
     componentDidMount() {
         let params = new URLSearchParams(this.props.location.search);
-        console.log(params.get("payment_intent"));
-        console.log(params.get("payment_intent_client_secret"));
-
         if (params.get("payment_intent") !== null
             && params.get("payment_intent_client_secret") !== null){
             this.props.confirmOrder(params.get("payment_intent"),  window.localStorage.getItem("orderId"), this.props.history);
@@ -28,7 +25,9 @@ class Processing extends Component {
                 <Dimmer active={this.state.processing} page>
                     <Loader content='Loading'/>
                 </Dimmer>
-                <img alt="" src={processing} className="Processing-Image-div"/>
+                <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                     src={processing}
+                     className="Processing-Image-div"/>
             </div>
         )
     }

@@ -20,6 +20,9 @@ public class EmailContactSender extends EmailSender<Contact>{
     @Value("${sendGrid.mail.templateContact}")
     private String templateContactId;
 
+    @Value("${sendGrid.mail.name}")
+    private String senderName;
+
     public EmailContactSender(SendGrid sendGrid) {
         super(sendGrid);
     }
@@ -37,7 +40,7 @@ public class EmailContactSender extends EmailSender<Contact>{
     @Override
     public Mail mailBuilder(Contact contact) {
         log.info("Send Contact Email to Naybxrz Support: {}", from);
-        Email emailFrom = new Email(from);
+        Email emailFrom = new Email(from, senderName);
         Email emailTo = new Email(from);
 
         Personalization personalization = new Personalization();

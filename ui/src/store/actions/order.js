@@ -3,7 +3,7 @@ import axios from '../../axios/axios';
 import {store} from "../../index";
 
 const setAxiosToken = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data.access_token
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
 };
 
 export const order = (productsToOrder, history) => {
@@ -35,7 +35,6 @@ export const order = (productsToOrder, history) => {
                     window.localStorage.removeItem("orderId");
                 } else {
                     dispatch(orderSuccess(response.data));
-                    console.log(response.data);
                     if (response.data.errorReason.code === 'incorrect_number'
                         || response.data.errorReason.code === 'invalid_number'
                         || response.data.errorReason.code === 'expired_card'

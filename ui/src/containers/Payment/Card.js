@@ -26,8 +26,6 @@ class Card extends PureComponent {
     };
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        console.log("Card updated");
-        console.log(this.props.error);
         if (this.props.handledErrors !== undefined &&
              this.props.handledErrors.errorReason !== undefined){
             this.setState({errorName: this.props.handledErrors.errorReason.message});

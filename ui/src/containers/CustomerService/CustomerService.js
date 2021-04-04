@@ -7,7 +7,8 @@ import Aux from "../../hoc/Aux/Aux";
 const customerService = (props) => {
     return (
         <div>
-            <img alt="" src={customer_back} className="Customer-Image-div"/>
+            <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                 src={customer_back} className="Customer-Image-div"/>
             <div className="Customer-Form-Div">
                 <Container text className="Customer-Container-div">
                     <Aux>

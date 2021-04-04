@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
+    private final SubscriberProducer subscriberProducer;
 
     public Flux<Subscription> getSubscriptions(){
         return subscriptionRepository.findAll();
@@ -21,7 +22,8 @@ public class SubscriptionService {
 
     public Mono<Subscription> saveSubscription(Subscription subscription){
         log.info("save subscription: {}", subscription.getEmail());
-        return subscriptionRepository.save(subscription);
+        return subscriptionRepository.save(subscription)
+                .flatMap(subscriberProducer::pushSubscriberToKafka);
     }
 
     public Mono<Boolean> deleteSubscription(String email){

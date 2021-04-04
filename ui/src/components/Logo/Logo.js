@@ -7,7 +7,8 @@ const logo = () => {
 
     return (
         <div>
-            <img alt ="" className="Got-it-logo" src={naybxrz}/>
+            <img alt ="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                 className="Got-it-logo" src={naybxrz}/>
         </div>
     );
 }

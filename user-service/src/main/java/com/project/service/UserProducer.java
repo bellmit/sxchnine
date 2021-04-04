@@ -21,7 +21,7 @@ public class UserProducer {
     private final KafkaSender<Object, String> kafkaSender;
     private final ObjectMapper objectMapper;
 
-    public UserProducer(@Value("${kafka.producer.topic}") String topic, KafkaSender<Object, String> kafkaSender, ObjectMapper objectMapper) {
+    public UserProducer(@Value("${kafka.producer.user.topic}") String topic, KafkaSender<Object, String> kafkaSender, ObjectMapper objectMapper) {
         this.topic = topic;
         this.kafkaSender = kafkaSender;
         this.objectMapper = objectMapper;

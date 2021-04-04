@@ -29,16 +29,6 @@ class Checkout extends Component {
         forgotPasswordValidation: undefined
     }
 
-/*    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS): void {
-        if (prevProps.userAuth.email !== this.props.userAuth.email
-            && prevProps.userAuth.password !== this.props.userAuth.password) {
-            this.setState({
-                email: this.props.userAuth.email,
-                password: this.props.userAuth.password
-            })
-        }
-    }*/
-
     show = () => this.setState({open: true});
     showForgotPassword = () => this.setState({openForgotPassword: true});
     close = () => this.setState({open: false});

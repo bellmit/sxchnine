@@ -111,7 +111,8 @@ class Tracking extends Component {
 
         return (
             <div>
-                <img alt="" src={tracking_back} className="Tracking-Image-div"/>
+                <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                     src={tracking_back} className="Tracking-Image-div"/>
                 <Dimmer active={this.props.loading} page>
                     <Loader content='Loading'/>
                 </Dimmer>

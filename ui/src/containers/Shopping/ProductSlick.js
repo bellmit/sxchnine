@@ -25,7 +25,8 @@ class ProductSlick extends Component {
                     <Carousel fade={true} keyboard style={{textAlign: "center"}}>
                         {this.props.product.images.map((image, index) => (
                             <Carousel.Item key={index}>
-                                <div><img alt="" src={image}/></div>
+                                <div><img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                                          src={image}/></div>
                             </Carousel.Item>
                         ))}
                     </Carousel>

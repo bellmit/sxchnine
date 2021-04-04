@@ -14,6 +14,9 @@ public class EmailSubscription extends EmailSender<Subscription> {
     @Value("${sendGrid.mail.templateSubscriptionId}")
     private String templateSubscriptionId;
 
+    @Value("${sendGrid.mail.name}")
+    private String senderName;
+
     private SendGrid sendGrid;
 
     public EmailSubscription(SendGrid sendGrid) {
@@ -33,7 +36,7 @@ public class EmailSubscription extends EmailSender<Subscription> {
     @Override
     public Mail mailBuilder(Subscription subscription) {
         log.info("Send Subscription Email to {}", subscription.getEmail());
-        Email emailFrom = new Email(from);
+        Email emailFrom = new Email(from, senderName);
         Email emailTo = new Email(subscription.getEmail());
 
         Personalization personalization = new Personalization();

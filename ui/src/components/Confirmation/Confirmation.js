@@ -11,6 +11,7 @@ class Confirmation extends Component {
 
     componentDidMount() {
         window.localStorage.removeItem("persist:root");
+        window.localStorage.clear();
         persistor.purge();
         if (this.props.match.params.status === '1' || this.props.match.params.status === '2') {
             this.resetState();
@@ -73,7 +74,8 @@ class Confirmation extends Component {
         return (
 
             <div>
-                <img alt="Naybxrz Store Shopping Streetwear Culture" src={thank} className="Confirmation-Image-div"/>
+                <img alt="naybxrz econcept store vintage adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                     src={thank} className="Confirmation-Image-div"/>
 
                 <div className="Confirmation-Message-div">
                     <Container text className="Confirmation-Container-div">

@@ -7,9 +7,7 @@ export const searchProducts = (event) => {
         const CancelToken = axios.CancelToken;
         let cancel;
         dispatch(searchProductsStart(true));
-        console.log(event);
         if (cancel !== undefined) {
-            console.log('cancel request');
             cancel();
         }
         axios.get('/elastic/search/'+event, {
@@ -18,12 +16,10 @@ export const searchProducts = (event) => {
                 'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
             }})
             .then(response => {
-            console.log(response.data);
             dispatch(searchProductsSuccess(response.data));
             dispatch(searchProductsStart(false));
         }).catch(error => {
             if (axios.isCancel(error)) {
-                console.log("shoud cancel");
                 return;
             }
             dispatch(searchProductsFail(error));

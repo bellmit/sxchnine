@@ -47,7 +47,6 @@ class TabAccount extends PureComponent {
     };
 
     addUser = () => {
-        console.log(this.constructUser());
         this.props.addUser(this.constructUser());
         this.close();
     };
@@ -407,7 +406,7 @@ class TabAccount extends PureComponent {
                                     </Grid>
                                 </Grid.Column>
                                 <Grid.Column width={4}>
-                                    <img src={graffiti} alt="edit info"
+                                    <img src={graffiti} alt="naybxrz econcept store vintage clothes 90's nineteen adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
                                          className="TabAccount-EditUser-Icon"
                                          onClick={this.show}/>
                                 </Grid.Column>

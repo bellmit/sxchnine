@@ -15,6 +15,9 @@ public class EmailConfirmationSender extends EmailSender<Order> {
     @Value("${sendGrid.mail.templateConfirmationId}")
     private String templateConfirmationId;
 
+    @Value("${sendGrid.mail.name}")
+    private String senderName;
+
     public EmailConfirmationSender(SendGrid sendGrid) {
         super(sendGrid);
     }
@@ -32,7 +35,7 @@ public class EmailConfirmationSender extends EmailSender<Order> {
     @Override
     public Mail mailBuilder(Order order) {
         log.info("Send Confirmation Email to {} for Order ID: {}", order.getUserEmail(), order.getOrderId());
-        Email emailFrom = new Email(from);
+        Email emailFrom = new Email(from, senderName);
         Email emailTo = new Email(order.getUserEmail());
 
         Personalization personalization = new Personalization();
@@ -40,7 +43,7 @@ public class EmailConfirmationSender extends EmailSender<Order> {
         personalization.addDynamicTemplateData("total", order.getTotal());
         personalization.addDynamicTemplateData("currency", "$");
         personalization.addDynamicTemplateData("prix", order.getTotal());
-        personalization.addDynamicTemplateData("taxe", "11");
+        personalization.addDynamicTemplateData("taxe", "7");
         personalization.addTo(emailTo);
         personalization.addBcc(emailFrom);
 

@@ -92,7 +92,6 @@ class Login extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.user.loading,
-        authenticatedUser: state.user.authenticatedUser,
         userError: state.user.userError,
         userFail: state.user.userFail
     }

@@ -119,7 +119,8 @@ class Products extends Component {
                                onChange={this.searchProducts}
                                className="Product-Search-Text-Input"/>
 
-                        <img alt="" src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
+                        <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                             src={addIcon} className="Add-Icon" onClick={this.toggleAdvancedSearch}/>
                         <Collapse isOpen={this.state.show}>
                             <Form size='tiny' mobile={2}>
                                 <Form.Group inline widths='1' unstackable mobile={2}>
@@ -150,7 +151,8 @@ class Products extends Component {
                                         value={this.state.size}
                                         placeholder='Size'
                                         className="Product-Search-Advanced"/>
-                                    <img alt="" src={searchIcon} className="Search-Icon" onClick={this.searchAdvanced}/>
+                                    <img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                                         src={searchIcon} className="Search-Icon" onClick={this.searchAdvanced}/>
                                 </Form.Group>
                             </Form>
                         </Collapse>

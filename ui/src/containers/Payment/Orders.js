@@ -43,17 +43,6 @@ class Orders extends Component {
         }
     }
 
-    /*    componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-            let params = new URLSearchParams(this.props.location.search);
-            console.log(params.get("payment_intent"));
-            console.log(params.get("payment_intent_client_secret"));
-            console.log(this.props.productsToOrder);
-        }*/
-
-    handleOrder = () => {
-        console.log("handle Order ");
-    }
-
     handleChange = (e, {name, value}) => this.setState({[name]: value})
 
     toggle = () => this.setState((prevState) => ({ keepInfo: !prevState.keepInfo }))

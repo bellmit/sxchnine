@@ -1,6 +1,7 @@
 package com.project.configuration;
 
 import com.project.model.Order;
+import com.project.model.Subscription;
 import com.project.model.User;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -30,6 +31,9 @@ public class KafkaConfig {
     @Value("${kafka.user.groupId}")
     private String usersGroupId;
 
+    @Value("${kafka.subscriber.groupId}")
+    private String subscribersGroupId;
+
 
     @Bean
     public ConsumerFactory<String, Order> ordersConsumerFactory() {
@@ -53,6 +57,19 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, User> usersKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, User> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(usersConsumerFactory());
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, Subscription> subscribersConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(consumerConfig(subscribersGroupId), new StringDeserializer(), new JsonDeserializer<>(Subscription.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Subscription> subscribersKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Subscription> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(subscribersConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         return factory;
     }

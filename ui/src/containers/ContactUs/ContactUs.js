@@ -21,10 +21,6 @@ class ContactUs extends PureComponent {
         errorMessageFlag: false
     }
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     handleChange = (e, {name, value}) => this.setState({[name]: value});
 
     contactUs = () => {
@@ -69,7 +65,9 @@ class ContactUs extends PureComponent {
     render() {
         return (
             <div>
-                <img src={contact_back} alt="contact" className="ContactUs-Image-div"/>
+                <img src={contact_back}
+                     alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                     className="ContactUs-Image-div"/>
 
                 <Dimmer active={this.state.loading} page>
                     <Loader content='Loading'/>
