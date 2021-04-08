@@ -13,3 +13,9 @@
     height: 5%;
     width: 5%;
 }
+
+.log-off-icon{
+}
+.log-off-icon:hover{
+    cursor: pointer;
+}

@@ -1,6 +1,8 @@
 import axios from '../../axios/axios';
 import * as actions from './actions';
 import {store} from "../../index";
+import {List} from "semantic-ui-react";
+import React from "react";
 
 const setAxiosToken = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data

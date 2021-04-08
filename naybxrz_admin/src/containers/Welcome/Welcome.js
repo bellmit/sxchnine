@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import Aux from '../../adhoc/Aux/Aux';
 import salute1 from "../Home/salute1.png";
 import './Welcome.css';
 import Notification from "../Notification/Notification";
-import {Grid} from "semantic-ui-react";
+import {Grid, Icon} from "semantic-ui-react";
+import * as actions from '../../store/actions/index';
 
 class Welcome extends Component {
+
+    signOff = () => { this.props.signOffUser(this.props.history); }
+
 
     render() {
         return (
@@ -20,6 +23,12 @@ class Welcome extends Component {
                                 <span className="Welcome-Message-Div">
                                     Hi ! {this.props.authenticatedUser.firstName}
                                 </span>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <Icon name='power off'
+                                      color='red'
+                                      className="log-off-icon"
+                                      onClick={this.signOff} />
                             </Grid.Column>
                             <Grid.Column>
                                 <Notification {...this.props}/>
@@ -37,4 +46,10 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Welcome);
+const dispatchToProps = dispatch => {
+    return {
+        signOffUser: (history) => dispatch(actions.signOff(history))
+    }
+}
+
+export default connect(mapStateToProps, dispatchToProps)(Welcome);

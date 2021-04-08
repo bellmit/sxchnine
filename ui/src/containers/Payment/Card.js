@@ -4,11 +4,7 @@ import 'react-credit-cards/es/styles-compiled.css';
 import {connect} from 'react-redux';
 import date from 'date-and-time';
 import './Card.css';
-import {
-    formatCreditCardNumber,
-    formatCVC,
-    formatExpirationDate,
-} from './utils';
+import {formatCreditCardNumber, formatCVC, formatExpirationDate,} from './utils';
 import {Dimmer, Label, Loader} from "semantic-ui-react";
 import * as actions from "../../store/actions";
 import uuid from "uuid/v1";
@@ -19,6 +15,7 @@ class Card extends PureComponent {
         name: '',
         expiry: '',
         cvc: '',
+        postalCode: '',
         issuer: '',
         focused: '',
         formData: null,
@@ -26,10 +23,7 @@ class Card extends PureComponent {
     };
 
     componentDidUpdate(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot: SS) {
-        if (this.props.handledErrors !== undefined &&
-             this.props.handledErrors.errorReason !== undefined){
-            this.setState({errorName: this.props.handledErrors.errorReason.message});
-        }
+
     }
 
 
@@ -77,7 +71,7 @@ class Card extends PureComponent {
             && this.state.cvc !== '') {
             this.props.processOrder(this.createOrder(), this.props.history);
 
-            if (this.props.keepInfo){
+            if (this.props.keepInfo) {
                 this.props.saveUser(this.createUser());
             }
         }
@@ -95,7 +89,8 @@ class Card extends PureComponent {
                 noCreditCard: this.state.number.trim(),
                 expDate: this.state.expiry,
                 securityCode: this.state.cvc,
-                lastName: this.state.name,
+                fullName: this.state.name,
+                postalCode: this.state.postalCode,
                 type: 'card'
             },
             userAddress: {
@@ -128,19 +123,25 @@ class Card extends PureComponent {
         }
     };
 
-    generateId(){
+    generateId() {
         return (Date.now().toString(36) + Math.random().toString(36).substr(2, 5)).toUpperCase();
     }
 
     render() {
+
+        let errors = undefined;
+        if (this.props.handledErrors !== undefined &&
+            this.props.handledErrors.errorReason !== undefined) {
+            errors = <Label color='red'>{this.props.handledErrors.errorReason.message}</Label>
+        }
+
         return (
             <div key="Payment">
                 <Dimmer active={this.props.loading} page>
                     <Loader content='Loading'/>
                 </Dimmer>
                 <div className="App-payment">
-                    <h4 className="Cards-h4">
-                        {this.state.errorName !== '' && <Label color='red'>{this.state.errorName}</Label>}</h4>
+                    <h4 className="Cards-h4">{errors}</h4>
                     <Cards
                         number={this.state.number}
                         name={this.state.name}
@@ -201,6 +202,17 @@ class Card extends PureComponent {
                                 />
                             </div>
                         </div>
+                        <div className="form-group" style={{paddingTop: '15px'}}>
+                            <input
+                                type="text"
+                                name="postalCode"
+                                className="form-control"
+                                placeholder="Postal Code"
+                                required
+                                onChange={this.handleInputChange}
+                                onFocus={this.handleInputFocus}
+                            />
+                        </div>
                         <input type="hidden" name="issuer"/>
                         <div className="form-actions">
                             <button className="Card-App-btn" onClick={this.handleOrder}>
@@ -224,6 +236,7 @@ const mapStateToProps = state => {
         productsToOrder: state.productsToOrder.productsToOrder,
         paymentStatus: state.order.paymentStatus,
         handledErrors: state.order.handledErrors,
+        errorOrder: state.order.error,
         loading: state.order.loading,
     }
 };

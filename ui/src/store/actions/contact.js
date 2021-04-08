@@ -8,7 +8,7 @@ export const contact = (contact) => {
         dispatch(contactStart(true));
         axios.post("/mail/contact", contact, {
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {

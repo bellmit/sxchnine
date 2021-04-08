@@ -48,7 +48,7 @@ public class StockService {
         return Uni.createFrom().item("ERROR");
     }
 
-    private Map<String, com.project.client.model.Product> matchAvailability(Map<String, com.project.client.model.Product> productsByIds, List<ProductOrder> orderedProduct){
+    private Map<Long, com.project.client.model.Product> matchAvailability(Map<Long, com.project.client.model.Product> productsByIds, List<ProductOrder> orderedProduct){
         log.info("start matching availability ... ");
         if (productsByIds.get(PRODUCT_FALLBACK.getValue()) == null) {
             orderedProduct.forEach(p -> {
@@ -67,7 +67,7 @@ public class StockService {
         return productsByIds;
     }
 
-    private Uni<String> updateProducts(Map<String, com.project.client.model.Product> productsByIds){
+    private Uni<String> updateProducts(Map<Long, com.project.client.model.Product> productsByIds){
         if (productsByIds.get(PRODUCT_FALLBACK.getValue()) == null){
             return productServiceClient.createOrUpdateProducts(new ArrayList<>(productsByIds.values()));
         } else {

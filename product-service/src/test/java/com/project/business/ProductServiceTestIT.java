@@ -15,15 +15,12 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifierOptions;
 import reactor.util.context.Context;
 import utils.TestObjectCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -45,7 +42,9 @@ public class ProductServiceTestIT {
     private KafkaProducer kafkaProducer;
 
     @AfterEach
-    public void dropCollection() { mongoTemplate.dropCollection("products").block(); }
+    public void dropCollection() {
+        mongoTemplate.dropCollection("products").block();
+    }
 
     @Test
     public void testGetProductById() {

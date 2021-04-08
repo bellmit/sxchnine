@@ -8,10 +8,10 @@ import {isMobile, isTablet} from 'react-device-detect';
 class Middle extends Component {
     state = {
         images: [
-            { id: 1, name: 'Biggie smalls ', url: 'BiggieSmalls.jpeg' },
-            { id: 16, name: 'Paris Week end', url: 'ParisWeekend.jpeg' },
-            { id: 22, name: 'Tupac 2Pac Mike Tyson Wu', url: 'Wu_Tyson.jpeg' },
-            { id: 20, name: 'Paris Tyson Montreal', url: 'ParisStairs.jpeg' }
+            { id: 16176052409540, name: 'Biggie smalls ', url: 'BiggieSmalls.jpeg' },
+            { id: 16176099685111, name: 'Paris Week end', url: 'ParisWeekend.jpeg' },
+            { id: 16176050051771, name: 'Tupac 2Pac Mike Tyson Wu', url: 'Wu_Tyson.jpeg' },
+            { id: 6176054880611, name: 'Paris Tyson Montreal', url: 'ParisStairs.jpeg' }
         ]
     }
     render() {

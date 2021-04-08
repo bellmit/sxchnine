@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: stock-service
-          image: gcr.io/complete-tube-306819/stock-service:1.0.0
+          image: gcr.io/complete-tube-306819/stock-service:1.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

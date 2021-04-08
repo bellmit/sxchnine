@@ -23,17 +23,17 @@ import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOpera
 public class OrderStatusService {
 
     private final OrderService orderService;
-    private final Map<String, Integer> ordersNumber = new ConcurrentHashMap<>();
     private final AtomicInteger ordersSize = new AtomicInteger(0);
 
     public Mono<OrdersNumber> getOrdersNumber(String date) {
+        final Map<String, Integer> ordersNumber = new ConcurrentHashMap<>();
         return getLastOrdersForCurrentMonth(date)
                 .groupBy(Order::getOrderStatus)
                 .flatMap(stringOrderGroupedFlux -> stringOrderGroupedFlux
                         .collectList()
                         .doOnNext(orders -> ordersNumber.put(stringOrderGroupedFlux.key(), orders.size())))
 
-                .then(createOrdersNumber());
+                .then(createOrdersNumber(ordersNumber));
     }
 
     public Flux<Order> getLastOrdersForCurrentMonth(String date) {
@@ -51,22 +51,18 @@ public class OrderStatusService {
     private Flux<Order> getLastOrdersByDelta(String date, AtomicInteger ordersSize) {
         return getLastOrdersForCurrentMonth(date).count()
                 .flatMapMany(secondCount -> {
-                    log.info("first count {}", ordersSize.get());
-                    log.info("second count {}", secondCount);
                     if (secondCount != ordersSize.get()) {
-                        log.info("second count is different {}", secondCount);
                         Flux<Order> orderFlux = getLastOrdersForCurrentMonth(date)
                                 .takeLast((int) (secondCount - ordersSize.get()));
                         ordersSize.getAndSet(secondCount.intValue());
                         return orderFlux;
                     }
-                    log.info("nothing to show");
                     return Flux.empty();
                 });
     }
 
 
-    private Mono<OrdersNumber> createOrdersNumber() {
+    private Mono<OrdersNumber> createOrdersNumber(Map<String, Integer> ordersNumber) {
         return Mono.defer(() -> Mono.just(new OrdersNumber(ordersNumber)));
     }
 }

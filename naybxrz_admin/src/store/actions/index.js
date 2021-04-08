@@ -11,7 +11,8 @@ export {
     addUserClicked,
     saveUser,
     subscribedUsers,
-    getUsers
+    getUsers,
+    signOff
 } from './user';
 
 export {

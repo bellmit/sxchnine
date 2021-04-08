@@ -14,7 +14,7 @@ public interface ProductRepository extends ReactiveMongoRepository<Product, Long
 
     Mono<Product> findProductById(Long id);
 
-    Mono<Product> findProductByName(String name);
+    Mono<Product> findProductByNameLike(String name);
 
     Flux<Product> findAllBySex(char sex, Pageable page);
 
@@ -26,7 +26,7 @@ public interface ProductRepository extends ReactiveMongoRepository<Product, Long
 
     Flux<Product> findProductsByBrandAndSex(String brand, String sex);
 
-    Flux<Product> findProductsByBrand(String brand);
+    Flux<Product> findProductsByBrandLike(String brand);
 
     Flux<Product> findProductsByNameAndBrand(String name, String brand);
 }

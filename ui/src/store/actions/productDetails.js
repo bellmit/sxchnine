@@ -29,7 +29,7 @@ export const loadProduct = (id, history) => {
         dispatch(startLoadingProduct(true));
         axios.get('/product/id/'+id, {
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {

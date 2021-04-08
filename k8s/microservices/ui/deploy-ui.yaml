@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: naybxrz-ui
-          image: gcr.io/complete-tube-306819/ui:1.1.3
+          image: gcr.io/complete-tube-306819/ui:1.1.4
           imagePullPolicy: Always
           ports:
             - containerPort: 80

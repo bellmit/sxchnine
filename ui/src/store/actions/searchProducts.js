@@ -13,7 +13,7 @@ export const searchProducts = (event) => {
         axios.get('/elastic/search/'+event, {
                 cancelToken: new CancelToken(c => cancel = c),
                 headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }})
             .then(response => {
             dispatch(searchProductsSuccess(response.data));

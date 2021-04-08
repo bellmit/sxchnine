@@ -20,11 +20,11 @@ public class Product implements Serializable {
     private String sex;
     private String category;
     private double price;
-    private List<String> size;
-    private List<String> colors;
+    private Set<String> size;
+    private Set<String> colors;
     private Set<String> tags;
     private String logo;
-    private List<String> images;
+    private Set<String> images;
     private Dimension dimension;
     private double originalPrice;
     private int promotion;

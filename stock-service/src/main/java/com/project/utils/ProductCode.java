@@ -2,15 +2,15 @@ package com.project.utils;
 
 public enum ProductCode {
 
-    PRODUCT_FALLBACK("productFallback");
+    PRODUCT_FALLBACK(9999999999999L);
 
-    private String value;
+    private Long value;
 
-    ProductCode(String value) {
+    ProductCode(Long value) {
         this.value = value;
     }
 
-    public String getValue(){
+    public Long getValue(){
         return value;
     }
 }

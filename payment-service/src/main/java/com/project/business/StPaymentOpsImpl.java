@@ -47,25 +47,22 @@ public class StPaymentOpsImpl implements PaymentOps {
     }
 
     private Mono<PaymentResponse> callPaymentMethod(Order order) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap();
-        params.add("type", order.getPaymentInfo().getType());
-        params.add("card[number]", order.getPaymentInfo().getNoCreditCard().strip());
-        params.add("card[exp_month]", order.getPaymentInfo().getExpDate().split("/")[0]);
-        params.add("card[exp_year]", order.getPaymentInfo().getExpDate().split("/")[1]);
-        params.add("card[cvc]", String.valueOf(order.getPaymentInfo().getSecurityCode()));
-
         return webClient.post()
                 .uri("/v1/payment_methods")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .body(BodyInserters.fromFormData(params))
+                .body(BodyInserters.fromFormData("type", order.getPaymentInfo().getType())
+                        .with("card[number]", order.getPaymentInfo().getNoCreditCard().replaceAll("\\s", ""))
+                        .with("card[exp_month]", order.getPaymentInfo().getExpDate().split("/")[0])
+                        .with("card[exp_year]", order.getPaymentInfo().getExpDate().split("/")[1])
+                        .with("card[cvc]", order.getPaymentInfo().getSecurityCode())
+                        .with("billing_details[name]", order.getPaymentInfo().getFullName()))
                 .exchangeToMono(clientResponse -> {
                     if (clientResponse.statusCode().is2xxSuccessful()) {
-                        log.info(" payment method {}", clientResponse);
+                        log.info("payment method success");
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildPaymentResponse((LinkedHashMap) o));
                     } else {
-                        log.warn("Publish to kafka to be treated after");
-                        log.info("error payment method {}", clientResponse);
+                        log.error("error payment method");
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
@@ -94,12 +91,11 @@ public class StPaymentOpsImpl implements PaymentOps {
                     .body(BodyInserters.fromFormData(params))
                     .exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
-                            log.info("create payment intent{}", clientResponse);
+                            log.info("create payment intent success");
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildPaymentResponse((LinkedHashMap) o));
                         } else {
-                            log.warn("Publish to kafka to be treated after");
-                            log.info("error create payment intent{}", clientResponse);
+                            log.error("error create payment intent");
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                         }
@@ -115,12 +111,11 @@ public class StPaymentOpsImpl implements PaymentOps {
                 .uri("/v1/payment_intents/" + paymentIntentId)
                 .exchangeToMono(clientResponse -> {
                     if (clientResponse.statusCode().is2xxSuccessful()) {
-                        log.info("retrieve payment {}", clientResponse);
+                        log.info("retrieve payment success");
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildPaymentResponse((LinkedHashMap) o));
                     } else {
-                        log.warn("Publish to kafka to be treated after");
-                        log.info("error retrieve payment {}", clientResponse);
+                        log.info("error retrieve payment");
                         return clientResponse.bodyToMono(Object.class)
                                 .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                     }
@@ -140,12 +135,11 @@ public class StPaymentOpsImpl implements PaymentOps {
                     .body(BodyInserters.fromFormData(params))
                     .exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().is2xxSuccessful()) {
-                            log.info("confirm payment {}", clientResponse);
+                            log.info("confirm payment success");
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildPaymentResponse((LinkedHashMap) o));
                         } else {
-                            log.warn("Publish to kafka to be treated after");
-                            log.info("error confirm payment {}", clientResponse);
+                            log.info("error confirm payment");
                             return clientResponse.bodyToMono(Object.class)
                                     .map(o -> buildErrorPaymentResponse((LinkedHashMap) o));
                         }
@@ -172,6 +166,11 @@ public class StPaymentOpsImpl implements PaymentOps {
                     ((LinkedHashMap) error).get("decline_code") != null ? ((LinkedHashMap) error).get("decline_code").toString() : "",
                     ((LinkedHashMap) error).get("message") != null ? ((LinkedHashMap) error).get("message").toString() : "");
             paymentResponse.setErrorReason(errorReason);
+
+            log.error("error infos: error code = {} - declined code = {} - reason = {}",
+                    errorReason.getCode(),
+                    errorReason.getDeclinedCode(),
+                    errorReason.getMessage());
         }
         return paymentResponse;
     }

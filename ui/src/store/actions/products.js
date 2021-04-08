@@ -7,7 +7,7 @@ export const fetchProduct = (pageNo, pageSize, sex) => {
         dispatch(loadProductsStart(true));
         axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex, {
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {

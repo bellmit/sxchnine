@@ -172,7 +172,7 @@ class FormProduct extends PureComponent {
     // For New Product
     addNewAvailability() {
         let currentAvailability = {...this.state.availability};
-        this.state.colors.forEach((color, i) => currentAvailability[JSON.stringify(color)] = Object.values(this.state.size).map((sz) => ({
+        this.state.colors.forEach((color, i) => currentAvailability[color] = Object.values(this.state.size).map((sz) => ({
             'size': sz,
             'qte': 0
         })));
@@ -224,7 +224,7 @@ class FormProduct extends PureComponent {
     }
 
     generateId(){
-        return 'P-' + (Date.now().toString(36) + Math.random().toFixed(0));
+        return Date.now() + Math.random().toFixed(0);
     }
 
 
@@ -236,6 +236,7 @@ class FormProduct extends PureComponent {
         ];
 
         let optionsSize = [
+            {key: 0, text: 'XSmall', value: 'XS'},
             {key: 1, text: 'Small', value: 'S'},
             {key: 2, text: 'Medium', value: 'M'},
             {key: 3, text: 'Large', value: 'L'},
@@ -276,7 +277,10 @@ class FormProduct extends PureComponent {
             {key: 2, text: 'Sweat', value: 'Sweat'},
             {key: 3, text: 'Jacket', value: 'Jacket'},
             {key: 4, text: 'Hat', value: 'Hat'},
-            {key: 5, text: 'Accessories', value: 'Accessories'}
+            {key: 5, text: 'Dresses', value: 'Dresses'},
+            {key: 6, text: 'Accessories', value: 'Accessories'},
+            {key: 7, text: 'Shorts', value: 'Shorts'},
+            {key: 8, text: 'Pants', value: 'Pants'}
         ]
 
         let formAddImage = undefined;

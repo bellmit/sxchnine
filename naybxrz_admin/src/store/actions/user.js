@@ -71,6 +71,13 @@ export const login = (email, password, history) => {
     }
 }
 
+export const signOff = (history) => {
+    return dispatch => {
+        dispatch(authenticatedUserSuccess(''));
+        history.push('/');
+    }
+}
+
 const searchUsersStart = (loading) => {
     return {
         type: actions.SEARCH_USERS_START,

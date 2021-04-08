@@ -7,7 +7,7 @@ export const searchAdvancedProducts = (gender, category, size) => {
         dispatch(searchAdvancedStart(true));
         axios.get('/elastic/advancedSearch?gender='+ gender + '&category='+ category +'&size='+ size,{
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {
@@ -48,7 +48,7 @@ export const homeSearchProducts = (gender, category, size, history) => {
         dispatch(homeSearchStart(true));
         axios.get('/elastic/advancedSearch?gender='+ gender + '&category='+ category +'&size='+ size,{
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {

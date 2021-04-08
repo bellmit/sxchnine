@@ -12,23 +12,15 @@ import org.springframework.cloud.sleuth.CurrentTraceContext;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifierExtensionsKt;
 import reactor.test.StepVerifierOptions;
 import reactor.util.context.Context;
 import utils.TestObjectCreator;
 
-import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceTest {
@@ -43,7 +35,7 @@ public class ProductServiceTest {
     private ProductService productService;
 
     @Test
-    public void testGetProductById(){
+    public void testGetProductById() {
         Product product = TestObjectCreator.createProduct();
         when(productRepository.findProductById(1L)).thenReturn(Mono.just(product));
         // Mocking Sleuth vs Reactor Context
@@ -69,7 +61,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testGetAllProducts(){
+    public void testGetAllProducts() {
         when(productRepository.findAll()).thenReturn(Flux.empty());
         // Mocking Sleuth vs Reactor Context
         // Disable if you want to log the action related to the function
@@ -92,7 +84,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testSave(){
+    public void testSave() {
         Product product = TestObjectCreator.createProduct();
         when(productRepository.save(product)).thenReturn(Mono.just(product));
         when(kafkaProducer.sendProduct(any())).thenReturn(Mono.just(product));
@@ -121,7 +113,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testDeleteProductById(){
+    public void testDeleteProductById() {
         when(productRepository.deleteById(1L)).thenReturn(Mono.empty());
         // Mocking Sleuth vs Reactor Context
         Context context = mock(Context.class);

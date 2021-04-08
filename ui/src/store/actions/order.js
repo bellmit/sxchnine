@@ -13,10 +13,12 @@ export const order = (productsToOrder, history) => {
         window.localStorage.setItem("orderId", productsToOrder.orderId);
         axios.post('/order/checkoutOrder', productsToOrder, {
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {
+                dispatch(orderError(undefined));
+
                 if (response.data.status === 'CONFIRMED') {
                     dispatch(orderSuccess(response.data));
                     dispatch(orderStart(false));
@@ -26,6 +28,7 @@ export const order = (productsToOrder, history) => {
                     dispatch(orderSuccess(response.data));
                     dispatch(orderStart(false));
                     window.location.replace(response.data.nextAction);
+
                 } else if (response.data.status === 'WAITING'
                     || response.data.status === 'CHECKOUT_CALL_ERROR'
                     || response.data.status === 'CONFIRM_CALL_ERROR') {
@@ -33,6 +36,7 @@ export const order = (productsToOrder, history) => {
                     dispatch(orderStart(false));
                     history.replace('/confirmation/2');
                     window.localStorage.removeItem("orderId");
+
                 } else {
                     dispatch(orderSuccess(response.data));
                     if (response.data.errorReason.code === 'incorrect_number'
@@ -123,7 +127,7 @@ export const fetchOrdersHistory = (email) => {
     return dispatch => {
         axios.get('/order/userEmail/' + email, {
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {
@@ -153,7 +157,7 @@ export const trackOrder = (orderId, email) => {
         dispatch(trackOrderStart(true));
         axios.get('/order/trackOrder?orderId=' + orderId + '&email=' + email, {
             headers: {
-                'Authorization': 'Bearer ' + store.getState().authentication.data.access_token
+                'Authorization': 'Bearer ' + store.getState().authentication.data
             }
         })
             .then(response => {

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguratio
 import org.springframework.data.mongodb.config.EnableReactiveMongoAuditing;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class ReactiveMongoConfig extends AbstractReactiveMongoConfiguration {
     @Bean
     public MongoCustomConversions customConversions() {
         return new MongoCustomConversions(List.of(new ZoneDateTimeReadConverter(), new ZoneDateTimeWriteConverter()));
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 
 }

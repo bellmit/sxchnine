@@ -75,4 +75,22 @@ public class ProductController {
         return productService.deleteProductById(id);
     }
 
+    @PostMapping("/repairAvailability")
+    public Mono<Void> repair(){
+        return productService.getAllProducts().flatMap(p -> {
+            p.getAvailability().remove("\"Black\"");
+            p.getAvailability().remove("\"White\"");
+            p.getAvailability().remove("\"Green\"");
+            p.getAvailability().remove("\"Red\"");
+            p.getAvailability().remove("\"Yellow\"");
+            p.getAvailability().remove("\"Brown\"");
+            p.getAvailability().remove("\"Camel\"");
+            p.getAvailability().remove("\"Pink\"");
+            p.getAvailability().remove("\"Blue\"");
+            p.getAvailability().remove("\"Kaki\"");
+            p.getAvailability().remove("\"Gray\"");
+
+            return productService.save(p);
+        }).then();
+    }
 }

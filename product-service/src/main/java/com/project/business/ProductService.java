@@ -46,7 +46,7 @@ public class ProductService {
     }
 
     public Mono<Product> getProductByName(String name) {
-        return productRepository.findProductByName(name)
+        return productRepository.findProductByNameLike(name)
                 .retryWhen(Retry.backoff(2, Duration.ofMillis(200)))
                 .doOnError(error -> log.error("error occurred during fetching product by name", error))
                 .onErrorReturn(new Product());
@@ -87,10 +87,10 @@ public class ProductService {
             return productRepository.findProductsByBrandAndSex(brand, sex);
 
         } else if (StringUtils.hasText(brand)) {
-            return productRepository.findProductsByBrand(brand);
+            return productRepository.findProductsByBrandLike(brand);
 
         } else if (StringUtils.hasText(name)) {
-            return Flux.from(productRepository.findProductByName(name));
+            return Flux.from(productRepository.findProductByNameLike(name));
         } else {
             return productRepository.findProductsByIdAndNameAndBrandAndSex(id, name, brand, sex);
         }

@@ -14,7 +14,8 @@ public class PaymentInfo {
     private String paymentIntentId;
     private String noCreditCard;
     private String expDate;
-    private int securityCode;
-    private String lastName;
-    private String firstName;
+    private String securityCode;
+    private String fullName;
+    private String postalCode;
+
 }

@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -37,6 +38,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final PaymentServiceClient paymentServiceClient;
     private final OrderProducer orderProducer;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Flux<Order> getAllOrders() {
         return orderRepository.findAll();
@@ -95,6 +97,7 @@ public class OrderService {
                     order.setPaymentStatus(paymentResponse.getStatus());
                     order.setOrderStatus(evaluateStatus(paymentResponse.getStatus()));
                     order.getPaymentInfo().setPaymentIntentId(paymentResponse.getPaymentIntentId());
+                    order.getPaymentInfo().setNoCreditCard(bCryptPasswordEncoder.encode(order.getPaymentInfo().getNoCreditCard()));
                     return order;
                 })
                 .flatMap(this::saveOrderAndSendToKafka)

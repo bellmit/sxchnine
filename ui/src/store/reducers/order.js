@@ -4,7 +4,7 @@ const initialState = {
     loading: false,
     error: '',
     paymentStatus: '',
-    handledErrors: '',
+    handledErrors: undefined,
     ordersHistory: [],
     trackOrder: [],
     trackOrderFound: undefined
