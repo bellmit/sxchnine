@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {Container, Dimmer, Form, Grid, Header, Icon, Loader, TextArea} from 'semantic-ui-react';
+import {Container, Dimmer, Form, Grid, Header, Loader, TextArea} from 'semantic-ui-react';
 import * as actionTypes from '../../store/actions';
 import contact_back from './contact_back.jpg';
 import './ContactUs.css';
@@ -83,7 +83,7 @@ class ContactUs extends PureComponent {
                                 <Grid.Row>
                                     <Form>
                                     <Form.Input required inverted
-                                                size="small"
+                                                size="mini"
                                                 placeholder='Full Name ...'
                                                 className="ContactUs-Info-Text"
                                                 name='fullName'
@@ -94,7 +94,7 @@ class ContactUs extends PureComponent {
                                 </Grid.Row>
                                 <Grid.Row>
                                 <Form>
-                                    <Form.Input inverted required size="small"
+                                    <Form.Input inverted required size="mini"
                                                 placeholder='Email ...'
                                                 className="ContactUs-Info-Text"
                                                 name='email'
@@ -105,7 +105,7 @@ class ContactUs extends PureComponent {
                                 </Grid.Row>
                                 <Grid.Row>
                                 <Form>
-                                    <Form.Input inverted required size="small"
+                                    <Form.Input inverted required size="mini"
                                                 placeholder='Phone ...'
                                                 className="ContactUs-Info-Text"
                                                 name='phone'
@@ -132,12 +132,6 @@ class ContactUs extends PureComponent {
                             </Grid>
                         </div>
                     </Container>
-                </div>
-
-                <div className="ContactUs-Foot-Div">
-                    <Icon name="facebook" size='huge' color="blue"/>
-                    <Icon name="instagram" size='huge' color="teal"/>
-                    <Icon name="pinterest" size='huge' color="red"/>
                 </div>
             </div>
         );

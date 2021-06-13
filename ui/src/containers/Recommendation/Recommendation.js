@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Carousel from '@brainhubeu/react-carousel';
 import {Icon} from "semantic-ui-react";
 import Product from '../Products/Product';
 import '@brainhubeu/react-carousel/lib/style.css';
 import './Recommendation.css';
 import * as actions from "../../store/actions";
-
 
 
 class Recommendation extends Component {
@@ -16,7 +15,6 @@ class Recommendation extends Component {
     };
 
     render() {
-
         return (
             <div>
                 <Carousel
@@ -27,7 +25,7 @@ class Recommendation extends Component {
                     addArrowClickHandler
                     infinite
                     centered>
-                    {this.props.products.slice(0, 5).map((product, index) => (
+                    {this.props.recommendedProducts.slice(0, 5).map((product, index) => (
                         <Product key={index}
                                  name={product.name}
                                  image={product.images}
@@ -49,7 +47,7 @@ class Recommendation extends Component {
 
 const mapStateToProps = state => {
     return {
-        products: state.products.products,
+        recommendedProducts: state.products.recommendedProducts,
     }
 }
 

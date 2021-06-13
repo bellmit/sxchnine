@@ -101,9 +101,8 @@ updateStrategy:
 
 service:
   type: NodePort
-  loadBalancerIP: ""
   port: 5601
-  nodePort: 30045
+  nodePort: 30046
   labels: {}
   annotations: {}
     # cloud.google.com/load-balancer-type: "Internal"

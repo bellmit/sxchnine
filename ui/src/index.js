@@ -18,6 +18,7 @@ import order from '../src/store/reducers/order';
 import users from '../src/store/reducers/users';
 import contact from '../src/store/reducers/contact';
 import * as serviceWorker from './serviceWorker';
+import ScrollToTop from './components/Scroll/ScrollToTop.js'
 
 
 const reducers = combineReducers({
@@ -53,8 +54,8 @@ export const store = createStore(persistedReducer, composeEnhancers(applyMiddlew
 export const persistor = persistStore(store);
 
 
-const app = <Provider store={store}><BrowserRouter><PersistGate
-    persistor={persistor}><App/></PersistGate></BrowserRouter></Provider>;
+const app = <Provider store={store}><BrowserRouter><ScrollToTop><PersistGate
+    persistor={persistor}><App/></PersistGate></ScrollToTop></BrowserRouter></Provider>;
 
 
 ReactDOM.render(app, document.getElementById('root'));

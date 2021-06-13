@@ -185,10 +185,13 @@ class Checkout extends Component {
                                         <div className="Choose-Empty-Right-Div"/>
                                     </Grid.Column>
                                 </Grid.Row>
-                                <Grid.Row className="Div-Choose-Line">
-                                    <button className="Checkout-Continue-Button" onClick={this.continueAsGuest}>
-                                        <span className="Checkout-Text-Button">Continue as guest</span>
-                                    </button>
+                                <Grid.Row>
+                                    <Grid className="Continue-As-Guest-Grid">
+                                        <button className="Checkout-Continue-Button" onClick={this.continueAsGuest}>
+                                            <span className="Checkout-Text-Button">Continue as guest</span>
+                                        </button>
+                                    </Grid>
+
                                 </Grid.Row>
                             </Grid>
                         </Grid.Column>
@@ -275,7 +278,7 @@ class Checkout extends Component {
                         <Label color="red"
                                className="Checkout-Error-Text">{this.props.saveError}</Label>}
                     </Modal.Header>
-                    <Modal.Content>
+                    <Modal.Content scrolling>
                         <Grid centered>
                             <Grid.Row>
                                 <Grid.Column width={6}>

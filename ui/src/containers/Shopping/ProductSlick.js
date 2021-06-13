@@ -8,8 +8,11 @@ import ShopResume from '../ShopResume/ShopResume';
 import User from '../User/User';
 import './ProductSlick.css';
 
-
 class ProductSlick extends Component {
+
+    componentDidMount() {
+
+    }
 
     render() {
         return (
@@ -25,8 +28,11 @@ class ProductSlick extends Component {
                     <Carousel fade={true} keyboard style={{textAlign: "center"}}>
                         {this.props.product.images.map((image, index) => (
                             <Carousel.Item key={index}>
-                                <div><img alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
-                                          src={image}/></div>
+                                <div>
+                                    <img
+                                    alt="naybxrz econcept store vintage clothes 90's adidas carhartt obey supreme nike nocta bombers wutang chimodu hip hop culture streetwear lifestyle hoodies shirts hat bob"
+                                    src={image}/>
+                                </div>
                             </Carousel.Item>
                         ))}
                     </Carousel>
@@ -37,7 +43,7 @@ class ProductSlick extends Component {
                 <div className="Product-Details-Empty-Div"/>
 
                 <div className="Reco-Container-div">
-                    <Recommendation/>
+                    <Recommendation {...this.props}/>
                 </div>
                 <div className="Product-Details-footer">
                     <Contact/>

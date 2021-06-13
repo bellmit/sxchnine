@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: admin-naybxrz-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+    networking.gke.io/managed-certificates: admin-naybxrz-certificate
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/v1beta1.FrontendConfig: admin-ingress-security-config
+
+spec:
+  rules:
+  - host: "kibana.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: kibana-kibana
+          servicePort: 5601
+
+---
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: admin-ingress-security-config
+spec:
+  redirectToHttps:
+    enabled: true

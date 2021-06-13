@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.springframework.cloud.sleuth.instrument.web.WebFluxSleuthOperators.withSpanInScope;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -78,18 +79,7 @@ public class ProductController {
     @PostMapping("/repairAvailability")
     public Mono<Void> repair(){
         return productService.getAllProducts().flatMap(p -> {
-            p.getAvailability().remove("\"Black\"");
-            p.getAvailability().remove("\"White\"");
-            p.getAvailability().remove("\"Green\"");
-            p.getAvailability().remove("\"Red\"");
-            p.getAvailability().remove("\"Yellow\"");
-            p.getAvailability().remove("\"Brown\"");
-            p.getAvailability().remove("\"Camel\"");
-            p.getAvailability().remove("\"Pink\"");
-            p.getAvailability().remove("\"Blue\"");
-            p.getAvailability().remove("\"Kaki\"");
-            p.getAvailability().remove("\"Gray\"");
-
+            p.getAvailability().keySet().removeIf(t -> Pattern.compile("([\"])\\w+").asPredicate().test(t));
             return productService.save(p);
         }).then();
     }

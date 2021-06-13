@@ -34,14 +34,14 @@
 @media only screen and (max-width: 1024px) {
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
-        width: 17%;
-        height: 100%;
+        width: 7%;
+        height: 220%;
         position: absolute;
     }
     .UserTabAccount-Container {
         width: 60%;
         position: absolute;
-        top: 50%;
+        top: 90%;
         left: 15%;
     }
     .UserTabAccount-Empty-Div{
@@ -56,23 +56,23 @@
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        margin-top: 50%;
+        top: 100%;
     }
 
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 800px) {
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
-        width: 17%;
-        height: 100%;
+        width: 9%;
+        height: 400%;
         position: absolute;
     }
     .UserTabAccount-Container {
         width: 60%;
         position: absolute;
-        top: 60%;
-        left: 6%;
+        top: 120%;
+        left: 15%;
     }
     .UserTabAccount-Empty-Div{
         background: rgb(255, 240, 36);
@@ -86,8 +86,39 @@
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        left: -10%;
-        margin-top: -65%;
+        top: -450%;
+        left: -15%;
+    }
+
+}
+
+@media only screen and (max-width: 768px) {
+    .UserAccount-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 12%;
+        height: 120%;
+        position: absolute;
+    }
+    .UserTabAccount-Container {
+        width: 60%;
+        position: absolute;
+        top: 60%;
+        left: 6%;
+    }
+    .UserTabAccount-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.5%;
+        width: 80%;
+        left: 30%;
+        margin-top: 40%;
+        position: absolute;
+        align-items: center;
+    }
+    .UserTabAccount-footer{
+        width: 160%;
+        position: absolute;
+        left: 5%;
+        margin-top: 50%;
     }
 
 }
@@ -127,7 +158,7 @@
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
-        height: 100%;
+        height: 120%;
         position: absolute;
     }
     .UserTabAccount-Container {
@@ -141,7 +172,7 @@
         height: 0.5%;
         width: 80%;
         left: 25%;
-        margin-top: 40%;
+        margin-top: 60%;
         position: absolute;
         align-items: center;
     }
@@ -149,7 +180,7 @@
         width: 160%;
         position: absolute;
         left: -10%;
-        margin-top: -65%;
+        top: 210%;
     }
 
 }
@@ -158,7 +189,7 @@
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
-        height: 100%;
+        height: 120%;
         position: absolute;
     }
     .UserTabAccount-Container {
@@ -180,7 +211,7 @@
         width: 160%;
         position: absolute;
         left: -10%;
-        margin-top: -65%;
+        top: 210%;
     }
 
 }
@@ -189,14 +220,14 @@
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
-        height: 100%;
+        height: 250%;
         position: absolute;
     }
     .UserTabAccount-Container {
         width: 60%;
         position: absolute;
-        top: 60%;
-        left: 8%;
+        top: 65%;
+        left: 12%;
     }
     .UserTabAccount-Empty-Div{
         background: rgb(255, 240, 36);
@@ -210,8 +241,8 @@
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        left: -4%;
-        margin-top: -65%;
+        left: 0%;
+        top: 200%;
     }
 }
 
@@ -219,20 +250,20 @@
     .UserAccount-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 17%;
-        height: 100%;
+        height: 85%;
         position: absolute;
     }
     .UserTabAccount-Container {
         width: 60%;
         position: absolute;
-        top: 60%;
+        top: 55%;
         left: 2%;
     }
     .UserTabAccount-Empty-Div{
         background: rgb(255, 240, 36);
         height: 0.5%;
         width: 80%;
-        left: 25%;
+        left: 35%;
         margin-top: 40%;
         position: absolute;
         align-items: center;
@@ -240,8 +271,8 @@
     .UserTabAccount-footer{
         width: 160%;
         position: absolute;
-        left: -4%;
-        margin-top: -65%;
+        left: 0%;
+        top: 200%;
     }
 }
 

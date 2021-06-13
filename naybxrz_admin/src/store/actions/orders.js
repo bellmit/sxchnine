@@ -3,6 +3,7 @@ import * as url from '../../axios/';
 import moment from 'moment';
 import {store} from "../../index";
 import * as actions from './actions';
+import {SEARCH_ORDERS_BY_STATUS_SUCCESS} from "./actions";
 
 const setAxiosToken = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getState().authentication.data
@@ -222,6 +223,13 @@ const searchOrdersStart = (loading) => {
     }
 };
 
+const searchOrdersByStatusSuccess = (searchOrdersData) => {
+    return {
+        type: actions.SEARCH_ORDERS_BY_STATUS_SUCCESS,
+        searchOrdersByStatusData: searchOrdersData
+    }
+};
+
 const searchOrdersSuccess = (searchOrdersData) => {
     return {
         type: actions.SEARCH_ORDERS_SUCCESS,
@@ -249,6 +257,31 @@ export const searchOrders = (orderId, email) => {
                             order.shippingTime = moment(shippingTime).format("YYYY-MM-DD");
                         }
                         dispatch(searchOrdersSuccess(order));
+                        dispatch(searchOrdersStart(false));
+                        dispatch(searchOrdersFail(undefined));
+                    }
+                }
+            )
+            .catch(error => {
+                dispatch(searchOrdersFail(error));
+                dispatch(searchOrdersStart(false));
+            });
+    }
+}
+
+export const searchOrdersByStatus = (orderStatus) => {
+    return dispatch => {
+        setAxiosToken();
+        dispatch(searchOrdersStart(true));
+        axios.get('/order/orders/' + orderStatus)
+            .then(response => {
+                    let order = response.data;
+                    if (order !== '') {
+                        let shippingTime = order.shippingTime;
+                        if (shippingTime !== null) {
+                            order.shippingTime = moment(shippingTime).format("YYYY-MM-DD");
+                        }
+                        dispatch(searchOrdersByStatusSuccess(order));
                         dispatch(searchOrdersStart(false));
                         dispatch(searchOrdersFail(undefined));
                     }

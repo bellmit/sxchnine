@@ -104,10 +104,12 @@ class Tracking extends Component {
         }
 
         if (this.props.trackOrderFound === false) {
-            trackOrderNotFound= <Label color="red" size="small">No order found. Are you sure is the right Order ID?</Label>
+            trackOrderNotFound= <Label color="red" size="small" className="Tracking-Message-Error-Text-div">No order found. Are you sure is the right Order ID?</Label>
         }
 
-        let trackBody = trackOrders !== undefined && <div className="Tracking-Order-Form-Div"><Container fluid>{trackOrders}</Container></div>
+        let trackBody = trackOrders !== undefined && <div className="Tracking-Order-Form-Div">
+            <Container fluid>{trackOrders}</Container>
+        </div>
 
         return (
             <div>

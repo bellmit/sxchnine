@@ -95,6 +95,7 @@ class ProductDetails extends PureComponent {
 
         return (
             <div>
+                {badge}
                 <p className="Product-Name-Div">{this.props.product.name}</p>
                 <div className="Product-Form-Div">
                     <Form unstackable widths='equal' size='large'>
@@ -109,8 +110,8 @@ class ProductDetails extends PureComponent {
                                       selection
                                       value={this.state.color}/>
                         </Form.Group>
-                        <Form.Group inline widths='equal'>
-                            <span className="Product-Props-Div">SIZE:&nbsp;&nbsp;&nbsp;</span>
+                        <Form.Group inline widths='equal' unstackable className="Product-Radio-div">
+                            <span className="Product-Props-Div">SIZE:</span>
                             <Form.Radio className="Product-Radio-Text"
                                         label='Small'
                                         value='S'
@@ -150,9 +151,6 @@ class ProductDetails extends PureComponent {
                         <Form.Group>
                             <a href="/shipping" className="Product-Delivery-Div">&nbsp;&nbsp;&nbsp;Delivery & return
                                 info</a>
-                        </Form.Group>
-                        <Form.Group>
-                            {badge}
                         </Form.Group>
                         <Button animated='vertical' inverted color='yellow' floated='right'
                                 onClick={this.handleAddToOrder}

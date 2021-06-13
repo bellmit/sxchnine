@@ -52,6 +52,69 @@
     margin-top: 10%;
 }
 
+@media only screen and (max-width: 768px) {
+    .Confirmation-Image-div{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        object-position: 70% 0%;
+        transform: scale(1);
+    }
+
+    .Confirmation-Message-div{
+        width: 75%;
+        height: 30%;
+        background-color: white;
+        position: fixed;
+        margin: 60% 0 0 5%;
+    }
+
+    .Confirmation-Container-div{
+        position: fixed;
+        margin: 4% 0 0 10%;
+    }
+
+    .Confirmation-Message-Text-h1-div{
+        font-family: Anton;
+        font-size: 4vw;
+        background-color: rgb(255, 240, 36);
+        margin-lef: -5%;
+    }
+
+    .Confirmation-Message-Text-p-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 3vw;
+        margin-left: -5%;
+    }
+
+    .Confirmation-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 2vw;
+        width: 80%;
+        margin-left: -5%;
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    .Confirmation-Message-Text-p3-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 2vw;
+        width: 80%;
+        margin-left: 1%;
+    }
+
+    .Confirmation-Yellow-second-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 50%;
+        height: 20%;
+        display: flex;
+        margin-left: -5%;
+
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Confirmation-Image-div{
         width: 100%;

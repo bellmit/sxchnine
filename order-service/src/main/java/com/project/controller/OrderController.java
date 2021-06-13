@@ -43,9 +43,9 @@ public class OrderController {
                 .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Retrieve Order by orderId: {}", orderId)));
     }
 
-    @GetMapping("/userEmail/{userEmail:.+}")
+    @GetMapping("/userEmail/{email:.+}")
     public Flux<Order> getOrdersByEmail(@PathVariable String email) {
-        return orderService.getOrderByUserEmail(email)
+        return orderService.getOrderByUserEmail(email.toLowerCase())
                 .doOnEach(withSpanInScope(SignalType.ON_COMPLETE, signal -> log.info("Get orders for this user: {}", email)));
     }
 
@@ -72,5 +72,10 @@ public class OrderController {
     @GetMapping("/admin/ordersNumber")
     public Mono<OrdersNumber> getOrdersNumber(@RequestParam(required = false) String date) {
         return orderStatusService.getOrdersNumber(date);
+    }
+
+    @GetMapping("/orders/{orderStatus}")
+    public Flux<Order> getOrdersByOrderStatus(@PathVariable String orderStatus){
+        return orderService.getOrdersByOrderStatus(orderStatus);
     }
 }

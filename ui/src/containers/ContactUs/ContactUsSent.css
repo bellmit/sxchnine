@@ -61,17 +61,17 @@
     .ContactUsSent-Image-div{
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: fill;
         object-position: left; /* to get the left side of the image*/
         position: absolute;
     }
 
     .ContactUsSent-Form-Div{
-        width: 44%;
-        height: 25%;
+        width: 37%;
+        height: 80%;
         background-color: white;
         position: fixed;
-        margin: 45% 0 0 10%;
+        margin: 2% 0 0 44%;
     }
 
     .ContactUsSent-Container-div{
@@ -121,7 +121,7 @@
         height: 25%;
         background-color: white;
         position: fixed;
-        margin: 45% 0 0 10%;
+        margin: 20% 0 0 50%;
     }
 
     .ContactUsSent-Container-div{
@@ -139,11 +139,12 @@
         font-family: "American Typewriter", "Times New Roman", Times;
         font-size: 2vw;
         width: 100%;
+        white-space: nowrap;
     }
 
     .ContactUsSent-Yellow-second-bar-div {
         background-color: rgb(255, 240, 36);
-        width: 40%;
+        width: 75%;
         height: 20%;
         position: absolute;
         margin-top: 5%;

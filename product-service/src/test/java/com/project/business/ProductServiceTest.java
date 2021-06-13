@@ -2,6 +2,7 @@ package com.project.business;
 
 import com.project.model.Product;
 import com.project.repository.ProductRepository;
+import org.apache.commons.lang3.RegExUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -18,6 +19,15 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 import reactor.util.context.Context;
 import utils.TestObjectCreator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -130,6 +140,75 @@ public class ProductServiceTest {
         StepVerifier.create(productService.deleteProductById(1), stepVerifierOptions)
                 .expectComplete()
                 .verify();
+    }
+
+    @Test
+    public void testRegexOnMap(){
+        Map<String, String> testMap = new HashMap<>();
+        testMap.put("\"Orange\"", "orange");
+        testMap.put("\"Toffe\"", "tofee");
+        testMap.put("black", "black");
+
+        testMap.keySet().removeIf(t -> Pattern.compile("([\"])\\w+").asPredicate().test(t));
+
+        testMap.keySet().forEach(System.out::println);
+    }
+
+    @Test
+    public void test(){
+
+        Stream<Integer> integerStream = Stream.of(1, 2, 3);
+
+        //integerStream.map(p -> p + 2).forEach(System.out::println);
+
+        List<Integer> integers = List.of(1, 2, 3);
+
+        /*Supplier<String> supplier = new Supplier<String>() {
+
+            {
+                System.out.println("block of foo supplier");
+            }
+            @Override
+            public String get() {
+                System.out.println("execute supplier");
+                return "foo supplier";
+            }
+        };*/
+        Optional<String> foo = Optional.of("FOO");
+        String toto = foo.orElseGet(new Supplier<String>() {
+
+            {
+                System.out.println("block of foo supplier");
+            }
+            @Override
+            public String get() {
+                System.out.println("execute supplier");
+                return "foo supplier";
+            }
+        });
+        //String toto = foo.orElse(defaultNethod());
+        //System.out.println(toto);
+
+        //Stream.of(defaultNethod());
+
+        var p = new Product();
+
+        p = new Product();
+    }
+
+    private String defaultNethod(){
+        System.out.println("execute default ,ethode");
+        return "DEFAULT";
+    }
+
+    public class FooSupplier implements Supplier<String> {
+
+
+
+        @Override
+        public String get() {
+            return "foo supplier";
+        }
     }
 
 }

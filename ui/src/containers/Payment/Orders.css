@@ -102,24 +102,27 @@
     left: -1%;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
+    .main-div {
+        overflow-y: scroll;
+    }
     .Orders-Bag-Resume{
         width: 100%;
         position: absolute;
-        top: 30%;
+        top: 65%;
         left: 32%;
     }
 
     .Orders-Resume{
         width: 100%;
         position: absolute;
-        top: 40%;
+        top: 80%;
         margin: 0 auto;
     }
     .Orders-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
-        width: 16%;
-        height: 100%;
+        width: 7%;
+        height: 200%;
         position: absolute;
     }
 
@@ -142,12 +145,185 @@
         font-family: Anton;
         font-size: 2vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text-Header{
         font-family: Anton;
         font-size: 2vw;
         text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .Orders-Items-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+    }
+
+    .Orders-Total-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+        height: 100%;
+        text-align: center;
+    }
+
+    .Orders-Email-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+    }
+
+    .User-Keep-Info-Text{
+        font-family: Anton;
+        font-size: 1vw;
+        text-transform: lowercase;
+    }
+
+    .Orders-footer{
+        position: absolute;
+        top: -30%;
+        left: 5%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .main-div {
+        overflow-y: scroll;
+    }
+    .Orders-Bag-Resume{
+        width: 100%;
+        position: absolute;
+        top: 90%;
+        left: 32%;
+    }
+
+    .Orders-Resume{
+        width: 100%;
+        position: absolute;
+        top: 110%;
+        margin: 0 auto;
+    }
+    .Orders-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 9%;
+        height: 200%;
+        position: absolute;
+    }
+
+    .Orders-Resume-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        position: absolute;
+    }
+
+    .Orders-Resume-Text:hover{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Orders-Items-Text-Header:hover{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .Orders-Items-Text-Header{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .Orders-Items-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+    }
+
+    .Orders-Total-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+        height: 100%;
+        text-align: center;
+    }
+
+    .Orders-Email-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+    }
+
+    .User-Keep-Info-Text{
+        font-family: Anton;
+        font-size: 1vw;
+        text-transform: lowercase;
+    }
+
+    .Orders-footer{
+        position: absolute;
+        top: 45%;
+        left: 5%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Orders-Bag-Resume{
+        width: 100%;
+        position: absolute;
+        top: 35%;
+        left: 32%;
+    }
+
+    .Orders-Resume{
+        width: 100%;
+        position: absolute;
+        top: 40%;
+        margin: 0 auto;
+    }
+    .Orders-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 12%;
+        height: 120%;
+        position: absolute;
+    }
+
+    .Orders-Resume-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        position: absolute;
+    }
+
+    .Orders-Resume-Text:hover{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Orders-Items-Text-Header:hover{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .Orders-Items-Text-Header{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text{
@@ -225,12 +401,14 @@
         font-family: Anton;
         font-size: 4vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text-Header{
         font-family: Anton;
         font-size: 4vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text{
@@ -308,12 +486,14 @@
         font-family: Anton;
         font-size: 4vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text-Header{
         font-family: Anton;
         font-size: 4vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text{
@@ -391,12 +571,14 @@
         font-family: Anton;
         font-size: 4vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text-Header{
         font-family: Anton;
         font-size: 4vw;
         text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .Orders-Items-Text{

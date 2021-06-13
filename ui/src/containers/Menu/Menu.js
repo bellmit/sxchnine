@@ -32,16 +32,16 @@ class MenuBurger extends Component {
                 <NavLink to="/women" exact className="bm-test">
                     <span onClick={this.closeMenu}>WOMEN</span>
                 </NavLink>
-                <NavLink to="/brands" exact className="bm-test">
+{/*                <NavLink to="/brands" exact className="bm-test">
                     <span onClick={this.closeMenu}>BRANDS</span>
-                </NavLink>
+                </NavLink>*/}
                 <NavLink to="/ourStory" exact className="bm-test">
                     <span onClick={this.closeMenu}>STORY</span>
                 </NavLink>
-                <NavLink to="/lifestyle" exact className="bm-test">
-                    <span onClick={this.closeMenu}>LIFESTYLE</span>
+                <NavLink to="/subscription" exact className="bm-test">
+                    <span onClick={this.closeMenu}>SUBSCRIPTION</span>
                 </NavLink>
-                <NavLink to="/contact" exact className="bm-test">
+                <NavLink to="/contactUs" exact className="bm-test">
                     <span onClick={this.closeMenu}>CONTACT</span>
                 </NavLink>
             </Menu>

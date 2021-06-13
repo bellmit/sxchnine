@@ -119,6 +119,11 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 searchOrdersData: action.searchOrdersData
             };
+        case actions.SEARCH_ORDERS_BY_STATUS_SUCCESS:
+            return {
+                ...state,
+                searchOrdersData: action.searchOrdersByStatusData
+            };
         case actions.SEARCH_ORDERS_FAIL:
             return {
                 ...state,

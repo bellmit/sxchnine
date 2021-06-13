@@ -20,4 +20,6 @@ public interface OrderRepository extends ReactiveCrudRepository<Order, String> {
     Mono<Order> findOrderByOrderIdAndUserEmail(String orderId, String email);
 
     Flux<Order> findOrdersByOrderTimeGreaterThanEqual(LocalDateTime month);
+
+    Flux<Order> findOrdersByOrderStatus(String orderStatus);
 }

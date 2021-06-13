@@ -5,7 +5,7 @@ import {store} from '../../index';
 export const fetchProduct = (pageNo, pageSize, sex) => {
     return dispatch => {
         dispatch(loadProductsStart(true));
-        axios.get('/product/allBySex?pageNo='+pageNo+'&pageSize='+pageSize+'&sex='+sex, {
+        axios.get('/product/allBySex?pageNo=' + pageNo + '&pageSize=' + pageSize + '&sex=' + sex, {
             headers: {
                 'Authorization': 'Bearer ' + store.getState().authentication.data
             }
@@ -14,38 +14,45 @@ export const fetchProduct = (pageNo, pageSize, sex) => {
                 if (response.data.length === 0)
                     return;
                 dispatch(loadProducts(response.data));
+                dispatch(loadRecommendedProducts(response.data));
                 dispatch(loadProductsStart(false));
             })
             .catch(error => {
-            dispatch(loadProductsFail(error)) ;
-            dispatch(loadProductsStart(false));
+                dispatch(loadProductsFail(error));
+                dispatch(loadProductsStart(false));
 
-        })
+            })
     }
 };
 
 
-export const loadProductsStart = (loading) => {
+const loadProductsStart = (loading) => {
     return {
         type: actionTypes.LOAD_PRODUCTS_START,
         loading: loading
     }
 };
 
-export const loadProducts = ( products ) => {
+export const loadProducts = (products) => {
     return {
         type: actionTypes.LOAD_PRODUCTS_SUCCESS,
         products: products
     }
 }
 
-
-export const loadProductsFail = ( error ) => {
+const loadProductsFail = (error) => {
     return {
         type: actionTypes.LOAD_PRODUCTS_FAIL,
         error: error
     }
 };
+
+const loadRecommendedProducts = (products) => {
+    return {
+        type: actionTypes.LOAD_RECOMMENDED_PRODUCTS_SUCCESS,
+        recommendedProducts: products
+    }
+}
 
 export const clearProducts = () => {
     return {

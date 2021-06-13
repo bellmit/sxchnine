@@ -34,11 +34,7 @@ function App() {
     return (
         <div className="App-Container">
 
-
-            <Route path="/subscription" exact component={Subscription}/>
-
             <Logo/>
-
             <Menu />
             <Connexion />
             <ShopResume />
@@ -57,6 +53,7 @@ function App() {
             <Route path="/customer" exact component={CustomerService}/>
             <Route path="/tracking" exact component={Tracking}/>
             <Route path="/ourStory" exact component={OurStory}/>
+            <Route path="/subscription" exact component={Subscription}/>
 
             <PrivateRoute path="/userAccount" exact component={UserAccount}/>
         </div>

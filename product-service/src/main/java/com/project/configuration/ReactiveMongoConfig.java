@@ -13,10 +13,13 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Configuration
 @EnableReactiveMongoRepositories(basePackageClasses = ProductRepository.class)
 @EnableMongoAuditing
-@RequiredArgsConstructor
 public class ReactiveMongoConfig extends AbstractReactiveMongoConfiguration {
 
     private final MongoProperties mongoProperties;
+
+    public ReactiveMongoConfig(MongoProperties mongoProperties) {
+        this.mongoProperties = mongoProperties;
+    }
 
     @Override
     protected String getDatabaseName() {

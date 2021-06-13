@@ -67,6 +67,85 @@
 }
 
 
+@media only screen and (max-width: 800px) {
+    .Panier-Items-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Panier-Items-Text-Header{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Pay-Text{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+    .Trash-Icon {
+        display: block;
+        float: right;
+        right: 20%;
+        width: 5% !important;
+        height: 5%;
+        position: absolute;
+    }
+
+    .Trash-Icon:hover {
+        display: block;
+        float: right;
+        right: 10%;
+        width: 6% !important;
+        height: 6%;
+        position: absolute;
+        cursor: pointer;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Panier-Items-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Panier-Items-Text-Header{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .Pay-Text{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+
+    }
+    .Trash-Icon {
+        display: block;
+        float: right;
+        right: 10%;
+        width: 5% !important;
+        height: 5%;
+        position: absolute;
+    }
+
+    .Trash-Icon:hover {
+        display: block;
+        float: right;
+        right: 10%;
+        width: 6% !important;
+        height: 6%;
+        position: absolute;
+        cursor: pointer;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Panier-Items-Text{
         font-family: Anton;
@@ -86,6 +165,35 @@
         font-size: 4vw;
         text-transform: uppercase;
 
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Panier-Items-Text{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+    }
+
+    .Panier-Items-Text-Header{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+    }
+
+    .Pay-Text{
+        color: rgb(255, 240, 36);
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+    }
+
+    .Modal-Content-div{
+        position: absolute;
+        left: 30%;
+        overflow: auto;
+        height: auto;
+        width: auto;
     }
 }
 

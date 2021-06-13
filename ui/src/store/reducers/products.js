@@ -6,7 +6,9 @@ const initialState = {
     size: [],
     gender: [],
     loading: false,
-    error: ''
+    error: '',
+    recommendedProducts: [],
+    errorRecommendedProducts: ''
 }
 
 
@@ -23,6 +25,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: products
+            };
+        case actionTypes.LOAD_RECOMMENDED_PRODUCTS_SUCCESS:
+            return {
+                ...state,
+                recommendedProducts: action.recommendedProducts
             };
         case actionTypes.LOAD_PRODUCTS_FAIL:
             return {
@@ -71,7 +78,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 products: action.products
             };
-            case actionTypes.HOME_SEARCH_ADVANCED_PRODUCTS_START:
+        case actionTypes.HOME_SEARCH_ADVANCED_PRODUCTS_START:
             return {
                 ...state,
                 loading: action.loading

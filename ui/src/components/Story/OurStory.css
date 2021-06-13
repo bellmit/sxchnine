@@ -31,8 +31,14 @@
 
 @media screen and (max-width: 1024px) { /* Specific to this particular image */
     img.bg {
-        left: 50%;
+        left: 30%;
         margin-left: -512px;   /* 50% */
+    }
+
+    .main-div {
+        background-color: rgb(255, 240, 36);
+        background-attachment: fixed;
+        overflow: no-content;
     }
 }
 

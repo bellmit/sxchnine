@@ -11,8 +11,8 @@ change fixed to absolute as before go production
 */
 @media only screen and (max-width: 1024px) {
     .Got-it-logo {
-        top: -5%;
-        right: -2%;
+        top: -12%;
+        right: -1%;
         height: auto;
         width: 25%;
         position: fixed;
@@ -23,10 +23,22 @@ change fixed to absolute as before go production
 
 @media only screen and (max-width: 768px) {
     .Got-it-logo {
-        top: -6%;
-        right: -10%;
+        top: -6% !important;
+        right: 0% !important;
         height: auto;
-        width: 35%;
+        width: 35% !important;
+        position: fixed;
+        float: right;
+        z-index:1;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Got-it-logo {
+        top: -25%;
+        right: -3%;
+        height: auto;
+        width: 30%;
         position: fixed;
         float: right;
         z-index:1;
@@ -49,9 +61,9 @@ change fixed to absolute as before go production
 @media only screen and (max-width: 411px) {
     .Got-it-logo {
         top: -5%;
-        right: -10%;
+        right: -2% !important;
         height: auto;
-        width: 45%;
+        width: 40% !important;
         position: fixed;
         float: right;
         z-index:1;
@@ -62,9 +74,9 @@ change fixed to absolute as before go production
 @media only screen and (max-width: 375px) {
     .Got-it-logo {
         top: -6%;
-        right: -10%;
+        right: -5% !important;
         height: auto;
-        width: 40%;
+        width: 40% !important;
         position: fixed;
         float: right;
         z-index:1;
@@ -76,7 +88,7 @@ change fixed to absolute as before go production
         top: -5%;
         right: -5%;
         height: auto;
-        width: 45%;
+        width: 35% !important;
         position: fixed;
         float: right;
         z-index:1;

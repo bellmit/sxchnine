@@ -45,7 +45,21 @@ spec:
         backend:
           serviceName: naybxrz-ui
           servicePort: 80
+  - host: "kibana.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: kibana-kibana
+          servicePort: 5601
 
+  - host: "tracing.naybxrz.com"
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: jaeger-query
+          servicePort: 80
 ---
 apiVersion: networking.gke.io/v1beta1
 kind: FrontendConfig

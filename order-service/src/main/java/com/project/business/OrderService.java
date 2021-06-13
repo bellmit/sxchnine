@@ -169,4 +169,8 @@ public class OrderService {
                 .withDayOfMonth(1));
     }
 
+    public Flux<Order> getOrdersByOrderStatus(String orderStatus){
+        return orderRepository.findOrdersByOrderStatus(orderStatus);
+    }
+
 }

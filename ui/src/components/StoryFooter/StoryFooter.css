@@ -45,13 +45,13 @@
 
 @media only screen and (max-width: 1024px) {
     .Container-footer-img {
-        height: 20%;
+        height: 300px;
         width: 100%;
         object-fit: cover;
         position: absolute;
         display: flex;
         align-items: center;
-        top: 105% !important;
+        top: 1500px;
     }
 
     .Paragraph-footer {
@@ -63,7 +63,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 115%;
+        top: 1600px;
     }
     .Paragraph-footer:hover {
         line-height: 0;
@@ -74,7 +74,7 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 115%;
+        top: 1600px;
         cursor: pointer;
     }
 
@@ -83,7 +83,52 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 118%;
+        top: 1650px;
+        position: absolute;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Container-footer-img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 450%;
+    }
+
+    .Paragraph-footer {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 480%;
+    }
+    .Paragraph-footer:hover {
+        line-height: 0;
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 255, 255);
+        position: absolute;
+        width: 50%;
+        left: 5%;
+        top: 480%;
+        cursor: pointer;
+    }
+
+    .Empty-Div-footer {
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        left: 5%;
+        top: 490%;
         position: absolute;
     }
 }
@@ -96,7 +141,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        top: 140% !important;
+        top: 200% !important;
     }
 
     .Paragraph-footer {
@@ -108,18 +153,18 @@
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 150%;
+        top: 210%;
     }
     .Paragraph-footer:hover {
         line-height: 0;
         font-family: Anton;
         font-size: 5vw;
         text-transform: uppercase;
-        color: rgb(255, 240, 36);
+        color: rgb(255, 255, 255);
         position: absolute;
         width: 50%;
         left: 5%;
-        top: 150%;
+        top: 210%;
         cursor: pointer;
     }
 
@@ -128,7 +173,7 @@
         height: 1%;
         width: 50%;
         left: 5%;
-        top: 155%;
+        top: 215%;
         position: absolute;
     }
 }

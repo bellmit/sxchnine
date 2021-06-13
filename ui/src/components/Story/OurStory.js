@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {isMobile} from 'react-device-detect';
+import {isMobile, isTablet, isIPad13} from 'react-device-detect';
 import './OurStory.css';
 import story from './ourstory.png';
 import storyMobile from './story2.jpg';

@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: naybxrz-ui
+        collect_logs: "true"
     spec:
       containers:
         - name: naybxrz-ui

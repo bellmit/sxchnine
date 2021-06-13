@@ -125,7 +125,7 @@
 @media only screen and (max-width: 1024px) {
     .Products-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
-        width: 16%;
+        width: 8%;
         height: 250%;
         position: absolute;
     }
@@ -134,7 +134,7 @@
         font-family: Anton;
         font-size: 15px;
         text-transform: uppercase;
-        top: 25%;
+        top: 70%;
         left: 22%;
         position: absolute;
     }
@@ -143,7 +143,7 @@
         color: rgb(255, 240, 36);
     }
     .Product-Search-Input {
-        top: 28%;
+        top: 80%;
         left: 22%;
         position: absolute;
         width: 70%;
@@ -157,13 +157,13 @@
     .Product-Container {
         width: 60%;
         position: absolute;
-        top: 35%;
+        top: 120%;
         left: 20%;
     }
     .Add-Icon {
         float: right;
         left: 22% !important;
-        width: 10% !important;
+        width: 7% !important;
         height: auto;
     }
     .Add-Icon:hover {
@@ -191,7 +191,7 @@
         width: 160%;
         position: absolute;
         left: -30%;
-        margin-top: 20%;
+        margin-top: -300%;
 
     }
 
@@ -205,18 +205,18 @@
     }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 800px) {
     .Products-Yellow-bar-div {
         background-color: rgb(255, 240, 36);
-        width: 16%;
-        height: 250%;
+        width: 9%;
+        height: 500%;
         position: absolute;
     }
 
     .Product-Container {
         width: 60%;
         position: absolute;
-        top: 40%;
+        top: 140%;
         left: 20%;
         margin: 0;
     }
@@ -225,7 +225,7 @@
         font-family: Anton;
         font-size: 15px;
         text-transform: uppercase;
-        top: 28%;
+        top: 90%;
         left: 22%;
         position: absolute;
     }
@@ -234,7 +234,7 @@
         color: rgb(255, 240, 36);
     }
     .Product-Search-Input {
-        top: 31%;
+        top: 100%;
         left: 22%;
         position: absolute;
         width: 75%;
@@ -268,6 +268,89 @@
     }
 
     .Product-footer{
+        width: 160%;
+        position: absolute;
+        left: -20%;
+        margin-top: -380%;
+    }
+
+    .Product-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 0.1%;
+        width: 80%;
+        left: 5%;
+        position: absolute;
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Products-Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 12%;
+        height: 250%;
+        position: absolute;
+    }
+
+    .Product-Container {
+        width: 60%;
+        position: absolute;
+        top: 55%;
+        left: 20%;
+        margin: 0;
+    }
+
+    .Product-Message{
+        font-family: Anton;
+        font-size: 15px;
+        text-transform: uppercase;
+        top: 35%;
+        left: 22%;
+        position: absolute;
+    }
+
+    .Product-Message:hover{
+        color: rgb(255, 240, 36);
+    }
+    .Product-Search-Input {
+        top: 40%;
+        left: 22%;
+        position: absolute;
+        width: 75%;
+        background-color: rgb(255, 240, 36);
+    }
+    .Add-Icon {
+        float: right;
+        left: 22% !important;
+        width: 8% !important;
+        height: auto;
+    }
+    .Add-Icon:hover {
+        cursor: pointer;
+    }
+    .Search-Icon{
+        left: 95% !important;
+        width: 8% !important;
+        padding-left: 2%;
+    }
+    .Search-Icon:hover{
+        cursor: pointer;
+        left: 95% !important;
+        width: 8% !important;
+        padding-left: 2%;
+    }
+    .Product-Search-Advanced {
+        font-family: Anton;
+        font-size: 15px;
+        text-transform: uppercase;
+        width: 30% !important;
+    }
+
+    .Product-footer{
+        width: 120%;
+        position: absolute;
+        margin-top: 40%;
+        left: -10%;
     }
 
     .Product-Empty-Div{

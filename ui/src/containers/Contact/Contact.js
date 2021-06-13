@@ -6,6 +6,10 @@ import './Contact.css';
 
 class Contact extends PureComponent {
 
+    openSocial = (social) => {
+        window.open(social+'/naybxrz');
+    }
+
     render() {
 
         return (
@@ -28,9 +32,9 @@ class Contact extends PureComponent {
                             </Grid.Column>
                             <Grid.Column>
                                 <div className="Icon-div">
-                                    <Icon name="facebook" size='large'/>
-                                    <Icon name="instagram" size='large'/>
-                                    <Icon name="pinterest" size='large'/>
+                                    <Icon name="facebook" size='large' link onClick={() => this.openSocial("https://facebook.com")}/>
+                                    <Icon name="instagram" size='large' link onClick={() => this.openSocial("https://instagram.com")}/>
+                                    <Icon name="pinterest" size='large' link/>
                                 </div>
                             </Grid.Column>
 
@@ -55,7 +59,7 @@ class Contact extends PureComponent {
 
                             <Grid.Column width={8}>
                                 <div>
-                                    <p className="Reserved-right">© 2020 Naybxrz. All rights reserved</p>
+                                    <p className="Reserved-right">© 2021 Naybxrz. All rights reserved</p>
                                 </div>
                             </Grid.Column>
 

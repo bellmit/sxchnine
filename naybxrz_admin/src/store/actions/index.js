@@ -32,7 +32,8 @@ export {
     closeModalAndRedirectBack,
     startOrdersNotification,
     ordersNotificationData,
-    ordersNotificationResetSize
+    ordersNotificationResetSize,
+    searchOrdersByStatus
 } from './orders';
 
 export  {

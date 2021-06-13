@@ -1,15 +1,18 @@
 .segment-div{
-    width: 35%;
+    width: 50%;
+    height: 30%;
 }
 
 .search-loop{
     height: 8%;
     width: 8%;
+    padding-left: 2%;
 }
 
 .search-loop:hover{
     height: 8%;
     width: 8%;
+    padding-left: 2%;
     cursor: pointer;
 }
 
