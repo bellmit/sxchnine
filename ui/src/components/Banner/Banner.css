@@ -91,7 +91,7 @@
         position: absolute;
         display: flex;
         align-items: center;
-        object-position: 0 33%;
+        object-position: 0 9%;
         transform: scaleX(1);
         left: 8%;
     }

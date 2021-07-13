@@ -89,7 +89,7 @@
         float: right;
         position: absolute;
         top: 30%;
-        right: 12%;
+        right: 0%;
     }
 
     .Reco-Container-div {
@@ -133,7 +133,8 @@
 
     .Product-Details-Div {
         position: absolute;
-        top: 30%;
+        width: 20%;
+        right: 16%;
     }
 
     .Reco-Container-div {
@@ -177,8 +178,10 @@
     }
 
     .Product-Details-Div {
+        margin: 10% 0 0 50%;
         position: absolute;
-        top: 101%;
+        top: 95%;
+        width: 50%;
     }
 
     .Reco-Container-div {
@@ -221,8 +224,10 @@
     }
 
     .Product-Details-Div {
+        margin: 10% 0 0 50%;
         position: absolute;
-        top: 80%;
+        top: 75%;
+        width: 50%;
     }
 
     .Reco-Container-div {
@@ -265,8 +270,57 @@
     }
 
     .Product-Details-Div {
+        margin: 10% 0 0 50%;
         position: absolute;
-        top: 80%;
+        top: 75%;
+        width: 50%;
+    }
+
+    .Reco-Container-div {
+        margin: 70% 0 0 0;
+        position: absolute;
+        width: 100%;
+        align-content: center;
+        top: 95%;
+    }
+
+    .Product-Details-footer{
+        width: 100%;
+        position: absolute;
+        top: 210%;
+        left: 0;
+    }
+}
+
+@media only screen and (max-width: 411px) {
+    .Slick-Container-div {
+        text-align: center;
+        width: 87%;
+        margin: 0 0 0 16%;
+    }
+
+    .Yellow-bar-div {
+        background-color: rgb(255, 240, 36);
+        width: 16%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .Product-Details-Empty-Div{
+        background: rgb(255, 240, 36);
+        height: 1%;
+        width: 50%;
+        top: 200%;
+        left: 22%;
+        position: absolute;
+        align-items: center;
+    }
+
+    .Product-Details-Div {
+        margin: 10% 0 0 50%;
+        position: absolute;
+        top: 75%;
+        width: 50%;
     }
 
     .Reco-Container-div {
@@ -288,7 +342,7 @@
 @media only screen and (max-width: 375px) {
     .Slick-Container-div {
         text-align: center;
-        width: 80%;
+        width: 87%;
         margin: 0 0 0 17%;
     }
 
@@ -310,8 +364,10 @@
     }
 
     .Product-Details-Div {
+        margin: 0 0 0 50%;
         position: absolute;
-        top: 85%;
+        top: 90%;
+        width: 50%;
     }
 
     .Reco-Container-div {
@@ -333,7 +389,7 @@
 @media only screen and (max-width: 360px) {
     .Slick-Container-div {
         text-align: center;
-        width: 80%;
+        width: 87%;
         margin: 0 0 0 18%;
     }
 
@@ -355,8 +411,10 @@
     }
 
     .Product-Details-Div {
+        margin: 10% 0 0 50%;
         position: absolute;
-        top: 65%;
+        top: 67%;
+        width: 50%;
     }
 
     .Reco-Container-div {

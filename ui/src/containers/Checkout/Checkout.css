@@ -20,6 +20,8 @@
     position: absolute;
 }
 
+.Checkout-Inner-Grid{}
+
 .Checkout-Message-Text{
     font-family: Anton;
     font-size: 1.5vw;
@@ -93,6 +95,50 @@
     text-decoration: none;
     outline: none;
     width: 60%;
+}
+
+.Checkout-Continue-Guest-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+    width: 60%;
+    margin-left: -30% !important;
+}
+
+.Checkout-Continue-Guest-Button:focus{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+    width: 60%;
+    margin-left: -30% !important;
+}
+
+.Checkout-Continue-New-Button{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+    width: 60%;
+    margin-left: 0% !important;
+}
+
+.Checkout-Continue-New-Button:focus{
+    background-color: rgb(255, 240, 36);
+    border-style: none;
+    border-color: rgb(255, 240, 36);
+    padding: 10px 20px;
+    text-decoration: none;
+    outline: none;
+    width: 60%;
+    margin-left: 0% !important;
 }
 
 .Checkout-footer{
@@ -305,6 +351,50 @@
         width: 60%;
     }
 
+    .Checkout-Continue-Guest-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        width: 60%;
+        margin-left: -30% !important;
+    }
+
+    .Checkout-Continue-Guest-Button:focus{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        width: 60%;
+        margin-left: -30% !important;
+    }
+
+    .Checkout-Continue-New-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        width: 60%;
+        margin-left: 0% !important;
+    }
+
+    .Checkout-Continue-New-Button:focus{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        text-decoration: none;
+        outline: none;
+        width: 60%;
+        margin-left: 0% !important;
+    }
+
     .Checkout-footer{
         width: 100%;
         position: absolute;
@@ -352,11 +442,6 @@
         left: -30% !important;
     }
 
-    .Continue-As-Guest-Grid{
-        margin-left: -30% !important;
-        width: 100%;
-    }
-
     .Div-Choose-Or-Line{
         left: -45%;
     }
@@ -367,6 +452,17 @@
         text-justify: inter-word;
         left: -10%;
     }
+
+/*    .New-Member-Note-Message-Label{
+        font-family: "Anton";
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 2vw !important;
+        left: 2%;
+        white-space: normal;
+        width: 220% !important;
+        height: 100%;
+    }*/
 
     .Modal-Div{
         height: auto !important;
@@ -431,11 +527,6 @@
 
     .Div-Choose-Line{
         left: 5% !important;
-    }
-
-    .Continue-As-Guest-Grid{
-        margin-left: 5% !important;
-        width: 100%;
     }
 
     .Div-As-Member-Line{
@@ -525,15 +616,6 @@
         text-transform: uppercase;
     }
 
-    .New-Member-Note-Message-Label{
-        font-family: "Anton";
-        text-align: justify;
-        text-justify: inter-word;
-        font-size: 1.5vw !important;
-        width: 60%;
-        left: 2%;
-    }
-
     .Checkout-Text-Button {
         font-family: Anton;
         font-size: 2vw;
@@ -545,6 +627,37 @@
         border-style: none;
         border-color: rgb(255, 240, 36);
         padding: 2px 5px;
+    }
+
+    .Checkout-Continue-Guest-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .Checkout-Continue-New-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .New-Member-Note-Message-Label{
+        font-family: "Anton";
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 2vw !important;
+        left: 2%;
+        white-space: normal;
+        width: 260% !important;
+        height: 100%;
     }
 
     .Checkout-Empty-Div{
@@ -606,11 +719,6 @@
 
     .Div-Choose-Line{
         left: 5% !important;
-    }
-
-    .Continue-As-Guest-Grid{
-        margin-left: 5% !important;
-        width: 100%;
     }
 
     .Div-As-Member-Line{
@@ -700,15 +808,6 @@
         text-transform: uppercase;
     }
 
-    .New-Member-Note-Message-Label{
-        font-family: "Anton";
-        text-align: justify;
-        text-justify: inter-word;
-        font-size: 2vw !important;
-        width: 60%;
-        left: 2%;
-    }
-
     .Checkout-Text-Button {
         font-family: Anton;
         font-size: 2.5vw;
@@ -720,6 +819,37 @@
         border-style: none;
         border-color: rgb(255, 240, 36);
         padding: 2px 5px;
+    }
+
+    .Checkout-Continue-Guest-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .Checkout-Continue-New-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .New-Member-Note-Message-Label{
+        font-family: "Anton";
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 2vw !important;
+        left: 2%;
+        white-space: normal;
+        width: 220% !important;
+        height: 100%;
     }
 
     .Checkout-Empty-Div{
@@ -776,11 +906,6 @@
 
     .Div-Choose-Line{
         left: 5% !important;
-    }
-
-    .Continue-As-Guest-Grid{
-        margin-left: 5% !important;
-        width: 100%;
     }
 
     .Div-As-Member-Line{
@@ -875,8 +1000,10 @@
         text-align: justify;
         text-justify: inter-word;
         font-size: 2vw !important;
-        width: 60%;
         left: 2%;
+        white-space: normal;
+        width: 220% !important;
+        height: 100%;
     }
 
     .Checkout-Text-Button {
@@ -890,6 +1017,26 @@
         border-style: none;
         border-color: rgb(255, 240, 36);
         padding: 2px 5px;
+    }
+
+    .Checkout-Continue-Guest-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .Checkout-Continue-New-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
     }
 
     .Checkout-Empty-Div{
@@ -946,11 +1093,6 @@
 
     .Div-Choose-Line{
         left: 12% !important;
-    }
-
-    .Continue-As-Guest-Grid{
-        margin-left: 12% !important;
-        width: 100%;
     }
 
     .Div-As-Member-Line{
@@ -1067,11 +1209,40 @@
         padding: 2px 5px;
     }
 
+    .Checkout-Continue-Guest-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: dashed;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 12px !important;
+    }
+
+    .Checkout-Continue-New-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .New-Member-Note-Message-Label{
+        font-family: "Anton";
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 2vw !important;
+        left: 2%;
+        white-space: normal;
+        width: 220% !important;
+        height: 100%;
+    }
+
     .Checkout-Empty-Div{
         background: rgb(255, 240, 36);
         height: 15%;
         width: 50%;
-        margin-top: 80%;
+        margin-top: 70%;
         position: absolute;
     }
 
@@ -1121,11 +1292,6 @@
 
     .Div-Choose-Line{
         left: 12% !important;
-    }
-
-    .Continue-As-Guest-Grid{
-        margin-left: 12% !important;
-        width: 100%;
     }
 
     .Div-As-Member-Line{
@@ -1240,6 +1406,35 @@
         border-style: none;
         border-color: rgb(255, 240, 36);
         padding: 2px 5px;
+    }
+
+    .Checkout-Continue-Guest-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 12%;
+    }
+
+    .Checkout-Continue-New-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 2px 5px;
+        margin-left: 5% !important;
+        white-space: nowrap;
+        width: 140%;
+    }
+
+    .New-Member-Note-Message-Label{
+        font-family: "Anton";
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 2vw !important;
+        left: 2%;
+        white-space: normal;
+        width: 220% !important;
+        height: 100%;
     }
 
     .Checkout-Empty-Div{

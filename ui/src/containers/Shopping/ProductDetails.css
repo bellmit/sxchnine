@@ -3,6 +3,7 @@
     font-size: 2vw;
     text-transform: uppercase;
     color: black;
+    text-align: center;
 }
 
 
@@ -87,6 +88,7 @@
         font-size: 2vw;
         text-transform: uppercase;
         color: black;
+        text-align: center;
     }
 
     .Product-Radio-Text{
@@ -142,6 +144,7 @@
         font-size: 2.5vw;
         text-transform: uppercase;
         color: black;
+        text-align: center;
     }
 
     .Product-Radio-Text{
@@ -197,7 +200,7 @@
         font-size: 5vw;
         text-transform: uppercase;
         color: black;
-        margin-left: -30% !important;
+        text-align: center;
     }
 
     .Product-Dropdown-Text{
@@ -265,6 +268,7 @@
         font-size: 5vw;
         text-transform: uppercase;
         color: black;
+        text-align: center;
     }
 
     .Product-Radio-Text{
@@ -327,6 +331,7 @@
         font-size: 5vw;
         text-transform: uppercase;
         color: black;
+        text-align: center;
     }
 
     .Product-Dropdown-Text{
@@ -364,7 +369,7 @@
     }
 
     .Product-Form-Div {
-        margin: 10% 0 0 -15%;
+        margin: 10% 0 0 50% !important;
         position: absolute;
         width: 100%;
     }
@@ -391,6 +396,7 @@
         font-size: 5vw;
         text-transform: uppercase;
         color: black;
+        text-align: center;
     }
 
     .Product-Dropdown-Text{
@@ -452,6 +458,8 @@
         font-size: 5vw;
         text-transform: uppercase;
         color: black;
+        text-align: center;
+
     }
     .Product-Radio-Text{
         font-family: Anton;
@@ -513,7 +521,71 @@
         font-size: 5vw;
         text-transform: uppercase;
         color: black;
-        margin-left: -50%;
+        text-align: center;
+
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+        width: 60% !important;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 -30%;
+        position: absolute;
+        width: 100%;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+
+}
+
+@media only screen and (max-width: 360px) {
+    .Product-Name-Div{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+
     }
 
     .Product-Dropdown-Text{

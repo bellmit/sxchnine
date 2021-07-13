@@ -4,6 +4,7 @@ import {Badge, CSSReset, ThemeProvider} from "@chakra-ui/core";
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import './ProductDetails.css';
+import Aux from '../../hoc/Aux/Aux';
 
 class ProductDetails extends PureComponent {
     state = {
@@ -71,7 +72,7 @@ class ProductDetails extends PureComponent {
 
         if (this.props.product.available) {
             badge = (
-                <div>
+                <div className="Product-Name-Div">
                     <ThemeProvider>
                         <CSSReset/>
                         <Badge rounded="full" px="2" variantColor="teal">
@@ -94,10 +95,10 @@ class ProductDetails extends PureComponent {
         }
 
         return (
-            <div>
-                {badge}
-                <p className="Product-Name-Div">{this.props.product.name}</p>
-                <div className="Product-Form-Div">
+            <Aux>
+                <Aux className="Product-Form-Div">
+                    {badge}
+                    <p className="Product-Name-Div">{this.props.product.name}</p>
                     <Form unstackable widths='equal' size='large'>
 
                         <Form.Group inline widths='equal'>
@@ -161,7 +162,7 @@ class ProductDetails extends PureComponent {
                             </Button.Content>
                         </Button>
                     </Form>
-                </div>
+                </Aux>
 
                 <div className="Grid-Container-Div">
                     <Grid columns={1} verticalAlign='bottom'>
@@ -183,7 +184,7 @@ class ProductDetails extends PureComponent {
                     </Grid>
                 </div>
 
-            </div>
+            </Aux>
         );
     }
 }

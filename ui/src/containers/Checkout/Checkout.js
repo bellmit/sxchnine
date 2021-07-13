@@ -33,7 +33,8 @@ class Checkout extends Component {
     showForgotPassword = () => this.setState({openForgotPassword: true});
     close = () => this.setState({open: false});
     closeForgotPassword = () => {
-        this.setState({openForgotPassword: false,
+        this.setState({
+            openForgotPassword: false,
             forgotPasswordValidation: undefined,
             forgotPasswordEmail: ''
         });
@@ -52,7 +53,7 @@ class Checkout extends Component {
     };
 
     forgotPasswordAction = () => {
-        if (this.state.forgotPasswordEmail !== ''){
+        if (this.state.forgotPasswordEmail !== '') {
             this.props.forgotPassword(this.state.forgotPasswordEmail);
             this.setState({forgotPasswordValidation: undefined});
         } else {
@@ -104,26 +105,28 @@ class Checkout extends Component {
         const {open, openForgotPassword} = this.state;
 
         let validationError = undefined;
-        if (this.state.forgotPasswordValidation !== undefined){
+        if (this.state.forgotPasswordValidation !== undefined) {
             validationError = <Label color="red"
                                      className="Checkout-Error-Text">{this.state.forgotPasswordValidation}</Label>
         }
 
         let forgotPasswordCallError = undefined;
-        if (this.props.forgotPasswordSuccess === 'not found'){
+        if (this.props.forgotPasswordSuccess === 'not found') {
             forgotPasswordCallError = <Label color="red"
                                              className="Checkout-Error-Text">Sorry ! Cannot find your email</Label>
         } else if (this.props.forgotPasswordSuccess !== undefined
-            && this.props.forgotPasswordSuccess.email !== undefined){
+            && this.props.forgotPasswordSuccess.email !== undefined) {
             forgotPasswordCallError = <Label color="green"
-                                           className="Checkout-Error-Text">Alright! Check your email to reset the password.</Label>
+                                             className="Checkout-Error-Text">Alright! Check your email to reset the
+                password.</Label>
         }
 
         let forgotPasswordServerError = undefined;
         if (this.props.forgotPasswordError !== undefined
-            && this.props.forgotPasswordError.message !== undefined){
+            && this.props.forgotPasswordError.message !== undefined) {
             forgotPasswordServerError = <Label color="red"
-                                               className="Checkout-Error-Text">Sorry! Cannot process your request.. Please try later.</Label>
+                                               className="Checkout-Error-Text">Sorry! Cannot process your request..
+                Please try later.</Label>
         }
 
 
@@ -157,16 +160,16 @@ class Checkout extends Component {
 
                     <Grid.Row>
                         <Grid.Column width={4}>
-                            <Grid className="Checkout-Inner-Grid">
+                            <Grid>
                                 <Grid.Row className="Div-Choose-Line">
-                                    <button className="Checkout-Continue-Button" onClick={this.show}>
+                                    <button className="Checkout-Continue-New-Button" onClick={this.show}>
                                         <span className="Checkout-Text-Button">New Naybxrz player ?</span>
                                     </button>
                                 </Grid.Row>
                                 <Grid.Row className="Div-Choose-Line">
                                     <Message color="black"
                                              size='mini'
-                                             className="New-Member-Note-Message-Label" >
+                                             className="New-Member-Note-Message-Label">
                                         You want to join Naybxrz Familly? <br/>
                                         Register and make your shopping on Naybxrz easier. <br/>
                                         You will be informed in advance of our special offers and arrivals of new items.
@@ -186,11 +189,9 @@ class Checkout extends Component {
                                     </Grid.Column>
                                 </Grid.Row>
                                 <Grid.Row>
-                                    <Grid className="Continue-As-Guest-Grid">
-                                        <button className="Checkout-Continue-Button" onClick={this.continueAsGuest}>
-                                            <span className="Checkout-Text-Button">Continue as guest</span>
-                                        </button>
-                                    </Grid>
+                                    <button className="Checkout-Continue-Guest-Button" onClick={this.continueAsGuest}>
+                                        <span className="Checkout-Text-Button">Continue as guest</span>
+                                    </button>
 
                                 </Grid.Row>
                             </Grid>
@@ -206,7 +207,7 @@ class Checkout extends Component {
                                     <Grid.Column width={5}>
                                         <span className="Checkout-Email-Text">EMAIL:</span>
                                     </Grid.Column>
-                                    <Grid.Column width={5} >
+                                    <Grid.Column width={5}>
                                         <Input inverted
                                                name='email'
                                                placeholder='Email'
@@ -236,17 +237,22 @@ class Checkout extends Component {
                                 </Grid.Row>
                                 <Grid.Row centered>
                                     <span className="Checkout-forgot-password-text"
-                                          style={{fontStyle: "italic",
-                                              textDecoration: "underline"}}
+                                          style={{
+                                              fontStyle: "italic",
+                                              textDecoration: "underline"
+                                          }}
                                           onClick={this.showForgotPassword}>Forgot Password?</span>
                                 </Grid.Row>
                                 <Grid.Row centered>
                                     {this.props.loginFailError !== undefined &&
-                                    <Label color="red" className="Checkout-Error-Text">{this.props.loginFailError}</Label>}
+                                    <Label color="red"
+                                           className="Checkout-Error-Text">{this.props.loginFailError}</Label>}
                                     {this.props.saveError !== undefined &&
-                                    <Label color="red" className="Checkout-Error-Text">Cannot save user - please try later..</Label>}
+                                    <Label color="red" className="Checkout-Error-Text">Cannot save user - please try
+                                        later..</Label>}
                                     {this.props.addedUser &&
-                                    <Label color="green" className="Checkout-Error-Text">Welcome to Naybxrz Familly !</Label>}
+                                    <Label color="green" className="Checkout-Error-Text">Welcome to Naybxrz Familly
+                                        !</Label>}
                                 </Grid.Row>
                                 <Grid.Row centered>
                                     <button className="Checkout-Continue-Button" onClick={this.login}>
@@ -392,13 +398,13 @@ class Checkout extends Component {
                                 <Grid.Column width={5}>
                                     <span className="Checkout-Email-Text">EMAIL:</span>
                                 </Grid.Column>
-                                <Grid.Column width={5} >
+                                <Grid.Column width={5}>
                                     <Input
-                                           name='forgotPasswordEmail'
-                                           placeholder='Email'
-                                           className="Checkout-Email-Text-Input"
-                                           value={this.state.forgotPasswordEmail}
-                                           onChange={this.handleChange} />
+                                        name='forgotPasswordEmail'
+                                        placeholder='Email'
+                                        className="Checkout-Email-Text-Input"
+                                        value={this.state.forgotPasswordEmail}
+                                        onChange={this.handleChange}/>
                                 </Grid.Column>
                             </Grid.Row>
                             <Grid.Row>
