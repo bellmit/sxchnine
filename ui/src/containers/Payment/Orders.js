@@ -104,7 +104,7 @@ class Orders extends Component {
                                 <p className="Orders-Total-Text">TOTAL:</p>
                             </Grid.Column>
                             <Grid.Column width={3}>
-                                <Label tag color='red'>${this.state.total}</Label>
+                                <Label tag color='red' className="Orders-Total-Label">${this.state.total}</Label>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -121,11 +121,11 @@ class Orders extends Component {
                                 <Form.Input inverted placeholder='first name..'
                                             name='firstName'
                                             value={this.state.firstName}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                                 <Form.Input inverted placeholder='last name..'
                                             name='lastName'
                                             value={this.state.lastName}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>
@@ -137,7 +137,7 @@ class Orders extends Component {
                                 <Form.Input inverted placeholder='email address...'
                                             name='email'
                                             value={this.state.email}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                             </Grid.Column>
                         </Grid.Row>
 
@@ -150,23 +150,23 @@ class Orders extends Component {
                                 <Form.Input inverted placeholder='N°'
                                             name='num'
                                             value={this.state.num}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                                 <Form.Input inverted placeholder='street/avenue'
                                             name='avenue'
                                             value={this.state.avenue}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                                 <Form.Input inverted placeholder='city'
                                             name='city'
                                             value={this.state.city}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                                 <Form.Input inverted placeholder='postal code'
                                             name='postalCode'
                                             value={this.state.postalCode}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                                 <Form.Input inverted placeholder='country'
                                             name='country'
                                             value={this.state.country}
-                                            onChange={this.handleChange}/>
+                                            onChange={this.handleChange} className="Orders-Email-Info"/>
                             </Grid.Column>
                         </Grid.Row>
                         {keepUserInfo}

@@ -15,11 +15,11 @@
 }
 
 .Tracking-Order-Form-Div{
-    width: 43% !important;
+    width: 55% !important;
     height: 60% !important;
     background-color: whitesmoke !important;
     position: fixed !important;
-    margin: 7% 0 0 45% !important;
+    margin: 7% 0 0 40% !important;
     overflow-y: scroll;
 }
 
@@ -46,7 +46,7 @@
 
 .Tracking-Message-Text-div{
     font-family: "American Typewriter, Times";
-    font-size: 60%;
+    font-size: 70%;
 }
 
 .Tracking-Grid-div{
@@ -75,7 +75,7 @@
 }
 
 .Tracking-Progress-Text {
-    font-size: 80%;
+    font-size: 90%;
 }
 
 .Tracking-Order-Message{
@@ -99,31 +99,65 @@
     background-color: rgb(255, 240, 36);
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 2560px) {
     .Tracking-Image-div{
         width: 100%;
-        height: 100%;
         object-fit: cover;
+        position: fixed;
+        display: flex;
+        align-items: center;
     }
 
     .Tracking-Form-Div{
-        width: 30%;
-        height: 60%;
+        width: 23%;
+        height: 40%;
         background-color: rgb(255, 240, 36);
         position: fixed;
-        margin: 5% 0 0 8%;
+        margin: 7% 0 0 15%;
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 50% !important;
+        height: 60% !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 7% 0 0 45% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Not-Found-Order-Form-Div{
+        width: 30%;
+        height: 30%;
+        background-color: transparent;
+        position: fixed;
+        margin: 7% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 3% 0 0 10%;
     }
 
     .Tracking-Message-Text-h1-div{
         position: absolute;
+        margin: -4% 0 0 0;
         font-family: Anton;
-        font-size: 2vw !important;
-        margin: -3% 0 0 0;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
     }
 
     .Tracking-Message-Text-div{
         font-family: "American Typewriter, Times";
-        font-size: 80%;
+        font-size: 40px;
+    }
+
+    .Tracking-Grid-div{
+        margin: 0 0 0 3%;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 100% !important;
     }
 
     .Tracking-Continue-Button{
@@ -131,7 +165,7 @@
         border-style: none;
         border-color: rgb(255, 240, 36);
         padding: 10px 20px;
-        margin-top: 5%;
+        margin-top: 8%;
         text-decoration: none;
         outline: none;
     }
@@ -143,25 +177,151 @@
         color: rgb(255, 240, 36);
     }
 
-    .Tracking-Order-Form-Div{
-        width: 43% !important;
-        height: 60% !important;
-        background-color: whitesmoke !important;
-        position: fixed !important;
-        margin: 8% 0 0 40% !important;
-        overflow-y: scroll;
+    .Tracking-Progress-Text {
+        font-size: 1vw !important;
+    }
+
+    .Tracking-Order-Price{
+        font-family: Anton;
+        font-size: 1.5vw !important;
+        left: 35% !important;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 1.5vw;
+        padding-left: 5%;
     }
 
     .Tracking-Order-Message-Inline{
         font-family: Anton;
-        font-size: 75% !important;
-        padding-left: 0;
+        font-size: 1.5vw;
+        padding-left: 10%;
         white-space: nowrap;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 30% 0 0 0 !important;
+        font-family: Anton;
+        font-size: 1vw;
+        background-color: rgb(255, 240, 36);
     }
 
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (min-width: 1920px) {
+    .Tracking-Image-div{
+        width: 100%;
+        object-fit: cover;
+        position: fixed;
+        display: flex;
+        align-items: center;
+    }
+
+    .Tracking-Form-Div{
+        width: 23%;
+        height: 40%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 7% 0 0 15%;
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 50% !important;
+        height: 60% !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 7% 0 0 45% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Not-Found-Order-Form-Div{
+        width: 30%;
+        height: 30%;
+        background-color: transparent;
+        position: fixed;
+        margin: 7% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 3% 0 0 10%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        margin: -4% 0 0 0;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 40px;
+    }
+
+    .Tracking-Grid-div{
+        margin: 0 0 0 3%;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 100% !important;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 8%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 0.9vw !important;
+    }
+
+    .Tracking-Order-Price{
+        font-family: Anton;
+        font-size: 1.5vw !important;
+        left: 35% !important;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 1.5vw;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 1.5vw;
+        padding-left: 10%;
+        white-space: nowrap;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 30% 0 0 0 !important;
+        font-family: Anton;
+        font-size: 1vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+}
+
+@media only screen and (max-width: 1024px) {
     .Tracking-Image-div{
         max-width: 100%;
         width: 100%;
@@ -175,6 +335,11 @@
         background-color: rgb(255, 240, 36);
         position: fixed;
         margin: 10% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 5% 0 0 10%;
     }
 
     .Tracking-Message-Text-h1-div{
@@ -208,7 +373,7 @@
 
     .Tracking-Message-Error-Text-div{
         position: absolute;
-        margin: 100% 0 0 -10% !important;
+        margin: 50% 0 0 10% !important;
         font-family: Anton;
         font-size: 2vw;
         background-color: rgb(255, 240, 36);
@@ -235,9 +400,370 @@
         padding-left: 5%;
         white-space: normal;
     }
+
+    .Tracking-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
 }
 
-@media only screen and (max-width: 414px) {
+@media only screen and (max-width: 834px) {
+    .Tracking-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 35%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 10% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 5% 0 0 10%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 3vw !important;
+        margin: -4% 0 0 0;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 50% 0 0 10% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 70% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 60% 0 0 15% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+        white-space: normal;
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+}
+
+@media only screen and (max-width: 810px) {
+    .Tracking-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 35%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 10% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 5% 0 0 10%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 3vw !important;
+        margin: -4% 0 0 0;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 50% 0 0 10% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 70% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 60% 0 0 15% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+        white-space: normal;
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .Tracking-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 70%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 10% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 5% 0 0 10%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 3vw !important;
+        margin: -4% 0 0 0;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 0;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 50% 0 0 10% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 70% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 60% 0 0 15% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+        white-space: normal;
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .Tracking-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 35%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 10% 0 0 15%;
+    }
+
+    .Tracking-Container-div{
+        position: fixed;
+        margin: 5% 0 0 10%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 3vw !important;
+        margin: -4% 0 0 0;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 50% 0 0 10% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 70% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 60% 0 0 15% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+        white-space: normal;
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+}
+
+@media only screen and (max-width: 480px) {
     .Tracking-Image-div{
         width: 100% !important;
         height: 100% !important;
@@ -312,6 +838,294 @@
         margin: 3% 0 0 0 !important;
         width: 115% !important;
     }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -20% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+}
+
+@media only screen and (max-width: 428px) {
+    .Tracking-Image-div{
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: absolute;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 30%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 20% 0 0 30%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 4vw !important;
+        margin: -3% 0 0 -5%;
+    }
+
+    .Tracking-Grid-div{
+        margin: 10% 0 0 3%;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+    .Tracking-Order-Form-Div{
+        width: 80% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 80% 0 0 10% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 1%;
+        white-space: normal;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 115% !important;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -30% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+}
+
+@media only screen and (max-width: 414px) {
+    .Tracking-Image-div{
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: absolute;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 35%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 15% 0 0 30%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 4vw !important;
+        margin: -3% 0 0 -5%;
+    }
+
+    .Tracking-Grid-div{
+        margin: 10% 0 0 3%;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+    .Tracking-Order-Form-Div{
+        width: 80% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 80% 0 0 10% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Order-Message-Inline{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 1%;
+        white-space: normal;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 115% !important;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -30% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+}
+
+@media only screen and (max-width: 412px) {
+    .Tracking-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 35%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 12% 0 0 30%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 4vw !important;
+        margin: -4% 0 0 0;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+    .Tracking-Grid-div{
+        margin: 10% 0 0 3%;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 2%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 80% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 75% 0 0 10% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 115% !important;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -20% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
 }
 
 @media only screen and (max-width: 411px) {
@@ -382,6 +1196,109 @@
         margin: 3% 0 0 0 !important;
         width: 115% !important;
     }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -20% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+}
+
+@media only screen and (max-width: 390px) {
+    .Tracking-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .Tracking-Form-Div{
+        width: 40%;
+        height: 32%;
+        background-color: rgb(255, 240, 36);
+        position: fixed;
+        margin: 20% 0 0 30%;
+    }
+
+    .Tracking-Message-Text-h1-div{
+        position: absolute;
+        font-family: Anton;
+        font-size: 4vw !important;
+        margin: -4% 0 0 0;
+    }
+
+    .Tracking-Message-Text-div{
+        font-family: "American Typewriter, Times";
+        font-size: 80%;
+    }
+
+    .Tracking-Grid-div{
+        margin: 10% 0 0 3%;
+    }
+
+    .Tracking-Continue-Button{
+        background-color: black;
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+    }
+
+    .Tracking-Text-Button {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Order-Form-Div{
+        width: 80% !important;
+        height: auto !important;
+        background-color: whitesmoke !important;
+        position: fixed !important;
+        margin: 82% 0 0 10% !important;
+        overflow-y: scroll;
+    }
+
+    .Tracking-Order-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding-left: 5%;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 115% !important;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -30% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+
 }
 
 @media only screen and (max-width: 375px) {
@@ -417,7 +1334,7 @@
         border-style: none;
         border-color: rgb(255, 240, 36);
         padding: 10px 20px;
-        margin-top: 1%;
+        margin-top: 0%;
         text-decoration: none;
         outline: none;
     }
@@ -447,6 +1364,22 @@
         margin: 3% 0 0 0 !important;
         width: 120% !important;
     }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -35% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
 }
 
 @media only screen and (max-width: 360px) {
@@ -457,11 +1390,11 @@
     }
 
     .Tracking-Form-Div{
-        width: 40%;
-        height: 30%;
+        width: 43%;
+        height: 35%;
         background-color: rgb(255, 240, 36);
         position: fixed;
-        margin: 8% 0 0 30%;
+        margin: 11% 0 0 20%;
     }
 
     .Tracking-Message-Text-h1-div{
@@ -518,28 +1451,46 @@
         margin: 3% 0 0 0 !important;
         width: 120% !important;
     }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -30% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+
 }
 
 @media only screen and (max-width: 320px) {
     .Tracking-Image-div{
-        width: 100% !important;
-        height: 100% !important;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 
     .Tracking-Form-Div{
-        width: 40%;
-        height: 30%;
+        width: 43%;
+        height: 34%;
         background-color: rgb(255, 240, 36);
         position: fixed;
-        margin: 20% 0 0 5%;
+        margin: 12% 0 0 25%;
     }
 
     .Tracking-Message-Text-h1-div{
         position: absolute;
         font-family: Anton;
         font-size: 4vw !important;
-        margin: -3% 0 0 0;
+        margin: -3% 0 0 -5%;
     }
 
     .Tracking-Message-Text-div{
@@ -551,32 +1502,51 @@
         background-color: black;
         border-style: none;
         border-color: rgb(255, 240, 36);
-        padding: 10px 20px;
-        margin-top: 5%;
+        padding: 5px 10px;
+        margin-top: -7%;
         text-decoration: none;
         outline: none;
     }
 
     .Tracking-Text-Button {
         font-family: Anton;
-        font-size: 5vw;
+        font-size: 4vw;
         text-transform: uppercase;
         color: rgb(255, 240, 36);
     }
 
     .Tracking-Order-Form-Div{
-        width: 70% !important;
+        width: 90% !important;
         height: auto !important;
         background-color: whitesmoke !important;
         position: fixed !important;
-        margin: 90% 0 0 10% !important;
+        margin: 68% 0 0 5% !important;
         overflow-y: scroll;
     }
 
     .Tracking-Order-Message{
         font-family: Anton;
-        font-size: 80% !important;
-        padding-left: 5%;
+        font-size: 50% !important;
+    }
+
+    .Tracking-Grid-Result{
+        margin: 3% 0 0 0 !important;
+        width: 120% !important;
+    }
+
+    .Tracking-Message-Error-Text-div{
+        position: absolute;
+        margin: 100% 0 0 -30% !important;
+        font-family: Anton;
+        font-size: 2vw;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 }
 
@@ -637,5 +1607,12 @@
         font-family: Anton;
         font-size: 80% !important;
         padding-left: 5%;
+    }
+
+    .Tracking-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
     }
 }

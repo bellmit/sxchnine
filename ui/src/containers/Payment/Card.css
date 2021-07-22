@@ -115,6 +115,42 @@
 }
 
 
+@media screen and (min-width: 2560px) {
+
+    .Cards-form {
+        margin: 30px auto 0;
+        max-width: 800px;
+    }
+
+    .form-control{
+        font-size: 60px;
+    }
+
+    .Cards-h4 {
+        text-align: center;
+        font-family: Anton;
+        font-size: 1.5vw;
+    }
+    .Card-App-btn {
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 5px 10px;
+        width: 70%;
+        height: 30%;
+        text-decoration: none;
+    }
+    .Card-App-Pay {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .Card-App-AcceptCondition {
+        font-size: 1vw;
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .Cards-h4 {
         text-align: center;

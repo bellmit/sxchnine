@@ -32,8 +32,8 @@ class Contact extends PureComponent {
                             </Grid.Column>
                             <Grid.Column>
                                 <div className="Icon-div">
-                                    <Icon name="facebook" size='large' link onClick={() => this.openSocial("https://facebook.com")}/>
-                                    <Icon name="instagram" size='large' link onClick={() => this.openSocial("https://instagram.com")}/>
+                                    <Icon name="facebook" size='large' link onClick={() => this.openSocial("https://facebook.com/naybxrz")}/>
+                                    <Icon name="instagram" size='large' link onClick={() => this.openSocial("https://instagram.com/naybxrz")}/>
                                     <Icon name="pinterest" size='large' link/>
                                 </div>
                             </Grid.Column>

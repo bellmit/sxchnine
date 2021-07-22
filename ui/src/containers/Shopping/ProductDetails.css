@@ -82,34 +82,238 @@
     position: absolute;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (min-width: 2560px) {
     .Product-Name-Div{
         font-family: Anton;
-        font-size: 2vw;
+        font-size: 3vw;
         text-transform: uppercase;
         color: black;
         text-align: center;
     }
 
-    .Product-Radio-Text{
-        font-family: Anton;
-        font-size: 1.5vw;
-        text-transform: uppercase;
-        color: black;
-        width: 40% !important;
-    }
-
-    .Product-Radio-Text:hover {
-        font-family: Anton;
-        font-size: 1.5vw;
-        text-transform: uppercase;
-        background-color: rgb(255, 240, 36);
-        width: 40% !important;
-    }
 
     .Product-Props-Div{
         font-family: Anton;
         font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Price-Div{
+        font-family: Anton;
+        font-size: 1.5vw !important;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 2vw !important;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-div{
+        font-size: 50px !important;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 0.7vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        font-family: Anton;
+        font-size: 0.7vw;
+        text-transform: lowercase;
+        color: black;
+        text-underline: none;
+        text-decoration: none;
+        left: 20%;
+        display: block;
+    }
+    .Product-Delivery-Div:hover{
+        color: rgb(255, 240, 36);
+    }
+    .Product-Form-Div {
+        margin: 10% 0 0 0;
+        position: absolute;
+    }
+
+    .Product-Grid-Div{
+        font-family: "American Typewriter";
+        font-size: 0.6vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Grid-Container-Div {
+        margin: 150% 0 0 0;
+        position: absolute;
+    }
+
+    .Got-it-logo-product-details {
+        top: -6%;
+        right: 0;
+        width: 20%;
+        height: 30%;
+        position: absolute;
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+    .Product-Name-Div{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+    }
+
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Price-Div{
+        font-family: Anton;
+        font-size: 1.5vw !important;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 2vw !important;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-div{
+        font-size: 50px !important;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 0.7vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        font-family: Anton;
+        font-size: 0.7vw;
+        text-transform: lowercase;
+        color: black;
+        text-underline: none;
+        text-decoration: none;
+        left: 20%;
+        display: block;
+    }
+    .Product-Delivery-Div:hover{
+        color: rgb(255, 240, 36);
+    }
+    .Product-Form-Div {
+        margin: 10% 0 0 0;
+        position: absolute;
+    }
+
+    .Product-Grid-Div{
+        font-family: "American Typewriter";
+        font-size: 0.6vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Grid-Container-Div {
+        margin: 150% 0 0 0;
+        position: absolute;
+    }
+
+    .Got-it-logo-product-details {
+        top: -6%;
+        right: 0;
+        width: 20%;
+        height: 30%;
+        position: absolute;
+    }
+}
+
+
+@media only screen and (max-width: 1024px) {
+    .Product-Name-Div {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-div{
+        width: 100%;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 7vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 3vw;
         text-transform: lowercase;
         color: black;
     }
@@ -117,17 +321,15 @@
     .Product-Form-Div {
         margin: 10% 0 0 -30%;
         position: absolute;
-        width: 100%;
     }
 
     .Product-Taxes-Div{
         font-family: Anton;
-        font-size: 1vw;
+        font-size: 1.7vw;
         text-transform: lowercase;
         color: black;
         left: 20%;
         font-weight: lighter;
-        white-space: nowrap;
     }
 
     .Product-Delivery-Div{
@@ -135,6 +337,147 @@
     }
     .Product-Grid-Div{
         display: none;
+    }
+
+    .Grid-Container-Div {
+        display: none;
+
+    }
+}
+
+@media only screen and (max-width: 834px) {
+    .Product-Name-Div {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-div{
+        width: 100%;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 -30%;
+        position: absolute;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 1.7vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+
+    .Grid-Container-Div {
+        display: none;
+
+    }
+}
+
+@media only screen and (max-width: 810px) {
+    .Product-Name-Div {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-div{
+        width: 100%;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 -30%;
+        position: absolute;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 1.7vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+
+    .Grid-Container-Div {
+        display: none;
+
     }
 }
 
@@ -145,6 +488,13 @@
         text-transform: uppercase;
         color: black;
         text-align: center;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 1.5vw;
+        text-transform: uppercase;
+        color: black;
     }
 
     .Product-Radio-Text{
@@ -325,6 +675,72 @@
     }
 }
 
+@media only screen and (max-width: 428px) {
+    .Product-Name-Div{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: black;
+        width: 60% !important;
+    }
+
+    .Product-Radio-div{
+        width: 10%;
+        display: inline-block;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+    }
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 4vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 50% !important;
+        position: absolute;
+        width: 100%;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Product-Name-Div{
         font-family: Anton;
@@ -390,6 +806,69 @@
         display: none;
     }
 }
+
+@media only screen and (max-width: 412px) {
+    .Product-Name-Div{
+        font-family: Anton;
+        font-size: 5vw;
+        text-transform: uppercase;
+        color: black;
+        text-align: center;
+    }
+
+    .Product-Dropdown-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Product-Radio-Text{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        color: black;
+        width: 100% !important;
+    }
+
+    .Product-Radio-Text:hover {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+        background-color: rgb(255, 240, 36);
+        width: 100% !important;
+    }
+
+    .Product-Props-Div{
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    .Product-Form-Div {
+        margin: 10% 0 0 0;
+        position: absolute;
+        width: 100%;
+    }
+
+    .Product-Taxes-Div{
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: lowercase;
+        color: black;
+        left: 20%;
+        font-weight: lighter;
+    }
+
+    .Product-Delivery-Div{
+        display: none;
+    }
+    .Product-Grid-Div{
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 411px) {
     .Product-Name-Div{
         font-family: Anton;

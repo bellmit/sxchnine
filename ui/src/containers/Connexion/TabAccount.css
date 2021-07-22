@@ -150,11 +150,62 @@
 
 }
 
+@media only screen and (min-width: 2506px) {
+
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 180%;
+        top: 55%;
+        left: 20%;
+        position: absolute;
+    }
+
+    .TabAccount-Welcome-Icon{
+        height: 5%;
+        width: 5%;
+    }
+
+}
+
+@media only screen and (min-width: 2304px) {
+
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 180%;
+        top: 55%;
+        left: 20%;
+        position: absolute;
+    }
+
+    .TabAccount-Welcome-Icon{
+        height: 5%;
+        width: 5%;
+    }
+
+}
+
+@media only screen and (min-width: 1920px) and (max-height: 1080px) {
+
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 180%;
+        top: 65%;
+        left: 20%;
+        position: absolute;
+    }
+
+    .TabAccount-Welcome-Icon{
+        height: 5%;
+        width: 5%;
+    }
+
+}
+
 @media only screen and (max-width: 1024px) {
     .TabAccount-Welcome-Message{
         font-family: Anton;
-        font-size: 3vw;
-        top: 65%;
+        font-size: 4vw;
+        top: 38%;
         left: 20%;
         position: absolute;
     }
@@ -177,7 +228,7 @@
     }
     .TabAccount-Menu-Message {
         font-family: Anton;
-        font-size: 2vw;
+        font-size: 3vw;
     }
 
     .TabAccount-Label-Message{
@@ -188,8 +239,8 @@
 
     .TabAccount-Message{
         font-family: Anton;
-        font-size: 2vw !important;
-        padding: 0 20% 0 20% !important;
+        font-size: 2.5vw !important;
+        padding: 0 20% 0 100px !important;
         white-space: nowrap !important;
         text-overflow: ellipsis !important;
     }
@@ -198,18 +249,18 @@
         font-size: 2vw !important;
     }
 
-    .TabAccount-Grid{
-        left: 10% !important;
-        width: auto !important;
-    }
-
     .TabAccount-Grid-User{
         left: 10% !important;
         width: auto !important;
     }
 
+    .TabAccount-Grid{
+        left: 10% !important;
+        width: auto !important;
+    }
+
     .TabAccount-Grid2{
-        width: 300% !important;
+        width: 250px !important;
         padding-left: 70%;
     }
 
@@ -278,12 +329,265 @@
         left: 20px;
     }
 
-    .TabAccount-Orders-Separator-Product{
-        background: rgb(255, 240, 36);
-        height: 10%;
-        width: 40%;
+}
+
+
+@media only screen and (max-width: 834px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 38%;
+        left: 20%;
         position: absolute;
-        left: 60px;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+    }
+    .log-off-icon:hover{
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 2.5vw !important;
+        padding: 0 20% 0 100px !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 2vw !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 10% !important;
+        width: 200% !important;
+    }
+
+    .TabAccount-Grid{
+        left: 10% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 250px !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 300% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -400%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
+    }
+
+    .TabAccount-Orders-Message{
+        font-family: Anton;
+        font-size: 90% !important;
+        padding: 0 5% 0 5% !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Message-Progress{
+        max-width: 1230px !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid-Label{
+        font-size: 80% !important;
+        left: 20% !important;
+    }
+    .TabAccount-Orders-Grid{
+        width: 500px !important;
+        height: auto !important;
+        right: 5% !important;
+    }
+
+    .TabAccount-Orders-Grid-Row{
+    }
+
+    .TabAccount-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Product{
+        left: 20px;
+    }
+
+}
+
+@media only screen and (max-width: 810px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 38%;
+        left: 20%;
+        position: absolute;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+    }
+    .log-off-icon:hover{
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 2.5vw !important;
+        padding: 0 20% 0 100px !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 2vw !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 10% !important;
+        width: 200% !important;
+    }
+
+    .TabAccount-Grid{
+        left: 10% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 250px !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 300% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -400%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
+    }
+
+    .TabAccount-Orders-Message{
+        font-family: Anton;
+        font-size: 90% !important;
+        padding: 0 5% 0 5% !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Message-Progress{
+        max-width: 1230px !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid-Label{
+        font-size: 80% !important;
+        left: 20% !important;
+    }
+    .TabAccount-Orders-Grid{
+        width: 500px !important;
+        height: auto !important;
+        right: 5% !important;
+    }
+
+    .TabAccount-Orders-Grid-Row{
+    }
+
+    .TabAccount-Progress-Text {
+        font-size: 50%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Product{
+        left: 20px;
     }
 
 }
@@ -475,7 +779,7 @@
 
     .TabAccount-Grid-User{
         left: 10% !important;
-        width: auto !important;
+        width: 200% !important;
     }
 
     .TabAccount-Grid{
@@ -497,7 +801,7 @@
         height: auto;
         width: auto;
         position: absolute;
-        right: -500%;
+        right: -400%;
     }
 
     .TabAccount-EditUser-Icon:hover{
@@ -685,6 +989,292 @@
     }
 }
 
+@media only screen and (max-width: 480px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 45%;
+        left: 20%;
+        position: absolute;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+    }
+    .log-off-icon:hover{
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 70% !important;
+        padding: 0 20% 0 20% !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 70% !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 25% !important;
+        width: 200% !important;
+    }
+
+    .TabAccount-Grid-User2{
+        left: 80% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid{
+        left: 15% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 500% !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 800% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -500%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
+    }
+
+    .TabAccount-Orders-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding: 0 5% 0 5% !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Message-Progress{
+        width: 100% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid-Label{
+        font-size: 60% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid{
+        width: 500px !important;
+        height: auto !important;
+        right: 5% !important;
+    }
+
+    .TabAccount-Orders-Grid-Row{
+        display: table !important;
+    }
+
+    .TabAccount-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Product{
+        left: 10px;
+    }
+
+    .TabAccount-Orders-Separator-Product{
+        background: rgb(255, 240, 36);
+        height: 10%;
+        width: 40%;
+        position: absolute;
+        left: 40px;
+    }
+}
+
+@media only screen and (max-width: 428px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 45%;
+        left: 20%;
+        position: absolute;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+    }
+    .log-off-icon:hover{
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 70% !important;
+        padding: 0 20% 0 20% !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 70% !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 25% !important;
+        width: 200% !important;
+    }
+
+    .TabAccount-Grid-User2{
+        left: 80% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid{
+        left: 15% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 500% !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 800% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -500%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
+    }
+
+    .TabAccount-Orders-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding: 0 5% 0 5% !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Message-Progress{
+        width: 100% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid-Label{
+        font-size: 60% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid{
+        width: 500px !important;
+        height: auto !important;
+        right: 5% !important;
+    }
+
+    .TabAccount-Orders-Grid-Row{
+        display: table !important;
+    }
+
+    .TabAccount-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Product{
+        left: 10px;
+    }
+
+    .TabAccount-Orders-Separator-Product{
+        background: rgb(255, 240, 36);
+        height: 10%;
+        width: 40%;
+        position: absolute;
+        left: 40px;
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .TabAccount-Welcome-Message{
         font-family: Anton;
@@ -828,11 +1418,11 @@
     }
 }
 
-@media only screen and (max-width: 411px) {
+@media only screen and (max-width: 412px) {
     .TabAccount-Welcome-Message{
         font-family: Anton;
         font-size: 4vw;
-        top: 45%;
+        top: 48%;
         left: 20%;
         position: absolute;
     }
@@ -878,7 +1468,7 @@
 
     .TabAccount-Grid-User{
         left: 30% !important;
-        width: auto !important;
+        width: 200% !important;
     }
 
     .TabAccount-Grid-User2{
@@ -970,6 +1560,293 @@
         left: 40px;
     }
 }
+
+@media only screen and (max-width: 411px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 45%;
+        left: 20%;
+        position: absolute;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+    }
+    .log-off-icon:hover{
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 70% !important;
+        padding: 0 20% 0 20% !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 70% !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 30% !important;
+        width: 200% !important;
+    }
+
+    .TabAccount-Grid-User2{
+        left: 80% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid{
+        left: 15% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 500% !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 800% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -500%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
+    }
+
+    .TabAccount-Orders-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding: 0 5% 0 5% !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Message-Progress{
+        width: 100% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid-Label{
+        font-size: 60% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid{
+        width: 500px !important;
+        height: auto !important;
+        right: 5% !important;
+    }
+
+    .TabAccount-Orders-Grid-Row{
+        display: table !important;
+    }
+
+    .TabAccount-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Product{
+        left: 10px;
+    }
+
+    .TabAccount-Orders-Separator-Product{
+        background: rgb(255, 240, 36);
+        height: 10%;
+        width: 40%;
+        position: absolute;
+        left: 40px;
+    }
+}
+
+@media only screen and (max-width: 390px) {
+    .TabAccount-Welcome-Message{
+        font-family: Anton;
+        font-size: 4vw;
+        top: 51%;
+        left: 20%;
+        position: absolute;
+    }
+    .TabAccount-Welcome-Icon{
+        height: 10%;
+        width: 10%;
+    }
+    .log-off-icon{
+    }
+    .log-off-icon:hover{
+        cursor: pointer;
+    }
+    .log-off-text{
+        font-family: Anton;
+        font-size: 3vw;
+        width: 15%;
+        padding-top: 1%;
+        text-decoration: underline;
+        position: absolute;
+    }
+    .TabAccount-Menu-Message {
+        font-family: Anton;
+        font-size: 3vw;
+    }
+
+    .TabAccount-Label-Message{
+        width: 60% !important;
+        font-size: 3vw !important;
+        left: 80% !important;
+    }
+
+    .TabAccount-Message{
+        font-family: Anton;
+        font-size: 70% !important;
+        padding: 0 20% 0 20% !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 70% !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 30% !important;
+        width: 200% !important;
+    }
+
+    .TabAccount-Grid-User2{
+        left: 80% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid{
+        left: 15% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 500% !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 800% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -500%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
+    }
+
+    .TabAccount-Orders-Message{
+        font-family: Anton;
+        font-size: 80% !important;
+        padding: 0 5% 0 5% !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Message-Progress{
+        width: 100% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid-Label{
+        font-size: 60% !important;
+        left: 10% !important;
+    }
+    .TabAccount-Orders-Grid{
+        width: 500px !important;
+        height: auto !important;
+        right: 5% !important;
+    }
+
+    .TabAccount-Orders-Grid-Row{
+        display: table !important;
+    }
+
+    .TabAccount-Progress-Text {
+        font-size: 40%;
+        width: auto;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .TabAccount-Orders-Product{
+        left: 10px;
+    }
+
+    .TabAccount-Orders-Separator-Product{
+        background: rgb(255, 240, 36);
+        height: 10%;
+        width: 40%;
+        position: absolute;
+        left: 40px;
+    }
+}
+
 @media only screen and (max-width: 375px) {
     .TabAccount-Welcome-Message{
         font-family: Anton;
@@ -1020,7 +1897,7 @@
 
     .TabAccount-Grid-User{
         left: 30% !important;
-        width: auto !important;
+        width: 300% !important;
     }
 
     .TabAccount-Grid-User2{
@@ -1117,7 +1994,7 @@
     .TabAccount-Welcome-Message{
         font-family: Anton;
         font-size: 4vw;
-        top: 45%;
+        top: 53%;
         left: 20%;
         position: absolute;
     }
@@ -1155,6 +2032,59 @@
         padding: 0 20% 0 20% !important;
         white-space: nowrap !important;
         text-overflow: ellipsis !important;
+    }
+    .TabAccount-Message-Pwd{
+        font-family: Anton;
+        font-size: 70% !important;
+    }
+
+    .TabAccount-Grid-User{
+        left: 30% !important;
+        width: 300% !important;
+    }
+
+    .TabAccount-Grid-User2{
+        left: 80% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid{
+        left: 15% !important;
+        width: auto !important;
+    }
+
+    .TabAccount-Grid2{
+        width: 500% !important;
+        padding-left: 70%;
+    }
+
+    .TabAccount-User-Grid{
+        width: 800% !important;
+        height: auto !important;
+    }
+
+    .TabAccount-EditUser-Icon{
+        height: auto;
+        width: auto;
+        position: absolute;
+        right: -500%;
+    }
+
+    .TabAccount-EditUser-Icon:hover{
+        height: auto;
+        width: auto;
+        cursor: pointer;
+    }
+
+    .TabAccount-Text-Edit-Button {
+        font-family: Anton;
+        font-size: 3vw;
+        text-transform: uppercase;
+    }
+
+    .TabAccount-User-Modal{
+        height: auto !important;
+        width: 75% !important;
     }
 
     .TabAccount-Orders-Message{
@@ -1194,74 +2124,20 @@
         left: 10px;
     }
 
-    .TabAccount-Message-Pwd{
-        font-family: Anton;
-        font-size: 70% !important;
-    }
-
-    .TabAccount-Grid-User{
-        left: 30% !important;
-        width: auto !important;
-    }
-
-    .TabAccount-Grid-User2{
-        left: 80% !important;
-        width: auto !important;
-    }
-
-    .TabAccount-Grid{
-        left: 15% !important;
-        width: auto !important;
-    }
-
-    .TabAccount-Grid2{
-        width: 500% !important;
-        padding-left: 70%;
-    }
-
-    .TabAccount-User-Grid{
-        width: 800% !important;
-        height: auto !important;
-    }
-
-
-    .TabAccount-EditUser-Icon{
-        height: auto;
-        width: auto;
-        position: absolute;
-        right: -500%;
-    }
-
-    .TabAccount-EditUser-Icon:hover{
-        height: auto;
-        width: auto;
-        cursor: pointer;
-    }
-
-    .TabAccount-Text-Edit-Button {
-        font-family: Anton;
-        font-size: 3vw;
-        text-transform: uppercase;
-    }
-
-    .TabAccount-User-Modal{
-        height: auto !important;
-        width: 75% !important;
-    }
-
     .TabAccount-Orders-Separator-Product{
         background: rgb(255, 240, 36);
         height: 10%;
         width: 40%;
         position: absolute;
-        left: 20px;
+        left: 40px;
     }
 }
+
 @media only screen and (max-width: 320px) {
     .TabAccount-Welcome-Message{
         font-family: Anton;
         font-size: 4vw;
-        top: 50%;
+        top: 60%;
         left: 20%;
         position: absolute;
     }
@@ -1307,7 +2183,7 @@
 
     .TabAccount-Grid-User{
         left: 30% !important;
-        width: auto !important;
+        width: 400% !important;
     }
 
     .TabAccount-Grid-User2{

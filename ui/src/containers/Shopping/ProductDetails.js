@@ -144,7 +144,7 @@ class ProductDetails extends PureComponent {
                         </Form.Group>
                         <Form.Group inline widths='equal'>
                             <span className="Product-Props-Div">PRICE:&nbsp;&nbsp;&nbsp;</span>
-                            <Label tag color='red'>
+                            <Label tag color='red' className="Product-Price-Div">
                                 ${this.props.product.price}
                             </Label>
                             <span className="Product-Taxes-Div">&nbsp;&nbsp;&nbsp;Price include taxes</span>
@@ -163,26 +163,6 @@ class ProductDetails extends PureComponent {
                         </Button>
                     </Form>
                 </Aux>
-
-                <div className="Grid-Container-Div">
-                    <Grid columns={1} verticalAlign='bottom'>
-                        <Grid.Row stretched>
-                            <Grid.Column>
-                                <p className="Product-Grid-Div">PRODUCT DETAILS:</p>
-                                <p className="Product-Grid-Div">100% COTTON</p>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row stretched>
-                            <Grid.Column>
-                                <p className="Product-Grid-Div">MODEL DETAILS:</p>
-                                <p className="Product-Grid-Div">HEIGHT 170cm/79</p>
-                                <p className="Product-Grid-Div">SIZE: S</p>
-
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </div>
 
             </Aux>
         );

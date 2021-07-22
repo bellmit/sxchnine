@@ -93,6 +93,36 @@
     }
 }
 
+@media only screen and (max-width: 390px) {
+    .ShoppingCart-div-icon{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-icon:hover{
+        position: fixed;
+        width: 30px;
+        height: 28px;
+        left: 18px;
+        top: 68px;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .ShoppingCart-div-label{
+        position: fixed;
+        width: 18px;
+        height: 18px;
+        left: 40px;
+        top: 60px;
+        z-index: 1;
+    }
+}
+
 @media only screen and (max-width: 375px) {
     .ShoppingCart-div-icon{
         position: fixed;
@@ -117,7 +147,7 @@
         position: fixed;
         width: 18px;
         height: 18px;
-        left: 45px;
+        left: 40px;
         top: 60px;
         z-index: 1;
     }

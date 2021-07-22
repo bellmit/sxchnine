@@ -16,3 +16,45 @@
     border-color: rgb(255, 240, 36);
     cursor: pointer;
 }
+
+@media only screen and (min-width: 2560px) {
+    .Gallery-Div {
+        height: 900px;
+        width: 650px;
+        object-fit: cover;
+        border-style: solid;
+        border-width: 10px;
+        border-color: rgb(255, 240, 36);
+    }
+
+    .Gallery-Div:hover {
+        height: 900px;
+        width: 650px;
+        object-fit: cover;
+        border-style: solid;
+        border-width: 10px;
+        border-color: rgb(255, 240, 36);
+        cursor: pointer;
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+    .Gallery-Div {
+        height: 800px;
+        width: 550px;
+        object-fit: cover;
+        border-style: solid;
+        border-width: 10px;
+        border-color: rgb(255, 240, 36);
+    }
+
+    .Gallery-Div:hover {
+        height: 800px;
+        width: 550px;
+        object-fit: cover;
+        border-style: solid;
+        border-width: 10px;
+        border-color: rgb(255, 240, 36);
+        cursor: pointer;
+    }
+}

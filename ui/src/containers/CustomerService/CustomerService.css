@@ -7,7 +7,7 @@
 }
 
 .Customer-Form-Div{
-    width: 30%;
+    width: 32%;
     height: 35%;
     background-color: white;
     position: fixed;
@@ -49,6 +49,112 @@
     padding-top: 3%
 }
 
+@media only screen and (min-width: 2560px) {
+    .Customer-Image-div{
+        width: 100%;
+        object-fit: cover;
+        position: fixed;
+        display: flex;
+        align-items: center;
+    }
+
+    .Customer-Form-Div{
+        width: 22%;
+        height: 35%;
+        background-color: white;
+        position: fixed;
+        margin: 8% 0 0 35%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 6% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 100%;
+        width: 60%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 1vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+    .Customer-Image-div{
+        width: 100%;
+        object-fit: cover;
+        position: fixed;
+        display: flex;
+        align-items: center;
+    }
+
+    .Customer-Form-Div{
+        width: 22%;
+        height: 35%;
+        background-color: white;
+        position: fixed;
+        margin: 8% 0 0 35%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 6% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 100%;
+        width: 60%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 1vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
 @media only screen and (max-width: 1024px) {
     .Customer-Image-div{
         max-width: 100%;
@@ -57,11 +163,11 @@
         object-fit: cover;
     }
     .Customer-Form-Div{
-        width: 35%;
-        height: 65%;
+        width: 58%;
+        height: 28%;
         background-color: white;
         position: fixed;
-        margin: 5% 0 0 32%;
+        margin: 15% 0 0 20%;
     }
 
     .Customer-Container-div{
@@ -95,7 +201,109 @@
 
     .Customer-Yellow-second-bar-div {
         border-top: 3px solid rgb(255, 240, 36);
-        width: 45%;
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
+@media only screen and (max-width: 834px) {
+    .Customer-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .Customer-Form-Div{
+        width: 58%;
+        height: 28%;
+        background-color: white;
+        position: fixed;
+        margin: 15% 0 0 20%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 12% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 80%;
+        width: 100%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
+@media only screen and (max-width: 810px) {
+    .Customer-Image-div{
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .Customer-Form-Div{
+        width: 58%;
+        height: 28%;
+        background-color: white;
+        position: fixed;
+        margin: 15% 0 0 20%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 12% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 80%;
+        width: 100%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
         padding-top: 3%
     }
 }
@@ -202,6 +410,106 @@
     }
 }
 
+@media only screen and (max-width: 480px) {
+    .Customer-Image-div{
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .Customer-Form-Div{
+        width: 70% !important;
+        height: 25%;
+        background-color: white;
+        position: fixed;
+        margin: 20% 0 0 20%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 15% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 60%;
+        width: 100%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
+@media only screen and (max-width: 428px) {
+    .Customer-Image-div{
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .Customer-Form-Div{
+        width: 70% !important;
+        height: 25%;
+        background-color: white;
+        position: fixed;
+        margin: 20% 0 0 20%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 15% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 60%;
+        width: 100%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
 @media only screen and (max-width: 414px) {
     .Customer-Image-div{
         width: 100% !important;
@@ -211,6 +519,56 @@
     .Customer-Form-Div{
         width: 70% !important;
         height: 25%;
+        background-color: white;
+        position: fixed;
+        margin: 20% 0 0 20%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 15% 0 0 10%;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 60%;
+        width: 100%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 2vw;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
+@media only screen and (max-width: 412px) {
+    .Customer-Image-div{
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+    .Customer-Form-Div{
+        width: 70% !important;
+        height: 30%;
         background-color: white;
         position: fixed;
         margin: 20% 0 0 20%;
@@ -309,8 +667,58 @@
         object-fit: cover !important;
     }
     .Customer-Form-Div{
-        width: 75% !important;
+        width: 68% !important;
         height: 30% !important;
+        background-color: white;
+        position: fixed;
+        margin: 15% 0 0 20%;
+    }
+
+    .Customer-Container-div{
+        position: fixed;
+        margin: 18% 0 0 10% !important;
+    }
+
+    .Customer-Message-Text-p2-div{
+        font-family: "American Typewriter", "Times New Roman", Times;
+        font-size: 50% !important;
+        width: 100%;
+    }
+
+    .Customer-Continue-Button{
+        background-color: rgb(255, 240, 36);
+        border-style: none;
+        border-color: rgb(255, 240, 36);
+        padding: 10px 20px;
+        margin-top: 5%;
+        text-decoration: none;
+        outline: none;
+        position: absolute;
+    }
+
+    .Customer-Text-Button {
+        font-family: Anton;
+        font-size: 3vw !important;
+        text-transform: uppercase;
+        color: black;
+    }
+
+    .Customer-Yellow-second-bar-div {
+        border-top: 3px solid rgb(255, 240, 36);
+        width: 50%;
+        padding-top: 3%
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .Customer-Image-div{
+        width: 50%;
+        height: 50%;
+        object-fit: cover !important;
+    }
+    .Customer-Form-Div{
+        width: 72% !important;
+        height: 32% !important;
         background-color: white;
         position: fixed;
         margin: 15% 0 0 20%;
