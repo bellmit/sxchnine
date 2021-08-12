@@ -506,7 +506,7 @@
     .Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 16%;
-        height: 100%;
+        height: 130%;
         position: absolute;
     }
 
@@ -532,7 +532,7 @@
         position: absolute;
         width: 100%;
         align-content: center;
-        top: 95%;
+        top: 98%;
     }
 
     .Product-Details-footer{
@@ -788,7 +788,7 @@
     .Yellow-bar-div {
         background-color: rgb(255, 240, 36);
         width: 18%;
-        height: 100%;
+        height: 150%;
         position: absolute;
     }
 
@@ -804,7 +804,7 @@
 
     .Product-Details-Div {
         position: absolute;
-        top: 85% !important;
+        top: 93% !important;
     }
 
     .Reco-Container-div {

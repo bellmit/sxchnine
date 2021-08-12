@@ -44,7 +44,7 @@
 .Contact-footer{
     width: 100%;
     position: absolute;
-    top: 300%;
+    top: 325%;
     left: 12%;
 }
 
@@ -153,7 +153,6 @@
     }
 }
 
-
 @media only screen and (max-width: 1024px) {
     .Contact-Link {
         font-family: Anton;
@@ -200,6 +199,8 @@
         left: -5%;
     }
 }
+
+
 
 @media only screen and (max-width: 834px) {
     .Contact-Link {
@@ -341,6 +342,7 @@
         left: 0%;
     }
 }
+
 @media only screen and (max-width: 768px) {
     .Contact-Link {
         font-family: Anton;

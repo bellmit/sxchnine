@@ -1052,7 +1052,7 @@
 
     .Tracking-Form-Div{
         width: 40%;
-        height: 35%;
+        height: 34%;
         background-color: rgb(255, 240, 36);
         position: fixed;
         margin: 12% 0 0 30%;
@@ -1311,7 +1311,7 @@
 
     .Tracking-Form-Div{
         width: 43%;
-        height: 35%;
+        height: 31%;
         background-color: rgb(255, 240, 36);
         position: fixed;
         margin: 10% 0 0 25%;
@@ -1391,7 +1391,7 @@
 
     .Tracking-Form-Div{
         width: 43%;
-        height: 35%;
+        height: 34%;
         background-color: rgb(255, 240, 36);
         position: fixed;
         margin: 11% 0 0 20%;
@@ -1490,12 +1490,12 @@
         position: absolute;
         font-family: Anton;
         font-size: 4vw !important;
-        margin: -3% 0 0 -5%;
+        margin: -5% 0 0 -5%;
     }
 
     .Tracking-Message-Text-div{
         font-family: "American Typewriter, Times";
-        font-size: 80%;
+        font-size: 70%;
     }
 
     .Tracking-Continue-Button{

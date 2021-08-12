@@ -5,7 +5,7 @@
     position: absolute;
     display: flex;
     align-items: center;
-    top: 230%;
+    top: 270%;
 }
 
 
@@ -18,7 +18,7 @@
     position: absolute;
     width: 50%;
     left: 5%;
-    top: 250%;
+    top: 280%;
 }
 
 .Paragraph-footer:hover {
@@ -30,7 +30,7 @@
     position: absolute;
     width: 50%;
     left: 5%;
-    top: 250%;
+    top: 280%;
     cursor: pointer;
 }
 
@@ -39,7 +39,7 @@
     height: 1%;
     width: 50%;
     left: 5%;
-    top: 255%;
+    top: 285%;
     position: absolute;
 }
 
